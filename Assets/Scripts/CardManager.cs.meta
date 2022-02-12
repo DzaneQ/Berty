@@ -3,7 +3,14 @@ guid: 553e883850ba67e4b8c302072781c518
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - pileCardTemplate: {fileID: 6974027251106625703, guid: f59b62e2313249a429e3a89b9733f08c, type: 3}
+  - drawPile: {instanceID: 0}
+  - discardPile: {instanceID: 0}
+  - playerTable: {instanceID: 0}
+  - opponentTable: {instanceID: 0}
+  - cardImageTemplate: {fileID: 1148504419818202801, guid: 57eaf54574b5e934b9342b8e3da9cf6a, type: 3}
+  - cardSpriteTemplate: {fileID: 9048551618771972388, guid: d1ba44d3f83b3af4bbadfd5b1e3a7bde, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

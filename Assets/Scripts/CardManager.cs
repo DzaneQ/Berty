@@ -7,10 +7,12 @@ public class CardManager : MonoBehaviour
 {
     private const int cardsCount = 40;
     private const int imageCount = 12;
+    private const int spriteCount = 9;
     private const int tableCapacity = 6;
 
     private List<GameObject> drawPileCards = new List<GameObject>();
     private CardImage[] cardImages = new CardImage[imageCount];
+    //private CardSprite[] cardSprites = new CardSprite[spriteCount];
     private Rigidbody rb;
     //private CardImage[] heldCards = new CardImage[6];
     //private GameObject[] heldCards = new GameObject[6];
@@ -19,12 +21,15 @@ public class CardManager : MonoBehaviour
     private List<CardImage> enabledCards = new List<CardImage>();
     private List<CardImage> disabledCards = new List<CardImage>();
 
-    [SerializeField] private GameObject PiledCard;
-    [SerializeField] private GameObject DrawPile;
-    [SerializeField] private GameObject DiscardPile;
+    [SerializeField] private GameObject pileCardTemplate;
+    [SerializeField] private GameObject drawPile;
+    [SerializeField] private GameObject discardPile;
     [SerializeField] private GameObject playerTable;
     [SerializeField] private GameObject opponentTable;
-    [SerializeField] private GameObject cardImage;
+    [SerializeField] private GameObject cardImageTemplate;
+    //[SerializeField] private GameObject cardSpriteTemplate;
+    [SerializeField] private GameObject cardImageCollection;
+    //[SerializeField] private GameObject cardSpriteCollection;
 
     //public void AddHeldCard(CardImage card, int index)
     //{
@@ -35,12 +40,12 @@ public class CardManager : MonoBehaviour
     {
         for (int i = 0; i < cardsCount; i++)
         {
-            AddToPile(DrawPile, i);
+            AddToPile(drawPile, i);
         }
     }
     public void AddToPile(GameObject stack, int offset = 0)
     {
-        GameObject piledCard = Instantiate(PiledCard, new Vector3(offset * 0.0001f, -offset * 0.0001f, offset * 0.0001f), Quaternion.identity);
+        GameObject piledCard = Instantiate(pileCardTemplate, new Vector3(offset * 0.0001f, -offset * 0.0001f, offset * 0.0001f), Quaternion.identity);
         piledCard.transform.SetParent(stack.transform, false);
         rb = piledCard.AddComponent<Rigidbody>();
         rb.detectCollisions = true;
@@ -49,54 +54,57 @@ public class CardManager : MonoBehaviour
 
     public void AddPileCard(GameObject card, GameObject stack)
     {
-        if (stack == DrawPile) drawPileCards.Add(card);
-        else if (stack == DiscardPile) drawPileCards.Insert(0, card);
+        if (stack == drawPile) drawPileCards.Add(card);
+        else if (stack == discardPile) drawPileCards.Insert(0, card);
         else throw new Exception("Unknown stack for AddPileCard!");
     }
 
     public void InitializeCards()
     {
-        for (int i = 0; i < cardImages.Length; i++)
-        {
+        InstantiateCardImages();
+        //InstantiateCardSprites();
 
-            GameObject drawnCard = Instantiate(cardImage, new Vector3(0, 0, 0), Quaternion.identity);
-            cardImages[i] = drawnCard.GetComponent<CardImage>();
-            //drawnCard.name = "Card " + i.ToString();
-            //AddToPile(DrawPile, i);
-        }
         playerTable.SetActive(true);
         opponentTable.SetActive(false);
         InitializeCardPile();
     }
 
-    public void PullCards(bool isPlayerTurn)
+    private void InstantiateCardImages()
+    {
+        for (int i = 0; i < cardImages.Length; i++)
+        {
+            GameObject cardImage = Instantiate(cardImageTemplate, new Vector3(0, 0, 0), Quaternion.identity);
+            cardImages[i] = cardImage.GetComponent<CardImage>();
+            cardImage.transform.SetParent(cardImageCollection.transform);
+        }
+    }
+
+    //private void InstantiateCardSprites()
+    //{
+    //    for (int i = 0; i < cardSprites.Length; i++)
+    //    {
+    //        GameObject cardSprite = Instantiate(cardSpriteTemplate, new Vector3(0, 0, 0.001f), Quaternion.Euler(0, 180f, 180f));
+    //        cardSprites[i] = cardSprite.GetComponent<CardSprite>();
+    //        cardSprite.transform.SetParent(cardSpriteCollection.transform);
+    //    }
+    //}
+
+    public void PullCards(TurnManager.Alignment align)
     {
         Transform table;
-        List<CardImage> heldCards;
         int cardsToPull = tableCapacity;
-        if (isPlayerTurn)
-        {
-            table = playerTable.transform;
-            //cardsToPull -= enabledCards.Count;
-            //heldCards = enabledCards;
-        }
-        else
-        {
-            table = opponentTable.transform;
-            //cardsToPull -= disabledCards.Count;
-            //heldCards = disabledCards;
-        }
+        if (align == TurnManager.Alignment.Player) table = playerTable.transform;
+        else table = opponentTable.transform;
         cardsToPull -= enabledCards.Count;
-        heldCards = enabledCards;
-        Debug.Log("Cards to pull: " + cardsToPull);
+        //Debug.Log("Cards to pull: " + cardsToPull);
         foreach (CardImage drawnCard in cardImages)
         {
+            //Debug.Log("Cards to pull in loop: " + cardsToPull);
             if (cardsToPull <= 0) break;
             if (drawnCard.TableAssigned() != null) continue;
+            //Debug.Log("Pulling a card...");
             RemoveFromDrawPile();
-            drawnCard.transform.SetParent(table, false);
-            drawnCard.AssignTable();
-            heldCards.Add(drawnCard);
+            AddToTable(drawnCard, table);
             cardsToPull--;
         }
         //AddHeldCard(drawnCard, index);
@@ -125,17 +133,34 @@ public class CardManager : MonoBehaviour
     public void RemoveFromTable(CardImage card)
     {
         card.DisableCard();
+        SetCardObjectIdle(card.transform, cardImageCollection.transform);
         enabledCards.Remove(card);
         //disabledCards.Remove(card);
     }
+
+    public void AddToTable(CardImage card, Transform table)
+    {
+        card.transform.SetParent(table, false);
+        card.AssignTable();
+        enabledCards.Add(card);
+    }
+
+    private void SetCardObjectIdle(Transform card, Transform stack)
+    {
+        card.SetParent(stack, false);
+    }
+
+    //public GameObject GetCardSprite()
+    //{
+    //    return cardSpriteCollection.transform.GetChild(0).gameObject;
+    //}
 
     public void DiscardCards()
     {
         foreach (CardImage card in SelectedCards())
         {
-            card.DeactivateCard();
             RemoveFromTable(card);
-            AddToPile(DiscardPile);
+            AddToPile(discardPile);
         }
     }
 
@@ -165,7 +190,7 @@ public class CardManager : MonoBehaviour
 
     public void DeselectCards()
     {
-        foreach (CardImage card in SelectedCards()) card.DeselectCard();
+        foreach (CardImage card in SelectedCards()) card.DeselectPosition();
     }
         
     public List<CardImage> SelectedCards()

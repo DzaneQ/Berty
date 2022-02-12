@@ -7,9 +7,8 @@ public class TurnManager : MonoBehaviour
 {
     [SerializeField] private GameObject EndTurnButton;
 
-    private FieldGrid fieldGrid;
+    private FieldGrid grid;
     private CardManager cardManager;
-    private bool isStarting = true;
 
     private enum Step
     {
@@ -18,39 +17,36 @@ public class TurnManager : MonoBehaviour
         Payment
     }
 
-    private enum Alignment
+    public enum Alignment
     {
         Player,
         Opponent
     }
 
-    Step currentStep;
-    Alignment currentAlign;
+    private Step currentStep;
+    private Alignment currentAlign;
 
     private void Start()
     {
-        fieldGrid = GameObject.Find("FieldBoard").GetComponent<FieldGrid>();
+        grid = GameObject.Find("FieldBoard").GetComponent<FieldGrid>();
         cardManager = GetComponent<CardManager>();
         cardManager.InitializeCards();
-    }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0) && isStarting)
-        {
-            StartTheGame();
-        }
+        StartTheGame();
     }
 
     public void StartTheGame()
     { 
         currentStep = Step.Move;
         currentAlign = Alignment.Player;
-        cardManager.PullCards(IsPlayerTurn());
-        isStarting = false;
+        cardManager.PullCards(currentAlign);
     }
 
-
+    public void EndTurn()
+    {
+        if (cardManager.SelectedCard() != null)
+            cardManager.SelectedCard().DeselectPosition();
+        SwitchAlign();
+    }
 
     public bool IsMoveNow()
     {
@@ -98,25 +94,24 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    public bool IsPlayerTurn()
+    public Alignment GetCurrentAlignment()
     {
-        if (currentAlign == Alignment.Player) return true;
-        else return false;
+        return currentAlign;
     }
 
-    public void EndTurn()
+    public int IsPlayerTurn()
     {
-        if (cardManager.SelectedCard() != null)
-            cardManager.SelectedCard().DeselectCard();
-        SwitchAlign();
+        if (currentAlign == Alignment.Player) return 1;
+        else return -1;
     }
 
-    public void SwitchAlign()
+    private void SwitchAlign()
     {
         if (currentAlign == Alignment.Player) currentAlign = Alignment.Opponent;
         else currentAlign = Alignment.Player;
         cardManager.SwitchTables();
-        cardManager.PullCards(IsPlayerTurn());
+        cardManager.PullCards(currentAlign);
+        grid.AdjustCards();
         Debug.Log("Currently: " + currentAlign);
     }
 

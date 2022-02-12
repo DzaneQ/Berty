@@ -10,13 +10,20 @@ public class CardImage : MonoBehaviour
     private bool isSelected;
     private RectTransform card;
     private TurnManager turn;
+    private CardManager cardManager;
     private Transform table;
+    private Transform lastTable;
+
+    //private delegate void ClickHandler();
+    //ClickHandler leftClick;
 
     private void Start()
     {
         card = GetComponent<RectTransform>();
         turn = GameObject.Find("EventSystem").GetComponent<TurnManager>();
+        cardManager = GameObject.Find("EventSystem").GetComponent<CardManager>();
         isSelected = false;
+        //leftClick = SelectCard;
     }
 
     public void AssignTable()
@@ -37,46 +44,63 @@ public class CardImage : MonoBehaviour
 
     public void CardClick()
     {
+        Debug.Log("Clicked.");
         if (Input.GetMouseButtonDown(0))
         {
+            //leftClick();
             SwitchCardSelection();
         }
     }
 
     private void SwitchCardSelection()
     {
-        if (isSelected) DeselectCard();
-        else if (!turn.IsSelectionNow()) SelectCard();
+        if (isSelected) DeselectPosition();
+        else if (!turn.IsSelectionNow()) SelectPosition();
     }
 
-    private void SelectCard()
+    private void SelectPosition()
     {
         cardPosition = card.position;
         card.position += new Vector3(0f, 25f, 0f);
         isSelected = true;
         if (turn.IsMoveNow()) turn.NextStep();
+        //leftClick = DeselectCard;
     }
 
-    public void DeselectCard()
+    public void DeselectPosition()
     {
         card.position = cardPosition;
-        isSelected = false;
+        DeselectCard();
         if (turn.IsSelectionNow()) turn.PreviousStep();
     }
 
-    public void DeactivateCard()
+    //public void DeactivateCard()
+    //{
+    //    cardManager.RemoveFromTable(this);
+    //    //transform.SetParent(table.parent.parent, false);
+    //}
+
+    private void SelectCard()
+    {
+        isSelected = true;
+        //leftClick = DeselectPosition;
+    }
+
+    private void DeselectCard()
     {
         isSelected = false;
-        transform.SetParent(table.parent.parent, false);
+        //leftClick = SelectPosition;
     }
 
     public void DisableCard()
     {
+        DeselectCard();
+        lastTable = table;
         table = null;
     }
 
     public void ReturnCard()
     {
-        transform.SetParent(table, false);
+        cardManager.AddToTable(this, lastTable);
     }
 }

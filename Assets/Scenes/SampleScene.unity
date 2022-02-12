@@ -123,6 +123,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &47750409
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 47750410}
+  m_Layer: 0
+  m_Name: CardImageCollection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &47750410
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47750409}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -100, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &163781476
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1057,6 +1087,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ef516a8d2bc3454cb47460b2f167a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultMaterial: {fileID: 2100000, guid: df708ec219096514e96138b76981f752, type: 2}
+  player: {fileID: 2100000, guid: 5ac1a1c44ebd8cc489881f6c2e952685, type: 2}
+  opponent: {fileID: 2100000, guid: e9eec283829ab824eaf7f6f27531824b, type: 2}
+  cardPrefab: {fileID: 9048551618771972388, guid: d1ba44d3f83b3af4bbadfd5b1e3a7bde, type: 3}
 --- !u!1 &1414117059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1123,7 +1157,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1414117063
 MonoBehaviour:
@@ -1137,12 +1171,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553e883850ba67e4b8c302072781c518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PiledCard: {fileID: 6974027251106625703, guid: f59b62e2313249a429e3a89b9733f08c, type: 3}
-  DrawPile: {fileID: 1110432747}
-  DiscardPile: {fileID: 953259463}
+  pileCardTemplate: {fileID: 6974027251106625703, guid: f59b62e2313249a429e3a89b9733f08c, type: 3}
+  drawPile: {fileID: 1110432747}
+  discardPile: {fileID: 953259463}
   playerTable: {fileID: 1821940498}
   opponentTable: {fileID: 2067477784}
-  cardImage: {fileID: 1148504419818202801, guid: 57eaf54574b5e934b9342b8e3da9cf6a, type: 3}
+  cardImageTemplate: {fileID: 1148504419818202801, guid: 57eaf54574b5e934b9342b8e3da9cf6a, type: 3}
+  cardImageCollection: {fileID: 47750409}
 --- !u!114 &1414117064
 MonoBehaviour:
   m_ObjectHideFlags: 0

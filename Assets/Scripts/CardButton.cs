@@ -23,11 +23,27 @@ public class CardButton : MonoBehaviour
         switch (name)
         {
             case "RotateRight":
-                RotateCard(-1);
+                card.RotateCard(-1);
                 break;
 
             case "RotateLeft":
-                RotateCard(1);
+                card.RotateCard(1);
+                break;
+
+            case "MoveUp":
+                card.MoveCard(0);
+                break;
+
+            case "MoveRight":
+                card.MoveCard(90);
+                break;
+
+            case "MoveDown":
+                card.MoveCard(180);
+                break;
+
+            case "MoveLeft":
+                card.MoveCard(270);
                 break;
 
             case "Return":
@@ -39,11 +55,6 @@ public class CardButton : MonoBehaviour
         }
     }
 
-    private void RotateCard(int direction)
-    {
-        card.transform.Rotate(0, 0, direction * 90);
-    }
-
     public void EnableButton()
     {
         //Debug.Log("Enable: " + name);
@@ -51,7 +62,6 @@ public class CardButton : MonoBehaviour
         rend.enabled = true;
         //if (coll == null) coll = GetComponent<Collider>();
         coll.enabled = true;
-        //Debug.Log(rend.enabled);
     }
 
     public void DisableButton()
@@ -68,4 +78,5 @@ public class CardButton : MonoBehaviour
         rend.material = dexterityMaterial;
         EnableButton();
     }
+
 }
