@@ -10,7 +10,7 @@ public class FieldGrid : MonoBehaviour
     [SerializeField] private Material opponent;
     [SerializeField] private GameObject cardPrefab;
 
-    private TurnManager turn;
+    private Turn turn;
     protected MeshRenderer mesh;
 
     private const int columns = 3;
@@ -18,9 +18,16 @@ public class FieldGrid : MonoBehaviour
 
     private Field[,] fields = new Field[columns, rows];
 
+    public GameObject CardPrefab { get => cardPrefab; }
+    public Turn Turn { get => turn; }
+
+    private void Awake()
+    {
+        turn = GameObject.Find("EventSystem").GetComponent<Turn>();
+    }
+
     private void Start()
     {
-        turn = GameObject.Find("EventSystem").GetComponent<TurnManager>();
         AttachFieldMechanic();
     }
 
@@ -36,48 +43,56 @@ public class FieldGrid : MonoBehaviour
                 Transform fieldTransform = transform.GetChild(index);
                 //Debug.Log(fieldTransform.localPosition.x + ", " + fieldTransform.localPosition.y);
                 fields[i, j] = fieldTransform.gameObject.GetComponent<Field>();
-                //fields[i, j].AttachGrid(this);
                 fields[i, j].SetCoordinates(i - midColumn, j - midRow);
                 index++;
             }
         }
     }
 
-    public Material GetMaterial(int isPlayerColor = 0)
+    public Material GetMaterial(Alignment alignment)
     {
-        switch (isPlayerColor)
+        switch (alignment)
         {
-            case 1:
+            case Alignment.Player:
                 return player;
-            case -1:
+            case Alignment.Opponent:
                 return opponent;
             default:
                 return defaultMaterial;
         }
     }
 
-    public TurnManager Turn()
-    {
-        return turn;
-    }
 
-    public GameObject GetCardSprite()
+    public void ChangeAlignmentOnFieldGrid()
     {
-        return cardPrefab;
+        foreach (Field field in fields) field.OccupantCard.HandleAlignmentChange();
     }
+    
 
-    public void AdjustCards()
+    public void AdjustCardButtons()
     {
-        Debug.Log("Adjusting cards...");
+        //Debug.Log("Adjusting cards...");
         foreach (Field field in fields)
         {
-            Debug.Log("Checking field: x=" + field.GetX() + "; y= " + field.GetY());
-            if (!field.IsOccupied()) continue;
+            //Debug.Log("Checking field: x=" + field.GetX() + "; y= " + field.GetY());
+            if (field.IsAligned(Alignment.None)) continue;
             //Debug.Log("IsPlayerTurn? " + isPlayerTurn);
             //Debug.Log("IsPlayerField? " + field.IsPlayerField());
-            if (field.IsPlayerField() == turn.IsPlayerTurn())
-                field.GetOccupantCard().ShowDexterityButtons();
-            else field.GetOccupantCard().DisableButtons();
+            if (field.IsAligned(turn.CurrentAlignment))
+                field.OccupantCard.SetActive();
+            else field.OccupantCard.SetIdle();
+        }
+    }
+    
+    public void DisableAllButtons()
+    {
+        foreach (Field field in fields)
+        {
+            if (!field.IsOccupied()) continue;
+            //Debug.Log("Field align: " + field.Align);
+            //Debug.Log("Current alignment: " + turn.CurrentAlignment);
+            if (field.IsAligned(turn.CurrentAlignment))
+                field.OccupantCard.SetIdle();
         }
     }
 
@@ -105,16 +120,8 @@ public class FieldGrid : MonoBehaviour
 
     public void SwapCards(Field first, Field second)
     {
-        CardSprite tempCardSprite = first.GetOccupantCard();
-        first.SetOccupantCard(second.GetOccupantCard());
-        second.SetOccupantCard(tempCardSprite);
-        first.GetOccupantCard().SetOccupiedField(first);
-        second.GetOccupantCard().SetOccupiedField(second);
+        CardSprite tempCardSprite = first.OccupantCard;
+        first.OccupantCard = second.OccupantCard;
+        second.OccupantCard = tempCardSprite;
     }
-
-    //public void RemoveAlignment(Field targetField)
-    //{
-    //    targetField = (Field)targetField;
-    //    targetField.UpdateField();
-    //}
 }

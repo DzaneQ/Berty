@@ -5,13 +5,14 @@ using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
-    private const int cardsCount = 40;
+    private const int cardsCount = 20;
     private const int imageCount = 12;
-    private const int spriteCount = 9;
     private const int tableCapacity = 6;
+    private const float offsetFactor = 0.0001f;
 
-    private List<GameObject> drawPileCards = new List<GameObject>();
+    //private List<GameObject> drawPileCards = new List<GameObject>();
     private CardImage[] cardImages = new CardImage[imageCount];
+    private List<Sprite> cardSpriteTexture = new List<Sprite>();
     //private CardSprite[] cardSprites = new CardSprite[spriteCount];
     private Rigidbody rb;
     //private CardImage[] heldCards = new CardImage[6];
@@ -20,6 +21,7 @@ public class CardManager : MonoBehaviour
     //private CardImage[] heldImages = new CardImage[6];
     private List<CardImage> enabledCards = new List<CardImage>();
     private List<CardImage> disabledCards = new List<CardImage>();
+
 
     [SerializeField] private GameObject pileCardTemplate;
     [SerializeField] private GameObject drawPile;
@@ -40,30 +42,45 @@ public class CardManager : MonoBehaviour
     {
         for (int i = 0; i < cardsCount; i++)
         {
-            AddToPile(drawPile, i);
+            InitializeCard(i);
         }
     }
-    public void AddToPile(GameObject stack, int offset = 0)
+
+    public void InitializeCard(int offset = 0)
     {
-        GameObject piledCard = Instantiate(pileCardTemplate, new Vector3(offset * 0.0001f, -offset * 0.0001f, offset * 0.0001f), Quaternion.identity);
-        piledCard.transform.SetParent(stack.transform, false);
+        float offsetUnit = offset * offsetFactor;
+        GameObject piledCard = Instantiate(pileCardTemplate, new Vector3(offsetUnit, offsetUnit, offsetUnit), Quaternion.identity);
+        //piledCard.name = "pileCardNO" + offset;
+        piledCard.transform.SetParent(drawPile.transform, false);
         rb = piledCard.AddComponent<Rigidbody>();
         rb.detectCollisions = true;
-        AddPileCard(piledCard, stack);
+        //AddPileCard(piledCard, stack);
     }
 
-    public void AddPileCard(GameObject card, GameObject stack)
+    //public void AddPileCard(GameObject card, GameObject stack)
+    //{
+    //    if (stack == drawPile) drawPileCards.Add(card);
+    //    else if (stack == discardPile) drawPileCards.Insert(0, card);
+    //    else throw new Exception("Unknown stack for AddPileCard!");
+    //}
+
+    //private void PutCardInDiscardPile()
+    //{
+    //    GameObject piledCard = 
+    //}
+
+    private void LoadSpriteMesh()
     {
-        if (stack == drawPile) drawPileCards.Add(card);
-        else if (stack == discardPile) drawPileCards.Insert(0, card);
-        else throw new Exception("Unknown stack for AddPileCard!");
+        string prefixPath = Application.dataPath + "/GameCards/Berty/";
+        //Debug.Log(prefixPath);
+        cardSpriteTexture.Add(Resources.Load<Sprite>(prefixPath + "misiek bert"));
     }
 
     public void InitializeCards()
     {
         InstantiateCardImages();
         //InstantiateCardSprites();
-
+        LoadSpriteMesh();
         playerTable.SetActive(true);
         opponentTable.SetActive(false);
         InitializeCardPile();
@@ -89,46 +106,118 @@ public class CardManager : MonoBehaviour
     //    }
     //}
 
-    public void PullCards(TurnManager.Alignment align)
+    public void PullCards(Alignment align)
     {
         Transform table;
-        int cardsToPull = tableCapacity;
-        if (align == TurnManager.Alignment.Player) table = playerTable.transform;
+        if (align == Alignment.Player) table = playerTable.transform;
         else table = opponentTable.transform;
+        bool isShuffled = false;
+        int cardsToPull = tableCapacity;
         cardsToPull -= enabledCards.Count;
+        int cardsInDrawPile = drawPile.transform.childCount;
+        //int cardsInDiscardPile = discardPile.transform.childCount;
         //Debug.Log("Cards to pull: " + cardsToPull);
         foreach (CardImage drawnCard in cardImages)
         {
             //Debug.Log("Cards to pull in loop: " + cardsToPull);
             if (cardsToPull <= 0) break;
+            if (cardsInDrawPile <= 0) break;
             if (drawnCard.TableAssigned() != null) continue;
             //Debug.Log("Pulling a card...");
-            RemoveFromDrawPile();
-            AddToTable(drawnCard, table);
+            DrawCard(drawnCard, table, cardsCount - cardsInDrawPile);
+            if (cardsToPull == 3) drawnCard.LoadSprite(cardSpriteTexture[0]); // TEST!
             cardsToPull--;
+            cardsInDrawPile--;
+            if (isShuffled) ClearCards();
+            if (cardsInDrawPile <= 0 && !isShuffled)
+            {
+                cardsInDrawPile = discardPile.transform.childCount;
+                ShuffleDiscardPile();
+                isShuffled = true;
+            }
         }
         //AddHeldCard(drawnCard, index);
     }
 
-    public void SwitchTables()
+    private void ClearCards()
     {
-        playerTable.SetActive(!playerTable.activeSelf);
-        opponentTable.SetActive(!opponentTable.activeSelf);
-
-        List<CardImage> temp = enabledCards;
-        enabledCards = disabledCards;
-        disabledCards = temp;
-
-        //foreach (CardImage card in enabledCards) Debug.Log("Enabled card: " + card.name);
-        //foreach (CardImage card in disabledCards) Debug.Log("Disabled card: " + card.name);
+        GameObject card;
+        for (int i = discardPile.transform.childCount - 1; i >= tableCapacity; i--)
+        {
+            card = discardPile.transform.GetChild(i).gameObject;
+            Destroy(card);
+        }
     }
 
-    private void RemoveFromDrawPile()
+    private void DrawCard(CardImage drawnCard, Transform table, int offset)
     {
-        GameObject card = drawPileCards[drawPileCards.Count - 1];
-        drawPileCards.Remove(card);
-        Destroy(card);
+        RemoveFromDrawPile(offset);
+        AddToTable(drawnCard, table);
     }
+
+    private void ShuffleDiscardPile()
+    {
+        //int discardedCardsCount = discardPile.transform.childCount;
+        //RemoveFromDrawPile(discardedCardsCount);
+        //CreatePile(discardedCardsCount);
+        GameObject card;
+        int discardedCardsCount = discardPile.transform.childCount;
+        //Debug.Log("Instead of shuffling cards: " + discardPile.transform.childCount);
+        //Debug.Log("Shuffled cards: " + cardAmount);
+        for (int i = 0; i < cardsCount && discardPile.transform.childCount > 0; i++)
+        {
+            card = discardPile.transform.GetChild(0).gameObject;
+            //Debug.Log("Shuffled card: " + (i) + " : " + card.name);
+            if (card.activeSelf) PrepareCardInPile(card.transform, drawPile.transform, i);
+            else break;
+        }
+    }
+
+    private void RemoveFromDrawPile(int offset)
+    {
+        //GameObject card = drawPileCards[drawPileCards.Count - 1];
+        //drawPileCards.Remove(card);
+        GameObject card = drawPile.transform.GetChild(drawPile.transform.childCount - 1).gameObject;
+        card.SetActive(false);
+        PrepareCardInPile(card.transform, discardPile.transform, offset);
+        //Destroy(card);
+    }
+
+    private void PrepareCardInPile(Transform cardTransform, Transform stack, int offset)
+    {
+        float offsetUnit = offset * offsetFactor;
+        cardTransform.SetParent(stack, false);
+        cardTransform.localPosition = new Vector3(offsetUnit, offsetUnit, offsetUnit);
+    }
+
+    public void DiscardCards()
+    {
+        foreach (CardImage card in SelectedCards())
+        {
+            RemoveFromTable(card);
+            DiscardCard();
+        }
+    }
+
+    public void DiscardCard()
+    {
+        GameObject card;
+        for (int i = 0; i < discardPile.transform.childCount; i++)
+        {
+            card = discardPile.transform.GetChild(i).gameObject;
+            if (!card.activeSelf)
+            {
+                card.SetActive(true);
+                break;
+            }
+        }
+    }
+
+    //private void RemoveFromDrawPile(int cardCount)
+    //{
+    //    for (int i = 0; i < cardCount; i++)
+    //        RemoveFromDrawPile();
+    //}
 
     public void RemoveFromTable(CardImage card)
     {
@@ -145,23 +234,28 @@ public class CardManager : MonoBehaviour
         enabledCards.Add(card);
     }
 
+    public bool ArePilesEmpty()
+    {
+        if (drawPile.transform.childCount == 0) return true;
+        return false;
+    }
+
     private void SetCardObjectIdle(Transform card, Transform stack)
     {
         card.SetParent(stack, false);
     }
 
-    //public GameObject GetCardSprite()
-    //{
-    //    return cardSpriteCollection.transform.GetChild(0).gameObject;
-    //}
-
-    public void DiscardCards()
+    public void SwitchTables()
     {
-        foreach (CardImage card in SelectedCards())
-        {
-            RemoveFromTable(card);
-            AddToPile(discardPile);
-        }
+        playerTable.SetActive(!playerTable.activeSelf);
+        opponentTable.SetActive(!opponentTable.activeSelf);
+
+        List<CardImage> temp = enabledCards;
+        enabledCards = disabledCards;
+        disabledCards = temp;
+
+        //foreach (CardImage card in enabledCards) Debug.Log("Enabled card: " + card.name);
+        //foreach (CardImage card in disabledCards) Debug.Log("Disabled card: " + card.name);
     }
 
     //public bool CheckCardSelection(int amount)

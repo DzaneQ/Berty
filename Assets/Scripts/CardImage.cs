@@ -9,21 +9,39 @@ public class CardImage : MonoBehaviour
     private Vector3 cardPosition;
     private bool isSelected;
     private RectTransform card;
-    private TurnManager turn;
+    private Turn turn;
     private CardManager cardManager;
     private Transform table;
     private Transform lastTable;
+    private Image imageRenderer;
 
     //private delegate void ClickHandler();
     //ClickHandler leftClick;
 
-    private void Start()
+    private void Awake()
     {
         card = GetComponent<RectTransform>();
-        turn = GameObject.Find("EventSystem").GetComponent<TurnManager>();
+        imageRenderer = GetComponent<Image>();
+    }
+
+    private void Start()
+    {
+        turn = GameObject.Find("EventSystem").GetComponent<Turn>();
         cardManager = GameObject.Find("EventSystem").GetComponent<CardManager>();
         isSelected = false;
         //leftClick = SelectCard;
+    }
+   
+    public Sprite Sprite()
+    {
+        return imageRenderer.sprite;
+    }
+
+    public void LoadSprite(Sprite sprite)
+    {
+        if (imageRenderer == null) Debug.LogWarning("imageRenderer not assigned");
+        //if (imageRenderer.sprite == null) Debug.LogWarning("imageRenderer.sprite not assigned");
+        //imageRenderer.sprite = sprite;
     }
 
     public void AssignTable()
@@ -44,7 +62,7 @@ public class CardImage : MonoBehaviour
 
     public void CardClick()
     {
-        Debug.Log("Clicked.");
+        Debug.Log("Clicked cardImage.");
         if (Input.GetMouseButtonDown(0))
         {
             //leftClick();

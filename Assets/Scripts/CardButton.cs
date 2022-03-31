@@ -5,16 +5,18 @@ using UnityEngine;
 public class CardButton : MonoBehaviour
 {
 
-    CardSprite card;
-    Renderer rend;
-    Collider coll;
-    [SerializeField] Material dexterityMaterial;
+    private CardSprite card;
+    private Renderer rend;
+    private Collider coll;
+    [SerializeField] private Material dexterityMaterial;
+    private Material neutralMaterial;
 
-    void Start()
+    private void Awake()
     {
         card = GetComponentInParent<CardSprite>();
         rend = GetComponent<Renderer>();
         coll = GetComponent<Collider>();
+        neutralMaterial = rend.material;
     }
 
     private void OnMouseDown()
@@ -23,11 +25,11 @@ public class CardButton : MonoBehaviour
         switch (name)
         {
             case "RotateRight":
-                card.RotateCard(-1);
+                card.RotateCard(90);
                 break;
 
             case "RotateLeft":
-                card.RotateCard(1);
+                card.RotateCard(-90);
                 break;
 
             case "MoveUp":
@@ -50,17 +52,13 @@ public class CardButton : MonoBehaviour
                 card.CancelCard();
                 break;
 
-            default: break;
-               
+            default: break;   
         }
     }
 
     public void EnableButton()
     {
-        //Debug.Log("Enable: " + name);
-        //if (rend == null) rend = GetComponent<Renderer>();
         rend.enabled = true;
-        //if (coll == null) coll = GetComponent<Collider>();
         coll.enabled = true;
     }
 
@@ -73,10 +71,16 @@ public class CardButton : MonoBehaviour
         coll.enabled = false;
     }
 
-    public void ShowDexterityButton()
+    public void ChangeButtonToDexterity()
     {
+        //Debug.Log("Changed to dexterity: " + name);
         rend.material = dexterityMaterial;
-        EnableButton();
+    }
+
+    public void ChangeButtonToNeutral()
+    {
+        //Debug.Log("Changed to neutral: " + name);
+        rend.material = neutralMaterial;
     }
 
 }
