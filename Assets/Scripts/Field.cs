@@ -18,7 +18,6 @@ public class Field : MonoBehaviour
             UpdateMeshMaterial();
         }
     }
-    //public Alignment Align { get => align; }
 
     private void Awake()
     {
@@ -44,11 +43,19 @@ public class Field : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (Input.GetMouseButtonDown(0) && fieldGrid.Turn.IsSelectionNow())
+        if (IsClickable())
         {
             align.HandleLeftClick(this);
             //Debug.Log("Setting a card");
         }
+    }
+
+    private bool IsClickable()
+    {
+        if (!Input.GetMouseButtonDown(0)) return false;
+        if (!fieldGrid.Turn.IsSelectionNow()) return false;
+        if (OccupantCard.IsLocked) return false;
+        return true;
     }
 
     private void InitiateCardSprite()
@@ -116,8 +123,6 @@ public class Field : MonoBehaviour
                 Align = new OpponentField();
                 break;
         }
-        //align = alignment;
-        //UpdateMeshMaterial();
     }
 
     public void PlayCard()

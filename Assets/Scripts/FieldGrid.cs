@@ -43,7 +43,7 @@ public class FieldGrid : MonoBehaviour
                 Transform fieldTransform = transform.GetChild(index);
                 //Debug.Log(fieldTransform.localPosition.x + ", " + fieldTransform.localPosition.y);
                 fields[i, j] = fieldTransform.gameObject.GetComponent<Field>();
-                fields[i, j].SetCoordinates(i - midColumn, j - midRow);
+                fields[i, j].SetCoordinates(i - midColumn, midRow - j);
                 index++;
             }
         }
@@ -62,10 +62,15 @@ public class FieldGrid : MonoBehaviour
         }
     }
 
-
-    public void ChangeAlignmentOnFieldGrid()
+    public void AttackNewStand(Field targetField)
     {
-        foreach (Field field in fields) field.OccupantCard.HandleAlignmentChange();
+        int targetPower = targetField.OccupantCard.Character.Power;
+        foreach (Field field in fields)
+        {
+            if (field.IsAligned(Alignment.None)) continue;
+            if (field.IsAligned(turn.CurrentAlignment)) continue;
+            if (field.OccupantCard.Character.Power > targetPower) field.OccupantCard.TryToAttack(targetField);
+        }
     }
     
 
@@ -81,6 +86,24 @@ public class FieldGrid : MonoBehaviour
             if (field.IsAligned(turn.CurrentAlignment))
                 field.OccupantCard.SetActive();
             else field.OccupantCard.SetIdle();
+        }
+    }
+
+    public void AdjustNewTurn()
+    {
+        foreach (Field field in fields)
+        {
+            field.OccupantCard.ResetAttack();
+            field.OccupantCard.Unlock();
+        }
+        AdjustCardButtons();
+    }
+
+    public void LockInteractables()
+    {
+        foreach (Field field in fields)
+        {
+            field.OccupantCard.Lock();
         }
     }
     
@@ -109,6 +132,7 @@ public class FieldGrid : MonoBehaviour
         return null;
     }
 
+
     public Field GetRelativeField(int x, int y, float angle = 0)
     {
         int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
@@ -123,5 +147,45 @@ public class FieldGrid : MonoBehaviour
         CardSprite tempCardSprite = first.OccupantCard;
         first.OccupantCard = second.OccupantCard;
         second.OccupantCard = tempCardSprite;
+    }
+
+    public List<Field> AlignedFields(Alignment alignment)
+    {
+        List<Field> alignedFields = new List<Field>();
+        foreach (Field field in fields)
+        {
+            if (field.IsAligned(alignment)) alignedFields.Add(field);
+        }
+        return alignedFields;
+    }
+
+    public int HighestAmountOfType(Alignment alignment)
+    {
+        int result = AmountOfType(alignment, Role.Offensive);
+        if (result < AmountOfType(alignment, Role.Support)) result = AmountOfType(alignment, Role.Support);
+        if (result < AmountOfType(alignment, Role.Agile)) result = AmountOfType(alignment, Role.Agile);
+        if (result < AmountOfType(alignment, Role.Special)) result = AmountOfType(alignment, Role.Special);
+        return result;
+    }
+
+    private int AmountOfType(Alignment alignment, Role role)
+    {
+        int result = 0;
+        foreach (Field field in AlignedFields(alignment))
+        {
+            if (field.OccupantCard.Character.Role == role) result++;
+        }
+        return result;
+    }
+
+    public int HeatLevel(Field field, Alignment enemy)
+    {
+        int heat = 0;
+        foreach (Field enemyField in AlignedFields(enemy))
+        {
+            CardSprite enemyCard = enemyField.OccupantCard;
+            if (enemyCard.CanAttack(field)) heat += enemyCard.Character.Strength;
+        }
+        return heat;
     }
 }

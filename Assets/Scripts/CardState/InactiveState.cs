@@ -10,21 +10,12 @@ internal class InactiveState : CardState
         card.gameObject.SetActive(false);
         card.DisableButtons();
         card.SetCardToDefaultTransform();
-    }
-
-    public override void HandleFieldCollision()
-    {
-        throw new System.Exception("Card in inactive state colliding.");
+        card.ResetAttack();
     }
 
     public override void HandleClick()
     {
         throw new System.Exception("You shouldn't be able to click this.");
-    }
-
-    public override CardState HandleAlignmentChange()
-    {
-        return this;
     }
 
     public override CardState AdjustTransformChange(int buttonIndex)
@@ -36,5 +27,4 @@ internal class InactiveState : CardState
     {
         return new NewCardState();
     }
-
 }

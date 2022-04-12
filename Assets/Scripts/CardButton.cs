@@ -49,7 +49,7 @@ public class CardButton : MonoBehaviour
                 break;
 
             case "Return":
-                card.CancelCard();
+                card.CancelDecision();
                 break;
 
             default: break;   
@@ -58,8 +58,13 @@ public class CardButton : MonoBehaviour
 
     public void EnableButton()
     {
-        rend.enabled = true;
-        coll.enabled = true;
+        //Debug.Log("Enable attempt: " + name);
+        if (!card.IsLocked)
+        {
+            //Debug.Log("Enable: " + name);
+            rend.enabled = true;
+            coll.enabled = true;
+        }
     }
 
     public void DisableButton()

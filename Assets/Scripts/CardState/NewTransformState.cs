@@ -16,10 +16,7 @@ internal class NewTransformState : CardState
         card.ConfirmPayment();
     }
 
-    public override CardState HandleAlignmentChange()
-    {
-        throw new System.Exception("Alignment change shouldn't occur in new transform state.");
-    }
+    public override void TakePaidAction() { }
 
     public override CardState AdjustTransformChange(int buttonIndex)
     {
@@ -32,4 +29,8 @@ internal class NewTransformState : CardState
         return new ActiveState();
     }
 
+    public override bool IsForPaymentConfirmation()
+    {
+        return true;
+    }
 }

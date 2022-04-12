@@ -2,21 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public partial class Turn : MonoBehaviour
 {
+    const int cardsToWin = 5;
+
     [SerializeField] private GameObject EndTurnButton;
     [SerializeField] private GameObject GameOverText;
 
-    private FieldGrid grid;
-    private CardManager cardManager;
-
+    private Text endingMessage;
+    private FieldGrid fg;
+    private CardManager cm;
+    private PricingSystem ps;
+    private OpponentControl oc;
     private Step currentStep;
     private Alignment currentAlign;
+    private bool interactableDisabled = false;
 
-    private Step CurrentStep 
+    private Step CurrentStep
     { get => currentStep;
-        set 
+        set
         {
             currentStep = value;
             AdjustStep();
@@ -26,30 +33,35 @@ public partial class Turn : MonoBehaviour
 
     private void Awake()
     {
-        cardManager = GetComponent<CardManager>();
+        cm = GetComponent<CardManager>();
+        oc = GetComponent<OpponentControl>();
     }
 
     private void Start()
     {
-        grid = GameObject.Find("FieldBoard").GetComponent<FieldGrid>();
-        cardManager.InitializeCards();
+        endingMessage = GameOverText.transform.GetChild(0).GetComponent<Text>();
+        ps = new PricingSystem(cm);
+        fg = GameObject.Find("FieldBoard").GetComponent<FieldGrid>();
+        cm.InitializeCards();
         StartTheGame();
     }
 
     public void StartTheGame()
-    { 
+    {
         currentStep = Step.Move;
         currentAlign = Alignment.Player;
-        cardManager.PullCards(currentAlign);
+        cm.PullCards(currentAlign);
     }
 
     public void EndTurn()
     {
-        if (cardManager.SelectedCard() != null)
-            cardManager.SelectedCard().DeselectPosition();
-        SwitchAlign();
-        grid.ChangeAlignmentOnFieldGrid();
-        CheckWinConditions();
+        if (CheckWinConditions()) EndTheGame();
+        else
+        {
+            if (cm.SelectedCard() != null)
+                cm.SelectedCard().ChangePosition();
+            SwitchAlign();
+        }
     }
 
     public bool IsMoveNow()
@@ -80,9 +92,10 @@ public partial class Turn : MonoBehaviour
         AdvanceStep(-1);
     }
 
-    public void SetPayment()
+    public void SetPayment(int price)
     {
         CurrentStep = Step.Payment;
+        ps.DemandPayment(price);
     }
 
     private void AdvanceStep(int stepCount)
@@ -95,15 +108,18 @@ public partial class Turn : MonoBehaviour
     private void AdjustStep()
     {
         if (IsPaymentNow()) EndTurnButton.SetActive(false);
-        else EndTurnButton.SetActive(true);
+        else ShowEndTurnButton();
         if (IsMoveNow())
         {
-            cardManager.DeselectCards();
-            grid.AdjustCardButtons();
+            cm.DeselectCards();
+            fg.AdjustCardButtons();
         }
     }
 
-
+    public bool CheckOffer()
+    {
+        return ps.CheckOffer();
+    }
 
     public int IsPlayerTurn()
     {
@@ -115,35 +131,55 @@ public partial class Turn : MonoBehaviour
     {
         if (currentAlign == Alignment.Player) currentAlign = Alignment.Opponent;
         else currentAlign = Alignment.Player;
-        cardManager.SwitchTables();
-        cardManager.PullCards(currentAlign);
-        grid.AdjustCardButtons();
+        cm.ShowTable(currentAlign);
+        cm.PullCards(currentAlign);
+        fg.AdjustNewTurn();
+        interactableDisabled = false;
+        ShowEndTurnButton();
         Debug.Log("Currently: " + currentAlign);
+        if (currentAlign == Alignment.Opponent) oc.PlayTurn();
     }
 
-    private void CheckWinConditions()
+    private bool CheckWinConditions()
     {
-        if (cardManager.ArePilesEmpty()) EndTheGame();
+        if (cm.ArePilesEmpty()) return true;
+        if (fg.AlignedFields(Alignment.Player).Count >= cardsToWin) return true;
+        if (fg.AlignedFields(Alignment.Opponent).Count >= cardsToWin) return true;
+        return false;
     }
 
     private void EndTheGame()
     {
-        grid.DisableAllButtons();
-        EndTurnButton.SetActive(false);
+        if (Winner() == Alignment.Player) endingMessage.text = "Wygrana!";
+        if (Winner() == Alignment.Opponent) endingMessage.text = "Przegrana!";
+        DisableInteractions();
         GameOverText.SetActive(true);
     }
 
+    private Alignment Winner()
+    {
+        if (fg.AlignedFields(Alignment.Player).Count >= cardsToWin) return Alignment.Player;
+        if (fg.AlignedFields(Alignment.Opponent).Count >= cardsToWin) return Alignment.Opponent;
+        if (fg.HighestAmountOfType(Alignment.Player) > fg.HighestAmountOfType(Alignment.Opponent)) return Alignment.Player;
+        if (fg.HighestAmountOfType(Alignment.Player) < fg.HighestAmountOfType(Alignment.Opponent)) return Alignment.Opponent;
+        return Alignment.None;
+    }
 
+    public void DisableInteractions()
+    {
+        fg.LockInteractables();
+        cm.HideTables();
+        EndTurnButton.SetActive(false);
+        interactableDisabled = true;
+    }
 
-    // For testing purposes
-    //private void TestDiscards()
-    //{
-    //    for (int i = 0; i < 2; i++)
-    //    {
-    //        GameObject discardedCard = Instantiate(CardPile, new Vector3(0, 0, 0), Quaternion.identity);
-    //        discardedCard.transform.SetParent(DiscardPile.transform, false);
-    //        rb = discardedCard.AddComponent<Rigidbody>();
-    //        rb.detectCollisions = true;
-    //    }
-    //}
+    private void ShowEndTurnButton()
+    {
+        if (!interactableDisabled) EndTurnButton.SetActive(true);
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+    }
 }

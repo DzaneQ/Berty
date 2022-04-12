@@ -8,8 +8,9 @@ internal class NewCardState : CardState
     {
         card = cardSprite;
         card.gameObject.SetActive(true);
-        card.CallPayment();
-        card.ImportFromImage();
+        card.ImportFromCardImage();
+        card.UpdateHealthBar(card.Character.Health);
+        card.CallPayment(card.Character.Power);
         card.ApplyPhysics();
     }
 
@@ -23,19 +24,24 @@ internal class NewCardState : CardState
         card.ConfirmPayment();
     }
 
-    public override CardState HandleAlignmentChange()
+    public override void TakePaidAction()
     {
-        throw new System.Exception("Alignment change shouldn't occur in new card state.");
+        card.DefendNewStand();
     }
 
-    public override CardState AdjustTransformChange(int buttonIndex)
-    {
-        throw new System.Exception("Transform change shouldn't have any effect on free card.");
-    }
-    
     public override CardState GoToNext()
     {
         return new ActiveState();
     }
 
+    public override void Cancel()
+    {
+        card.CancelCard();
+        card.CancelPayment();
+    }
+
+    public override bool IsForPaymentConfirmation()
+    {
+        return true;
+    }
 }

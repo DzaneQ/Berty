@@ -14,17 +14,12 @@ internal class ActiveState : CardState
 
     public override void HandleClick()
     {
-        Debug.Log("Attack!"); // TODO: Attacking mechanic.
-    }
-
-    public override CardState HandleAlignmentChange()
-    {
-        return GoToNext();
+        card.PrepareToAttack();
     }
 
     public override CardState AdjustTransformChange(int buttonIndex)
     {
-        card.CallPayment();
+        card.CallPayment(6 - card.Character.Dexterity);
         card.EnableNeutralButton(buttonIndex);
         return new NewTransformState();
     }

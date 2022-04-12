@@ -6,28 +6,24 @@ using UnityEngine.UI;
 
 public class CardSprite : MonoBehaviour
 {
-    //int strength;
-    //int will;
-    //int dexterity;
-    //int health;
-    //int startStrength;
-    //int startWill;
-    //int startDexterity;
-    //int startHealth;
-
     private Field occupiedField;
     private CardManager cardManager;
     private Turn turn;
     private CardButton[] cardButton;
+    private Transform healthBar;
     private CardImage imageReference;
     private FieldGrid grid;
-    private int[] relativeCoordinates = new int[2];
+    private int[] relCoord = new int[2];
     private float defAngle;
     private Rigidbody cardRB;
     private Vector3 defPosition;
     private Quaternion defRotation;
     private CardState state;
     private SpriteRenderer spriteRenderer;
+    private Character character;
+    private bool hasAttacked;
+    private bool isLocked;
+    public Turn Turn { get => turn; }
     private CardState State 
     { 
         get => state;
@@ -37,6 +33,17 @@ public class CardSprite : MonoBehaviour
             state.InitiateState(this);
         }
     }
+    public Character Character
+    {
+        get => character;
+        private set
+        {
+            character = value;
+            spriteRenderer.sprite = imageReference.Sprite;
+        }
+    }
+    public bool HasAttacked { get => hasAttacked; }
+    public bool IsLocked { get => isLocked;}
 
     /* CardSprite children in Hierarchy tab must be in the following order:
         0 - Confirm
@@ -56,87 +63,37 @@ public class CardSprite : MonoBehaviour
         SetDefaultTransform();
     }
 
-    //private void OnDisable()
-    //{
-    //    ApplyPhysics(false);
-    //    SetCardToDefaultTransform();
-    //}
-
     private void Start()
     {
         turn = GameObject.Find("EventSystem").GetComponent<Turn>();
-        //if (!turn.IsSelectionNow()) throw new Exception("CardSprite created when step is not Selection.");
         cardManager = GameObject.Find("EventSystem").GetComponent<CardManager>();
+        healthBar = transform.GetChild(8).transform.GetChild(1); 
         grid = GameObject.Find("FieldBoard").GetComponent<FieldGrid>();
         cardButton = new CardButton[transform.childCount];
         cardButton = transform.GetComponentsInChildren<CardButton>();
         defAngle = transform.localEulerAngles.z;
         occupiedField = transform.GetComponentInParent<Field>();
         State = new InactiveState();
+        Unlock();
+        ResetAttack();
         InitializeRigidbody();
+        UpdateRelativeCoordinates();
     }
-
-    //private void OnEnable()
-    //{
-    //    CallPayment();
-    //    ImportFromImage();
-    //    ApplyPhysics();
-    //}
-
-    //private void Start()
-    //{
-    //    //UpdateRelativeCoordinates();
-    //    //for (int i = 0; i < transform.childCount; i++) 
-    //    //    cardButton[i] = transform.GetChild(i).gameObject.GetComponent<CardButton>();
-    //    //ImportFromImage();
-    //    //gameObject.SetActive(false);
-    //    //turn.NextStep();
-    //}
-
-
-
-
-    //CardSprite(int strStat, int willStat, int dexStat, int hpStat)
-    //{
-    //    startStrength = strStat;
-    //    strength = startStrength;
-    //    startWill = willStat;
-    //    will = startWill;
-    //    startDexterity = dexStat;
-    //    dexterity = startDexterity;
-    //    startHealth = hpStat;
-    //    health = startHealth;
-    //}
 
     private void OnCollisionEnter(Collision collision)
     {
         //Debug.Log(collision.gameObject);
         //Debug.Log(occupiedField.gameObject);
-        //occupiedField = collision.gameObject.GetComponent<Field>();
         if (collision.gameObject == occupiedField.gameObject)
         {
             State.HandleFieldCollision();
-            UpdateRelativeCoordinates();
         }
     }
 
-    private void OnMouseDown()
+    public void OnMouseDown()
     {
         //Debug.Log("Clicked: " + name);
-        //if (turn.IsPaymentNow()) Debug.Log("Payment time!");
-        //if (isNew) Debug.Log("The card's new!");
-        //if (!isNew) Debug.Log("It's not new!");
-        State.HandleClick();
-        //if (turn.IsPaymentNow() && isTransformNew)
-        //{
-        //    cardManager.DiscardCards();
-        //    turn.NextStep();
-        //    ShowDexterityButtons();
-        //    cardManager.RemoveFromTable(imageReference);
-        //    //imageReference.DisableCard();
-        //    isTransformNew = false;
-        //    grid.AdjustCardButtons();
-        //}
+        if (!isLocked) State.HandleClick();
     }
 
 
@@ -150,7 +107,7 @@ public class CardSprite : MonoBehaviour
     public void ActivateCard()
     {
         if (!turn.IsSelectionNow()) throw new Exception("CardSprite created when step is not Selection.");
-        if (State.GetType() != typeof(InactiveState)) throw new Exception("Wrong state to activate.");
+        if (State.GetType() != typeof(InactiveState)) throw new Exception("Wrong state to activate: " + State.GetType());
         State = new NewCardState();
     }
 
@@ -159,11 +116,25 @@ public class CardSprite : MonoBehaviour
         cardRB.isKinematic = !isApplied;
     }
 
+    public void ResetAttack()
+    {
+        hasAttacked = false;
+    }
+
+    public void Lock()
+    {
+        isLocked = true;
+    }
+
+    public void Unlock()
+    {
+        isLocked = false;
+    }
+
     private void DeactivateCard()
     {
-        //cardRB.isKinematic = true;
+        occupiedField.ConvertField(Alignment.None);
         State = new InactiveState();
-        //SetCardToDefaultTransform();
     }
 
     private void SetDefaultTransform()
@@ -178,25 +149,14 @@ public class CardSprite : MonoBehaviour
         transform.localRotation = defRotation;
     }
 
-    //public void SetOccupiedField(Field value)
-    //{
-    //    occupiedField = value;
-    //    transform.SetParent(value.transform, false);
-    //}
-
     public Field OccupiedField 
-    { 
+    {
         set
         {
             occupiedField = value;
             transform.SetParent(value.transform, false);
         } 
     }
-    public void HandleAlignmentChange()
-    {
-        State.HandleAlignmentChange();
-    }
-
 
     public void NextState()
     {
@@ -213,24 +173,24 @@ public class CardSprite : MonoBehaviour
         State = new IdleState();
     }
 
-    public void CallPayment()
+    public void CallPayment(int price)
     {
         //Debug.Log("Payment called!");
         grid.DisableAllButtons();
-        turn.SetPayment();
+        turn.SetPayment(price);
     }
 
-    public void ConfirmPayment()
+    public void ConfirmPayment(bool isAttacking = false)
     {
         if (!turn.IsPaymentNow()) throw new Exception("Confirming payment when not in payment mode.");
-        if (State.GetType() != typeof(NewCardState) && State.GetType() != typeof(NewTransformState)) 
-            throw new Exception("Not new card to make a payment.");
-        cardManager.DiscardCards();
-        //cardManager.RemoveFromTable(imageReference);
-        State = new ActiveState();
-        turn.NextStep();
-        //imageReference.DisableCard();
-        grid.AdjustCardButtons();
+        if (!State.IsForPaymentConfirmation()) throw new Exception("Wrong card state for payment..");
+        if (turn.CheckOffer())
+        {
+            cardManager.DiscardCards();
+            State.TakePaidAction();
+            turn.NextStep();
+            grid.AdjustCardButtons();
+        }
     }
 
     public void CancelPayment()
@@ -239,14 +199,91 @@ public class CardSprite : MonoBehaviour
         turn.NextStep();
     }
 
+    public void CancelDecision()
+    {
+        State.Cancel();
+    }
+
     public void CancelCard()
     {
-        if (State.GetType() != typeof(NewCardState)) throw new Exception("Not new card to cancel.");
         imageReference.ReturnCard();
-        occupiedField.ConvertField(Alignment.None);
-        //cardManager.DeselectCards();
         DeactivateCard();
-        CancelPayment();
+    }
+
+    public void PrepareToAttack()
+    {
+        if (!hasAttacked)
+        {
+            CallPayment(6 - Character.Dexterity);
+            State = new AttackingState();
+        }
+    }
+
+    public bool CanAttack(Field targetField)
+    {
+        if (targetField == null) return false;
+        foreach (int[] distance in Character.AttackRange)
+        {
+            //Debug.Log("Relative coordinates: " + relCoord[0] + "," + relCoord[1]);
+            int[] target = { relCoord[0] + distance[0], relCoord[1] + distance[1] };
+            //Debug.Log("Relative target: " + target[0] + "," + target[1]);
+            if (targetField == GetRelativeField(target[0], target[1])) return true;
+        }
+        return false;
+    }
+
+    public void TryToAttack(Field targetField)
+    {
+        if (CanAttack(targetField)) targetField.OccupantCard.TakeDamage(Character.Strength, targetField);
+        //foreach (int[] distance in Character.AttackRange)
+        //{
+        //    int[] target = { relCoord[0] + distance[0], relCoord[1] + distance[1] };
+        //    if (targetField == GetRelativeField(target[0], target[1])) 
+        //        targetField.OccupantCard.TakeDamage(Character.Strength, targetField);
+        //}
+    }
+
+    public void Attack()
+    {
+        hasAttacked = true;
+        foreach (int[] distance in Character.AttackRange)
+        {
+            int[] target = { relCoord[0] + distance[0], relCoord[1] + distance[1] };
+            Field targetField = GetRelativeField(target[0], target[1]);
+            if (targetField != null) targetField.OccupantCard.TakeDamage(Character.Strength, occupiedField);
+        }
+    }
+
+    public void TakeDamage(int damage, Field source)
+    {
+        Debug.Log("Damage on field - X: " + occupiedField.GetX() + "; Y: " + occupiedField.GetY());
+        if (gameObject.activeSelf)
+        {
+            int[] srcRel = source.GetRelativeCoordinates(GetRelativeAngle());
+            int[] srcDistance = { srcRel[0] - relCoord[0], srcRel[1] - relCoord[1] };
+            //Debug.Log("Source distance: " + srcDistance[0] + "," + srcDistance[1]);
+            Debug.Log("Character health: " + Character.Health);
+            if (!Character.CanBlock(srcDistance)) Character.TakeDamage(damage);
+            if (Character.CanRiposte(srcDistance)) source.OccupantCard.TakeDamage(Character.Strength, source);
+            Debug.Log("Damage taken: " + damage + "; Remaining HP: " + Character.Health);
+            if (Character.IsDead()) DeactivateCard();
+            else UpdateHealthBar(Character.Health);
+        }
+    }
+
+    public void UpdateHealthBar(int health)
+    {
+        float unitScale = 2.67f;
+        float positionX0Unit = -6.5f;
+        float positionX6Unit = 1.4f;
+        float currentX = (positionX6Unit - positionX0Unit) / 6 * health + positionX0Unit;
+        healthBar.localPosition = new Vector3(currentX, healthBar.localPosition.y, healthBar.localPosition.z);
+        healthBar.localScale = new Vector3(unitScale * health, healthBar.localScale.y, healthBar.localScale.z);
+    }
+
+    public void DefendNewStand()
+    {
+        grid.AttackNewStand(occupiedField);
     }
 
     public void EnableNeutralButton(int index)
@@ -264,8 +301,11 @@ public class CardSprite : MonoBehaviour
     public void ShowNeutralButtons()
     {
         if (State.GetType() != typeof(NewCardState)) throw new Exception("New card buttons reveal attempt for not new card state!");
-        //DisableButtons();
-        for (int i = 1; i <= 3; i++) cardButton[i].EnableButton();
+        for (int i = 1; i <= 3; i++)
+        {
+            cardButton[i].ChangeButtonToNeutral();
+            cardButton[i].EnableButton();
+        }
     }
 
     public void ShowDexterityButtons()
@@ -279,23 +319,31 @@ public class CardSprite : MonoBehaviour
         UpdateMoveButtons();
     }
 
+    private int[] GetTargetCoordinates(float angle)
+    {
+        int targetX = (int)Math.Round(relCoord[0] + Math.Sin(angle * Math.PI / 180));
+        int targetY = (int)Math.Round(relCoord[1] + Math.Cos(angle * Math.PI / 180));
+        //Debug.Log("Target X: " + targetX + "; Target Y: " + targetY + "; angle: " + angle);
+        int[] coordinates = { targetX, targetY };
+        return coordinates;
+    }
+
     public void UpdateMoveButtons()
     {
         if (State.GetType() != typeof(ActiveState)) throw new Exception("Updating move buttons when not in active state.");
         for (int i = 4; i <= 7; i++)
         {
-            int targetX = (int)Math.Round(relativeCoordinates[0] + Math.Sin(i * Math.PI / 2));
-            int targetY = (int)Math.Round(relativeCoordinates[1] - Math.Cos(i * Math.PI / 2));
-            if (GetRelativeField(targetX, targetY) == null || GetRelativeField(targetX, targetY).IsOccupied())
+            int[] target = GetTargetCoordinates(i * 90);
+            if (GetRelativeField(target[0], target[1]) == null || GetRelativeField(target[0], target[1]).IsOccupied())
             {
                 cardButton[i].DisableButton();
-                //Debug.Log("X: " + targetX + "; Y:" + targetY + " can't be accessed!");
+                //Debug.Log("X: " + target[0] + "; Y:" + target[1] + " can't be accessed!");
                 //Debug.Log("Disabled button: " + i);
             }
             else
             {
                 cardButton[i].EnableButton();
-                //Debug.Log("X: " + targetX + "; Y:" + targetY + " exists!");
+                //Debug.Log("X: " + target[0] + "; Y:" + target[1] + " exists!");
                 //Debug.Log("Enabled button: " + i);
             }
         }
@@ -304,13 +352,10 @@ public class CardSprite : MonoBehaviour
     public void MoveCard(int angle)
     {
         int returnButtonIndex = ((angle + 180) % 360) / 90 + 4;
-        Debug.Log("Return button: " + returnButtonIndex);
-        //if (State.GetType() == typeof(ActiveState)) State = new NewTransformState();
-        int targetX = (int)Math.Round(relativeCoordinates[0] + Math.Sin(angle * Math.PI / 180));
-        int targetY = (int)Math.Round(relativeCoordinates[1] - Math.Cos(angle * Math.PI / 180));
-        Field toField = GetRelativeField(targetX, targetY);
+        //Debug.Log("Return button: " + returnButtonIndex);
+        int[] target = GetTargetCoordinates(angle);
+        Field toField = GetRelativeField(target[0], target[1]);
         grid.SwapCards(occupiedField, toField);
-        //TODO: occupiedField.PlayCard();
         State = State.AdjustTransformChange(returnButtonIndex);
         UpdateRelativeCoordinates();
 
@@ -319,30 +364,36 @@ public class CardSprite : MonoBehaviour
     public void RotateCard(int angle)
     {
         int returnButtonIndex = (450 - angle) / 180;
-        Debug.Log("Return button: " + returnButtonIndex);
-        //if (State.GetType() == typeof(ActiveState)) State = new NewTransformState();
+        //Debug.Log("Return button: " + returnButtonIndex);
         transform.Rotate(0, 0, -angle);
         //Debug.Log("Z rotation:" + transform.localEulerAngles.z);
         if (State.GetType() != typeof(NewCardState)) State = State.AdjustTransformChange(returnButtonIndex);
         UpdateRelativeCoordinates();
     }
 
-    public void ImportFromImage()
+    public void ImportFromCardImage()
     {
         imageReference = cardManager.SelectedCard();
-        spriteRenderer.sprite = imageReference.Sprite();
+        Character = imageReference.Character;
         cardManager.RemoveFromTable(imageReference);
+    }
+
+    private float GetRelativeAngle()
+    {
+        return defAngle - transform.localRotation.eulerAngles.z;
     }
 
     private Field GetRelativeField(int targetX, int targetY)
     {
-        return grid.GetRelativeField(targetX, targetY, transform.localEulerAngles.z - defAngle);
+        //Debug.Log("Target X: " + targetX + "; Target Y: " + targetY + "; defAngle: " + defAngle);
+        //Debug.Log("localEulerAngle (z): " + transform.localEulerAngles.z);
+        return grid.GetRelativeField(targetX, targetY, GetRelativeAngle());
     }
 
     public void UpdateRelativeCoordinates(bool moveButtons = true)
     {
-        float angle = transform.localRotation.eulerAngles.z - defAngle;
-        relativeCoordinates = occupiedField.GetRelativeCoordinates(angle);
+        float angle = GetRelativeAngle();
+        relCoord = occupiedField.GetRelativeCoordinates(angle);
         //Debug.Log("IsTransformNew? " + isTransformNew);
         if (State.GetType() == typeof(ActiveState) && moveButtons) UpdateMoveButtons();
     }

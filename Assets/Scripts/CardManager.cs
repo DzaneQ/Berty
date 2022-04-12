@@ -1,26 +1,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
-    private const int cardsCount = 20;
+    private const int cardsCount = 40;
     private const int imageCount = 12;
     private const int tableCapacity = 6;
     private const float offsetFactor = 0.0001f;
 
-    //private List<GameObject> drawPileCards = new List<GameObject>();
     private CardImage[] cardImages = new CardImage[imageCount];
-    private List<Sprite> cardSpriteTexture = new List<Sprite>();
-    //private CardSprite[] cardSprites = new CardSprite[spriteCount];
-    private Rigidbody rb;
-    //private CardImage[] heldCards = new CardImage[6];
-    //private GameObject[] heldCards = new GameObject[6];
-    //private List<GameObject> heldCards = new List<GameObject>();
-    //private CardImage[] heldImages = new CardImage[6];
     private List<CardImage> enabledCards = new List<CardImage>();
     private List<CardImage> disabledCards = new List<CardImage>();
+    private List<Character> characterPile = new List<Character>();
+    private List<Character> discardedCharacters = new List<Character>();
+    private System.Random rng = new System.Random();
+    private Rigidbody rb;
+
+    public List<CardImage> EnabledCards { get => enabledCards; }
 
 
     [SerializeField] private GameObject pileCardTemplate;
@@ -29,14 +28,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private GameObject playerTable;
     [SerializeField] private GameObject opponentTable;
     [SerializeField] private GameObject cardImageTemplate;
-    //[SerializeField] private GameObject cardSpriteTemplate;
     [SerializeField] private GameObject cardImageCollection;
-    //[SerializeField] private GameObject cardSpriteCollection;
-
-    //public void AddHeldCard(CardImage card, int index)
-    //{
-    //    playerCards.Add(card);
-    //}
 
     private void InitializeCardPile()
     {
@@ -54,35 +46,14 @@ public class CardManager : MonoBehaviour
         piledCard.transform.SetParent(drawPile.transform, false);
         rb = piledCard.AddComponent<Rigidbody>();
         rb.detectCollisions = true;
-        //AddPileCard(piledCard, stack);
-    }
-
-    //public void AddPileCard(GameObject card, GameObject stack)
-    //{
-    //    if (stack == drawPile) drawPileCards.Add(card);
-    //    else if (stack == discardPile) drawPileCards.Insert(0, card);
-    //    else throw new Exception("Unknown stack for AddPileCard!");
-    //}
-
-    //private void PutCardInDiscardPile()
-    //{
-    //    GameObject piledCard = 
-    //}
-
-    private void LoadSpriteMesh()
-    {
-        string prefixPath = Application.dataPath + "/GameCards/Berty/";
-        //Debug.Log(prefixPath);
-        cardSpriteTexture.Add(Resources.Load<Sprite>(prefixPath + "misiek bert"));
     }
 
     public void InitializeCards()
     {
         InstantiateCardImages();
-        //InstantiateCardSprites();
-        LoadSpriteMesh();
         playerTable.SetActive(true);
         opponentTable.SetActive(false);
+        LoadCharacters();
         InitializeCardPile();
     }
 
@@ -96,15 +67,20 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    //private void InstantiateCardSprites()
-    //{
-    //    for (int i = 0; i < cardSprites.Length; i++)
-    //    {
-    //        GameObject cardSprite = Instantiate(cardSpriteTemplate, new Vector3(0, 0, 0.001f), Quaternion.Euler(0, 180f, 180f));
-    //        cardSprites[i] = cardSprite.GetComponent<CardSprite>();
-    //        cardSprite.transform.SetParent(cardSpriteCollection.transform);
-    //    }
-    //}
+    private void LoadCharacters()
+    {
+        CharacterData data = new CharacterData();
+        string path = Application.dataPath + "/Resources/BERTY/";
+        DirectoryInfo dir = new DirectoryInfo(path);
+        FileInfo[] files = dir.GetFiles("*.png");
+        foreach (FileInfo file in files)
+        {
+            string fileName = file.ToString();
+            fileName = fileName.Substring(fileName.LastIndexOf('\\') + 1);
+            fileName = fileName.Substring(0, fileName.IndexOf('.'));
+            data.LoadCharacter(characterPile, fileName);
+        }
+    }
 
     public void PullCards(Alignment align)
     {
@@ -115,7 +91,6 @@ public class CardManager : MonoBehaviour
         int cardsToPull = tableCapacity;
         cardsToPull -= enabledCards.Count;
         int cardsInDrawPile = drawPile.transform.childCount;
-        //int cardsInDiscardPile = discardPile.transform.childCount;
         //Debug.Log("Cards to pull: " + cardsToPull);
         foreach (CardImage drawnCard in cardImages)
         {
@@ -125,7 +100,6 @@ public class CardManager : MonoBehaviour
             if (drawnCard.TableAssigned() != null) continue;
             //Debug.Log("Pulling a card...");
             DrawCard(drawnCard, table, cardsCount - cardsInDrawPile);
-            if (cardsToPull == 3) drawnCard.LoadSprite(cardSpriteTexture[0]); // TEST!
             cardsToPull--;
             cardsInDrawPile--;
             if (isShuffled) ClearCards();
@@ -136,7 +110,6 @@ public class CardManager : MonoBehaviour
                 isShuffled = true;
             }
         }
-        //AddHeldCard(drawnCard, index);
     }
 
     private void ClearCards()
@@ -149,21 +122,20 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    private void DrawCard(CardImage drawnCard, Transform table, int offset)
+    private void DrawCard(CardImage drawnCard, Transform table, int discardOffset)
     {
-        RemoveFromDrawPile(offset);
+        int index = rng.Next(characterPile.Count);
+        Character character = characterPile[index];
+        RemoveFromDrawPile(discardOffset);
+        drawnCard.AssignCharacter(character);
+        characterPile.Remove(character);
         AddToTable(drawnCard, table);
     }
 
     private void ShuffleDiscardPile()
     {
-        //int discardedCardsCount = discardPile.transform.childCount;
-        //RemoveFromDrawPile(discardedCardsCount);
-        //CreatePile(discardedCardsCount);
         GameObject card;
         int discardedCardsCount = discardPile.transform.childCount;
-        //Debug.Log("Instead of shuffling cards: " + discardPile.transform.childCount);
-        //Debug.Log("Shuffled cards: " + cardAmount);
         for (int i = 0; i < cardsCount && discardPile.transform.childCount > 0; i++)
         {
             card = discardPile.transform.GetChild(0).gameObject;
@@ -171,16 +143,15 @@ public class CardManager : MonoBehaviour
             if (card.activeSelf) PrepareCardInPile(card.transform, drawPile.transform, i);
             else break;
         }
+        characterPile = discardedCharacters;
+        discardedCharacters = new List<Character>();
     }
 
-    private void RemoveFromDrawPile(int offset)
+    private void RemoveFromDrawPile(int discardOffset)
     {
-        //GameObject card = drawPileCards[drawPileCards.Count - 1];
-        //drawPileCards.Remove(card);
         GameObject card = drawPile.transform.GetChild(drawPile.transform.childCount - 1).gameObject;
         card.SetActive(false);
-        PrepareCardInPile(card.transform, discardPile.transform, offset);
-        //Destroy(card);
+        PrepareCardInPile(card.transform, discardPile.transform, discardOffset);
     }
 
     private void PrepareCardInPile(Transform cardTransform, Transform stack, int offset)
@@ -195,36 +166,31 @@ public class CardManager : MonoBehaviour
         foreach (CardImage card in SelectedCards())
         {
             RemoveFromTable(card);
-            DiscardCard();
+            discardedCharacters.Add(card.Character);
+            DiscardPileCard();
         }
     }
 
-    public void DiscardCard()
+    public void DiscardPileCard()
     {
-        GameObject card;
+        GameObject pileCard;
+        Debug.Log("Card in pile discarded");
         for (int i = 0; i < discardPile.transform.childCount; i++)
         {
-            card = discardPile.transform.GetChild(i).gameObject;
-            if (!card.activeSelf)
+            pileCard = discardPile.transform.GetChild(i).gameObject;
+            if (!pileCard.activeSelf)
             {
-                card.SetActive(true);
+                pileCard.SetActive(true);
                 break;
             }
         }
     }
-
-    //private void RemoveFromDrawPile(int cardCount)
-    //{
-    //    for (int i = 0; i < cardCount; i++)
-    //        RemoveFromDrawPile();
-    //}
 
     public void RemoveFromTable(CardImage card)
     {
         card.DisableCard();
         SetCardObjectIdle(card.transform, cardImageCollection.transform);
         enabledCards.Remove(card);
-        //disabledCards.Remove(card);
     }
 
     public void AddToTable(CardImage card, Transform table)
@@ -245,10 +211,18 @@ public class CardManager : MonoBehaviour
         card.SetParent(stack, false);
     }
 
-    public void SwitchTables()
+    public void ShowTable(Alignment alignment)
     {
-        playerTable.SetActive(!playerTable.activeSelf);
-        opponentTable.SetActive(!opponentTable.activeSelf);
+        if (alignment == Alignment.Player)
+        {
+            playerTable.SetActive(true);
+            opponentTable.SetActive(false);
+        }
+        else
+        {
+            playerTable.SetActive(false);
+            opponentTable.SetActive(true);
+        }
 
         List<CardImage> temp = enabledCards;
         enabledCards = disabledCards;
@@ -258,33 +232,15 @@ public class CardManager : MonoBehaviour
         //foreach (CardImage card in disabledCards) Debug.Log("Disabled card: " + card.name);
     }
 
-    //public bool CheckCardSelection(int amount)
-    //{
-    //    int cardsSelected = 0;
-    //    foreach (CardImage card in heldImages)
-    //    {
-    //        if (card.isSelected)
-    //        {
-    //            cardsSelected++;
-    //            if (cardsSelected >= amount) return true;
-    //        }
-    //    }
-    //    return false;
-    //}
-
-    //public int SelectedCount()
-    //{
-    //    int cardsSelected = 0;
-    //    foreach (CardImage card in heldImages)
-    //    {
-    //        if (card.isSelected) cardsSelected++;
-    //    }
-    //    return cardsSelected;
-    //}
+    public void HideTables()
+    {
+        playerTable.SetActive(false);
+        opponentTable.SetActive(false);
+    }
 
     public void DeselectCards()
     {
-        foreach (CardImage card in SelectedCards()) card.DeselectPosition();
+        foreach (CardImage card in SelectedCards()) card.ChangePosition();
     }
         
     public List<CardImage> SelectedCards()
@@ -292,7 +248,6 @@ public class CardManager : MonoBehaviour
         List<CardImage> selectedCards = new List<CardImage>();
         //Debug.Log("Count before: " + selectedCards.Count);
         foreach (CardImage card in enabledCards) if (card.IsCardSelected()) selectedCards.Add(card);
-        //foreach (CardImage card in disabledCards) if (card.IsCardSelected()) selectedCards.Add(card);
         //Debug.Log("Count after: " + selectedCards.Count);
         return selectedCards;
     }
@@ -301,8 +256,6 @@ public class CardManager : MonoBehaviour
     {
         foreach (CardImage card in enabledCards)
             if (card.IsCardSelected()) return card;
-        //foreach (CardImage card in disabledCards)
-        //    if (card.IsCardSelected()) return card;
         return null;
     }
 

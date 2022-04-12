@@ -7,13 +7,27 @@ using UnityEngine.UI;
 public class CardImage : MonoBehaviour
 {
     private Vector3 cardPosition;
-    private bool isSelected;
+    private SelectStatus select;
     private RectTransform card;
     private Turn turn;
     private CardManager cardManager;
     private Transform table;
     private Transform lastTable;
     private Image imageRenderer;
+    private Character character;
+    public Character Character 
+    { 
+        get => character;
+        private set
+        {
+            character = value;
+            imageRenderer.sprite = Resources.Load<Sprite>("BERTY/" + character.Name);
+        }
+    }
+    public Sprite Sprite
+    {
+        get => imageRenderer.sprite;
+    }
 
     //private delegate void ClickHandler();
     //ClickHandler leftClick;
@@ -28,20 +42,20 @@ public class CardImage : MonoBehaviour
     {
         turn = GameObject.Find("EventSystem").GetComponent<Turn>();
         cardManager = GameObject.Find("EventSystem").GetComponent<CardManager>();
-        isSelected = false;
+        select = new UnselectedCard(this);
         //leftClick = SelectCard;
     }
-   
-    public Sprite Sprite()
-    {
-        return imageRenderer.sprite;
-    }
 
-    public void LoadSprite(Sprite sprite)
+    //public void LoadSprite(Sprite sprite)
+    //{
+    //    if (imageRenderer == null) Debug.LogWarning("imageRenderer not assigned");
+    //    //if (imageRenderer.sprite == null) Debug.LogWarning("imageRenderer.sprite not assigned");
+    //    //imageRenderer.sprite = sprite;
+    //}
+
+    public void AssignCharacter(Character newCharacter)
     {
-        if (imageRenderer == null) Debug.LogWarning("imageRenderer not assigned");
-        //if (imageRenderer.sprite == null) Debug.LogWarning("imageRenderer.sprite not assigned");
-        //imageRenderer.sprite = sprite;
+        Character = newCharacter;
     }
 
     public void AssignTable()
@@ -56,63 +70,55 @@ public class CardImage : MonoBehaviour
 
     public bool IsCardSelected()
     {
-        if (isSelected) return true;
-        return false;
+        return select.IsCardSelected();
+    }
+
+    public bool CanSelect()
+    {
+        if (turn.IsSelectionNow()) return false;
+        if (turn.IsPaymentNow()) return !turn.CheckOffer();
+        return true;
     }
 
     public void CardClick()
     {
-        Debug.Log("Clicked cardImage.");
-        if (Input.GetMouseButtonDown(0))
-        {
-            //leftClick();
-            SwitchCardSelection();
-        }
+        //Debug.Log("Clicked cardImage.");
+        if (Input.GetMouseButtonDown(0)) ChangePosition();
     }
 
-    private void SwitchCardSelection()
-    {
-        if (isSelected) DeselectPosition();
-        else if (!turn.IsSelectionNow()) SelectPosition();
-    }
-
-    private void SelectPosition()
+    public void SavePosition()
     {
         cardPosition = card.position;
+    }
+
+    public void LoadPosition()
+    {
+        card.position = cardPosition;
+    }
+
+    public void ChangePosition()
+    {
+        select = select.ChangePosition();
+    }
+
+    public void SelectPosition()
+    {
+        SavePosition();
         card.position += new Vector3(0f, 25f, 0f);
-        isSelected = true;
+        //select = new SelectedCard(this);
         if (turn.IsMoveNow()) turn.NextStep();
-        //leftClick = DeselectCard;
     }
 
     public void DeselectPosition()
     {
-        card.position = cardPosition;
-        DeselectCard();
+        LoadPosition();
+        //select = new UnselectedCard(this);
         if (turn.IsSelectionNow()) turn.PreviousStep();
-    }
-
-    //public void DeactivateCard()
-    //{
-    //    cardManager.RemoveFromTable(this);
-    //    //transform.SetParent(table.parent.parent, false);
-    //}
-
-    private void SelectCard()
-    {
-        isSelected = true;
-        //leftClick = DeselectPosition;
-    }
-
-    private void DeselectCard()
-    {
-        isSelected = false;
-        //leftClick = SelectPosition;
     }
 
     public void DisableCard()
     {
-        DeselectCard();
+        select = new UnselectedCard(this);
         lastTable = table;
         table = null;
     }
