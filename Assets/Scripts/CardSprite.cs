@@ -77,7 +77,6 @@ public class CardSprite : MonoBehaviour
         Unlock();
         ResetAttack();
         InitializeRigidbody();
-        UpdateRelativeCoordinates();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -113,7 +112,10 @@ public class CardSprite : MonoBehaviour
 
     public void ApplyPhysics(bool isApplied = true)
     {
+        Debug.Log("Is card kinematic before? " + cardRB.isKinematic);
+        Debug.Log("Psychics set: " + !isApplied);
         cardRB.isKinematic = !isApplied;
+        Debug.Log("Is card kinematic after? " + cardRB.isKinematic);
     }
 
     public void ResetAttack()
@@ -186,6 +188,7 @@ public class CardSprite : MonoBehaviour
         if (!State.IsForPaymentConfirmation()) throw new Exception("Wrong card state for payment..");
         if (turn.CheckOffer())
         {
+            Debug.Log("Price is good!");
             cardManager.DiscardCards();
             State.TakePaidAction();
             turn.NextStep();
@@ -234,6 +237,7 @@ public class CardSprite : MonoBehaviour
 
     public void TryToAttack(Field targetField)
     {
+        Debug.Log("Seeing attack on field - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
         if (CanAttack(targetField)) targetField.OccupantCard.TakeDamage(Character.Strength, targetField);
         //foreach (int[] distance in Character.AttackRange)
         //{
@@ -246,11 +250,14 @@ public class CardSprite : MonoBehaviour
     public void Attack()
     {
         hasAttacked = true;
+        Debug.Log("Checking attacking status for character: " + Character.Name);
         foreach (int[] distance in Character.AttackRange)
         {
+            Debug.Log("Checking distance: " + distance[0] + "," + distance[1]);
             int[] target = { relCoord[0] + distance[0], relCoord[1] + distance[1] };
             Field targetField = GetRelativeField(target[0], target[1]);
             if (targetField != null) targetField.OccupantCard.TakeDamage(Character.Strength, occupiedField);
+            if (targetField != null) Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
         }
     }
 

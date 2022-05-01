@@ -29,9 +29,7 @@ public class OpponentControl : MonoBehaviour
     public void PlayTurn()
     {
         turn.DisableInteractions();
-        //Debug.Log("Play start!");
         StartCoroutine(MakeMove(timeDelay));
-        //Debug.Log("Play stop!");
     }
 
     private IEnumerator MakeMove(int time)
@@ -39,7 +37,6 @@ public class OpponentControl : MonoBehaviour
         bool nextMove = true;
         while (nextMove)
         {
-            nextMove = false;
             yield return new WaitForSeconds(time);
             if (cm.EnabledCards.Count == 0) break;
             TryToPlayCard(out nextMove);

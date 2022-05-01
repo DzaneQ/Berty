@@ -12,11 +12,13 @@ internal class AttackingState : CardState
 
     public override void HandleClick()
     {
+        Debug.Log("Attacking state go!");
         card.ConfirmPayment(true);
     }
 
     public override void TakePaidAction()
     {
+        Debug.Log("Attack!");
         card.Attack();
     }
 

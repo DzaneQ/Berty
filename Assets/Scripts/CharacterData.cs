@@ -138,4 +138,50 @@ public class CharacterData
                 throw new System.Exception("Not matching names:" + list[list.Count - 1].Name + ", " + name);
         }
     }
+
+    public List<Character> LoadDataForBuild()
+    {
+        List <Character> list = new List<Character>();
+        LoadCharacter(list, "astronauta bert");
+        LoadCharacter(list, "bert wick");
+        LoadCharacter(list, "bert pogromca");
+        LoadCharacter(list, "bert ventura");
+        LoadCharacter(list, "bert who");
+        LoadCharacter(list, "bert zawodowiec");
+        LoadCharacter(list, "berta amazonka");
+        LoadCharacter(list, "berta gejsza");
+        LoadCharacter(list, "berta sjw");
+        LoadCharacter(list, "berta trojanska");
+        LoadCharacter(list, "bertka idolka");
+        LoadCharacter(list, "bertka serferka");
+        LoadCharacter(list, "bertolaj");
+        LoadCharacter(list, "bertonator");
+        LoadCharacter(list, "big mad b");
+        LoadCharacter(list, "che bert");
+        LoadCharacter(list, "eberta");
+        LoadCharacter(list, "gotka berta");
+        LoadCharacter(list, "konstabl bert");
+        LoadCharacter(list, "koszmar z bertwood");
+        LoadCharacter(list, "kowboj bert");
+        LoadCharacter(list, "krol popu bert");
+        LoadCharacter(list, "krzyzowiec bert");
+        LoadCharacter(list, "ksiezniczka berta");
+        LoadCharacter(list, "kuglarz bert");
+        LoadCharacter(list, "misiek bert");
+        LoadCharacter(list, "papiez bert II");
+        LoadCharacter(list, "prezydent bert");
+        LoadCharacter(list, "prymus bert");
+        LoadCharacter(list, "ronin bert");
+        LoadCharacter(list, "rycerz berti");
+        LoadCharacter(list, "samuraj bert");
+        LoadCharacter(list, "sedzia bertt");
+        LoadCharacter(list, "shaolin bert");
+        LoadCharacter(list, "stary bert i moze");
+        LoadCharacter(list, "superfan bert");
+        LoadCharacter(list, "tankbert");
+        LoadCharacter(list, "trener pokebertow");
+        LoadCharacter(list, "zalobny bert");
+        LoadCharacter(list, "zombert");
+        return list;
+    }
 }

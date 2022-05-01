@@ -94,7 +94,6 @@ public class FieldGrid : MonoBehaviour
         foreach (Field field in fields)
         {
             field.OccupantCard.ResetAttack();
-            field.OccupantCard.Unlock();
         }
         AdjustCardButtons();
     }
@@ -105,8 +104,18 @@ public class FieldGrid : MonoBehaviour
         {
             field.OccupantCard.Lock();
         }
+        AdjustCardButtons();
     }
-    
+
+    public void UnlockInteractables()
+    {
+        foreach (Field field in fields)
+        {
+            field.OccupantCard.Unlock();
+        }
+        AdjustCardButtons();
+    }
+
     public void DisableAllButtons()
     {
         foreach (Field field in fields)

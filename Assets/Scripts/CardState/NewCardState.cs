@@ -10,6 +10,7 @@ internal class NewCardState : CardState
         card.gameObject.SetActive(true);
         card.ImportFromCardImage();
         card.UpdateHealthBar(card.Character.Health);
+        card.UpdateRelativeCoordinates();
         card.CallPayment(card.Character.Power);
         card.ApplyPhysics();
     }
@@ -17,6 +18,7 @@ internal class NewCardState : CardState
     public override void HandleFieldCollision()
     {
         card.ShowNeutralButtons();
+        card.ApplyPhysics(false);
     }
 
     public override void HandleClick()

@@ -34,7 +34,7 @@ public partial class Turn : MonoBehaviour
     private void Awake()
     {
         cm = GetComponent<CardManager>();
-        oc = GetComponent<OpponentControl>();
+        oc = GetComponent<OpponentControl>(); 
     }
 
     private void Start()
@@ -44,6 +44,8 @@ public partial class Turn : MonoBehaviour
         fg = GameObject.Find("FieldBoard").GetComponent<FieldGrid>();
         cm.InitializeCards();
         StartTheGame();
+        //Debug.Log(SystemInfo.processorType);
+        //Debug.Log(SystemInfo.graphicsDeviceName);
     }
 
     public void StartTheGame()
@@ -131,11 +133,10 @@ public partial class Turn : MonoBehaviour
     {
         if (currentAlign == Alignment.Player) currentAlign = Alignment.Opponent;
         else currentAlign = Alignment.Player;
+        if (currentAlign == Alignment.Player) EnableInteractions();
         cm.ShowTable(currentAlign);
         cm.PullCards(currentAlign);
         fg.AdjustNewTurn();
-        interactableDisabled = false;
-        ShowEndTurnButton();
         Debug.Log("Currently: " + currentAlign);
         if (currentAlign == Alignment.Opponent) oc.PlayTurn();
     }
@@ -163,6 +164,13 @@ public partial class Turn : MonoBehaviour
         if (fg.HighestAmountOfType(Alignment.Player) > fg.HighestAmountOfType(Alignment.Opponent)) return Alignment.Player;
         if (fg.HighestAmountOfType(Alignment.Player) < fg.HighestAmountOfType(Alignment.Opponent)) return Alignment.Opponent;
         return Alignment.None;
+    }
+
+    public void EnableInteractions()
+    {
+        fg.UnlockInteractables();
+        interactableDisabled = false;
+        ShowEndTurnButton();
     }
 
     public void DisableInteractions()

@@ -16,8 +16,7 @@ public class CardManager : MonoBehaviour
     private List<CardImage> disabledCards = new List<CardImage>();
     private List<Character> characterPile = new List<Character>();
     private List<Character> discardedCharacters = new List<Character>();
-    private System.Random rng = new System.Random();
-    private Rigidbody rb;
+    private readonly System.Random rng = new System.Random();
 
     public List<CardImage> EnabledCards { get => enabledCards; }
 
@@ -44,8 +43,6 @@ public class CardManager : MonoBehaviour
         GameObject piledCard = Instantiate(pileCardTemplate, new Vector3(offsetUnit, offsetUnit, offsetUnit), Quaternion.identity);
         //piledCard.name = "pileCardNO" + offset;
         piledCard.transform.SetParent(drawPile.transform, false);
-        rb = piledCard.AddComponent<Rigidbody>();
-        rb.detectCollisions = true;
     }
 
     public void InitializeCards()
@@ -70,15 +67,19 @@ public class CardManager : MonoBehaviour
     private void LoadCharacters()
     {
         CharacterData data = new CharacterData();
-        string path = Application.dataPath + "/Resources/BERTY/";
-        DirectoryInfo dir = new DirectoryInfo(path);
-        FileInfo[] files = dir.GetFiles("*.png");
-        foreach (FileInfo file in files)
-        {
-            string fileName = file.ToString();
-            fileName = fileName.Substring(fileName.LastIndexOf('\\') + 1);
-            fileName = fileName.Substring(0, fileName.IndexOf('.'));
-            data.LoadCharacter(characterPile, fileName);
+        if (Debug.isDebugBuild) characterPile = data.LoadDataForBuild();
+        else
+        { 
+            string path = Application.dataPath + "/Resources/BERTY/";
+            DirectoryInfo dir = new DirectoryInfo(path);
+            FileInfo[] files = dir.GetFiles("*.png");
+            foreach (FileInfo file in files)
+            {
+                string fileName = file.ToString();
+                fileName = fileName.Substring(fileName.LastIndexOf('\\') + 1);
+                fileName = fileName.Substring(0, fileName.IndexOf('.'));
+                data.LoadCharacter(characterPile, fileName);
+            }
         }
     }
 

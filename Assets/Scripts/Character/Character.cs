@@ -70,7 +70,7 @@ public abstract class Character
 
     public void TakeDamage(int damage)
     {
-        health = health - damage;
+        health -= damage;
     }
 
     public bool IsDead()
