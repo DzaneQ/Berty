@@ -7,6 +7,15 @@ public class Menu : MonoBehaviour
 {
     [SerializeField] private GameObject GuideSheet;
     [SerializeField] private GameObject MenuList;
+    [SerializeField] private GameObject ExitButton;
+
+    private void Start()
+    {
+        if (Application.platform == RuntimePlatform.WindowsPlayer)
+        {
+            ExitButton.SetActive(true);
+        }
+    }
 
     public void Play()
     {
@@ -23,5 +32,10 @@ public class Menu : MonoBehaviour
     {
         GuideSheet.SetActive(false);
         MenuList.SetActive(true);
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }

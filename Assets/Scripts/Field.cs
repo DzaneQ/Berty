@@ -21,7 +21,7 @@ public class Field : MonoBehaviour
 
     private void Awake()
     {
-        meshRender = GetComponent<MeshRenderer>();
+        meshRender = GetComponent<MeshRenderer>();  
     }
 
     private void Start()
@@ -38,7 +38,11 @@ public class Field : MonoBehaviour
         {
             ConvertField(fieldGrid.Turn.CurrentAlignment);
         }
-        else throw new Exception("Field colliding not with card");
+        else
+        {
+            Debug.Log(collision.gameObject);
+            throw new Exception("Field colliding not with card"); 
+        }
     }
 
     private void OnMouseDown()
@@ -58,11 +62,9 @@ public class Field : MonoBehaviour
         return true;
     }
 
-    private void InitiateCardSprite()
+    private void InitiateCardSprite() // TODO: Change it!
     {
-        GameObject cardObject = Instantiate(fieldGrid.CardPrefab, new Vector3(0, 0, 0.001f), Quaternion.Euler(0, 180f, 180f));
-        cardObject.transform.SetParent(transform, false);
-        occupantCard = cardObject.GetComponent<CardSprite>();
+        occupantCard = Instantiate(fieldGrid.CardPrefab, transform).GetComponent<CardSprite>();
     }
 
     private void UpdateMeshMaterial()

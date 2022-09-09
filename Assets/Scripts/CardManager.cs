@@ -1,163 +1,133 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
-    private const int cardsCount = 40;
-    private const int imageCount = 12;
     private const int tableCapacity = 6;
     private const float offsetFactor = 0.0001f;
 
-    private CardImage[] cardImages = new CardImage[imageCount];
+    private int deckSize;
+    private GameObject drawPile;
+    private GameObject discardPile;
+    private CardImage[] cardImages;
     private List<CardImage> enabledCards = new List<CardImage>();
     private List<CardImage> disabledCards = new List<CardImage>();
-    private List<Character> characterPile = new List<Character>();
-    private List<Character> discardedCharacters = new List<Character>();
+    private List<Character> characterPile;
+    private List<Character> discardedCharacters;
     private readonly System.Random rng = new System.Random();
 
+
     public List<CardImage> EnabledCards { get => enabledCards; }
+    public CardImage[] CardImages { set { if (cardImages == null) cardImages = value; } }
 
 
     [SerializeField] private GameObject pileCardTemplate;
-    [SerializeField] private GameObject drawPile;
-    [SerializeField] private GameObject discardPile;
     [SerializeField] private GameObject playerTable;
     [SerializeField] private GameObject opponentTable;
     [SerializeField] private GameObject cardImageTemplate;
     [SerializeField] private GameObject cardImageCollection;
 
-    private void InitializeCardPile()
+    private void Start()
     {
-        for (int i = 0; i < cardsCount; i++)
-        {
-            InitializeCard(i);
-        }
+        CardInitialization init = GetComponent<CardInitialization>();
+        init.LoadVariables();
+        discardedCharacters = init.InitializeCharacters();
+        init.InitializeCards();
+        init.InitializeFieldGrid();
+        Destroy(init);
     }
 
-    public void InitializeCard(int offset = 0)
+    public void AttachPile(int deckSize, GameObject drawPile, GameObject discardPile)
     {
-        float offsetUnit = offset * offsetFactor;
-        GameObject piledCard = Instantiate(pileCardTemplate, new Vector3(offsetUnit, offsetUnit, offsetUnit), Quaternion.identity);
-        //piledCard.name = "pileCardNO" + offset;
-        piledCard.transform.SetParent(drawPile.transform, false);
+        if (this.deckSize == 0) this.deckSize = deckSize;
+        else throw new Exception("Deck not empty for initialization.");
+        if (this.drawPile == null) this.drawPile = drawPile;
+        else throw new Exception("Draw pile not empty for initialization.");
+        if (this.discardPile == null) this.discardPile = discardPile;
+        else throw new Exception("Discard pile not empty for initialization.");
+        //Debug.Log("Draw pile is now: " + drawPile.name);
     }
 
-    public void InitializeCards()
-    {
-        InstantiateCardImages();
-        playerTable.SetActive(true);
-        opponentTable.SetActive(false);
-        LoadCharacters();
-        InitializeCardPile();
-    }
+    //public void LoadCharacters(List<Character> list)
+    //{
+    //    if (discardedCharacters == null) discardedCharacters = list;
+    //    else throw new Exception("Character list not empty for initialization.");
+    //}
 
-    private void InstantiateCardImages()
+    public void ShufflePile()
     {
-        for (int i = 0; i < cardImages.Length; i++)
-        {
-            GameObject cardImage = Instantiate(cardImageTemplate, new Vector3(0, 0, 0), Quaternion.identity);
-            cardImages[i] = cardImage.GetComponent<CardImage>();
-            cardImage.transform.SetParent(cardImageCollection.transform);
-        }
-    }
-
-    private void LoadCharacters()
-    {
-        CharacterData data = new CharacterData();
-        if (Debug.isDebugBuild) characterPile = data.LoadDataForBuild();
-        else
-        { 
-            string path = Application.dataPath + "/Resources/BERTY/";
-            DirectoryInfo dir = new DirectoryInfo(path);
-            FileInfo[] files = dir.GetFiles("*.png");
-            foreach (FileInfo file in files)
-            {
-                string fileName = file.ToString();
-                fileName = fileName.Substring(fileName.LastIndexOf('\\') + 1);
-                fileName = fileName.Substring(0, fileName.IndexOf('.'));
-                data.LoadCharacter(characterPile, fileName);
-            }
-        }
+        ShuffleDiscardPile();
     }
 
     public void PullCards(Alignment align)
     {
-        Transform table;
-        if (align == Alignment.Player) table = playerTable.transform;
-        else table = opponentTable.transform;
-        bool isShuffled = false;
-        int cardsToPull = tableCapacity;
-        cardsToPull -= enabledCards.Count;
-        int cardsInDrawPile = drawPile.transform.childCount;
-        //Debug.Log("Cards to pull: " + cardsToPull);
-        foreach (CardImage drawnCard in cardImages)
+        Transform table = align == Alignment.Player ? playerTable.transform : opponentTable.transform;
+        int cardsToPull = tableCapacity - enabledCards.Count;
+        for (int i = cardsToPull; i > 0; i--)
         {
-            //Debug.Log("Cards to pull in loop: " + cardsToPull);
-            if (cardsToPull <= 0) break;
-            if (cardsInDrawPile <= 0) break;
-            if (drawnCard.TableAssigned() != null) continue;
-            //Debug.Log("Pulling a card...");
-            DrawCard(drawnCard, table, cardsCount - cardsInDrawPile);
-            cardsToPull--;
-            cardsInDrawPile--;
-            if (isShuffled) ClearCards();
-            if (cardsInDrawPile <= 0 && !isShuffled)
-            {
-                cardsInDrawPile = discardPile.transform.childCount;
-                ShuffleDiscardPile();
-                isShuffled = true;
-            }
+            if (!PullCard(table)) break;
         }
     }
 
-    private void ClearCards()
+    private bool PullCard(Transform table)
     {
+        Character character = TakeFromPile();
+        if (character != null) AddCardToTable(table, character);
+        else return false;
+        return true;
+    }
+
+    private Character TakeFromPile()
+    {
+        if (drawPile.transform.childCount == 0 && !ShuffleDiscardPile()) return null;
+        Character character = characterPile[rng.Next(characterPile.Count)];
+        RemoveFromDrawPile();
+        characterPile.Remove(character);
+        return character;
+    }
+
+    private void AddCardToTable(Transform table, Character character)
+    {
+        CardImage cardSubject = UnassignedCard();
+        cardSubject.AssignCharacter(character);
+        AddToTable(cardSubject, table);
+    }
+
+    private bool ShuffleDiscardPile()
+    {     
         GameObject card;
-        for (int i = discardPile.transform.childCount - 1; i >= tableCapacity; i--)
+        //Debug.Log("Discarded cards to shuffle: " + discardedCardsCount);
+        for (int i = discardPile.transform.childCount - 1; i >= 0; i--)
         {
             card = discardPile.transform.GetChild(i).gameObject;
-            Destroy(card);
-        }
-    }
-
-    private void DrawCard(CardImage drawnCard, Transform table, int discardOffset)
-    {
-        int index = rng.Next(characterPile.Count);
-        Character character = characterPile[index];
-        RemoveFromDrawPile(discardOffset);
-        drawnCard.AssignCharacter(character);
-        characterPile.Remove(character);
-        AddToTable(drawnCard, table);
-    }
-
-    private void ShuffleDiscardPile()
-    {
-        GameObject card;
-        int discardedCardsCount = discardPile.transform.childCount;
-        for (int i = 0; i < cardsCount && discardPile.transform.childCount > 0; i++)
-        {
-            card = discardPile.transform.GetChild(0).gameObject;
             //Debug.Log("Shuffled card: " + (i) + " : " + card.name);
-            if (card.activeSelf) PrepareCardInPile(card.transform, drawPile.transform, i);
-            else break;
+            if (!card.activeSelf) continue;
+            PrepareCardInPile(card.transform, drawPile.transform);
         }
+        return ShuffleDiscardedCharacters();
+    }
+
+    private bool ShuffleDiscardedCharacters()
+    {
         characterPile = discardedCharacters;
         discardedCharacters = new List<Character>();
+        Debug.Log("Character pile count: " + characterPile.Count);
+        return characterPile.Count != 0;
     }
 
-    private void RemoveFromDrawPile(int discardOffset)
+    private void RemoveFromDrawPile()
     {
         GameObject card = drawPile.transform.GetChild(drawPile.transform.childCount - 1).gameObject;
         card.SetActive(false);
-        PrepareCardInPile(card.transform, discardPile.transform, discardOffset);
+        PrepareCardInPile(card.transform, discardPile.transform);
     }
 
-    private void PrepareCardInPile(Transform cardTransform, Transform stack, int offset)
+    private void PrepareCardInPile(Transform cardTransform, Transform stack)
     {
-        float offsetUnit = offset * offsetFactor;
+        //Debug.Log("Shuffling to: " + stack.name);
+        float offsetUnit = stack.childCount * offsetFactor;
         cardTransform.SetParent(stack, false);
         cardTransform.localPosition = new Vector3(offsetUnit, offsetUnit, offsetUnit);
     }
@@ -175,7 +145,7 @@ public class CardManager : MonoBehaviour
     public void DiscardPileCard()
     {
         GameObject pileCard;
-        Debug.Log("Card in pile discarded");
+        //Debug.Log("Card in pile discarded");
         for (int i = 0; i < discardPile.transform.childCount; i++)
         {
             pileCard = discardPile.transform.GetChild(i).gameObject;
@@ -203,8 +173,7 @@ public class CardManager : MonoBehaviour
 
     public bool ArePilesEmpty()
     {
-        if (drawPile.transform.childCount == 0) return true;
-        return false;
+        return drawPile.transform.childCount == 0 && discardPile.transform.childCount == 0;
     }
 
     private void SetCardObjectIdle(Transform card, Transform stack)
@@ -212,25 +181,24 @@ public class CardManager : MonoBehaviour
         card.SetParent(stack, false);
     }
 
-    public void ShowTable(Alignment alignment)
+    public void SwitchTable(Alignment alignment)
     {
-        if (alignment == Alignment.Player)
-        {
-            playerTable.SetActive(true);
-            opponentTable.SetActive(false);
-        }
-        else
-        {
-            playerTable.SetActive(false);
-            opponentTable.SetActive(true);
-        }
+        Debug.Log("Switching table!");
+        ShowTable(alignment);
+        SwapTable();
+    }
 
+    private void ShowTable(Alignment alignment)
+    {
+        playerTable.SetActive(alignment == Alignment.Player);
+        opponentTable.SetActive(alignment == Alignment.Opponent);
+    }
+
+    private void SwapTable()
+    {
         List<CardImage> temp = enabledCards;
         enabledCards = disabledCards;
         disabledCards = temp;
-
-        //foreach (CardImage card in enabledCards) Debug.Log("Enabled card: " + card.name);
-        //foreach (CardImage card in disabledCards) Debug.Log("Disabled card: " + card.name);
     }
 
     public void HideTables()
@@ -242,6 +210,12 @@ public class CardManager : MonoBehaviour
     public void DeselectCards()
     {
         foreach (CardImage card in SelectedCards()) card.ChangePosition();
+    }
+
+    private CardImage UnassignedCard()
+    {
+        foreach (CardImage card in cardImages) if (card.TableAssigned() == null) return card;
+        throw new Exception("Error in finding unassigned card!");
     }
         
     public List<CardImage> SelectedCards()

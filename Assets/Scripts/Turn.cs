@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public partial class Turn : MonoBehaviour
 {
-    const int cardsToWin = 5;
+    const int cardsToWin = 6;
 
     [SerializeField] private GameObject EndTurnButton;
     [SerializeField] private GameObject GameOverText;
@@ -29,7 +29,19 @@ public partial class Turn : MonoBehaviour
             AdjustStep();
         }
     }
-    public Alignment CurrentAlignment { get => currentAlign; }
+    public Alignment CurrentAlignment
+    { get => currentAlign; 
+        private set
+        {
+            currentAlign = value;
+            if (value == Alignment.Player) EnableInteractions();
+            cm.SwitchTable(value);
+            cm.PullCards(value);
+            fg.AdjustNewTurn();
+            Debug.Log("Currently: " + value);
+            if (value == Alignment.Opponent) oc.PlayTurn();
+        }
+    }
 
     private void Awake()
     {
@@ -41,27 +53,24 @@ public partial class Turn : MonoBehaviour
     {
         endingMessage = GameOverText.transform.GetChild(0).GetComponent<Text>();
         ps = new PricingSystem(cm);
-        fg = GameObject.Find("FieldBoard").GetComponent<FieldGrid>();
-        cm.InitializeCards();
-        StartTheGame();
+        //fg = GameObject.Find("FieldBoard").GetComponent<FieldGrid>();
+        fg = FindObjectOfType<FieldGrid>();
+        SetStartingParameters();
         //Debug.Log(SystemInfo.processorType);
         //Debug.Log(SystemInfo.graphicsDeviceName);
     }
 
-    public void StartTheGame()
+    private void SetStartingParameters()
     {
         currentStep = Step.Move;
-        currentAlign = Alignment.Player;
-        cm.PullCards(currentAlign);
+        CurrentAlignment = Alignment.Player;
     }
 
     public void EndTurn()
     {
-        if (CheckWinConditions()) EndTheGame();
-        else
+        if (!CheckWinConditions()) 
         {
-            if (cm.SelectedCard() != null)
-                cm.SelectedCard().ChangePosition();
+            cm.DeselectCards();
             SwitchAlign();
         }
     }
@@ -109,8 +118,9 @@ public partial class Turn : MonoBehaviour
 
     private void AdjustStep()
     {
-        if (IsPaymentNow()) EndTurnButton.SetActive(false);
-        else ShowEndTurnButton();
+        //if (IsPaymentNow()) EndTurnButton.SetActive(false);
+        //else ShowEndTurnButton();
+        ShowEndTurnButton(!IsPaymentNow());
         if (IsMoveNow())
         {
             cm.DeselectCards();
@@ -123,48 +133,50 @@ public partial class Turn : MonoBehaviour
         return ps.CheckOffer();
     }
 
-    public int IsPlayerTurn()
-    {
-        if (currentAlign == Alignment.Player) return 1;
-        else return -1;
-    }
-
     private void SwitchAlign()
     {
-        if (currentAlign == Alignment.Player) currentAlign = Alignment.Opponent;
-        else currentAlign = Alignment.Player;
-        if (currentAlign == Alignment.Player) EnableInteractions();
-        cm.ShowTable(currentAlign);
-        cm.PullCards(currentAlign);
-        fg.AdjustNewTurn();
-        Debug.Log("Currently: " + currentAlign);
-        if (currentAlign == Alignment.Opponent) oc.PlayTurn();
+        CurrentAlignment = CurrentAlignment == Alignment.Player ? Alignment.Opponent : Alignment.Player;
     }
 
     private bool CheckWinConditions()
     {
-        if (cm.ArePilesEmpty()) return true;
-        if (fg.AlignedFields(Alignment.Player).Count >= cardsToWin) return true;
-        if (fg.AlignedFields(Alignment.Opponent).Count >= cardsToWin) return true;
+        if (fg.AlignedFields(Alignment.Player).Count >= cardsToWin)
+        {
+            Debug.Log("Player got " + fg.AlignedFields(Alignment.Player).Count + " cards!");
+            EndTheGame(Alignment.Player);
+            return true;
+        }
+        if (fg.AlignedFields(Alignment.Opponent).Count >= cardsToWin)
+        {
+            Debug.Log("Opponent got " + fg.AlignedFields(Alignment.Opponent).Count + " cards!");
+            EndTheGame(Alignment.Opponent);
+            return true;
+        }
+        if (cm.ArePilesEmpty())
+        {
+            Debug.Log("Piles are empty!");
+            EndTheGame(fg.HigherByAmountOfType());
+            return true;
+        }
         return false;
     }
 
-    private void EndTheGame()
+    private void EndTheGame(Alignment winner)
     {
-        if (Winner() == Alignment.Player) endingMessage.text = "Wygrana!";
-        if (Winner() == Alignment.Opponent) endingMessage.text = "Przegrana!";
+        if (winner == Alignment.Player) endingMessage.text = "Wygrana!";
+        if (winner == Alignment.Opponent) endingMessage.text = "Przegrana!";
         DisableInteractions();
         GameOverText.SetActive(true);
     }
 
-    private Alignment Winner()
-    {
-        if (fg.AlignedFields(Alignment.Player).Count >= cardsToWin) return Alignment.Player;
-        if (fg.AlignedFields(Alignment.Opponent).Count >= cardsToWin) return Alignment.Opponent;
-        if (fg.HighestAmountOfType(Alignment.Player) > fg.HighestAmountOfType(Alignment.Opponent)) return Alignment.Player;
-        if (fg.HighestAmountOfType(Alignment.Player) < fg.HighestAmountOfType(Alignment.Opponent)) return Alignment.Opponent;
-        return Alignment.None;
-    }
+    //private Alignment Winner()
+    //{
+    //    if (fg.AlignedFields(Alignment.Player).Count >= cardsToWin) return Alignment.Player;
+    //    if (fg.AlignedFields(Alignment.Opponent).Count >= cardsToWin) return Alignment.Opponent;
+    //    if (fg.HighestAmountOfType(Alignment.Player) > fg.HighestAmountOfType(Alignment.Opponent)) return Alignment.Player;
+    //    if (fg.HighestAmountOfType(Alignment.Player) < fg.HighestAmountOfType(Alignment.Opponent)) return Alignment.Opponent;
+    //    return Alignment.None;
+    //}
 
     public void EnableInteractions()
     {
@@ -181,9 +193,10 @@ public partial class Turn : MonoBehaviour
         interactableDisabled = true;
     }
 
-    private void ShowEndTurnButton()
+    private void ShowEndTurnButton(bool value = true)
     {
-        if (!interactableDisabled) EndTurnButton.SetActive(true);
+        if (!interactableDisabled) EndTurnButton.SetActive(value);
+        else EndTurnButton.SetActive(false);
     }
 
     public void ReturnToMenu()

@@ -58,10 +58,10 @@ public class CardButton : MonoBehaviour
 
     public void EnableButton()
     {
-        Debug.Log("Enable attempt: " + name);
+        //Debug.Log("Enable attempt: " + name);
         if (!card.IsLocked)
         {
-            Debug.Log("Enable: " + name);
+            //Debug.Log("Enable: " + name);
             rend.enabled = true;
             coll.enabled = true;
         }
@@ -70,9 +70,9 @@ public class CardButton : MonoBehaviour
     public void DisableButton()
     {
         //Debug.Log("Disable: " + name);
-        if (rend == null) rend = GetComponent<Renderer>();
+        //if (rend == null) rend = GetComponent<Renderer>();
         rend.enabled = false;
-        if (coll == null) coll = GetComponent<Collider>();
+        //if (coll == null) coll = GetComponent<Collider>();
         coll.enabled = false;
     }
 

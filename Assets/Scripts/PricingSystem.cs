@@ -19,7 +19,6 @@ public class PricingSystem
 
     public bool CheckOffer()
     {
-        if (cardManager.SelectedCards().Count == cardPrice) return true;
-        return false;
+        return cardManager.SelectedCards().Count == cardPrice;
     }
 }

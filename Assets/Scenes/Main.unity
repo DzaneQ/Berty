@@ -1317,6 +1317,7 @@ GameObject:
   - component: {fileID: 1414117064}
   - component: {fileID: 1414117063}
   - component: {fileID: 1414117065}
+  - component: {fileID: 1414117066}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1385,7 +1386,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pileCardTemplate: {fileID: 6974027251106625703, guid: f59b62e2313249a429e3a89b9733f08c, type: 3}
-  drawPile: {fileID: 1110432747}
   discardPile: {fileID: 953259463}
   playerTable: {fileID: 1821940498}
   opponentTable: {fileID: 2067477784}
@@ -1418,6 +1418,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   opponentTable: {fileID: 2067477784}
+--- !u!114 &1414117066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414117059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d00cd6bcfaa244d97ee4e89e9f94fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardBlankPrefab: {fileID: 6974027251106625703, guid: f59b62e2313249a429e3a89b9733f08c, type: 3}
+  cardImagePrefab: {fileID: 1148504419818202801, guid: 57eaf54574b5e934b9342b8e3da9cf6a, type: 3}
+  cardSpritePrefab: {fileID: 9048551618771972388, guid: d1ba44d3f83b3af4bbadfd5b1e3a7bde, type: 3}
+  drawPile: {fileID: 1110432747}
+  discardPile: {fileID: 953259463}
+  cardImageCollection: {fileID: 47750409}
 --- !u!1 &1479599711 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a7cdc8d72a65b3a4982c628ed1c552c6, type: 3}

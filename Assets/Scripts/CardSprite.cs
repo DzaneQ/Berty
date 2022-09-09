@@ -112,10 +112,10 @@ public class CardSprite : MonoBehaviour
 
     public void ApplyPhysics(bool isApplied = true)
     {
-        Debug.Log("Is card kinematic before? " + cardRB.isKinematic);
-        Debug.Log("Psychics set: " + !isApplied);
+        //Debug.Log("Is card kinematic before? " + cardRB.isKinematic);
+        //Debug.Log("Psychics set: " + !isApplied);
         cardRB.isKinematic = !isApplied;
-        Debug.Log("Is card kinematic after? " + cardRB.isKinematic);
+        //Debug.Log("Is card kinematic after? " + cardRB.isKinematic);
     }
 
     public void ResetAttack()
@@ -188,7 +188,7 @@ public class CardSprite : MonoBehaviour
         if (!State.IsForPaymentConfirmation()) throw new Exception("Wrong card state for payment..");
         if (turn.CheckOffer())
         {
-            Debug.Log("Price is good!");
+            //Debug.Log("Price is good!");
             cardManager.DiscardCards();
             State.TakePaidAction();
             turn.NextStep();

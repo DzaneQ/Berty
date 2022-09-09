@@ -139,7 +139,7 @@ public class CharacterData
         }
     }
 
-    public List<Character> LoadDataForBuild()
+    public List<Character> LoadCharacterData()
     {
         List <Character> list = new List<Character>();
         LoadCharacter(list, "astronauta bert");

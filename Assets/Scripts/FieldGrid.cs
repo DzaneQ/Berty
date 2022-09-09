@@ -11,12 +11,8 @@ public class FieldGrid : MonoBehaviour
     [SerializeField] private GameObject cardPrefab;
 
     private Turn turn;
-    protected MeshRenderer mesh;
-
-    private const int columns = 3;
-    private const int rows = 3;
-
-    private Field[,] fields = new Field[columns, rows];
+    //protected MeshRenderer mesh;
+    private Field[] fields;
 
     public GameObject CardPrefab { get => cardPrefab; }
     public Turn Turn { get => turn; }
@@ -26,28 +22,38 @@ public class FieldGrid : MonoBehaviour
         turn = GameObject.Find("EventSystem").GetComponent<Turn>();
     }
 
-    private void Start()
+    //private void Start()
+    //{
+    //    AttachFieldMechanic();
+    //}
+
+    public void AttachFields(Field[] fields)
     {
-        AttachFieldMechanic();
+        if (this.fields == null) this.fields = fields;
     }
 
-    private void AttachFieldMechanic()
+    public void AttachTurn(Turn turn)
     {
-        int index = 0;
-        int midColumn = (columns - 1) / 2;
-        int midRow = (rows - 1) / 2;
-        for (int i = 0; i < columns; i++)
-        {
-            for (int j = 0; j < rows; j++)
-            {
-                Transform fieldTransform = transform.GetChild(index);
-                //Debug.Log(fieldTransform.localPosition.x + ", " + fieldTransform.localPosition.y);
-                fields[i, j] = fieldTransform.gameObject.GetComponent<Field>();
-                fields[i, j].SetCoordinates(i - midColumn, midRow - j);
-                index++;
-            }
-        }
+        if (this.turn == null) this.turn = turn;
     }
+
+    //private void AttachFieldMechanic()
+    //{
+    //    int index = 0;
+    //    int midColumn = (columns - 1) / 2;
+    //    int midRow = (rows - 1) / 2;
+    //    for (int i = 0; i < columns; i++)
+    //    {
+    //        for (int j = 0; j < rows; j++)
+    //        {
+    //            Transform fieldTransform = transform.GetChild(index);
+    //            //Debug.Log(fieldTransform.localPosition.x + ", " + fieldTransform.localPosition.y);
+    //            fields[i, j] = fieldTransform.gameObject.GetComponent<Field>();
+    //            fields[i, j].SetCoordinates(i - midColumn, midRow - j);
+    //            index++;
+    //        }
+    //    }
+    //}
 
     public Material GetMaterial(Alignment alignment)
     {
@@ -91,10 +97,7 @@ public class FieldGrid : MonoBehaviour
 
     public void AdjustNewTurn()
     {
-        foreach (Field field in fields)
-        {
-            field.OccupantCard.ResetAttack();
-        }
+        foreach (Field field in fields) field.OccupantCard.ResetAttack();
         AdjustCardButtons();
     }
 
@@ -168,13 +171,20 @@ public class FieldGrid : MonoBehaviour
         return alignedFields;
     }
 
-    public int HighestAmountOfType(Alignment alignment)
+    private int HighestAmountOfType(Alignment alignment)
     {
         int result = AmountOfType(alignment, Role.Offensive);
         if (result < AmountOfType(alignment, Role.Support)) result = AmountOfType(alignment, Role.Support);
         if (result < AmountOfType(alignment, Role.Agile)) result = AmountOfType(alignment, Role.Agile);
         if (result < AmountOfType(alignment, Role.Special)) result = AmountOfType(alignment, Role.Special);
         return result;
+    }
+
+    public Alignment HigherByAmountOfType()
+    {
+        if (HighestAmountOfType(Alignment.Player) > HighestAmountOfType(Alignment.Opponent)) return Alignment.Player;
+        if (HighestAmountOfType(Alignment.Player) < HighestAmountOfType(Alignment.Opponent)) return Alignment.Opponent;
+        return Alignment.None;
     }
 
     private int AmountOfType(Alignment alignment, Role role)
