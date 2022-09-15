@@ -7,10 +7,9 @@ public class CardManager : MonoBehaviour
 {
     private const int tableCapacity = 6;
     private const float offsetFactor = 0.0001f;
+    //private const int deckSize = 40;
 
-    private int deckSize;
-    private GameObject drawPile;
-    private GameObject discardPile;
+
     private CardImage[] cardImages;
     private List<CardImage> enabledCards = new List<CardImage>();
     private List<CardImage> disabledCards = new List<CardImage>();
@@ -20,35 +19,33 @@ public class CardManager : MonoBehaviour
 
 
     public List<CardImage> EnabledCards { get => enabledCards; }
-    public CardImage[] CardImages { set { if (cardImages == null) cardImages = value; } }
 
-
+    [SerializeField] private GameObject drawPile;
+    [SerializeField] private GameObject discardPile;
     [SerializeField] private GameObject pileCardTemplate;
     [SerializeField] private GameObject playerTable;
     [SerializeField] private GameObject opponentTable;
-    [SerializeField] private GameObject cardImageTemplate;
+    //[SerializeField] private GameObject cardImageTemplate;
     [SerializeField] private GameObject cardImageCollection;
 
     private void Start()
     {
         CardInitialization init = GetComponent<CardInitialization>();
-        init.LoadVariables();
-        discardedCharacters = init.InitializeCharacters();
-        init.InitializeCards();
-        init.InitializeFieldGrid();
+        init.InitializeCharacters(out discardedCharacters);
+        init.InitializeCardPile(discardPile);
+        ShufflePile();
+        init.InitializeCardImages(cardImageCollection, out cardImages);
         Destroy(init);
     }
 
-    public void AttachPile(int deckSize, GameObject drawPile, GameObject discardPile)
-    {
-        if (this.deckSize == 0) this.deckSize = deckSize;
-        else throw new Exception("Deck not empty for initialization.");
-        if (this.drawPile == null) this.drawPile = drawPile;
-        else throw new Exception("Draw pile not empty for initialization.");
-        if (this.discardPile == null) this.discardPile = discardPile;
-        else throw new Exception("Discard pile not empty for initialization.");
-        //Debug.Log("Draw pile is now: " + drawPile.name);
-    }
+    //public void AttachPile(GameObject drawPile, GameObject discardPile)
+    //{
+    //    if (this.drawPile == null) this.drawPile = drawPile;
+    //    else throw new Exception("Draw pile not empty for initialization.");
+    //    if (this.discardPile == null) this.discardPile = discardPile;
+    //    else throw new Exception("Discard pile not empty for initialization.");
+    //    //Debug.Log("Draw pile is now: " + drawPile.name);
+    //}
 
     //public void LoadCharacters(List<Character> list)
     //{

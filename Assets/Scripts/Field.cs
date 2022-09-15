@@ -57,7 +57,7 @@ public class Field : MonoBehaviour
     private bool IsClickable()
     {
         if (!Input.GetMouseButtonDown(0)) return false;
-        if (!fieldGrid.Turn.IsSelectionNow()) return false;
+        if (!fieldGrid.Turn.IsItPaymentTime() && occupantCard.CardManager.SelectedCard() == null) return false;
         if (OccupantCard.IsLocked) return false;
         return true;
     }

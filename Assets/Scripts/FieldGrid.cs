@@ -19,23 +19,27 @@ public class FieldGrid : MonoBehaviour
 
     private void Awake()
     {
-        turn = GameObject.Find("EventSystem").GetComponent<Turn>();
+        turn = FindObjectOfType<Turn>();
     }
 
-    //private void Start()
+    private void Start()
+    {
+        GridInitialization init = GetComponent<GridInitialization>();
+        init.InitializeFields(out fields);
+        //init.InitializeFieldGrid();
+        //AttachFieldMechanic();
+        Destroy(init);
+    }
+
+    //public void AttachFields(Field[] fields)
     //{
-    //    AttachFieldMechanic();
+    //    if (this.fields == null) this.fields = fields;
     //}
 
-    public void AttachFields(Field[] fields)
-    {
-        if (this.fields == null) this.fields = fields;
-    }
-
-    public void AttachTurn(Turn turn)
-    {
-        if (this.turn == null) this.turn = turn;
-    }
+    //public void AttachTurn(Turn turn)
+    //{
+    //    if (this.turn == null) this.turn = turn;
+    //}
 
     //private void AttachFieldMechanic()
     //{

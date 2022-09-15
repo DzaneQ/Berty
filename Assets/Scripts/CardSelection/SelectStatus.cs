@@ -5,7 +5,7 @@ using UnityEngine;
 abstract public class SelectStatus
 {
     protected CardImage card;
-    protected GameObject cardObject;
+    //protected GameObject cardObject;
     protected SelectStatus(CardImage cardImage) 
     {
         card = cardImage;

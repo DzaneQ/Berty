@@ -36,15 +36,15 @@ public class CardImage : MonoBehaviour
     {
         card = GetComponent<RectTransform>();
         imageRenderer = GetComponent<Image>();
+        turn = FindObjectOfType<Turn>();
+        cardManager = FindObjectOfType<CardManager>();
+        select = new UnselectedCard(this);
     }
 
-    private void Start()
-    {
-        turn = GameObject.Find("EventSystem").GetComponent<Turn>();
-        cardManager = GameObject.Find("EventSystem").GetComponent<CardManager>();
-        select = new UnselectedCard(this);
-        //leftClick = SelectCard;
-    }
+    //private void Start()
+    //{
+    //    //leftClick = SelectCard;
+    //}
 
     //public void LoadSprite(Sprite sprite)
     //{
@@ -75,9 +75,8 @@ public class CardImage : MonoBehaviour
 
     public bool CanSelect()
     {
-        if (turn.IsSelectionNow()) return false;
-        if (turn.IsPaymentNow()) return !turn.CheckOffer();
-        return true;
+        if (turn.IsItPaymentTime()) return !turn.CheckOffer();
+        return cardManager.SelectedCard() == null;
     }
 
     public void CardClick()
@@ -98,6 +97,7 @@ public class CardImage : MonoBehaviour
 
     public void ChangePosition()
     {
+        //Debug.Log("Selecting card: " + name);
         select = select.ChangePosition();
     }
 
@@ -106,14 +106,14 @@ public class CardImage : MonoBehaviour
         SavePosition();
         card.position += new Vector3(0f, 25f, 0f);
         //select = new SelectedCard(this);
-        if (turn.IsMoveNow()) turn.NextStep();
+        //if (turn.IsMoveNow()) turn.NextStep();
     }
 
     public void DeselectPosition()
     {
         LoadPosition();
         //select = new UnselectedCard(this);
-        if (turn.IsSelectionNow()) turn.PreviousStep();
+        //if (turn.IsSelectionNow()) turn.PreviousStep();
     }
 
     public void DisableCard()

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SelectedCard : SelectStatus
 {
+    private Vector3 unselectedPosition;
+
     public SelectedCard(CardImage cardImage) : base(cardImage)
     {
 

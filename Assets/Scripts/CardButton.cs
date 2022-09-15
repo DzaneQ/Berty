@@ -70,9 +70,7 @@ public class CardButton : MonoBehaviour
     public void DisableButton()
     {
         //Debug.Log("Disable: " + name);
-        //if (rend == null) rend = GetComponent<Renderer>();
         rend.enabled = false;
-        //if (coll == null) coll = GetComponent<Collider>();
         coll.enabled = false;
     }
 

@@ -24,6 +24,7 @@ public class CardSprite : MonoBehaviour
     private bool hasAttacked;
     private bool isLocked;
     public Turn Turn { get => turn; }
+    public CardManager CardManager { get => cardManager; }
     private CardState State 
     { 
         get => state;
@@ -105,7 +106,7 @@ public class CardSprite : MonoBehaviour
 
     public void ActivateCard()
     {
-        if (!turn.IsSelectionNow()) throw new Exception("CardSprite created when step is not Selection.");
+        if (cardManager.SelectedCard() == null) throw new Exception("CardSprite created when no card selected.");
         if (State.GetType() != typeof(InactiveState)) throw new Exception("Wrong state to activate: " + State.GetType());
         State = new NewCardState();
     }
@@ -184,22 +185,22 @@ public class CardSprite : MonoBehaviour
 
     public void ConfirmPayment(bool isAttacking = false)
     {
-        if (!turn.IsPaymentNow()) throw new Exception("Confirming payment when not in payment mode.");
+        if (!turn.IsItPaymentTime()) throw new Exception("Confirming payment when not in payment mode.");
         if (!State.IsForPaymentConfirmation()) throw new Exception("Wrong card state for payment..");
         if (turn.CheckOffer())
         {
             //Debug.Log("Price is good!");
             cardManager.DiscardCards();
             State.TakePaidAction();
-            turn.NextStep();
+            turn.UnsetPayment();
             grid.AdjustCardButtons();
         }
     }
 
     public void CancelPayment()
     {
-        if (!turn.IsPaymentNow()) throw new Exception("Trying to cancel outside the payment step.");
-        turn.NextStep();
+        //if (!turn.IsPaymentNow()) throw new Exception("Trying to cancel outside the payment step.");
+        turn.UnsetPayment();
     }
 
     public void CancelDecision()

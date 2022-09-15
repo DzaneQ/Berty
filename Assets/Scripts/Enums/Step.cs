@@ -1,6 +1,6 @@
 ﻿public enum Step
 {
     Move,
-    Selection,
+    //Selection,
     Payment
 }

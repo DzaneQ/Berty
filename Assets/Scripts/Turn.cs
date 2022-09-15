@@ -46,15 +46,14 @@ public partial class Turn : MonoBehaviour
     private void Awake()
     {
         cm = GetComponent<CardManager>();
-        oc = GetComponent<OpponentControl>(); 
+        oc = GetComponent<OpponentControl>();
+        fg = FindObjectOfType<FieldGrid>();
     }
 
     private void Start()
     {
         endingMessage = GameOverText.transform.GetChild(0).GetComponent<Text>();
         ps = new PricingSystem(cm);
-        //fg = GameObject.Find("FieldBoard").GetComponent<FieldGrid>();
-        fg = FindObjectOfType<FieldGrid>();
         SetStartingParameters();
         //Debug.Log(SystemInfo.processorType);
         //Debug.Log(SystemInfo.graphicsDeviceName);
@@ -63,7 +62,13 @@ public partial class Turn : MonoBehaviour
     private void SetStartingParameters()
     {
         currentStep = Step.Move;
-        CurrentAlignment = Alignment.Player;
+        CurrentAlignment = StartingAlignment();
+    }
+
+    private Alignment StartingAlignment()
+    {
+        //return Alignment.Player;
+        return Alignment.Player;
     }
 
     public void EndTurn()
@@ -75,53 +80,30 @@ public partial class Turn : MonoBehaviour
         }
     }
 
-    public bool IsMoveNow()
+    public bool IsItPaymentTime()
     {
-        if (CurrentStep == Step.Move) return true;
-        else return false;
+        return CurrentStep == Step.Payment;
     }
 
-    public bool IsSelectionNow()
+    public void UnsetPayment()
     {
-        if (CurrentStep == Step.Selection) return true;
-        else return false;
-    }
-
-    public bool IsPaymentNow()
-    {
-        if (CurrentStep == Step.Payment) return true;
-        else return false;
-    }
-
-    public void NextStep()
-    {
-        AdvanceStep(1);
-    }
-
-    public void PreviousStep()
-    {
-        AdvanceStep(-1);
+        if (CurrentStep == Step.Move) throw new Exception("Trying to unset outside the payment step.");
+        CurrentStep = Step.Move;
     }
 
     public void SetPayment(int price)
     {
+        if (CurrentStep != Step.Move) throw new Exception("Trying to set while in the payment step.");
         CurrentStep = Step.Payment;
         ps.DemandPayment(price);
-    }
-
-    private void AdvanceStep(int stepCount)
-    {
-        int currentStepInt = (int)CurrentStep;
-        currentStepInt = (currentStepInt + stepCount) % 3;
-        CurrentStep = (Step)currentStepInt;
     }
 
     private void AdjustStep()
     {
         //if (IsPaymentNow()) EndTurnButton.SetActive(false);
         //else ShowEndTurnButton();
-        ShowEndTurnButton(!IsPaymentNow());
-        if (IsMoveNow())
+        ShowEndTurnButton(!IsItPaymentTime());
+        if (!IsItPaymentTime())
         {
             cm.DeselectCards();
             fg.AdjustCardButtons();
@@ -169,20 +151,11 @@ public partial class Turn : MonoBehaviour
         GameOverText.SetActive(true);
     }
 
-    //private Alignment Winner()
-    //{
-    //    if (fg.AlignedFields(Alignment.Player).Count >= cardsToWin) return Alignment.Player;
-    //    if (fg.AlignedFields(Alignment.Opponent).Count >= cardsToWin) return Alignment.Opponent;
-    //    if (fg.HighestAmountOfType(Alignment.Player) > fg.HighestAmountOfType(Alignment.Opponent)) return Alignment.Player;
-    //    if (fg.HighestAmountOfType(Alignment.Player) < fg.HighestAmountOfType(Alignment.Opponent)) return Alignment.Opponent;
-    //    return Alignment.None;
-    //}
-
     public void EnableInteractions()
     {
         fg.UnlockInteractables();
         interactableDisabled = false;
-        ShowEndTurnButton();
+        ShowEndTurnButton(true);
     }
 
     public void DisableInteractions()
