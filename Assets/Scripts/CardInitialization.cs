@@ -13,19 +13,6 @@ public class CardInitialization : MonoBehaviour
     [SerializeField] private GameObject cardImagePrefab;
     [SerializeField] private GameObject cardSpritePrefab;
 
-
-
-
-    //void Start()
-    //{
-    //    LoadVariables();
-    //    Initialize();
-    //    Destroy(this);
-    //}
-
-
-
-
     public void InitializeCharacters(out List<Character> list)
     {
         CharacterData data = new CharacterData();
@@ -40,14 +27,14 @@ public class CardInitialization : MonoBehaviour
         for (int i = 0; i < characterCount; i++) Instantiate(cardBlankPrefab, pile.transform);
     }
 
-    public void InitializeCardImages(GameObject stack, out CardImage[] cardCollection)
+    public void InitializeCardImages(GameObject stack, out List<CardImage> cardCollection)
     {
-        cardCollection = new CardImage[cardImageCount];
-        for (int i = 0; i < cardCollection.Length; i++)
+        cardCollection = new List<CardImage>();
+        for (int i = 0; i < cardImageCount; i++)
         {
             GameObject cardImage = Instantiate(cardImagePrefab, stack.transform);
             cardImage.name = "Card Image " + (i + 1);
-            cardCollection[i] = cardImage.GetComponent<CardImage>();
+            cardCollection.Add(cardImage.GetComponent<CardImage>());
         }
     }
 

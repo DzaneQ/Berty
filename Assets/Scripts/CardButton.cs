@@ -59,12 +59,10 @@ public class CardButton : MonoBehaviour
     public void EnableButton()
     {
         //Debug.Log("Enable attempt: " + name);
-        if (!card.IsLocked)
-        {
-            //Debug.Log("Enable: " + name);
-            rend.enabled = true;
-            coll.enabled = true;
-        }
+        if (card.Grid.IsLocked()) return;
+        //Debug.Log("Enable: " + name);
+        rend.enabled = true;
+        coll.enabled = true;
     }
 
     public void DisableButton()

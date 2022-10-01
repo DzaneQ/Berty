@@ -6,13 +6,9 @@ using UnityEngine.UI;
 
 public class CardImage : MonoBehaviour
 {
-    private Vector3 cardPosition;
     private SelectStatus select;
-    private RectTransform card;
     private Turn turn;
     private CardManager cardManager;
-    private Transform table;
-    private Transform lastTable;
     private Image imageRenderer;
     private Character character;
     public Character Character 
@@ -34,24 +30,11 @@ public class CardImage : MonoBehaviour
 
     private void Awake()
     {
-        card = GetComponent<RectTransform>();
         imageRenderer = GetComponent<Image>();
         turn = FindObjectOfType<Turn>();
         cardManager = FindObjectOfType<CardManager>();
-        select = new UnselectedCard(this);
+        select = new SelectedCard(GetComponent<RectTransform>());
     }
-
-    //private void Start()
-    //{
-    //    //leftClick = SelectCard;
-    //}
-
-    //public void LoadSprite(Sprite sprite)
-    //{
-    //    if (imageRenderer == null) Debug.LogWarning("imageRenderer not assigned");
-    //    //if (imageRenderer.sprite == null) Debug.LogWarning("imageRenderer.sprite not assigned");
-    //    //imageRenderer.sprite = sprite;
-    //}
 
     public void AssignCharacter(Character newCharacter)
     {
@@ -60,17 +43,12 @@ public class CardImage : MonoBehaviour
 
     public void AssignTable()
     {
-        table = transform.parent;
-    }
-
-    public Transform TableAssigned()
-    {
-        return table;
+        select = select.SetUnselected();
     }
 
     public bool IsCardSelected()
     {
-        return select.IsCardSelected();
+        return select.IsCardSelected;
     }
 
     public bool CanSelect()
@@ -81,50 +59,22 @@ public class CardImage : MonoBehaviour
 
     public void CardClick()
     {
-        //Debug.Log("Clicked cardImage.");
         if (Input.GetMouseButtonDown(0)) ChangePosition();
-    }
-
-    public void SavePosition()
-    {
-        cardPosition = card.position;
-    }
-
-    public void LoadPosition()
-    {
-        card.position = cardPosition;
     }
 
     public void ChangePosition()
     {
-        //Debug.Log("Selecting card: " + name);
-        select = select.ChangePosition();
+        select = select.ChangePosition(CanSelect());
     }
 
-    public void SelectPosition()
+    public void SetBackupTable()
     {
-        SavePosition();
-        card.position += new Vector3(0f, 25f, 0f);
-        //select = new SelectedCard(this);
-        //if (turn.IsMoveNow()) turn.NextStep();
-    }
-
-    public void DeselectPosition()
-    {
-        LoadPosition();
-        //select = new UnselectedCard(this);
-        //if (turn.IsSelectionNow()) turn.PreviousStep();
-    }
-
-    public void DisableCard()
-    {
-        select = new UnselectedCard(this);
-        lastTable = table;
-        table = null;
+        select.SetToBackup();
     }
 
     public void ReturnCard()
     {
-        cardManager.AddToTable(this, lastTable);
+        //Transform lastTable = select.ReturnCard();
+        cardManager.AddToTable(this, select.ReturnCard());
     }
 }

@@ -28,7 +28,6 @@ public class OpponentControl : MonoBehaviour
 
     public void PlayTurn()
     {
-        turn.DisableInteractions();
         StartCoroutine(MakeMove(timeDelay));
     }
 
@@ -69,11 +68,9 @@ public class OpponentControl : MonoBehaviour
             if (card.HasAttacked) continue;
             if (cm.EnabledCards.Count < 6 - card.Character.Dexterity) continue;
             int efficiency = Efficiency(card, card.Character.Strength);
-            if (efficiency > highestEfficiency)
-            {
-                highestEfficiency = efficiency;
-                bestCard = card;
-            }
+            if (efficiency <= highestEfficiency) continue;
+            highestEfficiency = efficiency;
+            bestCard = card;
         }
         return bestCard;
     }
@@ -131,10 +128,7 @@ public class OpponentControl : MonoBehaviour
         List<Field> safeFields = new List<Field>();
         for (int i = 0; i < 6; i++)
         {
-            foreach (Field field in freeFields)
-            {
-                if (fg.HeatLevel(field, Alignment.Player) <= i) safeFields.Add(field);
-            }
+            foreach (Field field in freeFields) if (fg.HeatLevel(field, Alignment.Player) <= i) safeFields.Add(field);
             if (safeFields.Count > 0) break;
         }
         return safeFields;

@@ -4,18 +4,21 @@ using UnityEngine;
 
 internal class IdleState : CardState
 {
-    public override void InitiateState(CardSprite cardSprite)
+    public IdleState(CardSprite sprite) : base(sprite)
     {
-        card = cardSprite;
         card.DisableButtons();
     }
 
-    public override void HandleFieldCollision() { }
+    public override CardState DeactivateCard() => new InactiveState(card);
+
+    public override void HandleFieldCollision()
+    {
+        card.ApplyPhysics(false);
+    }
 
     public override void HandleClick() { }
 
-    public override CardState GoToNext()
-    {
-        return new ActiveState();
-    }
+    public override CardState SetActive => new ActiveState(card);
+
+    public override CardState SetIdle => this;
 }

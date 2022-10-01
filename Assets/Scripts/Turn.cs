@@ -22,7 +22,8 @@ public partial class Turn : MonoBehaviour
     private bool interactableDisabled = false;
 
     private Step CurrentStep
-    { get => currentStep;
+    {
+        get => currentStep;
         set
         {
             currentStep = value;
@@ -30,18 +31,26 @@ public partial class Turn : MonoBehaviour
         }
     }
     public Alignment CurrentAlignment
-    { get => currentAlign; 
+    {
+        get => currentAlign;
         private set
         {
             currentAlign = value;
-            if (value == Alignment.Player) EnableInteractions();
             cm.SwitchTable(value);
-            cm.PullCards(value);
+            if (value == Alignment.Player) EnableInteractions();
+            if (value == Alignment.Opponent && oc != null) DisableInteractions();
+            if (!cm.PullCards(value))
+            {
+                CheckWinConditions(true);
+                return;
+            }
             fg.AdjustNewTurn();
             Debug.Log("Currently: " + value);
-            if (value == Alignment.Opponent) oc.PlayTurn();
+            if (value == Alignment.Opponent && oc != null) oc.PlayTurn();
         }
     }
+
+    public bool InteractableDisabled => interactableDisabled;
 
     private void Awake()
     {
@@ -62,22 +71,14 @@ public partial class Turn : MonoBehaviour
     private void SetStartingParameters()
     {
         currentStep = Step.Move;
-        CurrentAlignment = StartingAlignment();
-    }
-
-    private Alignment StartingAlignment()
-    {
-        //return Alignment.Player;
-        return Alignment.Player;
+        CurrentAlignment = Alignment.Player;
     }
 
     public void EndTurn()
     {
-        if (!CheckWinConditions()) 
-        {
-            cm.DeselectCards();
-            SwitchAlign();
-        }
+        if (CheckWinConditions()) return;
+        cm.DeselectCards();
+        SwitchAlign();
     }
 
     public bool IsItPaymentTime()
@@ -87,27 +88,23 @@ public partial class Turn : MonoBehaviour
 
     public void UnsetPayment()
     {
-        if (CurrentStep == Step.Move) throw new Exception("Trying to unset outside the payment step.");
+        if (!IsItPaymentTime()) throw new Exception("Trying to unset outside the payment step.");
         CurrentStep = Step.Move;
     }
 
     public void SetPayment(int price)
     {
-        if (CurrentStep != Step.Move) throw new Exception("Trying to set while in the payment step.");
+        if (IsItPaymentTime()) throw new Exception("Trying to set while in the payment step.");
         CurrentStep = Step.Payment;
         ps.DemandPayment(price);
     }
 
     private void AdjustStep()
     {
-        //if (IsPaymentNow()) EndTurnButton.SetActive(false);
-        //else ShowEndTurnButton();
         ShowEndTurnButton(!IsItPaymentTime());
-        if (!IsItPaymentTime())
-        {
-            cm.DeselectCards();
-            fg.AdjustCardButtons();
-        }
+        if (IsItPaymentTime()) return;
+        cm.DeselectCards();
+        fg.AdjustCardButtons();
     }
 
     public bool CheckOffer()
@@ -120,7 +117,7 @@ public partial class Turn : MonoBehaviour
         CurrentAlignment = CurrentAlignment == Alignment.Player ? Alignment.Opponent : Alignment.Player;
     }
 
-    private bool CheckWinConditions()
+    private bool CheckWinConditions(bool forceEnd = false)
     {
         if (fg.AlignedFields(Alignment.Player).Count >= cardsToWin)
         {
@@ -134,7 +131,7 @@ public partial class Turn : MonoBehaviour
             EndTheGame(Alignment.Opponent);
             return true;
         }
-        if (cm.ArePilesEmpty())
+        if (forceEnd)
         {
             Debug.Log("Piles are empty!");
             EndTheGame(fg.HigherByAmountOfType());
@@ -153,14 +150,14 @@ public partial class Turn : MonoBehaviour
 
     public void EnableInteractions()
     {
-        fg.UnlockInteractables();
+        //fg.UnlockInteractables();
         interactableDisabled = false;
         ShowEndTurnButton(true);
     }
 
     public void DisableInteractions()
     {
-        fg.LockInteractables();
+        //fg.LockInteractables();
         cm.HideTables();
         EndTurnButton.SetActive(false);
         interactableDisabled = true;

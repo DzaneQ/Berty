@@ -1303,7 +1303,6 @@ MonoBehaviour:
   defaultMaterial: {fileID: 2100000, guid: df708ec219096514e96138b76981f752, type: 2}
   player: {fileID: 2100000, guid: 5ac1a1c44ebd8cc489881f6c2e952685, type: 2}
   opponent: {fileID: 2100000, guid: e9eec283829ab824eaf7f6f27531824b, type: 2}
-  cardPrefab: {fileID: 9048551618771972388, guid: d1ba44d3f83b3af4bbadfd5b1e3a7bde, type: 3}
 --- !u!114 &1181834775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1316,6 +1315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76a7600682438542a4ee6b90417d09f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardPrefab: {fileID: 9048551618771972388, guid: d1ba44d3f83b3af4bbadfd5b1e3a7bde, type: 3}
 --- !u!1 &1414117059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1400,7 +1400,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drawPile: {fileID: 1110432747}
   discardPile: {fileID: 953259463}
-  pileCardTemplate: {fileID: 6974027251106625703, guid: f59b62e2313249a429e3a89b9733f08c, type: 3}
   playerTable: {fileID: 1821940498}
   opponentTable: {fileID: 2067477784}
   cardImageCollection: {fileID: 47750409}

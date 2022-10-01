@@ -7,25 +7,20 @@ public class CardManager : MonoBehaviour
 {
     private const int tableCapacity = 6;
     private const float offsetFactor = 0.0001f;
-    //private const int deckSize = 40;
 
-
-    private CardImage[] cardImages;
+    private List<CardImage> unassignedCards;
     private List<CardImage> enabledCards = new List<CardImage>();
     private List<CardImage> disabledCards = new List<CardImage>();
     private List<Character> characterPile;
     private List<Character> discardedCharacters;
     private readonly System.Random rng = new System.Random();
 
-
-    public List<CardImage> EnabledCards { get => enabledCards; }
+    public List<CardImage> EnabledCards => enabledCards;
 
     [SerializeField] private GameObject drawPile;
     [SerializeField] private GameObject discardPile;
-    [SerializeField] private GameObject pileCardTemplate;
     [SerializeField] private GameObject playerTable;
     [SerializeField] private GameObject opponentTable;
-    //[SerializeField] private GameObject cardImageTemplate;
     [SerializeField] private GameObject cardImageCollection;
 
     private void Start()
@@ -34,38 +29,24 @@ public class CardManager : MonoBehaviour
         init.InitializeCharacters(out discardedCharacters);
         init.InitializeCardPile(discardPile);
         ShufflePile();
-        init.InitializeCardImages(cardImageCollection, out cardImages);
+        init.InitializeCardImages(cardImageCollection, out unassignedCards);
         Destroy(init);
     }
-
-    //public void AttachPile(GameObject drawPile, GameObject discardPile)
-    //{
-    //    if (this.drawPile == null) this.drawPile = drawPile;
-    //    else throw new Exception("Draw pile not empty for initialization.");
-    //    if (this.discardPile == null) this.discardPile = discardPile;
-    //    else throw new Exception("Discard pile not empty for initialization.");
-    //    //Debug.Log("Draw pile is now: " + drawPile.name);
-    //}
-
-    //public void LoadCharacters(List<Character> list)
-    //{
-    //    if (discardedCharacters == null) discardedCharacters = list;
-    //    else throw new Exception("Character list not empty for initialization.");
-    //}
 
     public void ShufflePile()
     {
         ShuffleDiscardPile();
     }
 
-    public void PullCards(Alignment align)
+    public bool PullCards(Alignment align)
     {
         Transform table = align == Alignment.Player ? playerTable.transform : opponentTable.transform;
         int cardsToPull = tableCapacity - enabledCards.Count;
         for (int i = cardsToPull; i > 0; i--)
         {
-            if (!PullCard(table)) break;
+            if (!PullCard(table)) return false;
         }
+        return true;
     }
 
     private bool PullCard(Transform table)
@@ -87,7 +68,7 @@ public class CardManager : MonoBehaviour
 
     private void AddCardToTable(Transform table, Character character)
     {
-        CardImage cardSubject = UnassignedCard();
+        CardImage cardSubject = unassignedCards[0];
         cardSubject.AssignCharacter(character);
         AddToTable(cardSubject, table);
     }
@@ -156,22 +137,25 @@ public class CardManager : MonoBehaviour
 
     public void RemoveFromTable(CardImage card)
     {
-        card.DisableCard();
+        card.SetBackupTable();
         SetCardObjectIdle(card.transform, cardImageCollection.transform);
+
         enabledCards.Remove(card);
+        unassignedCards.Add(card);
     }
 
     public void AddToTable(CardImage card, Transform table)
     {
         card.transform.SetParent(table, false);
         card.AssignTable();
+        unassignedCards.Remove(card);
         enabledCards.Add(card);
     }
 
-    public bool ArePilesEmpty()
-    {
-        return drawPile.transform.childCount == 0 && discardPile.transform.childCount == 0;
-    }
+    //public bool ArePilesEmpty() //TODO: Fix, exclude inactive cards!
+    //{
+    //    return drawPile.transform.childCount == 0 && discardPile.transform.childCount == 0;
+    //}
 
     private void SetCardObjectIdle(Transform card, Transform stack)
     {
@@ -180,7 +164,7 @@ public class CardManager : MonoBehaviour
 
     public void SwitchTable(Alignment alignment)
     {
-        Debug.Log("Switching table!");
+        //Debug.Log("Switching table!");
         ShowTable(alignment);
         SwapTable();
     }
@@ -209,12 +193,6 @@ public class CardManager : MonoBehaviour
         foreach (CardImage card in SelectedCards()) card.ChangePosition();
     }
 
-    private CardImage UnassignedCard()
-    {
-        foreach (CardImage card in cardImages) if (card.TableAssigned() == null) return card;
-        throw new Exception("Error in finding unassigned card!");
-    }
-        
     public List<CardImage> SelectedCards()
     {
         List<CardImage> selectedCards = new List<CardImage>();

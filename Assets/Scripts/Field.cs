@@ -5,19 +5,15 @@ using UnityEngine;
 
 public class Field : MonoBehaviour
 {
-    private FieldGrid fieldGrid;
+    private FieldGrid fg;
     private CardSprite occupantCard;
     private MeshRenderer meshRender;
-    private int[] coordinates = new int[2];
-    private FieldAlign align;
-    private FieldAlign Align
-    {
-        set
-        {
-            align = value;
-            UpdateMeshMaterial();
-        }
-    }
+    private readonly int[] coordinates = new int[2];
+    Alignment align;
+    //private FieldAlign align;
+
+    public FieldGrid Grid => fg;
+    public CardSprite OccupantCard => occupantCard;
 
     private void Awake()
     {
@@ -26,50 +22,30 @@ public class Field : MonoBehaviour
 
     private void Start()
     {
-        fieldGrid = GetComponentInParent<FieldGrid>();
+        fg = GetComponentInParent<FieldGrid>();
         ConvertField(Alignment.None);
-        //occupantCard = transform.GetChild(0).gameObject.GetComponent<CardSprite>();
-        InitiateCardSprite();
+    }
+
+    public void InstantiateCardSprite(GameObject prefab) // TODO: Change it!
+    {
+        occupantCard = Instantiate(prefab, transform).GetComponent<CardSprite>();
+        occupantCard.name = $"Card {GetX()}, {GetY()}"; //For debugging purposes.
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject == occupantCard.gameObject)
-        {
-            ConvertField(fieldGrid.Turn.CurrentAlignment);
-        }
-        else
-        {
-            Debug.Log(collision.gameObject);
-            throw new Exception("Field colliding not with card"); 
-        }
+        if (collision.gameObject == occupantCard.gameObject) UpdateMeshMaterial();
+        else throw new Exception($"Field colliding not with card {collision.gameObject}"); 
     }
 
     private void OnMouseDown()
     {
-        if (IsClickable())
-        {
-            align.HandleLeftClick(this);
-            //Debug.Log("Setting a card");
-        }
-    }
-
-    private bool IsClickable()
-    {
-        if (!Input.GetMouseButtonDown(0)) return false;
-        if (!fieldGrid.Turn.IsItPaymentTime() && occupantCard.CardManager.SelectedCard() == null) return false;
-        if (OccupantCard.IsLocked) return false;
-        return true;
-    }
-
-    private void InitiateCardSprite() // TODO: Change it!
-    {
-        occupantCard = Instantiate(fieldGrid.CardPrefab, transform).GetComponent<CardSprite>();
+        occupantCard.OnMouseDown();
     }
 
     private void UpdateMeshMaterial()
     {
-        meshRender.material = fieldGrid.GetMaterial(align.Side);
+        meshRender.material = fg.GetMaterial(align);
     }
 
     public void SetCoordinates(int x, int y)
@@ -88,59 +64,43 @@ public class Field : MonoBehaviour
         return coordinates[1];
     }
 
-    public CardSprite OccupantCard
+    public void TakeCard(CardSprite card)
     {
-        get => occupantCard;
-        set
-        {
-            occupantCard = value;
-            occupantCard.OccupiedField = this;
-            if (!value.gameObject.activeSelf) ConvertField(Alignment.None);
-            else ConvertField(fieldGrid.Turn.CurrentAlignment);
-        }
+        occupantCard = card;
+        occupantCard.OccupiedField = this;
+        if (!card.gameObject.activeSelf) ConvertField(Alignment.None);
+        else ConvertField(fg.Turn.CurrentAlignment);
     }
 
-    public int[] GetRelativeCoordinates(float angle = 0)
+    public int[] GetRelativeCoordinates(float angle = 0) // TODO: Merge
     {
-        int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
-        int cosinus = (int)Math.Round(Math.Cos(angle / 180 * Math.PI));
-        int[] relCoord = new int[2];
-        relCoord[0] = cosinus * coordinates[0] - sinus * coordinates[1];
-        relCoord[1] = sinus * coordinates[0] + cosinus * coordinates[1];
-        //Debug.Log("Angle:" + angle + "; X: " + relCoord[0] + "; Y: " + relCoord[1]);
-        return relCoord;
+        //int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
+        //int cosinus = (int)Math.Round(Math.Cos(angle / 180 * Math.PI));
+        //int[] relCoord = new int[2];
+        //relCoord[0] = cosinus * coordinates[0] - sinus * coordinates[1];
+        //relCoord[1] = sinus * coordinates[0] + cosinus * coordinates[1];
+        //Grid.GetRelativeField(coordinates[0], coordinates[1], angle)
+        return Grid.GetRelativeCoordinates(GetX(), GetY(), -angle);
     }
 
-    public void ConvertField(Alignment alignment)
+    public void ConvertField(Alignment alignment, bool colorize = true)
     {
-        switch (alignment)
-        {
-            case Alignment.None:
-                Align = new FieldAlign();
-                break;
-            case Alignment.Player:
-                Align = new PlayerField();
-                break;
-            case Alignment.Opponent:
-                Align = new OpponentField();
-                break;
-        }
+        align = alignment;
+        if (colorize) UpdateMeshMaterial();
     }
 
     public void PlayCard()
     {
-        occupantCard.ActivateCard();
+        occupantCard.TryToActivateCard();
     }
 
     public bool IsAligned(Alignment alignment)
     {
-        return align.IsAligned(alignment);
+        return align == alignment;
     }
-
 
     public bool IsOccupied()
     {
-        //Debug.Log("X=" + coordinates[0] + "; Y=" + coordinates[1] + "; isActive? " + occupantCard.gameObject.activeSelf);
         if (occupantCard.gameObject.activeSelf) return true;
         return false;
     }

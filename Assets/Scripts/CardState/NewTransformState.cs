@@ -4,9 +4,9 @@ using UnityEngine;
 
 internal class NewTransformState : CardState
 {
-    public override void InitiateState(CardSprite cardSprite)
+    public NewTransformState(CardSprite sprite) : base(sprite)
     {
-        card = cardSprite;
+
     }
 
     public override void HandleFieldCollision() { }
@@ -21,16 +21,13 @@ internal class NewTransformState : CardState
     public override CardState AdjustTransformChange(int buttonIndex)
     {
         card.CancelPayment();
-        return GoToNext();
-    }
-
-    public override CardState GoToNext()
-    {
-        return new ActiveState();
+        return new ActiveState(card);
     }
 
     public override bool IsForPaymentConfirmation()
     {
         return true;
     }
+
+    public override CardState SetActive => new ActiveState(card);
 }

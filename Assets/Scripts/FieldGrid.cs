@@ -8,14 +8,13 @@ public class FieldGrid : MonoBehaviour
     [SerializeField] private Material defaultMaterial;
     [SerializeField] private Material player;
     [SerializeField] private Material opponent;
-    [SerializeField] private GameObject cardPrefab;
 
     private Turn turn;
     //protected MeshRenderer mesh;
     private Field[] fields;
+    private DefaultTransform cardOnBoard;
 
-    public GameObject CardPrefab { get => cardPrefab; }
-    public Turn Turn { get => turn; }
+    public Turn Turn => turn;
 
     private void Awake()
     {
@@ -26,50 +25,29 @@ public class FieldGrid : MonoBehaviour
     {
         GridInitialization init = GetComponent<GridInitialization>();
         init.InitializeFields(out fields);
-        //init.InitializeFieldGrid();
-        //AttachFieldMechanic();
+        init.InitializeDefaultCardTransform(out cardOnBoard);
         Destroy(init);
     }
-
-    //public void AttachFields(Field[] fields)
-    //{
-    //    if (this.fields == null) this.fields = fields;
-    //}
-
-    //public void AttachTurn(Turn turn)
-    //{
-    //    if (this.turn == null) this.turn = turn;
-    //}
-
-    //private void AttachFieldMechanic()
-    //{
-    //    int index = 0;
-    //    int midColumn = (columns - 1) / 2;
-    //    int midRow = (rows - 1) / 2;
-    //    for (int i = 0; i < columns; i++)
-    //    {
-    //        for (int j = 0; j < rows; j++)
-    //        {
-    //            Transform fieldTransform = transform.GetChild(index);
-    //            //Debug.Log(fieldTransform.localPosition.x + ", " + fieldTransform.localPosition.y);
-    //            fields[i, j] = fieldTransform.gameObject.GetComponent<Field>();
-    //            fields[i, j].SetCoordinates(i - midColumn, midRow - j);
-    //            index++;
-    //        }
-    //    }
-    //}
 
     public Material GetMaterial(Alignment alignment)
     {
         switch (alignment)
         {
-            case Alignment.Player:
-                return player;
-            case Alignment.Opponent:
-                return opponent;
-            default:
-                return defaultMaterial;
+            case Alignment.Player: return player;
+            case Alignment.Opponent: return opponent;
+            default: return defaultMaterial;
         }
+    }
+
+    public void ResetCardTransform(Transform cardSprite)
+    {
+        cardSprite.localPosition = cardOnBoard.defaultPosition;
+        cardSprite.localRotation = cardOnBoard.defaultRotation;
+    }
+
+    public float GetDefaultAngle()
+    {
+        return cardOnBoard.defaultRotation.eulerAngles.z;
     }
 
     public void AttackNewStand(Field targetField)
@@ -79,7 +57,7 @@ public class FieldGrid : MonoBehaviour
         {
             if (field.IsAligned(Alignment.None)) continue;
             if (field.IsAligned(turn.CurrentAlignment)) continue;
-            if (field.OccupantCard.Character.Power > targetPower) field.OccupantCard.TryToAttack(targetField);
+            if (field.OccupantCard.Character.Power > targetPower) field.OccupantCard.TryToAttackTarget(targetField);
         }
     }
     
@@ -105,31 +83,32 @@ public class FieldGrid : MonoBehaviour
         AdjustCardButtons();
     }
 
-    public void LockInteractables()
+    public bool IsLocked()
     {
-        foreach (Field field in fields)
-        {
-            field.OccupantCard.Lock();
-        }
-        AdjustCardButtons();
+        return Turn.InteractableDisabled;
     }
 
-    public void UnlockInteractables()
-    {
-        foreach (Field field in fields)
-        {
-            field.OccupantCard.Unlock();
-        }
-        AdjustCardButtons();
-    }
+    //public void LockInteractables()
+    //{
+    //    foreach (Field field in fields)
+    //    {
+    //        field.OccupantCard.Lock();
+    //    }
+    //}
+
+    //public void UnlockInteractables()
+    //{
+    //    foreach (Field field in fields)
+    //    {
+    //        field.OccupantCard.Unlock();
+    //    }
+    //}
 
     public void DisableAllButtons()
     {
         foreach (Field field in fields)
         {
             if (!field.IsOccupied()) continue;
-            //Debug.Log("Field align: " + field.Align);
-            //Debug.Log("Current alignment: " + turn.CurrentAlignment);
             if (field.IsAligned(turn.CurrentAlignment))
                 field.OccupantCard.SetIdle();
         }
@@ -148,21 +127,27 @@ public class FieldGrid : MonoBehaviour
         return null;
     }
 
-
-    public Field GetRelativeField(int x, int y, float angle = 0)
+    public int[] GetRelativeCoordinates(int x, int y, float angle = 0)
     {
         int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
         int cosinus = (int)Math.Round(Math.Cos(angle / 180 * Math.PI));
-        int relativeX = cosinus * x + sinus * y;
-        int relativeY = cosinus * y - sinus * x;
-        return GetField(relativeX, relativeY);
+        int[] relCoord = new int[2];
+        relCoord[0] = cosinus * x + sinus * y;
+        relCoord[1] = cosinus * y - sinus * x;
+        return relCoord;
+    }
+
+    public Field GetRelativeField(int x, int y, float angle = 0) // TODO: Merge
+    {
+        int[] relCoord = GetRelativeCoordinates(x, y, angle);
+        return GetField(relCoord[0], relCoord[1]);
     }
 
     public void SwapCards(Field first, Field second)
     {
-        CardSprite tempCardSprite = first.OccupantCard;
-        first.OccupantCard = second.OccupantCard;
-        second.OccupantCard = tempCardSprite;
+        CardSprite tempCard = first.OccupantCard;
+        first.TakeCard(second.OccupantCard);
+        second.TakeCard(tempCard);
     }
 
     public List<Field> AlignedFields(Alignment alignment)

@@ -4,16 +4,12 @@ using UnityEngine;
 
 internal class NewCardState : CardState
 {
-    public override void InitiateState(CardSprite cardSprite)
+    public NewCardState(CardSprite sprite) : base(sprite)
     {
-        card = cardSprite;
-        card.gameObject.SetActive(true);
-        card.ImportFromCardImage();
-        card.UpdateHealthBar(card.Character.Health);
-        card.UpdateRelativeCoordinates();
-        card.CallPayment(card.Character.Power);
-        card.ApplyPhysics();
+        card.ActivateCard();
     }
+
+    public override CardState DeactivateCard() => new InactiveState(card);
 
     public override void HandleFieldCollision()
     {
@@ -31,9 +27,9 @@ internal class NewCardState : CardState
         card.DefendNewStand();
     }
 
-    public override CardState GoToNext()
+    public override CardState AdjustTransformChange(int buttonIndex)
     {
-        return new ActiveState();
+        return this;
     }
 
     public override void Cancel()
@@ -46,4 +42,6 @@ internal class NewCardState : CardState
     {
         return true;
     }
+
+    public override CardState SetActive => new ActiveState(card);
 }

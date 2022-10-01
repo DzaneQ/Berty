@@ -4,27 +4,23 @@ using UnityEngine;
 
 internal class AttackingState : CardState
 {
-    public override void InitiateState(CardSprite cardSprite)
+    public AttackingState(CardSprite sprite) : base(sprite)
     {
-        card = cardSprite;
         card.EnableNeutralButton(1);
     }
+
+    public override CardState DeactivateCard() => new InactiveState(card);
 
     public override void HandleClick()
     {
         Debug.Log("Attacking state go!");
-        card.ConfirmPayment(true);
+        card.ConfirmPayment();
     }
 
     public override void TakePaidAction()
     {
         Debug.Log("Attack!");
-        card.Attack();
-    }
-
-    public override CardState GoToNext()
-    {
-        return new ActiveState();
+        card.AttackWholeRange();
     }
 
     public override void Cancel()
@@ -36,4 +32,5 @@ internal class AttackingState : CardState
     {
         return true;
     }
+    public override CardState SetActive => new ActiveState(card);
 }

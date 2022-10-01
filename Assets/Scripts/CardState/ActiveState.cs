@@ -4,13 +4,15 @@ using UnityEngine;
 
 internal class ActiveState : CardState
 {
-    public override void InitiateState(CardSprite cardSprite)
+    public ActiveState(CardSprite sprite) : base(sprite)
     {
-        card = cardSprite;
         card.ShowDexterityButtons();
     }
 
-    public override void HandleFieldCollision() { }
+    public override void HandleFieldCollision()
+    {
+        card.ApplyPhysics(false);
+    }
 
     public override void HandleClick()
     {
@@ -21,11 +23,8 @@ internal class ActiveState : CardState
     {
         card.CallPayment(6 - card.Character.Dexterity);
         card.EnableNeutralButton(buttonIndex);
-        return new NewTransformState();
+        return new NewTransformState(card);
     }
 
-    public override CardState GoToNext()
-    {
-        return new IdleState();
-    }
+    public override CardState SetIdle => new IdleState(card);
 }

@@ -4,24 +4,22 @@ using UnityEngine;
 
 public class UnselectedCard : SelectStatus
 {
-    public UnselectedCard(CardImage cardImage) : base(cardImage)
+    public UnselectedCard(RectTransform transform) : base(transform)
     {
-
+        //Debug.Log("Unselecting card: " + card.gameObject.name);
     }
 
-    public override SelectStatus ChangePosition()
+    public override SelectStatus ChangePosition(bool canSelect)
     {
-        //Debug.Log("Attempting to select.");
-        if (card.CanSelect())
-        {
-            card.SelectPosition();
-            return new SelectedCard(card);
-        }
-        return this;
+        if (!canSelect) return this;
+        return new SelectedCard(card);
+        
     }
 
-    override public bool IsCardSelected()
-    {
-        return false;
-    }
+    public override bool IsCardSelected => false;
+
+    //public override SelectStatus SetUnselected(Transform cardTransform)
+    //{
+    //    return this;
+    //}
 }
