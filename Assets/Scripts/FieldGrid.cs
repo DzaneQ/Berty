@@ -52,25 +52,21 @@ public class FieldGrid : MonoBehaviour
 
     public void AttackNewStand(Field targetField)
     {
-        int targetPower = targetField.OccupantCard.Character.Power;
+        int targetPower = targetField.OccupantCard.CardStatus.Power;
         foreach (Field field in fields)
         {
             if (field.IsAligned(Alignment.None)) continue;
             if (field.IsAligned(turn.CurrentAlignment)) continue;
-            if (field.OccupantCard.Character.Power > targetPower) field.OccupantCard.TryToAttackTarget(targetField);
+            if (field.OccupantCard.CardStatus.Power > targetPower) field.OccupantCard.TryToAttackTarget(targetField);
         }
     }
     
 
     public void AdjustCardButtons()
     {
-        //Debug.Log("Adjusting cards...");
         foreach (Field field in fields)
         {
-            //Debug.Log("Checking field: x=" + field.GetX() + "; y= " + field.GetY());
             if (field.IsAligned(Alignment.None)) continue;
-            //Debug.Log("IsPlayerTurn? " + isPlayerTurn);
-            //Debug.Log("IsPlayerField? " + field.IsPlayerField());
             if (field.IsAligned(turn.CurrentAlignment))
                 field.OccupantCard.SetActive();
             else field.OccupantCard.SetIdle();
@@ -79,7 +75,12 @@ public class FieldGrid : MonoBehaviour
 
     public void AdjustNewTurn()
     {
-        foreach (Field field in fields) field.OccupantCard.ResetAttack();
+        foreach (Field field in fields)
+        {
+            if (!field.IsAligned(turn.CurrentAlignment)) continue;
+            field.OccupantCard.ResetAttack();
+            field.OccupantCard.RegenerateDexterity();
+        }
         AdjustCardButtons();
     }
 
@@ -87,22 +88,6 @@ public class FieldGrid : MonoBehaviour
     {
         return Turn.InteractableDisabled;
     }
-
-    //public void LockInteractables()
-    //{
-    //    foreach (Field field in fields)
-    //    {
-    //        field.OccupantCard.Lock();
-    //    }
-    //}
-
-    //public void UnlockInteractables()
-    //{
-    //    foreach (Field field in fields)
-    //    {
-    //        field.OccupantCard.Unlock();
-    //    }
-    //}
 
     public void DisableAllButtons()
     {
@@ -192,7 +177,7 @@ public class FieldGrid : MonoBehaviour
         foreach (Field enemyField in AlignedFields(enemy))
         {
             CardSprite enemyCard = enemyField.OccupantCard;
-            if (enemyCard.CanAttack(field)) heat += enemyCard.Character.Strength;
+            if (enemyCard.CanAttackField(field)) heat += enemyCard.CardStatus.Strength;
         }
         return heat;
     }

@@ -9,7 +9,6 @@ internal class InactiveState : CardState
         card.gameObject.SetActive(false);
         card.DisableButtons();
         card.SetCardToDefaultTransform();
-        card.ResetAttack();
     }
 
     public override CardState ActivateCard()

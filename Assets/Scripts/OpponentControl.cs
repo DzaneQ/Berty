@@ -52,7 +52,7 @@ public class OpponentControl : MonoBehaviour
         {
             Debug.Log("Attack!");
             attackingCard.PrepareToAttack();
-            Pay(attackingCard, 6 - attackingCard.Character.Dexterity);
+            Pay(attackingCard, 6 - attackingCard.CardStatus.Dexterity);
             isSuccessful = true;
         }
         else isSuccessful = false;
@@ -65,9 +65,9 @@ public class OpponentControl : MonoBehaviour
         foreach (Field field in fg.AlignedFields(Alignment.Opponent))
         {
             CardSprite card = field.OccupantCard;
-            if (card.HasAttacked) continue;
-            if (cm.EnabledCards.Count < 6 - card.Character.Dexterity) continue;
-            int efficiency = Efficiency(card, card.Character.Strength);
+            if (!card.CanCharacterAttack()) continue;
+            if (cm.EnabledCards.Count < 6 - card.CardStatus.Dexterity) continue;
+            int efficiency = Efficiency(card, card.CardStatus.Strength);
             if (efficiency <= highestEfficiency) continue;
             highestEfficiency = efficiency;
             bestCard = card;
@@ -160,17 +160,17 @@ public class OpponentControl : MonoBehaviour
         int efficiency = 0;
         foreach (Field field in fg.AlignedFields(Alignment.None))
         {
-            if (card.CanAttack(field)) efficiency += neutralWeight;
+            if (card.CanAttackField(field)) efficiency += neutralWeight;
             //if (card.CanAttack(field)) Debug.Log("Adding " + neutralWeight + " cause neutral: " + field.GetX() + "," + field.GetY());
         }
         foreach (Field field in fg.AlignedFields(Alignment.Player))
         {
-            if (card.CanAttack(field)) efficiency += alignedWeight;
+            if (card.CanAttackField(field)) efficiency += alignedWeight;
             //if (card.CanAttack(field)) Debug.Log("Adding " + alignedWeight + " cause not ally: " + field.GetX() + "," + field.GetY());
         }
         foreach (Field field in fg.AlignedFields(Alignment.Opponent))
         {
-            if (card.CanAttack(field)) efficiency -= alignedWeight;
+            if (card.CanAttackField(field)) efficiency -= alignedWeight;
             //if (card.CanAttack(field)) Debug.Log("Substracting " + alignedWeight + " cause ally: " + field.GetX() + "," + field.GetY());
         }
         return efficiency;

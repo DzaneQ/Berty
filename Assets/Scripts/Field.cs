@@ -14,6 +14,7 @@ public class Field : MonoBehaviour
 
     public FieldGrid Grid => fg;
     public CardSprite OccupantCard => occupantCard;
+    public Alignment Align => align;
 
     private void Awake()
     {
@@ -29,7 +30,7 @@ public class Field : MonoBehaviour
     public void InstantiateCardSprite(GameObject prefab) // TODO: Change it!
     {
         occupantCard = Instantiate(prefab, transform).GetComponent<CardSprite>();
-        occupantCard.name = $"Card {GetX()}, {GetY()}"; //For debugging purposes.
+        occupantCard.name = $"Card ({GetX()}, {GetY()})"; //For debugging purposes.
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -67,7 +68,7 @@ public class Field : MonoBehaviour
     public void TakeCard(CardSprite card)
     {
         occupantCard = card;
-        occupantCard.OccupiedField = this;
+        occupantCard.SetField(this);
         if (!card.gameObject.activeSelf) ConvertField(Alignment.None);
         else ConvertField(fg.Turn.CurrentAlignment);
     }
@@ -103,5 +104,12 @@ public class Field : MonoBehaviour
     {
         if (occupantCard.gameObject.activeSelf) return true;
         return false;
+    }
+
+    public void GoToOppositeSide()
+    {
+        if (align == Alignment.Player) ConvertField(Alignment.Opponent);
+        else if (align == Alignment.Opponent) ConvertField(Alignment.Opponent);
+        else throw new Exception($"Can't switch sides for field {name}");
     }
 }

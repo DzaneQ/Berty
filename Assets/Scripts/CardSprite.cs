@@ -9,17 +9,18 @@ public class CardSprite : MonoBehaviour
     private Field occupiedField;
     private CardManager cardManager;
     private CardButton[] cardButton;
-    private Transform healthBar;
+    private Transform[] bars;
     private CardImage imageReference;
     private int[] relCoord = new int[2];
     private Rigidbody cardRB;
     private SpriteRenderer spriteRenderer;
     private Character character;
     private CardState state;
-    private bool hasAttacked;
+    private CharacterStat cardStatus;
 
     private Turn Turn => Grid.Turn;
     public FieldGrid Grid => occupiedField.Grid;
+    public CharacterStat CardStatus => cardStatus;
     public Character Character
     {
         get => character;
@@ -29,7 +30,6 @@ public class CardSprite : MonoBehaviour
             spriteRenderer.sprite = imageReference.Sprite;
         }
     }
-    public bool HasAttacked => hasAttacked;
 
     /* CardSprite children in Hierarchy tab must be in the following order:
         0 - Confirm
@@ -50,11 +50,10 @@ public class CardSprite : MonoBehaviour
     private void Start()
     {
         cardManager = GameObject.Find("EventSystem").GetComponent<CardManager>();
-        healthBar = transform.GetChild(8).transform.GetChild(1); 
+        InitializeBars();
         cardButton = transform.GetComponentsInChildren<CardButton>();
         occupiedField = transform.GetComponentInParent<Field>();
         state = new InactiveState(this);
-        ResetAttack();
         InitializeRigidbody();
     }
 
@@ -74,6 +73,12 @@ public class CardSprite : MonoBehaviour
         else return false;
     }
 
+    private void InitializeBars()
+    {
+        bars = new Transform[4];
+        for (int i = 0; i < bars.Length; i++) bars[i] = transform.GetChild(8).transform.GetChild(i+1);
+    }
+
     private void InitializeRigidbody()
     {
         cardRB = GetComponent<Rigidbody>();
@@ -90,9 +95,9 @@ public class CardSprite : MonoBehaviour
     {
         gameObject.SetActive(true);
         ImportFromCardImage();
-        UpdateHealthBar(Character.Health);
+        UpdateBars();
         UpdateRelativeCoordinates();
-        CallPayment(Character.Power);
+        CallPayment(cardStatus.Power);
         occupiedField.ConvertField(Turn.CurrentAlignment, false);
         ApplyPhysics();
     }
@@ -110,7 +115,12 @@ public class CardSprite : MonoBehaviour
 
     public void ResetAttack()
     {
-        hasAttacked = false;
+        cardStatus.hasAttacked = false;
+    }
+
+    public bool CanCharacterAttack()
+    {
+        return cardStatus.Strength > 0 && !cardStatus.hasAttacked;
     }
 
     private void DeactivateCard()
@@ -125,19 +135,16 @@ public class CardSprite : MonoBehaviour
         Grid.ResetCardTransform(transform);
     }
 
-    public Field OccupiedField 
+    public void SetField(Field field)
     {
-        set
-        {
-            occupiedField = value;
-            transform.SetParent(value.transform, false);
-        } 
+        occupiedField = field;
+        transform.SetParent(field.transform, false);
     }
 
     public void SetActive()
     {
         //Debug.Log($"Set active for card on field: {occupiedField.GetX()}, {occupiedField.GetY()}");
-        state = state.SetActive;
+        if (!cardStatus.isTired) state = state.SetActive;
     }
 
     public void SetIdle()
@@ -182,12 +189,12 @@ public class CardSprite : MonoBehaviour
 
     public void PrepareToAttack()
     {
-        if (hasAttacked) return;
-        CallPayment(6 - Character.Dexterity);
+        if (!CanCharacterAttack()) return;
+        CallPayment(6 - cardStatus.Dexterity);
         state = new AttackingState(this);
     }
 
-    public bool CanAttack(Field targetField)
+    public bool CanAttackField(Field targetField)
     {
         if (targetField == null) return false;
         foreach (int[] distance in Character.AttackRange)
@@ -201,48 +208,127 @@ public class CardSprite : MonoBehaviour
     public void TryToAttackTarget(Field targetField)
     {
         Debug.Log("Seeing attack on field - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
-        if (CanAttack(targetField)) targetField.OccupantCard.TakeDamage(Character.Strength, targetField);
+        if (CanAttackField(targetField)) targetField.OccupantCard.TakeDamage(cardStatus.Strength, targetField);
     }
 
     public void AttackWholeRange()
     {
-        hasAttacked = true;
+        cardStatus.hasAttacked = true;
+        bool successfulAttack = false;
         foreach (int[] distance in Character.AttackRange)
         {
             int[] target = { relCoord[0] + distance[0], relCoord[1] + distance[1] };
             Field targetField = GetRelativeField(target[0], target[1]);
-            if (targetField != null) targetField.OccupantCard.TakeDamage(Character.Strength, occupiedField);
-            if (targetField != null) Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
+            if (targetField == null || !targetField.IsOccupied()) continue;
+            if (targetField.OccupantCard.TakeDamage(cardStatus.Strength, occupiedField)) successfulAttack = true;
+            Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
         }
+        if (successfulAttack) Character.SkillOnSuccessfulAttack(this);
     }
 
-    public void TakeDamage(int damage, Field source)
+    public bool TakeDamage(int damage, Field source)
     {
         Debug.Log("Damage on field - X: " + occupiedField.GetX() + "; Y: " + occupiedField.GetY());
-        if (!gameObject.activeSelf) return;
+        if (!gameObject.activeSelf) throw new Exception("This card shouldn't be attacked!");
         int[] srcRel = source.GetRelativeCoordinates(GetRelativeAngle());
         int[] srcDistance = { srcRel[0] - relCoord[0], srcRel[1] - relCoord[1] };
-        Debug.Log("Character health: " + Character.Health);
-        if (!Character.CanBlock(srcDistance)) Character.TakeDamage(damage);
-        if (Character.CanRiposte(srcDistance)) source.OccupantCard.TakeDamage(Character.Strength, source);
-        Debug.Log("Damage taken: " + damage + "; Remaining HP: " + Character.Health);
-        if (Character.IsDead()) DeactivateCard();
-        else UpdateHealthBar(Character.Health);
+        Debug.Log("Character health: " + CardStatus.Health);
+        if (Character.CanRiposte(srcDistance)) source.OccupantCard.TakeDamage(cardStatus.Strength, source);
+        if (Character.CanBlock(srcDistance)) return false;
+        AdvanceHealth(-damage);
+        Debug.Log($"{damage} damage taken for card {name}. Remaining HP: {cardStatus.Health}");
+        return true;
     }
 
-    public void UpdateHealthBar(int health)
+    public void AdvanceStrength(int value)
     {
-        float unitScale = 2.67f;
-        float positionX0Unit = -6.5f;
-        float positionX6Unit = 1.4f;
-        float currentX = (positionX6Unit - positionX0Unit) / 6 * health + positionX0Unit;
-        healthBar.localPosition = new Vector3(currentX, healthBar.localPosition.y, healthBar.localPosition.z);
-        healthBar.localScale = new Vector3(unitScale * health, healthBar.localScale.y, healthBar.localScale.z);
+        cardStatus.Strength += value;
+        UpdateBar(0);
     }
 
-    public void DefendNewStand()
+    public void AdvancePower(int value)
+    {
+        cardStatus.Power += value;
+        if (cardStatus.Power <= 0) SwitchSides();
+        UpdateBar(1);
+    }
+
+    private void SwitchSides()
+    {
+        occupiedField.GoToOppositeSide();
+        cardStatus.Power = Character.Power;
+        if (occupiedField.IsAligned(Turn.CurrentAlignment)) SetActive();
+        else SetIdle();
+    }
+
+    public void AdvanceDexterity(int value)
+    {
+        cardStatus.Dexterity += value;
+        if (cardStatus.Dexterity <= 0) cardStatus.isTired = true;
+        if (cardStatus.Dexterity >= Character.Dexterity) cardStatus.isTired = false;
+        UpdateBar(2);
+    }
+
+    public void RegenerateDexterity()
+    {
+        if (!CardStatus.isTired) return;
+        AdvanceDexterity(1);
+    }
+
+    public void AdvanceHealth(int value)
+    {
+        cardStatus.Health += value;
+        if (IsDead()) DeactivateCard();
+        UpdateBar(3);
+    }
+
+    private bool IsDead()
+    {
+        return cardStatus.Health <= 0;
+    }
+
+    public bool IsAllied(Field targetField)
+    {
+        return targetField.IsAligned(occupiedField.Align);
+    }    
+
+    private void UpdateBars()
+    {
+        for (int i = 0; i < bars.Length; i++) UpdateBar(i);
+    }
+
+    private void UpdateBar(int index)
+    {
+        int barValue = 0;
+        switch (index)
+        {
+            case 0:
+                barValue = cardStatus.Strength;
+                break;
+            case 1:
+                barValue = cardStatus.Power;
+                break;
+            case 2:
+                barValue = cardStatus.Dexterity;
+                break;
+            case 3:
+                barValue = cardStatus.Health;
+                break;
+            default:
+                throw new IndexOutOfRangeException($"Updating bar of index {index}.");
+        }
+        float unitScale = 15.9f / 6f;
+        float positionX0Unit = 3.04f;
+        float positionX6Unit = 11.05f;
+        float currentX = (positionX6Unit - positionX0Unit) / 6 * barValue + positionX0Unit;
+        bars[index].localPosition = new Vector3(currentX, bars[index].localPosition.y, bars[index].localPosition.z);
+        bars[index].localScale = new Vector3(unitScale * barValue, bars[index].localScale.y, bars[index].localScale.z);
+    }
+
+    public void ConfirmNewCard()
     {
         Grid.AttackNewStand(occupiedField);
+        Character.SkillOnNewCard(this);
     }
 
     public void EnableNeutralButton(int index)
@@ -277,7 +363,7 @@ public class CardSprite : MonoBehaviour
         UpdateMoveButtons();
     }
 
-    private Field GetAdjacentField(float angle)
+    public Field GetAdjacentField(float angle)
     {
         int targetX = (int)Math.Round(relCoord[0] + Math.Sin(angle * Math.PI / 180));
         int targetY = (int)Math.Round(relCoord[1] + Math.Cos(angle * Math.PI / 180));
@@ -316,6 +402,7 @@ public class CardSprite : MonoBehaviour
     {
         imageReference = cardManager.SelectedCard();
         Character = imageReference.Character;
+        cardStatus = new CharacterStat(Character);
         cardManager.RemoveFromTable(imageReference);
     }
 

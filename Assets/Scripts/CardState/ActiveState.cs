@@ -21,7 +21,7 @@ internal class ActiveState : CardState
 
     public override CardState AdjustTransformChange(int buttonIndex)
     {
-        card.CallPayment(6 - card.Character.Dexterity);
+        card.CallPayment(6 - card.CardStatus.Dexterity);
         card.EnableNeutralButton(buttonIndex);
         return new NewTransformState(card);
     }

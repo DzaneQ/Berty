@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -57,26 +58,10 @@ public abstract class Character
     }
     protected void AddRange(int relativeX, int relativeY, List<int[]> range)
     {
-        //if (relativeCoordinate.Length != 2) throw new System.Exception("Wrong dimension of coordinates.");
-        //if (range.Contains(relativeCoordinate)) throw new System.Exception("Duplicate coordinates.");
-        //int[] coordinate = new int[2];
         int[] coordinate = { relativeX, relativeY };
-        //coordinate[0] = relativeX;
-        //coordinate[1] = relativeY;
         if (relativeX == 0 && relativeY == 0) throw new System.Exception("Attempt to target self as a range.");
         if (range.Contains(coordinate)) throw new System.Exception("Duplicate coordinates.");
         range.Add(coordinate);
-    }
-
-    public void TakeDamage(int damage)
-    {
-        health -= damage;
-    }
-
-    public bool IsDead()
-    {
-        if (health <= 0) return true;
-        return false;
     }
 
     private bool AreCoordinatesEqual(int[] first, int[] second)
@@ -88,4 +73,8 @@ public abstract class Character
         }
         return true;
     }
+
+    public virtual void SkillOnSuccessfulAttack(CardSprite card) { }
+
+    public virtual void SkillOnNewCard(CardSprite card) { }
 }

@@ -24,7 +24,8 @@ internal class NewCardState : CardState
 
     public override void TakePaidAction()
     {
-        card.DefendNewStand();
+        card.ConfirmNewCard();
+        card.ResetAttack();
     }
 
     public override CardState AdjustTransformChange(int buttonIndex)
