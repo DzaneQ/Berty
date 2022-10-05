@@ -20,7 +20,13 @@ internal class AttackingState : CardState
     public override void TakePaidAction()
     {
         Debug.Log("Attack!");
-        card.AttackWholeRange();
+        card.OrderAttack();
+    }
+
+    public override CardState AdjustTransformChange(int buttonIndex)
+    {
+        Debug.Log($"{card} makes a swap!");
+        return this;
     }
 
     public override void Cancel()
@@ -28,9 +34,7 @@ internal class AttackingState : CardState
         card.CancelPayment();
     }
 
-    public override bool IsForPaymentConfirmation()
-    {
-        return true;
-    }
+    public override bool IsForPaymentConfirmation() => true;
+
     public override CardState SetActive => new ActiveState(card);
 }

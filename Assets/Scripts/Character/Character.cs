@@ -74,7 +74,9 @@ public abstract class Character
         return true;
     }
 
-    public virtual void SkillOnSuccessfulAttack(CardSprite card) { }
+    public virtual void SkillOnSuccessfulAttack(CardSprite cardSprite) { }
 
-    public virtual void SkillOnNewCard(CardSprite card) { }
+    public virtual void SkillOnNewCard(CardSprite cardSprite) { }
+
+    public virtual bool SkillSpecialAttack(CardSprite cardSprite) => false;
 }

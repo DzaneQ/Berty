@@ -77,6 +77,8 @@ public class FieldGrid : MonoBehaviour
     {
         foreach (Field field in fields)
         {
+            //if (field.IsAligned(Alignment.None)) continue;
+            //field.OccupantCard.Character.CastGlobalEvent(field.OccupantCard);
             if (!field.IsAligned(turn.CurrentAlignment)) continue;
             field.OccupantCard.ResetAttack();
             field.OccupantCard.RegenerateDexterity();
@@ -131,8 +133,11 @@ public class FieldGrid : MonoBehaviour
     public void SwapCards(Field first, Field second)
     {
         CardSprite tempCard = first.OccupantCard;
+        Alignment tempAlign = first.Align;
         first.TakeCard(second.OccupantCard);
+        first.ConvertField(second.Align);
         second.TakeCard(tempCard);
+        second.ConvertField(tempAlign);
     }
 
     public List<Field> AlignedFields(Alignment alignment)

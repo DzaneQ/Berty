@@ -18,6 +18,7 @@ public class CardSprite : MonoBehaviour
     private CardState state;
     private CharacterStat cardStatus;
 
+    public Field OccupiedField => occupiedField;
     private Turn Turn => Grid.Turn;
     public FieldGrid Grid => occupiedField.Grid;
     public CharacterStat CardStatus => cardStatus;
@@ -139,6 +140,7 @@ public class CardSprite : MonoBehaviour
     {
         occupiedField = field;
         transform.SetParent(field.transform, false);
+        UpdateRelativeCoordinates();
     }
 
     public void SetActive()
@@ -163,12 +165,10 @@ public class CardSprite : MonoBehaviour
     {
         if (!Turn.IsItPaymentTime()) throw new Exception("Confirming payment when not in payment mode.");
         if (!state.IsForPaymentConfirmation()) throw new Exception("Wrong card state for payment..");
-        if (Turn.CheckOffer())
-        {
-            cardManager.DiscardCards();
-            state.TakePaidAction();
-            Turn.UnsetPayment();
-        }
+        if (!Turn.CheckOffer()) return;
+        cardManager.DiscardCards();
+        state.TakePaidAction();
+        Turn.UnsetPayment();
     }
 
     public void CancelPayment()
@@ -211,14 +211,16 @@ public class CardSprite : MonoBehaviour
         if (CanAttackField(targetField)) targetField.OccupantCard.TakeDamage(cardStatus.Strength, targetField);
     }
 
-    public void AttackWholeRange()
+    public void OrderAttack()
     {
         cardStatus.hasAttacked = true;
+        if (Character.SkillSpecialAttack(this)) return;
         bool successfulAttack = false;
         foreach (int[] distance in Character.AttackRange)
         {
-            int[] target = { relCoord[0] + distance[0], relCoord[1] + distance[1] };
-            Field targetField = GetRelativeField(target[0], target[1]);
+            //int[] target = { relCoord[0] + distance[0], relCoord[1] + distance[1] };
+            //Field targetField = GetRelativeField(target[0], target[1]);
+            Field targetField = GetTargetField(distance);
             if (targetField == null || !targetField.IsOccupied()) continue;
             if (targetField.OccupantCard.TakeDamage(cardStatus.Strength, occupiedField)) successfulAttack = true;
             Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
@@ -386,7 +388,7 @@ public class CardSprite : MonoBehaviour
         int returnButtonIndex = ((angle / 90 + 2) % 4) + 4;
         Field toField = GetAdjacentField(angle);
         Grid.SwapCards(occupiedField, toField);
-        UpdateRelativeCoordinates();
+        //UpdateRelativeCoordinates();
         state = state.AdjustTransformChange(returnButtonIndex);
     }
 
@@ -396,6 +398,14 @@ public class CardSprite : MonoBehaviour
         transform.Rotate(0, 0, -angle);
         UpdateRelativeCoordinates();
         state = state.AdjustTransformChange(returnButtonIndex);
+    }
+
+    public void SwapWith(Field targetField)
+    {
+        if (!targetField.IsOccupied()) throw new Exception($"Target field {targetField.name} not occupied!");
+        RotateCard(180);
+        targetField.OccupantCard.RotateCard(180);
+        Grid.SwapCards(occupiedField, targetField);
     }
 
     public void ImportFromCardImage()
@@ -414,6 +424,12 @@ public class CardSprite : MonoBehaviour
     private Field GetRelativeField(int targetX, int targetY)
     {
         return Grid.GetRelativeField(targetX, targetY, GetRelativeAngle());
+    }
+
+    public Field GetTargetField(int[] distance)
+    {
+        if (distance.Length > 2) throw new IndexOutOfRangeException("Wrong distance argument.");
+        return GetRelativeField(distance[0] + relCoord[0], distance[1] + relCoord[1]);
     }
 
     public void UpdateRelativeCoordinates()

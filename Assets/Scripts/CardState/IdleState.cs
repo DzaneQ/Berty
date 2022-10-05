@@ -18,6 +18,8 @@ internal class IdleState : CardState
 
     public override void HandleClick() { }
 
+    public override CardState AdjustTransformChange(int buttonIndex) => this;
+
     public override CardState SetActive => new ActiveState(card);
 
     public override CardState SetIdle => this;

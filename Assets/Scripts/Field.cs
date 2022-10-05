@@ -10,7 +10,6 @@ public class Field : MonoBehaviour
     private MeshRenderer meshRender;
     private readonly int[] coordinates = new int[2];
     Alignment align;
-    //private FieldAlign align;
 
     public FieldGrid Grid => fg;
     public CardSprite OccupantCard => occupantCard;
@@ -69,8 +68,6 @@ public class Field : MonoBehaviour
     {
         occupantCard = card;
         occupantCard.SetField(this);
-        if (!card.gameObject.activeSelf) ConvertField(Alignment.None);
-        else ConvertField(fg.Turn.CurrentAlignment);
     }
 
     public int[] GetRelativeCoordinates(float angle = 0) // TODO: Merge
