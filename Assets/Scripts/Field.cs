@@ -99,14 +99,15 @@ public class Field : MonoBehaviour
 
     public bool IsOccupied()
     {
-        if (occupantCard.gameObject.activeSelf) return true;
+        if (align != Alignment.None) return true;
+        //if (occupantCard.gameObject.activeSelf) return true;
         return false;
     }
 
     public void GoToOppositeSide()
     {
         if (align == Alignment.Player) ConvertField(Alignment.Opponent);
-        else if (align == Alignment.Opponent) ConvertField(Alignment.Opponent);
+        else if (align == Alignment.Opponent) ConvertField(Alignment.Player);
         else throw new Exception($"Can't switch sides for field {name}");
     }
 }

@@ -1,6 +1,6 @@
 public enum Alignment
 {
+    None,
     Player,
-    Opponent,
-    None
+    Opponent
 }

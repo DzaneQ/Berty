@@ -79,4 +79,25 @@ public abstract class Character
     public virtual void SkillOnNewCard(CardSprite cardSprite) { }
 
     public virtual bool SkillSpecialAttack(CardSprite cardSprite) => false;
+
+    public virtual void SkillGlobalEvent(CardSprite cardSprite) { }
+
+    public virtual void SkillAdjustPowerChange(CardSprite cardSprite, int value) { }
+
+    public virtual void SkillAdjustDexterityChange(CardSprite cardSprite, int value) { }
+
+    public virtual void SkillAdjustHealthChange(CardSprite cardSprite, int value) { }
+
+    public virtual void SkillOnAttack(CardSprite cardSprite) { }
+
+    public virtual void SkillOnMove(CardSprite cardSprite) { }
+
+    public virtual void SkillOnOtherCardDeath(CardSprite cardSprite, CardSprite source) { }
+
+    public virtual int SkillDefenceModifier(int damage, CardSprite attacker) => damage;
+
+    public virtual void SkillOnNeighbor(CardSprite cardSprite, CardSprite target) { }
+
+    public virtual int SkillAttackModifier(int damage, CardSprite target) => damage;
+
 }

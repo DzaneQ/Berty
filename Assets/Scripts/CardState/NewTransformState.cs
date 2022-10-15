@@ -4,9 +4,17 @@ using UnityEngine;
 
 internal class NewTransformState : CardState
 {
-    public NewTransformState(CardSprite sprite) : base(sprite)
-    {
+    private int displayedButtonIndex;
 
+    //public NewTransformState(CardSprite sprite) : base(sprite)
+    //{
+
+    //}
+
+    public NewTransformState(CardSprite sprite, int buttonIndex) : base(sprite)
+    {
+        displayedButtonIndex = buttonIndex;
+        card.EnableNeutralButton(buttonIndex);
     }
 
     public override void HandleFieldCollision() { }
@@ -16,7 +24,10 @@ internal class NewTransformState : CardState
         card.ConfirmPayment();
     }
 
-    public override void TakePaidAction() { }
+    public override void TakePaidAction()
+    {
+        if (IsMoving()) card.ConfirmMove();
+    }
 
     public override CardState AdjustTransformChange(int buttonIndex)
     {
@@ -30,4 +41,10 @@ internal class NewTransformState : CardState
     }
 
     public override CardState SetActive => new ActiveState(card);
+
+    private bool IsMoving()
+    {
+        if (4 <= displayedButtonIndex && displayedButtonIndex <= 7) return true;
+        return false;
+    }
 }

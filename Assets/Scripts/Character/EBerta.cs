@@ -1,4 +1,6 @@
-﻿public class EBerta : Character
+﻿using System.Linq;
+
+public class EBerta : Character
 {
     public EBerta()
     {
@@ -13,5 +15,21 @@
         AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         AddRange(-1, 1, riposteRange);
+    }
+
+    public override void SkillOnNewCard(CardSprite card)
+    {
+        foreach (CardSprite adjCard in card.GetAdjacentCards()) SkillOnNeighbor(card, adjCard);
+    }
+
+    public override void SkillOnNeighbor(CardSprite card, CardSprite target)
+    {
+        if (!card.IsAllied(target.OccupiedField)) return;
+        int[] stats = { target.CardStatus.Strength, target.CardStatus.Power, target.CardStatus.Dexterity, target.CardStatus.Health };
+        int minStat = stats.Min();
+        if (minStat == stats[0]) target.AdvanceStrength(1);
+        if (minStat == stats[1]) target.AdvancePower(1);
+        if (minStat == stats[2]) target.AdvanceDexterity(1);
+        if (minStat == stats[3]) target.AdvanceHealth(1);
     }
 }

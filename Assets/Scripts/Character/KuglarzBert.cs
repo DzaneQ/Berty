@@ -23,11 +23,11 @@
 
     public override void SkillOnNewCard(CardSprite card)
     {
-        for (int i = 0; i < 4; i++)
-        {
-            Field targetField = card.GetAdjacentField(i * 90);
-            if (targetField == null || !card.IsAllied(targetField)) continue;
-            targetField.OccupantCard.AdvancePower(1);
-        }    
+        foreach (CardSprite adjCard in card.GetAdjacentCards()) SkillOnNeighbor(card, adjCard);   
+    }
+
+    public override void SkillOnNeighbor(CardSprite card, CardSprite target)
+    {
+        if (card.IsAllied(target.OccupiedField)) target.AdvancePower(1);
     }
 }

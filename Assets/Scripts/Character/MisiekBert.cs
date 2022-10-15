@@ -17,4 +17,13 @@ public class MisiekBert : Character
         AddRange(-1, 1, riposteRange);
 
     }
+
+    public override void SkillOnNewCard(CardSprite card)
+    {
+        foreach (CardSprite adjCard in card.GetAdjacentCards()) adjCard.RotateCard(270);  
+    }
+
+    public override void SkillOnAttack(CardSprite card) => SkillOnNewCard(card);
+
+    public override void SkillOnMove(CardSprite card) => SkillOnNewCard(card);
 }

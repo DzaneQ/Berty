@@ -14,4 +14,14 @@
         AddRange(-1, 0, riposteRange);
         AddRange(-1, 1, riposteRange);
     }
+
+    public override void SkillGlobalEvent(CardSprite card)
+    {
+        if (!card.OccupiedField.IsAligned(card.Grid.Turn.CurrentAlignment)) return;
+        foreach (Field field in card.Grid.Fields)
+        {
+            if (!field.IsOccupied() || field.IsAligned(card.OccupiedField.Align)) continue;
+            field.OccupantCard.AdvancePower(-2);
+        }
+    }
 }

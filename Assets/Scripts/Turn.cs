@@ -35,6 +35,9 @@ public partial class Turn : MonoBehaviour
         get => currentAlign;
         private set
         {
+            if (value == Alignment.None) return;
+            if (value == currentAlign) throw new Exception("Switching to the same alignment."); 
+            fg.DisableAllButtons();
             currentAlign = value;
             cm.SwitchTable(value);
             if (value == Alignment.Player) EnableInteractions();
@@ -104,7 +107,7 @@ public partial class Turn : MonoBehaviour
         ShowEndTurnButton(!IsItPaymentTime());
         if (IsItPaymentTime()) return;
         cm.DeselectCards();
-        fg.AdjustCardButtons();
+        fg.ActivateCardButtons();
     }
 
     public bool CheckOffer()

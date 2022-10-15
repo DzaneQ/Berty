@@ -13,4 +13,11 @@
         AddRange(-1, -1, riposteRange);
         AddRange(-1, 1, riposteRange);
     }
+
+    public override void SkillOnNewCard(CardSprite card)
+    {
+        foreach (Field field in card.Grid.Fields)
+            if (field.IsOccupied() && !card.IsAllied(field)) 
+                field.OccupantCard.AdvanceStrength(-field.OccupantCard.CardStatus.Power / 3);
+    }
 }

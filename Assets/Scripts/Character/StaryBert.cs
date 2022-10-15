@@ -14,4 +14,15 @@
         AddRange(-1, 0, riposteRange);
         AddRange(-1, 1, riposteRange);
     }
+
+    public override int SkillAttackModifier(int damage, CardSprite target)
+    {
+        if (IsTheCardDamaged(target)) return damage + 2;
+        return damage;
+    }
+
+    private bool IsTheCardDamaged(CardSprite targetCard)
+    {
+        return targetCard.CardStatus.Health < targetCard.Character.Health;
+    }
 }

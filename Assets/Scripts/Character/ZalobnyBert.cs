@@ -1,4 +1,6 @@
-﻿public class ZalobnyBert : Character
+﻿using System.Collections.Generic;
+
+public class ZalobnyBert : Character
 {
     public ZalobnyBert()
     {
@@ -13,5 +15,19 @@
         AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         AddRange(-1, 1, riposteRange);
+    }
+
+    public override int SkillDefenceModifier(int damage, CardSprite attacker)
+    {
+        if (attacker.GetRole() == Role.Offensive) return 0;
+        return damage;
+    }
+
+    public override void SkillAdjustHealthChange(CardSprite card, int value)
+    {
+        if (0 <= value) return;
+        foreach (CardSprite adjCard in card.GetAdjacentCards())
+            if (card.IsAllied(adjCard.OccupiedField))
+                adjCard.AdvanceHealth(-2 * value);
     }
 }

@@ -13,4 +13,15 @@
         AddRange(-1, -1, riposteRange);
         AddRange(-1, 1, riposteRange);
     }
+
+    public override void SkillOnAttack(CardSprite card)
+    {
+        foreach (CardSprite adjCard in card.GetAdjacentCards()) if (card.IsAllied(adjCard.OccupiedField)) adjCard.AdvanceStrength(1);
+        card.AdvancePower(-1);
+    }
+
+    public override void SkillOnMove(CardSprite card)
+    {
+        SkillOnAttack(card);
+    }
 }

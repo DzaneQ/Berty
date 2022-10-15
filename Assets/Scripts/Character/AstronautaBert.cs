@@ -18,4 +18,11 @@ public class AstronautaBert : Character
         AddRange(-1, 0, blockRange);
         AddRange(-1, 1, riposteRange);
     }
+
+    public override void SkillAdjustPowerChange(CardSprite card, int value)
+    {
+        if (card.CardStatus.Power > 0) return;
+        card.AdvancePower(Power);
+        card.AdvanceHealth(-6);
+    }
 }

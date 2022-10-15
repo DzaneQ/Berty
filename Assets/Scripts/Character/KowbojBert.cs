@@ -15,4 +15,12 @@
         AddRange(-1, 0, riposteRange);
         AddRange(-1, 1, riposteRange);
     }
+
+    public override void SkillOnSuccessfulAttack(CardSprite card)
+    {
+        card.AdvanceDexterity(1);
+        foreach (CardSprite adjCard in card.GetAdjacentCards()) 
+            if (card.IsAllied(adjCard.OccupiedField)) 
+                adjCard.AdvanceDexterity(1);
+    }
 }

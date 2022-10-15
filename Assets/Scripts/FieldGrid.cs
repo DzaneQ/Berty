@@ -10,11 +10,11 @@ public class FieldGrid : MonoBehaviour
     [SerializeField] private Material opponent;
 
     private Turn turn;
-    //protected MeshRenderer mesh;
     private Field[] fields;
     private DefaultTransform cardOnBoard;
 
     public Turn Turn => turn;
+    public Field[] Fields => fields;
 
     private void Awake()
     {
@@ -62,14 +62,16 @@ public class FieldGrid : MonoBehaviour
     }
     
 
-    public void AdjustCardButtons()
+    public void ActivateCardButtons()
     {
         foreach (Field field in fields)
         {
-            if (field.IsAligned(Alignment.None)) continue;
-            if (field.IsAligned(turn.CurrentAlignment))
-                field.OccupantCard.SetActive();
-            else field.OccupantCard.SetIdle();
+            //if (field.IsAligned(Alignment.None)) continue;
+            //if (field.IsAligned(turn.CurrentAlignment))
+            //    field.OccupantCard.SetActive();
+            //else field.OccupantCard.SetIdle();
+            if (!field.IsAligned(turn.CurrentAlignment)) continue;
+            field.OccupantCard.SetActive();
         }
     }
 
@@ -77,13 +79,13 @@ public class FieldGrid : MonoBehaviour
     {
         foreach (Field field in fields)
         {
-            //if (field.IsAligned(Alignment.None)) continue;
-            //field.OccupantCard.Character.CastGlobalEvent(field.OccupantCard);
+            if (field.IsAligned(Alignment.None)) continue;
+            field.OccupantCard.Character.SkillGlobalEvent(field.OccupantCard);
             if (!field.IsAligned(turn.CurrentAlignment)) continue;
             field.OccupantCard.ResetAttack();
             field.OccupantCard.RegenerateDexterity();
         }
-        AdjustCardButtons();
+        ActivateCardButtons();
     }
 
     public bool IsLocked()
