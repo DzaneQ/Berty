@@ -16,16 +16,16 @@ public class BertWick : Character
         AddRange(-1, 1, riposteRange);
     }
 
-    public override void SkillAdjustHealthChange(CardSprite card, int value)
+    public override void SkillAdjustHealthChange(int value, CardSprite card)
     {
         if (card.CardStatus.Health > 0 || card.CardStatus.Dexterity <= 0) return;
         card.AdvanceHealth(2);
-        card.AdvanceStrength(1);
-        card.AdvancePower(1);
-        card.AdvanceDexterity(-1);
+        card.AdvanceStrength(1, card);
+        card.AdvancePower(1, card);
+        card.AdvanceDexterity(-1, card);
     }
 
-    public override void SkillAdjustDexterityChange(CardSprite card, int value)
+    public override void SkillAdjustDexterityChange(int value, CardSprite card)
     {
         if (card.CardStatus.Dexterity == 0) card.AdvanceHealth(-6);
     }

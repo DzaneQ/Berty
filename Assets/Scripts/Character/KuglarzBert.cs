@@ -17,7 +17,7 @@
 
     public override void SkillOnSuccessfulAttack(CardSprite card)
     {
-        card.AdvanceDexterity(-1);
+        card.AdvanceDexterity(-1, card);
         card.AdvanceHealth(1);      
     }
 
@@ -28,6 +28,6 @@
 
     public override void SkillOnNeighbor(CardSprite card, CardSprite target)
     {
-        if (card.IsAllied(target.OccupiedField)) target.AdvancePower(1);
+        if (card.IsAllied(target.OccupiedField)) target.AdvancePower(1, card);
     }
 }

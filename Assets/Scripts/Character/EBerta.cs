@@ -27,9 +27,9 @@ public class EBerta : Character
         if (!card.IsAllied(target.OccupiedField)) return;
         int[] stats = { target.CardStatus.Strength, target.CardStatus.Power, target.CardStatus.Dexterity, target.CardStatus.Health };
         int minStat = stats.Min();
-        if (minStat == stats[0]) target.AdvanceStrength(1);
-        if (minStat == stats[1]) target.AdvancePower(1);
-        if (minStat == stats[2]) target.AdvanceDexterity(1);
+        if (minStat == stats[0]) target.AdvanceStrength(1, card);
+        if (minStat == stats[1]) target.AdvancePower(1, card);
+        if (minStat == stats[2]) target.AdvanceDexterity(1, card);
         if (minStat == stats[3]) target.AdvanceHealth(1);
     }
 }

@@ -22,10 +22,11 @@ internal class NewCardState : CardState
         card.ConfirmPayment();
     }
 
-    public override void TakePaidAction()
+    public override CardState TakePaidAction()
     {
         card.ConfirmNewCard();
         card.ResetAttack();
+        return new IdleState(card);
     }
 
     public override CardState AdjustTransformChange(int buttonIndex)

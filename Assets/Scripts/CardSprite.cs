@@ -29,6 +29,7 @@ public class CardSprite : MonoBehaviour
         {
             character = value;
             spriteRenderer.sprite = imageReference.Sprite;
+            name = character.Name;
         }
     }
 
@@ -255,16 +256,19 @@ public class CardSprite : MonoBehaviour
         return true;
     }    
 
-    public void AdvanceStrength(int value)
+    public void AdvanceStrength(int value, CardSprite spellSource = null)
     {
+        if (!Character.CanAffectStrength(this, spellSource)) return;
         cardStatus.Strength += value;
+        if (CanUseSkill()) Character.SkillAdjustStrengthChange(value, this);
         UpdateBar(0);
     }
 
-    public void AdvancePower(int value)
+    public void AdvancePower(int value, CardSprite spellSource = null)
     {
+        if (!Character.CanAffectPower(this, spellSource)) return;
         cardStatus.Power += value;
-        if (CanUseSkill()) Character.SkillAdjustPowerChange(this, value);
+        if (CanUseSkill()) Character.SkillAdjustPowerChange(value, this);
         if (cardStatus.Power <= 0) SwitchSides();
         UpdateBar(1);
     }
@@ -277,10 +281,11 @@ public class CardSprite : MonoBehaviour
         //else SetIdle();
     }
 
-    public void AdvanceDexterity(int value)
+    public void AdvanceDexterity(int value, CardSprite spellSource = null)
     {
+        if (spellSource == null) Debug.LogWarning($"No spell source affecting {Character.Name}");
         cardStatus.Dexterity += value;
-        if (CanUseSkill()) Character.SkillAdjustDexterityChange(this, value);
+        if (CanUseSkill()) Character.SkillAdjustDexterityChange(value, this);
         if (cardStatus.Dexterity <= 0) cardStatus.isTired = true;
         if (cardStatus.Dexterity >= Character.Dexterity) cardStatus.isTired = false;
         UpdateBar(2);
@@ -289,13 +294,13 @@ public class CardSprite : MonoBehaviour
     public void RegenerateDexterity()
     {
         if (!CardStatus.isTired) return;
-        AdvanceDexterity(1);
+        AdvanceDexterity(1, this);
     }
 
     public void AdvanceHealth(int value)
     {
         cardStatus.Health += value;
-        if (CanUseSkill()) Character.SkillAdjustHealthChange(this, value);
+        if (CanUseSkill()) Character.SkillAdjustHealthChange(value, this);
         if (IsDead()) KillCard();    
         UpdateBar(3);
     }

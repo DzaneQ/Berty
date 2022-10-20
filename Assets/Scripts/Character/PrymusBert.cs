@@ -28,6 +28,6 @@
 
     public override void SkillOnNeighbor(CardSprite card, CardSprite target)
     {
-        target.AdvancePower(3);
+        target.AdvancePower(3, card);
     }
 }

@@ -15,10 +15,10 @@
         AddRange(-1, 1, riposteRange);
     }
 
-    public override void SkillAdjustHealthChange(CardSprite card, int value)
+    public override void SkillAdjustHealthChange(int value, CardSprite card)
     {
         if (0 <= value) return;
-        card.AdvanceStrength(value);
-        card.AdvanceDexterity(-value);
+        card.AdvanceStrength(value, card);
+        card.AdvanceDexterity(-value, card);
     }
 }

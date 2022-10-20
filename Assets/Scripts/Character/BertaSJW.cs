@@ -14,4 +14,14 @@
         AddRange(-1, 0, riposteRange);
         AddRange(-1, 1, riposteRange);
     }
+
+    public override void SkillOnNewCard(CardSprite card)
+    {
+        foreach (CardSprite adjCard in card.GetAdjacentCards()) SkillOnNeighbor(card, adjCard);
+    }
+
+    public override void SkillOnNeighbor(CardSprite card, CardSprite target)
+    {
+        target.AdvancePower(-3, card);
+    }
 }

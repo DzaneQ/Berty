@@ -21,8 +21,8 @@
     {
         foreach (CardSprite adjCard in card.GetAdjacentCards())
         {
-            card.AdvanceStrength(1);
-            if (card.IsAllied(adjCard.OccupiedField)) adjCard.AdvancePower(1);
+            card.AdvanceStrength(1, card);
+            if (card.IsAllied(adjCard.OccupiedField)) adjCard.AdvancePower(1, card);
         }
     }
 }

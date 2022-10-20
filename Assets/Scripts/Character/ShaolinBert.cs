@@ -18,6 +18,6 @@
     {
         foreach (Field field in card.Grid.Fields)
             if (field.IsOccupied() && !card.IsAllied(field)) 
-                field.OccupantCard.AdvanceStrength(-field.OccupantCard.CardStatus.Power / 3);
+                field.OccupantCard.AdvanceStrength(-field.OccupantCard.CardStatus.Power / 3, card);
     }
 }

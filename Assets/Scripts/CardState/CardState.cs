@@ -15,7 +15,8 @@ public abstract class CardState
     public virtual CardState DeactivateCard() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
     public virtual void HandleFieldCollision() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
     public abstract void HandleClick();
-    public virtual void TakePaidAction() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
+    //public virtual void TakePaidAction() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
+    public virtual CardState TakePaidAction() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
     public virtual CardState AdjustTransformChange(int buttonIndex) => throw new InvalidOperationException($"Invalid method for: {GetType()}");
     public virtual void Cancel() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
     public virtual bool IsForPaymentConfirmation() => false;

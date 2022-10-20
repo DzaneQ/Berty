@@ -18,6 +18,7 @@ public class CardInitialization : MonoBehaviour
         CharacterData data = new CharacterData();
         list = data.LoadCharacterData();
         characterCount = list.Count;
+        foreach (Character isSupport in list) if (isSupport.Role == Role.Support) Debug.Log(isSupport.Name);
         //cm.LoadCharacters(characterList);
     }
 

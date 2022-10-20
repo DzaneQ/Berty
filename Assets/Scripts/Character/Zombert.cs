@@ -20,7 +20,7 @@
     {
         Field targetField = card.GetTargetField(AttackRange[0]);
         if (!targetField.IsOccupied() || card.IsAllied(targetField)) return;
-        targetField.OccupantCard.AdvancePower(-1);
+        targetField.OccupantCard.AdvancePower(-1, card);
     }
 
     public override void SkillOnOtherCardDeath(CardSprite card, CardSprite otherCard)

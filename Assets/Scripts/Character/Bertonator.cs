@@ -23,7 +23,7 @@
             if (targetField == null || !targetField.IsOccupied()) continue;
             targetField.OccupantCard.TakeDamage(card.CardStatus.Strength, card.OccupiedField);
             if (!targetField.IsOccupied()) continue;
-            targetField.OccupantCard.AdvanceDexterity(-1);
+            targetField.OccupantCard.AdvanceDexterity(-1, card);
             UnityEngine.Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
             int[] knockback = distance.Clone() as int[];
             knockback[1]++;

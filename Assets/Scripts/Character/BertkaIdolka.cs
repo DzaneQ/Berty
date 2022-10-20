@@ -15,4 +15,21 @@
         AddRange(-1, -1, riposteRange);
         AddRange(-1, 1, riposteRange);
     }
+
+    public override bool CanAffectStrength(CardSprite card, CardSprite spellSource)
+    {
+        if (card == spellSource) return true;
+        return false;
+    }
+
+    public override bool CanAffectPower(CardSprite card, CardSprite spellSource)
+    {
+        if (card.CardStatus.Power <= 3) return card.IsAllied(spellSource.OccupiedField);
+        return true;
+    }
+
+    public override void SkillAdjustPowerChange(int value, CardSprite card)
+    {
+        card.AdvanceStrength(value, card);
+    }
 }

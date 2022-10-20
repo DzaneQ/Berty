@@ -61,7 +61,8 @@ public class CardManager : MonoBehaviour
     {
         if (drawPile.transform.childCount == 0 && !ShuffleDiscardPile()) return null;
         Character character = characterPile[rng.Next(characterPile.Count)];
-        if (drawPile.transform.childCount == 40) character = characterPile.Find(x => x is BertWick); // Testing: Force a card!
+        if (drawPile.transform.childCount == 40) character = characterPile.Find(x => x is BertaSJW); // Testing: Force a card!
+        //if (drawPile.transform.childCount == 39) character = characterPile.Find(x => x is PrymusBert); // Testing: Force another card!
         //if (drawPile.transform.childCount == 34) character = characterPile.Find(x => x is PapiezBertII); // Testing: Force opposing card!
         RemoveFromDrawPile();
         characterPile.Remove(character);

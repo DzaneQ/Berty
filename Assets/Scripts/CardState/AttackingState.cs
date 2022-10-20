@@ -17,10 +17,11 @@ internal class AttackingState : CardState
         card.ConfirmPayment();
     }
 
-    public override void TakePaidAction()
+    public override CardState TakePaidAction()
     {
         Debug.Log("Attack!");
         card.OrderAttack();
+        return new IdleState(card);
     }
 
     public override CardState AdjustTransformChange(int buttonIndex)

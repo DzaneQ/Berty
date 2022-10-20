@@ -22,7 +22,7 @@
 
     public override void SkillOnNeighbor(CardSprite card, CardSprite target)
     {
-        if (card.IsAllied(target.OccupiedField)) target.AdvanceDexterity(-1);
-        else target.AdvanceDexterity(-3);
+        if (card.IsAllied(target.OccupiedField)) target.AdvanceDexterity(-1, card);
+        else target.AdvanceDexterity(-3, card);
     }
 }

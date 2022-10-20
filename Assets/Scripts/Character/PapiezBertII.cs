@@ -21,7 +21,7 @@
         foreach (Field field in card.Grid.Fields)
         {
             if (!field.IsOccupied() || field.IsAligned(card.OccupiedField.Align)) continue;
-            field.OccupantCard.AdvancePower(-2);
+            field.OccupantCard.AdvancePower(-2, card);
         }
     }
 }

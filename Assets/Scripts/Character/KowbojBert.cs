@@ -18,9 +18,9 @@
 
     public override void SkillOnSuccessfulAttack(CardSprite card)
     {
-        card.AdvanceDexterity(1);
+        card.AdvanceDexterity(1, card);
         foreach (CardSprite adjCard in card.GetAdjacentCards()) 
             if (card.IsAllied(adjCard.OccupiedField)) 
-                adjCard.AdvanceDexterity(1);
+                adjCard.AdvanceDexterity(1, card);
     }
 }

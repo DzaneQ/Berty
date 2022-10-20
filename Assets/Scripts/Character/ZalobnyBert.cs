@@ -23,7 +23,7 @@ public class ZalobnyBert : Character
         return damage;
     }
 
-    public override void SkillAdjustHealthChange(CardSprite card, int value)
+    public override void SkillAdjustHealthChange(int value, CardSprite card)
     {
         if (0 <= value) return;
         foreach (CardSprite adjCard in card.GetAdjacentCards())

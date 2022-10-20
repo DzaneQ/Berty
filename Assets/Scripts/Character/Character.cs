@@ -82,11 +82,17 @@ public abstract class Character
 
     public virtual void SkillGlobalEvent(CardSprite cardSprite) { }
 
-    public virtual void SkillAdjustPowerChange(CardSprite cardSprite, int value) { }
+    public virtual bool CanAffectStrength(CardSprite cardSprite, CardSprite spellSource) => true;
 
-    public virtual void SkillAdjustDexterityChange(CardSprite cardSprite, int value) { }
+    public virtual void SkillAdjustStrengthChange(int value, CardSprite cardSprite) { }
 
-    public virtual void SkillAdjustHealthChange(CardSprite cardSprite, int value) { }
+    public virtual bool CanAffectPower(CardSprite cardSprite, CardSprite spellSource) => true;
+
+    public virtual void SkillAdjustPowerChange(int value, CardSprite cardSprite) { }
+
+    public virtual void SkillAdjustDexterityChange(int value, CardSprite cardSprite) { }
+
+    public virtual void SkillAdjustHealthChange(int value, CardSprite cardSprite) { }
 
     public virtual void SkillOnAttack(CardSprite cardSprite) { }
 
