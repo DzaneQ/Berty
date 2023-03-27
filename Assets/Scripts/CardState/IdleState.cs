@@ -20,6 +20,12 @@ internal class IdleState : CardState
 
     public override CardState AdjustTransformChange(int buttonIndex) => this;
 
+    //public override bool IsJudgementRevenge()
+    //{
+    //    Debug.Log("Asking for judgement revenge in idle state.");
+    //    return card.Grid.CurrentStatus.JudgementRevenge == card.OccupiedField.Align;
+    //}
+
     public override CardState SetActive => new ActiveState(card);
 
     public override CardState SetIdle => this;

@@ -8,13 +8,13 @@
         AddRange(0, 2, attackRange);
         AddRange(1, 2, attackRange);
         AddRange(-1, 2, attackRange);
-        AddRange(1, 1, riposteRange);
+        //AddRange(1, 1, riposteRange);
         AddRange(1, 0, riposteRange);
-        AddRange(1, -1, riposteRange);
+        //AddRange(1, -1, riposteRange);
         AddRange(0, -1, riposteRange);
-        AddRange(-1, -1, riposteRange);
+        //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
-        AddRange(-1, 1, riposteRange);
+        //AddRange(-1, 1, riposteRange);
     }
 
     public override bool SkillSpecialAttack(CardSprite card)
@@ -30,7 +30,7 @@
             switch (i)
             {
                 case 0:
-                    advantage = targetField.OccupantCard.CardStatus.Strength <= card.CardStatus.Strength;
+                    advantage = targetField.OccupantCard.GetStrength() <= card.GetStrength();
                     break;
                 case 1:
                     advantage = targetField.OccupantCard.CardStatus.Power <= card.CardStatus.Power;
@@ -46,7 +46,7 @@
                 swap = false;
                 targetField = srcField;
             }
-            targetField.OccupantCard.TakeDamage(card.CardStatus.Strength, srcField);
+            targetField.OccupantCard.TakeDamage(card.GetStrength(), srcField);
         }
         return true;
     }
@@ -64,7 +64,7 @@
     //        switch (i)
     //        {
     //            case 2:
-    //                advantage = targetField.OccupantCard.CardStatus.Strength <= card.CardStatus.Strength;
+    //                advantage = targetField.OccupantCard.GetStrength() <= card.GetStrength();
     //                break;
     //            case 0:
     //                advantage = targetField.OccupantCard.CardStatus.Power <= card.CardStatus.Power;
@@ -80,7 +80,7 @@
     //    {
     //        if (attackedCards[i] == null) continue;
     //        if (swap) Swap
-    //        targetField.OccupantCard.TakeDamage(card.CardStatus.Strength, card.OccupiedField);
+    //        targetField.OccupantCard.TakeDamage(card.GetStrength(), card.OccupiedField);
     //    }
     //    if (swapTarget == null) return true;
     //    card.SwapWith(swapTarget);

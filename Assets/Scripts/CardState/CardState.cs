@@ -20,6 +20,7 @@ public abstract class CardState
     public virtual CardState AdjustTransformChange(int buttonIndex) => throw new InvalidOperationException($"Invalid method for: {GetType()}");
     public virtual void Cancel() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
     public virtual bool IsForPaymentConfirmation() => false;
+    //public virtual bool IsJudgementRevenge() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
     public virtual CardState SetActive => throw new InvalidOperationException($"Invalid method for: {GetType()}");
     public virtual CardState SetIdle => throw new InvalidOperationException($"Invalid method for: {GetType()}");
 }

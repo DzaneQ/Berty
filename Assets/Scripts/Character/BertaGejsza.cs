@@ -7,12 +7,12 @@
         AddStats(1, 2, 5, 3);
         AddRange(-1, 1, attackRange);
         AddRange(0, 1, riposteRange);
-        AddRange(1, 1, riposteRange);
+        //AddRange(1, 1, riposteRange);
         AddRange(1, 0, blockRange);
-        AddRange(1, -1, riposteRange);
-        AddRange(-1, -1, riposteRange);
+        //AddRange(1, -1, riposteRange);
+        //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
-        AddRange(-1, 1, riposteRange);
+        //AddRange(-1, 1, riposteRange);
     }
 
     public override void SkillOnNewCard(CardSprite card)
@@ -24,5 +24,8 @@
     {
         if (card.IsAllied(target.OccupiedField)) target.AdvanceDexterity(-1, card);
         else target.AdvanceDexterity(-3, card);
+        target.AddResistance(this);
     }
+
+    public override void SkillOnMove(CardSprite card) => SkillOnNewCard(card);
 }

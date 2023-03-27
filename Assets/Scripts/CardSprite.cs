@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,8 +18,10 @@ public class CardSprite : MonoBehaviour
     private Character character;
     private CardState state;
     private CharacterStat cardStatus;
+    private List<Character> resistChar;
 
     public Field OccupiedField => occupiedField;
+    public CardManager CardManager => cardManager;
     private Turn Turn => Grid.Turn;
     public FieldGrid Grid => occupiedField.Grid;
     public CharacterStat CardStatus => cardStatus;
@@ -52,10 +55,10 @@ public class CardSprite : MonoBehaviour
     private void Start()
     {
         cardManager = GameObject.Find("EventSystem").GetComponent<CardManager>();
-        InitializeBars();
         cardButton = transform.GetComponentsInChildren<CardButton>();
         occupiedField = transform.GetComponentInParent<Field>();
         state = new InactiveState(this);
+        InitializeBars();
         InitializeRigidbody();
     }
 
@@ -88,6 +91,11 @@ public class CardSprite : MonoBehaviour
         cardRB.isKinematic = true;
     }
 
+    private void ClearCardResistance()
+    {
+        resistChar = new List<Character>();
+    }
+
     public void TryToActivateCard()
     {
         if (IsCardSelected()) state = state.ActivateCard();
@@ -115,9 +123,24 @@ public class CardSprite : MonoBehaviour
         cardRB.isKinematic = !isApplied;
     }
 
+    public void ProgressTemporaryStats()
+    {
+        if (cardStatus.CurrentTempStatBonus.All(x => x == 0)) return;
+        //cardStatus.CurrentTempStatBonus = new int[4];
+        Array.Clear(cardStatus.CurrentTempStatBonus, 0, 4);
+        //cardStatus.CurrentTempStatBonus = cardStatus.FutureTempStatBonus;
+        //cardStatus.FutureTempStatBonus = new int[4];
+        UpdateBars();
+    }
+
     public void ResetAttack()
     {
         cardStatus.hasAttacked = false;
+    }
+
+    public void BlockAttack()
+    {
+        cardStatus.hasAttacked = true;
     }
 
     public bool CanCharacterAttack()
@@ -210,7 +233,7 @@ public class CardSprite : MonoBehaviour
     public void TryToAttackTarget(Field targetField)
     {
         Debug.Log("Seeing attack on field - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
-        if (CanAttackField(targetField)) targetField.OccupantCard.TakeDamage(cardStatus.Strength, targetField);
+        if (CanAttackField(targetField)) targetField.OccupantCard.TakeDamage(GetStrength(), targetField);
     }
 
     public void OrderAttack()
@@ -222,7 +245,7 @@ public class CardSprite : MonoBehaviour
         {
             Field targetField = GetTargetField(distance);
             if (targetField == null || !targetField.IsOccupied()) continue;
-            if (targetField.OccupantCard.TakeDamage(cardStatus.Strength, occupiedField)) successfulAttack = true;
+            if (targetField.OccupantCard.TakeDamage(GetStrength(), occupiedField)) successfulAttack = true;
             Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
         }
         if (successfulAttack && CanUseSkill()) Character.SkillOnSuccessfulAttack(this);
@@ -235,7 +258,8 @@ public class CardSprite : MonoBehaviour
         if (CanUseSkill()) damage = Character.SkillDefenceModifier(damage, source.OccupantCard);
         if (source.OccupantCard.CanUseSkill()) damage = source.OccupantCard.Character.SkillAttackModifier(damage, this);
         Debug.Log("Damage on field - X: " + occupiedField.GetX() + "; Y: " + occupiedField.GetY());
-        if (!gameObject.activeSelf) throw new Exception("This card shouldn't be attacked!");
+        //if (!gameObject.activeSelf) throw new Exception("This card shouldn't be attacked!");
+        if (!gameObject.activeSelf) return false;
         if (riposte)
         {
             AdvanceHealth(-damage);
@@ -244,7 +268,7 @@ public class CardSprite : MonoBehaviour
         int[] srcRel = source.GetRelativeCoordinates(GetRelativeAngle());
         int[] srcDistance = { srcRel[0] - relCoord[0], srcRel[1] - relCoord[1] };
         Debug.Log("Character health: " + CardStatus.Health);
-        if (Character.CanRiposte(srcDistance)) source.OccupantCard.TakeDamage(cardStatus.Strength, OccupiedField, true);
+        if (Character.CanRiposte(srcDistance)) source.OccupantCard.TakeDamage(GetStrength(), OccupiedField, true);
         if (Character.CanBlock(srcDistance)) return false;
         AdvanceHealth(-damage);
         Debug.Log($"{damage} damage taken for card {name}. Remaining HP: {cardStatus.Health}");
@@ -254,21 +278,53 @@ public class CardSprite : MonoBehaviour
     private bool CanUseSkill()
     {
         return true;
-    }    
+    }
+
+    //public void QueueStat(int[] stats)
+    //{
+    //    if (stats.Length != 4) throw new Exception("Incorrect length of stat array to queue.");
+    //    foreach (int i in stats) cardStatus.FutureTempStatBonus[i] += stats[i];
+
+    //}
+
+    //public void AddTempStat(int[] stats)
+    //{
+    //    //Debug.Log("Current strength: " + cardStatus.Strength);
+    //    if (stats.Length != 4) throw new Exception("Incorrect length of stat array to add.");
+    //    for (int i = 0; i < stats.Length; i++) cardStatus.CurrentTempStatBonus[i] += stats[i];
+
+    //    UpdateBars();
+    //}
+
+    public void AdvanceTempStrength(int value)
+    {
+        if (!Character.CanAffectStrength(this, null)) return;
+        cardStatus.CurrentTempStatBonus[0] += value;
+        UpdateBar(0);
+    }
 
     public void AdvanceStrength(int value, CardSprite spellSource = null)
     {
+        if (spellSource != null && resistChar.Contains(spellSource.Character)) return;
         if (!Character.CanAffectStrength(this, spellSource)) return;
         cardStatus.Strength += value;
         if (CanUseSkill()) Character.SkillAdjustStrengthChange(value, this);
         UpdateBar(0);
     }
 
+    public void AdvanceTempPower(int value)
+    {
+        if (!Character.CanAffectPower(this, null)) return;
+        cardStatus.CurrentTempStatBonus[1] += value;
+        UpdateBar(1);
+    }
+
     public void AdvancePower(int value, CardSprite spellSource = null)
     {
+        if (spellSource != null && resistChar.Contains(spellSource.Character)) return;
         if (!Character.CanAffectPower(this, spellSource)) return;
         cardStatus.Power += value;
-        if (CanUseSkill()) Character.SkillAdjustPowerChange(value, this);
+        if (CanUseSkill()) Character.SkillAdjustPowerChange(value, this, spellSource);
         if (cardStatus.Power <= 0) SwitchSides();
         UpdateBar(1);
     }
@@ -283,6 +339,7 @@ public class CardSprite : MonoBehaviour
 
     public void AdvanceDexterity(int value, CardSprite spellSource = null)
     {
+        if (spellSource != null && resistChar.Contains(spellSource.Character)) return;
         if (spellSource == null) Debug.LogWarning($"No spell source affecting {Character.Name}");
         cardStatus.Dexterity += value;
         if (CanUseSkill()) Character.SkillAdjustDexterityChange(value, this);
@@ -297,11 +354,12 @@ public class CardSprite : MonoBehaviour
         AdvanceDexterity(1, this);
     }
 
-    public void AdvanceHealth(int value)
+    public void AdvanceHealth(int value, CardSprite spellSource = null)
     {
+        if (spellSource != null && resistChar.Contains(spellSource.Character)) return;
         cardStatus.Health += value;
         if (CanUseSkill()) Character.SkillAdjustHealthChange(value, this);
-        if (IsDead()) KillCard();    
+        if (IsDead()) KillCard();
         UpdateBar(3);
     }
 
@@ -316,39 +374,39 @@ public class CardSprite : MonoBehaviour
         foreach (Field field in Grid.Fields)
             if (field.IsOccupied() && field.OccupantCard.CanUseSkill())
                 field.OccupantCard.Character.SkillOnOtherCardDeath(field.OccupantCard, this);
+        Character.SkillOnDeath(this);
         DeactivateCard();
     }    
+
+    public void AddResistance(Character character)
+    {
+        Debug.Log($"Adding resistance of {character} to card: {name}");
+        if (character == null) throw new Exception("Trying to resist null.");
+        if (character == Character) throw new Exception("Trying to resist self.");
+        if (resistChar.Contains(character)) return;
+        resistChar.Add(character);
+    }
 
     public bool IsAllied(Field targetField)
     {
         return targetField.IsAligned(occupiedField.Align);
     }    
 
-    private void UpdateBars()
+    public void UpdateBars()
     {
         for (int i = 0; i < bars.Length; i++) UpdateBar(i);
     }
 
     private void UpdateBar(int index)
     {
-        int barValue = 0;
-        switch (index)
+        var barValue = index switch
         {
-            case 0:
-                barValue = cardStatus.Strength;
-                break;
-            case 1:
-                barValue = cardStatus.Power;
-                break;
-            case 2:
-                barValue = cardStatus.Dexterity;
-                break;
-            case 3:
-                barValue = cardStatus.Health;
-                break;
-            default:
-                throw new IndexOutOfRangeException($"Updating bar of index {index}.");
-        }
+            0 => GetStrength(),
+            1 => cardStatus.Power,
+            2 => cardStatus.Dexterity,
+            3 => cardStatus.Health,
+            _ => throw new IndexOutOfRangeException($"Updating bar of index {index}."),
+        };
         float unitScale = 15.9f / 6f;
         float positionX0Unit = 3.04f;
         float positionX6Unit = 11.05f;
@@ -359,18 +417,33 @@ public class CardSprite : MonoBehaviour
 
     public Role GetRole()
     {
+        if (Grid.CurrentStatus.IsJudgement) return Role.Special;
         return Character.Role;
+    }
+
+    public int GetStrength()
+    {
+        //if (state.IsJudgementRevenge() && cardStatus.Strength <= 5) return cardStatus.Strength + 1;
+        return cardStatus.Strength;
     }
 
     public void ConfirmNewCard()
     {
-        Grid.AttackNewStand(occupiedField);
+        ClearCardResistance();
         if (CanUseSkill()) Character.SkillOnNewCard(this);
+        TakeNeighborsEffect();
+        if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
+        Grid.AttackNewStand(occupiedField);
+    }
+
+    private void TakeNeighborsEffect()
+    {
         for (int i = 0; i < 4; i++)
         {
             Field adjacentField = GetAdjacentField(i * 90);
             if (adjacentField == null || !adjacentField.IsOccupied()) continue;
-            if (adjacentField.OccupantCard.CanUseSkill()) adjacentField.OccupantCard.Character.SkillOnNeighbor(adjacentField.OccupantCard, this);
+            if (adjacentField.OccupantCard.CanUseSkill())
+                adjacentField.OccupantCard.Character.SkillOnNeighbor(adjacentField.OccupantCard, this);
         }
     }
 
@@ -447,6 +520,7 @@ public class CardSprite : MonoBehaviour
     public void ConfirmMove()
     {
         if (CanUseSkill()) Character.SkillOnMove(this);
+        TakeNeighborsEffect();
     }
 
     public void RotateCard(int angle)

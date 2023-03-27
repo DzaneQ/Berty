@@ -9,11 +9,11 @@
         AddRange(1, 1, attackRange);
         AddRange(-1, 1, attackRange);
         AddRange(0, 1, blockRange);
-        AddRange(1, 1, riposteRange);
-        AddRange(1, -1, riposteRange);
+        //AddRange(1, 1, riposteRange);
+        //AddRange(1, -1, riposteRange);
         AddRange(0, -1, riposteRange);
-        AddRange(-1, -1, riposteRange);
-        AddRange(-1, 1, riposteRange);
+        //AddRange(-1, -1, riposteRange);
+        //AddRange(-1, 1, riposteRange);
     }
 
     public override bool CanAffectStrength(CardSprite card, CardSprite spellSource)
@@ -28,7 +28,7 @@
         return true;
     }
 
-    public override void SkillAdjustPowerChange(int value, CardSprite card)
+    public override void SkillAdjustPowerChange(int value, CardSprite card, CardSprite spellSource)
     {
         card.AdvanceStrength(value, card);
     }

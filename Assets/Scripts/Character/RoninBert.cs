@@ -8,12 +8,12 @@
         AddRange(0, 1, attackRange);
         AddRange(0, 2, attackRange);
         AddRange(0, 1, blockRange);
-        AddRange(1, 1, riposteRange);
+        //AddRange(1, 1, riposteRange);
         AddRange(1, 0, riposteRange);
-        AddRange(1, -1, riposteRange);
-        AddRange(-1, -1, riposteRange);
+        //AddRange(1, -1, riposteRange);
+        //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
-        AddRange(-1, 1, riposteRange);
+        //AddRange(-1, 1, riposteRange);
     }
 
     public override bool SkillSpecialAttack(CardSprite card)
@@ -33,12 +33,12 @@
         {
             if (target[i] == null || !target[i].IsOccupied()) continue;
             if (target[i].OccupantCard.CardStatus.Power > targetPower) targetPower = target[i].OccupantCard.CardStatus.Power;
-            if (target[i] != lastTarget) target[i].OccupantCard.TakeDamage(card.CardStatus.Strength, card.OccupiedField);
+            if (target[i] != lastTarget) target[i].OccupantCard.TakeDamage(card.GetStrength(), card.OccupiedField);
             else
             {
                 CardSprite targetCard = lastTarget.OccupantCard;
                 card.SwapWith(lastTarget);
-                targetCard.TakeDamage(card.CardStatus.Strength, card.OccupiedField);
+                targetCard.TakeDamage(card.GetStrength(), card.OccupiedField);
                 break;
             }
         }

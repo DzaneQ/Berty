@@ -80,7 +80,7 @@ public abstract class Character
 
     public virtual bool SkillSpecialAttack(CardSprite cardSprite) => false;
 
-    public virtual void SkillGlobalEvent(CardSprite cardSprite) { }
+    public virtual void SkillOnNewTurn(CardSprite cardSprite) { }
 
     public virtual bool CanAffectStrength(CardSprite cardSprite, CardSprite spellSource) => true;
 
@@ -88,7 +88,7 @@ public abstract class Character
 
     public virtual bool CanAffectPower(CardSprite cardSprite, CardSprite spellSource) => true;
 
-    public virtual void SkillAdjustPowerChange(int value, CardSprite cardSprite) { }
+    public virtual void SkillAdjustPowerChange(int value, CardSprite cardSprite, CardSprite spellSource) { }
 
     public virtual void SkillAdjustDexterityChange(int value, CardSprite cardSprite) { }
 
@@ -106,4 +106,5 @@ public abstract class Character
 
     public virtual int SkillAttackModifier(int damage, CardSprite target) => damage;
 
+    public virtual void SkillOnDeath(CardSprite cardSprite) { }
 }

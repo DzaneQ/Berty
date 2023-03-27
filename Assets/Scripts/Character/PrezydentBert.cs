@@ -8,10 +8,10 @@
         AddRange(0, 1, attackRange);
         AddRange(0, -1, attackRange);
         AddRange(0, 1, riposteRange);
-        AddRange(1, 1, riposteRange);
-        AddRange(1, -1, riposteRange);
-        AddRange(-1, -1, riposteRange);
-        AddRange(-1, 1, riposteRange);
+        //AddRange(1, 1, riposteRange);
+        //AddRange(1, -1, riposteRange);
+        //AddRange(-1, -1, riposteRange);
+        //AddRange(-1, 1, riposteRange);
     }
 
     public override void SkillOnAttack(CardSprite card)

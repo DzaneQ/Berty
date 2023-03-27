@@ -10,12 +10,12 @@
         AddRange(1, 0, attackRange);
         AddRange(-1, 0, attackRange);
         AddRange(0, 1, blockRange);
-        AddRange(1, 1, riposteRange);
+        //AddRange(1, 1, riposteRange);
         AddRange(1, 0, riposteRange);
-        AddRange(1, -1, riposteRange);
-        AddRange(-1, -1, riposteRange);
+        //AddRange(1, -1, riposteRange);
+        //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
-        AddRange(-1, 1, riposteRange);
+        //AddRange(-1, 1, riposteRange);
     }
 
     public override void SkillOnNewCard(CardSprite card)
@@ -31,4 +31,6 @@
         card.AdvancePower(1, card);
         activeSpell = false;
     }
+
+    public override void SkillOnMove(CardSprite card) => SkillOnNeighbor(card, card);
 }
