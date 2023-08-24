@@ -75,9 +75,9 @@ public class CardManager : MonoBehaviour
     private Character TakeRandomCharacter()
     {
         Character character = characterPile[rng.Next(characterPile.Count)];
-        if (drawPile.transform.childCount == 40) character = characterPile.Find(x => x is KoszmarZBertwood); // Testing: Force a card!
-        //if (drawPile.transform.childCount == 39) character = characterPile.Find(x => x is BertaSJW); // Testing: Force another card!
-        //if (drawPile.transform.childCount == 34) character = characterPile.Find(x => x is PapiezBertII); // Testing: Force opposing card!
+        if (drawPile.transform.childCount == 40) character = characterPile.Find(x => x is BertkaSerferka); // Testing: Force a card!
+        if (drawPile.transform.childCount == 39) character = characterPile.Find(x => x is PrymusBert); // Testing: Force another card!
+        //if (drawPile.transform.childCount == 34) character = characterPile.Find(x => x is BertVentura); // Testing: Force opposing card!
         characterPile.Remove(character);
         RemoveFromDrawPile();
         return character;
@@ -93,8 +93,8 @@ public class CardManager : MonoBehaviour
 
     private void AddCardToTable(Transform table, Character character)
     {
-        Debug.Log("Amount of unassigned cards: " + unassignedCards.Count);
-        Debug.Log("Size of character pile: " + characterPile.Count);
+        //Debug.Log("Amount of unassigned cards: " + unassignedCards.Count);
+        //Debug.Log("Size of character pile: " + characterPile.Count);
         CardImage cardSubject = unassignedCards[0];
         cardSubject.AssignCharacter(character);
         AddToTable(cardSubject, table);
@@ -240,4 +240,16 @@ public class CardManager : MonoBehaviour
         pileCard.SetActive(true);
     }
 
+    public List<Character> AllOutsideCharacters()
+    {
+        List<Character> list = new List<Character>();
+        list.AddRange(characterPile);
+        list.AddRange(discardedCharacters);
+        foreach (CardImage image in enabledCards) list.Add(image.Character);
+        foreach (CardImage image in disabledCards) list.Add(image.Character);
+        foreach (Character character in charactersBelow) Debug.Log("charactersBelow list contains character: " + character.Name);
+        foreach (Character character in list) Debug.Log("AllCharacters list contains character: " + character.Name);
+        Debug.Log("AllOutsideCharacters count: " + list.Count);
+        return list;
+    }
 }

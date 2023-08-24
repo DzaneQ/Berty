@@ -65,8 +65,8 @@ public class GlobalStatus
             judgementAwaiting = Alignment.None;
         }
         else if (judgementRevenge == Alignment.None) return;
-        else if (judgementRevenge != currentAlign) judgementRevenge = Alignment.None;
-        grid.ShowJudgement(currentAlign);
+        if (judgementRevenge == currentAlign) grid.ShowJudgement(currentAlign);
+        else judgementRevenge = Alignment.None;
         //grid.RefreshBars();
     }
 }

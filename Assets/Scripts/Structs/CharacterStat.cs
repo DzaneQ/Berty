@@ -6,19 +6,19 @@ public struct CharacterStat
     //private int health;
     private int[] currentStat;
     private int[] currentTempStatBonus;
-    //private int[] futureTempStatBonus;
+    private int[] nextTempStatBonus;
     public int Strength { get => Stat(currentStat[0] + currentTempStatBonus[0]); set => currentStat[0] = Stat(value); }
     public int Power { get => Stat(currentStat[1] + currentTempStatBonus[1]); set => currentStat[1] = Stat(value); }
     public int Dexterity { get => Stat(currentStat[2] + currentTempStatBonus[2]); set => currentStat[2] = Stat(value); }
     public int Health { get => Stat(currentStat[3] + currentTempStatBonus[3]); set => currentStat[3] = Stat(value); }
-    public int TempStrength { set => currentTempStatBonus[0] = value; }
-    public int TempPower { set => currentTempStatBonus[1] = value; }
-    public int TempDexterity { set => currentTempStatBonus[2] = value; }
-    public int TempHealth { set => currentTempStatBonus[3] = value; }
+    public int TempStrength { get => currentTempStatBonus[0]; set { currentTempStatBonus[0] = value; nextTempStatBonus[0] = value; } }
+    public int TempPower { get => currentTempStatBonus[1]; set { currentTempStatBonus[1] = value; nextTempStatBonus[1] = value; } }
+    public int TempDexterity { get => currentTempStatBonus[2]; set { currentTempStatBonus[2] = value; nextTempStatBonus[2] = value; } }
+    public int TempHealth { get => currentTempStatBonus[3]; set { currentTempStatBonus[3] = value; nextTempStatBonus[3] = value; } }
     public bool hasAttacked;
     public bool isTired;
     public int[] CurrentTempStatBonus { get => currentTempStatBonus; set => currentTempStatBonus = value; }
-    //public int[] FutureTempStatBonus { get => futureTempStatBonus; set => futureTempStatBonus = value; }
+    public int[] NextTempStatBonus { get => nextTempStatBonus; set => nextTempStatBonus = value; }
 
     public CharacterStat(Character character)
     {
@@ -34,7 +34,7 @@ public struct CharacterStat
         hasAttacked = false;
         isTired = false;
         currentTempStatBonus = new int[4];
-        //futureTempStatBonus = new int[4];
+        nextTempStatBonus = new int[4];
     }
 
     private int Stat(int value)

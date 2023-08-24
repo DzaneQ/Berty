@@ -126,9 +126,11 @@ public class CardSprite : MonoBehaviour
     public void ProgressTemporaryStats()
     {
         if (cardStatus.CurrentTempStatBonus.All(x => x == 0)) return;
+        //Debug.Log("Clearing stats for card: " + name);
         //cardStatus.CurrentTempStatBonus = new int[4];
-        Array.Clear(cardStatus.CurrentTempStatBonus, 0, 4);
-        //cardStatus.CurrentTempStatBonus = cardStatus.FutureTempStatBonus;
+        //Array.Clear(cardStatus.CurrentTempStatBonus, 0, 4);
+        cardStatus.CurrentTempStatBonus = (int[]) cardStatus.NextTempStatBonus.Clone();
+        Array.Clear(cardStatus.NextTempStatBonus, 0, 4);
         //cardStatus.FutureTempStatBonus = new int[4];
         UpdateBars();
     }
@@ -238,9 +240,12 @@ public class CardSprite : MonoBehaviour
 
     public void OrderAttack()
     {
+        Debug.Log("Start ordering attack");
         cardStatus.hasAttacked = true;
+        if (VenturaCheck()) return; // TODO: Swap place after adjusting opponent script.
         if (CanUseSkill() && Character.SkillSpecialAttack(this)) return;
         bool successfulAttack = false;
+        Debug.Log("Check ranges");
         foreach (int[] distance in Character.AttackRange)
         {
             Field targetField = GetTargetField(distance);
@@ -248,8 +253,10 @@ public class CardSprite : MonoBehaviour
             if (targetField.OccupantCard.TakeDamage(GetStrength(), occupiedField)) successfulAttack = true;
             Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
         }
+        Debug.Log("Ranges checked");
         if (successfulAttack && CanUseSkill()) Character.SkillOnSuccessfulAttack(this);
         if (CanUseSkill()) Character.SkillOnAttack(this);
+        Debug.Log("End ordering attack");
     }
 
 
@@ -280,6 +287,25 @@ public class CardSprite : MonoBehaviour
         return true;
     }
 
+    private bool VenturaCheck()
+    {
+        //Debug.Log("Ventura check!");
+        foreach (CardSprite card in GetAdjacentCards())
+        {
+            if (card.Character.GetType() != typeof(BertVentura) || IsAllied(card.OccupiedField)) continue;
+            foreach (int[] range in Character.AttackRange)
+            {
+                Field targetField = GetTargetField(range);
+                if (targetField == null || !targetField.IsOccupied()) continue;
+                if (targetField.OccupantCard.Character.GetType() == typeof(BertVentura)) return false;
+            }
+            //Debug.Log("Ventura not targeted. Block!");
+            return true;
+        }
+        //Debug.Log("No Ventura in enemy cards.");
+        return false;
+    }
+
     //public void QueueStat(int[] stats)
     //{
     //    if (stats.Length != 4) throw new Exception("Incorrect length of stat array to queue.");
@@ -299,7 +325,9 @@ public class CardSprite : MonoBehaviour
     public void AdvanceTempStrength(int value)
     {
         if (!Character.CanAffectStrength(this, null)) return;
-        cardStatus.CurrentTempStatBonus[0] += value;
+        Debug.Log("Next tempStr before: " + cardStatus.NextTempStatBonus.GetValue(0));
+        cardStatus.TempStrength += value;
+        Debug.Log("Next tempStr after: " + cardStatus.NextTempStatBonus.GetValue(0));
         UpdateBar(0);
     }
 
@@ -315,7 +343,7 @@ public class CardSprite : MonoBehaviour
     public void AdvanceTempPower(int value)
     {
         if (!Character.CanAffectPower(this, null)) return;
-        cardStatus.CurrentTempStatBonus[1] += value;
+        cardStatus.TempPower += value;
         UpdateBar(1);
     }
 
@@ -519,6 +547,7 @@ public class CardSprite : MonoBehaviour
 
     public void ConfirmMove()
     {
+        Debug.Log("Confirming move for " + Character.Name);
         if (CanUseSkill()) Character.SkillOnMove(this);
         TakeNeighborsEffect();
     }
@@ -533,12 +562,16 @@ public class CardSprite : MonoBehaviour
 
     public void SwapWith(Field targetField)
     {
+        Field sourceField = null;
         if (targetField.IsOccupied())
         {
             RotateCard(180);
             targetField.OccupantCard.RotateCard(180);
+            sourceField = occupiedField;
         }
         Grid.SwapCards(occupiedField, targetField);
+        ConfirmMove(); // Note: experimental!
+        if (sourceField != null) sourceField.OccupantCard.ConfirmMove();
     }
 
     public void ImportFromCardImage()

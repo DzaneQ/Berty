@@ -19,9 +19,10 @@
 
     public override bool SkillSpecialAttack(CardSprite card)
     {
-        bool swap = true;
+        //bool swap = true;
         Field srcField = card.OccupiedField;
-        for (int i = AttackRange.Count - 1; i > 0; i--)
+        Field swapTarget = null;
+        for (int i = 0; i < AttackRange.Count; i++)
         {
             int[] distance = AttackRange[(i + 2) % AttackRange.Count];
             Field targetField = card.GetTargetField(distance);
@@ -40,14 +41,16 @@
                     break;
             }
             if (!advantage) continue;
-            if (swap)
-            {
-                card.SwapWith(targetField);
-                swap = false;
-                targetField = srcField;
-            }
+            //if (swap)
+            //{
+            //    card.SwapWith(targetField);
+            //    swap = false;
+            //    targetField = srcField;
+            //}
+            swapTarget = targetField;
             targetField.OccupantCard.TakeDamage(card.GetStrength(), srcField);
         }
+        if (swapTarget != null) card.SwapWith(swapTarget);
         return true;
     }
 

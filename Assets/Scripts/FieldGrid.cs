@@ -114,8 +114,9 @@ public class FieldGrid : MonoBehaviour
             {
                 field.OccupantCard.ResetAttack();
                 field.OccupantCard.RegenerateDexterity();
-                field.OccupantCard.ProgressTemporaryStats();
+                
             }
+            field.OccupantCard.ProgressTemporaryStats();
             field.OccupantCard.Character.SkillOnNewTurn(field.OccupantCard);
         }
         temporaryStatuses.AdjustNewTurn(turn.CurrentAlignment);
@@ -239,5 +240,17 @@ public class FieldGrid : MonoBehaviour
             if (enemyCard.CanAttackField(field)) heat += enemyCard.GetStrength();
         }
         return heat;
+    }
+
+    public List<Character> AllInsideCharacters()
+    {
+        List<Character> list = new List<Character>();
+        foreach (Field field in fields)
+        {
+            if (!field.IsOccupied()) continue;
+            list.Add(field.OccupantCard.Character);
+        }
+        Debug.Log("AllInsideCharacters count: " + list.Count);
+        return list;
     }
 }

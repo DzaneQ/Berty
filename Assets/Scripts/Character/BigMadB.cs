@@ -1,4 +1,6 @@
-﻿public class BigMadB : Character
+﻿using System.Collections.Generic;
+
+public class BigMadB : Character
 {
     public BigMadB()
     {
@@ -13,5 +15,25 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, blockRange);
         //AddRange(-1, 1, riposteRange);
+    }
+
+    public override void SkillOnNewCard(CardSprite card)
+    {
+        foreach (Character character in card.CardManager.AllOutsideCharacters())
+        {
+            if (character.Role != Role.Support) continue;
+            card.AddResistance(character);
+        }
+        foreach (Character character in card.Grid.AllInsideCharacters())
+        {
+            if (character.Role != Role.Support) continue;
+            card.AddResistance(character);
+        }
+    }
+
+    public override void SkillOnSuccessfulAttack(CardSprite card)
+    {
+        card.AdvanceDexterity(-1);
+        card.AdvanceStrength(1);
     }
 }

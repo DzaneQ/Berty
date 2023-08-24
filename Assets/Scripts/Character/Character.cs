@@ -2,6 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+/*
+TODO:
+BertPogromca(); - Special GLOBAL cards resistance.
+CheBert();
+GotkaBerta();
+KrolPopuBert();
+KsiezniczkaBerta();
+RycerzBerti();
+TrenerPokebertow();
+*/
+
 public abstract class Character
 {
     protected string name;
@@ -15,6 +26,7 @@ public abstract class Character
     protected List<int[]> riposteRange = new List<int[]>();
     protected List<int[]> attackRange = new List<int[]>();
     public string Name { get => name; }
+    public Gender Gender { get => gender; }
     public Role Role { get => role; }
     public int Strength { get => strength; }
     public int Power { get => power; }
