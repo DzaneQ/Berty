@@ -8,11 +8,11 @@
         AddRange(1, 1, attackRange);
         AddRange(-1, 2, attackRange);
         AddRange(0, 1, riposteRange);
-        AddRange(1, 1, riposteRange);
+        //AddRange(1, 1, riposteRange);
         AddRange(1, 0, riposteRange);
-        AddRange(1, -1, riposteRange);
-        AddRange(-1, -1, riposteRange);
-        AddRange(-1, 1, riposteRange);
+        //AddRange(1, -1, riposteRange);
+        //AddRange(-1, -1, riposteRange);
+        //AddRange(-1, 1, riposteRange);
     }
 
     public override void SkillOnSuccessfulAttack(CardSprite card)
@@ -28,6 +28,10 @@
 
     public override void SkillOnNeighbor(CardSprite card, CardSprite target)
     {
-        if (card.IsAllied(target.OccupiedField)) target.AdvancePower(1, card);
+        if (!card.IsAllied(target.OccupiedField)) return;
+        target.AdvancePower(1, card);
+        target.AddResistance(this);
     }
+
+    public override void SkillOnMove(CardSprite card) => SkillOnNewCard(card);
 }

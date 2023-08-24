@@ -54,6 +54,7 @@ public partial class Turn : MonoBehaviour
     }
 
     public bool InteractableDisabled => interactableDisabled;
+    public CardManager CM => cm;
 
     private void Awake()
     {

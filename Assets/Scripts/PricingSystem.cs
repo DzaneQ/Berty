@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PricingSystem
+internal class PricingSystem
 {
     private CardManager cardManager;
     private int cardPrice;

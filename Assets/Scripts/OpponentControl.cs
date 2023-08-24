@@ -67,7 +67,7 @@ public class OpponentControl : MonoBehaviour
             CardSprite card = field.OccupantCard;
             if (!card.CanCharacterAttack()) continue;
             if (cm.EnabledCards.Count < 6 - card.CardStatus.Dexterity) continue;
-            int efficiency = Efficiency(card, card.CardStatus.Strength);
+            int efficiency = Efficiency(card, card.GetStrength());
             if (efficiency <= highestEfficiency) continue;
             highestEfficiency = efficiency;
             bestCard = card;

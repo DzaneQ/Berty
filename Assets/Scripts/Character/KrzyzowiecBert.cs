@@ -7,12 +7,12 @@
         AddStats(2, 3, 5, 4);
         AddRange(0, 1, attackRange);
         AddRange(0, 1, riposteRange);
-        AddRange(1, 1, riposteRange);
+        //AddRange(1, 1, riposteRange);
         AddRange(1, 0, blockRange);
-        AddRange(1, -1, riposteRange);
-        AddRange(-1, -1, riposteRange);
+        //AddRange(1, -1, riposteRange);
+        //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, blockRange);
-        AddRange(-1, 1, riposteRange);
+        //AddRange(-1, 1, riposteRange);
     }
 
     public override void SkillAdjustHealthChange(int value, CardSprite card)

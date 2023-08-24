@@ -19,4 +19,9 @@ internal class InactiveState : CardState
     {
         card.TryToActivateCard();
     }
+
+    //public override bool IsJudgementRevenge()
+    //{
+    //    return card.Grid.CurrentStatus.JudgementRevenge == card.Grid.Turn.CurrentAlignment;
+    //}
 }

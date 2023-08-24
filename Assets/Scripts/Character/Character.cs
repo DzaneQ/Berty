@@ -2,6 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+/*
+TODO:
+BertPogromca(); - Special GLOBAL cards resistance.
+CheBert();
+GotkaBerta();
+KrolPopuBert();
+KsiezniczkaBerta();
+RycerzBerti();
+TrenerPokebertow();
+*/
+
 public abstract class Character
 {
     protected string name;
@@ -15,6 +26,7 @@ public abstract class Character
     protected List<int[]> riposteRange = new List<int[]>();
     protected List<int[]> attackRange = new List<int[]>();
     public string Name { get => name; }
+    public Gender Gender { get => gender; }
     public Role Role { get => role; }
     public int Strength { get => strength; }
     public int Power { get => power; }
@@ -80,7 +92,7 @@ public abstract class Character
 
     public virtual bool SkillSpecialAttack(CardSprite cardSprite) => false;
 
-    public virtual void SkillGlobalEvent(CardSprite cardSprite) { }
+    public virtual void SkillOnNewTurn(CardSprite cardSprite) { }
 
     public virtual bool CanAffectStrength(CardSprite cardSprite, CardSprite spellSource) => true;
 
@@ -88,7 +100,7 @@ public abstract class Character
 
     public virtual bool CanAffectPower(CardSprite cardSprite, CardSprite spellSource) => true;
 
-    public virtual void SkillAdjustPowerChange(int value, CardSprite cardSprite) { }
+    public virtual void SkillAdjustPowerChange(int value, CardSprite cardSprite, CardSprite spellSource) { }
 
     public virtual void SkillAdjustDexterityChange(int value, CardSprite cardSprite) { }
 
@@ -106,4 +118,5 @@ public abstract class Character
 
     public virtual int SkillAttackModifier(int damage, CardSprite target) => damage;
 
+    public virtual void SkillOnDeath(CardSprite cardSprite) { }
 }

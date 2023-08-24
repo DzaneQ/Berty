@@ -6,7 +6,7 @@ using UnityEngine;
 public class CardInitialization : MonoBehaviour
 {
 
-    private const int cardImageCount = 12;
+    private const int cardImageCount = 17;
 
     private int characterCount;
     [SerializeField] private GameObject cardBlankPrefab;

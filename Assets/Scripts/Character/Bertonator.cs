@@ -7,12 +7,12 @@
         AddStats(0, 3, 4, 4);
         AddRange(0, 1, attackRange);
         AddRange(0, 1, blockRange);
-        AddRange(1, 1, riposteRange);
+        //AddRange(1, 1, riposteRange);
         AddRange(1, 0, riposteRange);
-        AddRange(1, -1, riposteRange);
-        AddRange(-1, -1, riposteRange);
+        //AddRange(1, -1, riposteRange);
+        //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
-        AddRange(-1, 1, riposteRange);
+        //AddRange(-1, 1, riposteRange);
     }
 
     public override bool SkillSpecialAttack(CardSprite card)
@@ -21,7 +21,7 @@
         {
             Field targetField = card.GetTargetField(distance);
             if (targetField == null || !targetField.IsOccupied()) continue;
-            targetField.OccupantCard.TakeDamage(card.CardStatus.Strength, card.OccupiedField);
+            targetField.OccupantCard.TakeDamage(card.GetStrength(), card.OccupiedField);
             if (!targetField.IsOccupied()) continue;
             targetField.OccupantCard.AdvanceDexterity(-1, card);
             UnityEngine.Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());

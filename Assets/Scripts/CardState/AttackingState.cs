@@ -37,5 +37,11 @@ internal class AttackingState : CardState
 
     public override bool IsForPaymentConfirmation() => true;
 
+    //public override bool IsJudgementRevenge()
+    //{
+    //    Debug.Log("Asking for judgement revenge in attacking state.");
+    //    return card.Grid.CurrentStatus.JudgementRevenge == card.OccupiedField.Align;
+    //}
+
     public override CardState SetActive => new ActiveState(card);
 }

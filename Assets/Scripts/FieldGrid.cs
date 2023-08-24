@@ -12,9 +12,11 @@ public class FieldGrid : MonoBehaviour
     private Turn turn;
     private Field[] fields;
     private DefaultTransform cardOnBoard;
+    private GlobalStatus temporaryStatuses;
 
     public Turn Turn => turn;
     public Field[] Fields => fields;
+    public GlobalStatus CurrentStatus => temporaryStatuses;
 
     private void Awake()
     {
@@ -24,6 +26,7 @@ public class FieldGrid : MonoBehaviour
     private void Start()
     {
         GridInitialization init = GetComponent<GridInitialization>();
+        temporaryStatuses = new GlobalStatus(this);
         init.InitializeFields(out fields);
         init.InitializeDefaultCardTransform(out cardOnBoard);
         Destroy(init);
@@ -50,6 +53,33 @@ public class FieldGrid : MonoBehaviour
         return cardOnBoard.defaultRotation.eulerAngles.z;
     }
 
+    public void AddCardIntoQueue(Alignment align)
+    {
+        temporaryStatuses.RequestCard(align);
+    }
+
+    public void SetJudgement()
+    {
+        temporaryStatuses.SetJudgement();
+    }
+
+    public void RemoveJudgement(Alignment align)
+    {
+        temporaryStatuses.RemoveJudgement(align);
+    }
+
+    //public void AcceptCharacterGlobalState(Character character)
+    //{
+    //    switch (character)
+    //    {
+    //        case BertWho _:
+    //            temporaryStatuses.LoadDouble(2);
+    //            break;
+    //        default:
+    //            throw new Exception("Attempting to accept global state from unknown character.");
+    //    }
+    //}
+
     public void AttackNewStand(Field targetField)
     {
         int targetPower = targetField.OccupantCard.CardStatus.Power;
@@ -75,18 +105,41 @@ public class FieldGrid : MonoBehaviour
         }
     }
 
-    public void AdjustNewTurn()
-    {
+    public void AdjustNewTurn() // Can be unstable due to unclear priorities.
+    {  
         foreach (Field field in fields)
         {
             if (field.IsAligned(Alignment.None)) continue;
-            field.OccupantCard.Character.SkillGlobalEvent(field.OccupantCard);
-            if (!field.IsAligned(turn.CurrentAlignment)) continue;
-            field.OccupantCard.ResetAttack();
-            field.OccupantCard.RegenerateDexterity();
+            if (field.IsAligned(turn.CurrentAlignment))
+            {
+                field.OccupantCard.ResetAttack();
+                field.OccupantCard.RegenerateDexterity();
+                
+            }
+            field.OccupantCard.ProgressTemporaryStats();
+            field.OccupantCard.Character.SkillOnNewTurn(field.OccupantCard);
         }
+        temporaryStatuses.AdjustNewTurn(turn.CurrentAlignment);
         ActivateCardButtons();
     }
+
+    public void ShowJudgement(Alignment align) // TODO: Fix repeats!
+    {
+        foreach (Field field in fields)
+        {
+            if (!field.IsAligned(align)) continue;
+            field.OccupantCard.AdvanceTempStrength(1);
+        }
+    }
+
+    //public void RefreshBars()
+    //{
+    //    foreach (Field field in fields)
+    //    {
+    //        if (field.IsAligned(Alignment.None)) continue;
+    //        field.OccupantCard.UpdateBars();
+    //    }
+    //}
 
     public bool IsLocked()
     {
@@ -184,8 +237,20 @@ public class FieldGrid : MonoBehaviour
         foreach (Field enemyField in AlignedFields(enemy))
         {
             CardSprite enemyCard = enemyField.OccupantCard;
-            if (enemyCard.CanAttackField(field)) heat += enemyCard.CardStatus.Strength;
+            if (enemyCard.CanAttackField(field)) heat += enemyCard.GetStrength();
         }
         return heat;
+    }
+
+    public List<Character> AllInsideCharacters()
+    {
+        List<Character> list = new List<Character>();
+        foreach (Field field in fields)
+        {
+            if (!field.IsOccupied()) continue;
+            list.Add(field.OccupantCard.Character);
+        }
+        Debug.Log("AllInsideCharacters count: " + list.Count);
+        return list;
     }
 }
