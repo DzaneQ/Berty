@@ -24,16 +24,24 @@
         foreach (Character character in card.CardManager.AllOutsideCharacters())
         {
             if (character.Gender != Gender.Kid) continue;
-            //if (IsEnemyCard(character, card)) continue;
+            if (IsEnemyCard(character, card)) continue;
             kid = character;
             break;
         }
         if (kid == null) return;
-
+        card.CardManager.RemoveCharacter(kid);
+        foreach (Field field in card.Grid.Fields)
+            if (field.IsOccupied() && field.OccupantCard.CanUseSkill())
+                field.OccupantCard.Character.SkillOnOtherCardDeath(field.OccupantCard, card);
+        card.UpdateCard(kid);
+        // Put kid on the table.
     }
 
-    //private bool IsEnemyCard(Character character, CardSprite card)
-    //{
-    //    if (card.Grid.Turn.CurrentAlignment == card.CardManager.EnabledCards.Contains)
-    //}
+    private bool IsEnemyCard(Character character, CardSprite card)
+    {
+        if (card.Grid.Turn.CurrentAlignment == card.OccupiedField.Align)
+            return (card.CardManager.DisabledCards.FindIndex(x => x.Character.GetType() == character.GetType()) >= 0);
+        else
+            return (card.CardManager.EnabledCards.FindIndex(x => x.Character.GetType() == character.GetType()) >= 0);
+    }
 }

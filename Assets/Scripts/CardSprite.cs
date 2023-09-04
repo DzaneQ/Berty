@@ -33,6 +33,7 @@ public class CardSprite : MonoBehaviour
             character = value;
             spriteRenderer.sprite = imageReference.Sprite;
             name = character.Name;
+            cardStatus = new CharacterStat(Character);
         }
     }
 
@@ -110,6 +111,16 @@ public class CardSprite : MonoBehaviour
         CallPayment(cardStatus.Power);
         occupiedField.ConvertField(Turn.CurrentAlignment, false);
         ApplyPhysics();
+    }
+
+    public void UpdateCard(Character character)
+    {
+        Character = character;
+        //cardStatus = new CharacterStat(Character);
+        spriteRenderer.sprite = Resources.Load<Sprite>("BERTY/" + character.Name);
+        UpdateBars();
+        ConfirmNewCard(); // experimental - not tested
+        //ImportFromCardImage();
     }
 
     public bool IsCardSelected()
@@ -282,7 +293,7 @@ public class CardSprite : MonoBehaviour
         return true;
     }
 
-    private bool CanUseSkill()
+    public bool CanUseSkill()
     {
         return true;
     }
@@ -578,7 +589,7 @@ public class CardSprite : MonoBehaviour
     {
         imageReference = cardManager.SelectedCard();
         Character = imageReference.Character;
-        cardStatus = new CharacterStat(Character);
+        //cardStatus = new CharacterStat(Character);
         cardManager.RemoveFromTable(imageReference);
     }
 

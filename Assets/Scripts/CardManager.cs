@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +17,7 @@ public class CardManager : MonoBehaviour
 
 
     public List<CardImage> EnabledCards => enabledCards;
+    public List<CardImage> DisabledCards => disabledCards;
 
     [SerializeField] private GameObject drawPile;
     [SerializeField] private GameObject discardPile;
@@ -75,8 +75,8 @@ public class CardManager : MonoBehaviour
     private Character TakeRandomCharacter()
     {
         Character character = characterPile[rng.Next(characterPile.Count)];
-        if (drawPile.transform.childCount == 40) character = characterPile.Find(x => x is BertkaSerferka); // Testing: Force a card!
-        if (drawPile.transform.childCount == 39) character = characterPile.Find(x => x is PrymusBert); // Testing: Force another card!
+        //if (drawPile.transform.childCount == 40) character = characterPile.Find(x => x is KrolPopuBert); // Testing: Force a card!
+        //if (drawPile.transform.childCount == 39) character = characterPile.Find(x => x is PrymusBert); // Testing: Force another card!
         //if (drawPile.transform.childCount == 34) character = characterPile.Find(x => x is BertVentura); // Testing: Force opposing card!
         characterPile.Remove(character);
         RemoveFromDrawPile();
@@ -90,6 +90,7 @@ public class CardManager : MonoBehaviour
         RemoveFromDrawPile();
         return character;
     }
+
 
     private void AddCardToTable(Transform table, Character character)
     {
@@ -162,12 +163,13 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    public void RemoveFromTable(CardImage card)
+    public void RemoveFromTable(CardImage card, bool disabledCard = false)
     {
         card.SetBackupTable();
         SetCardObjectIdle(card.transform, cardImageCollection.transform);
 
-        enabledCards.Remove(card);
+        if (!disabledCard) enabledCards.Remove(card);
+        else disabledCards.Remove(card);
         unassignedCards.Add(card);
     }
 
@@ -243,13 +245,46 @@ public class CardManager : MonoBehaviour
     public List<Character> AllOutsideCharacters()
     {
         List<Character> list = new List<Character>();
-        list.AddRange(characterPile);
-        list.AddRange(discardedCharacters);
         foreach (CardImage image in enabledCards) list.Add(image.Character);
         foreach (CardImage image in disabledCards) list.Add(image.Character);
-        foreach (Character character in charactersBelow) Debug.Log("charactersBelow list contains character: " + character.Name);
-        foreach (Character character in list) Debug.Log("AllCharacters list contains character: " + character.Name);
-        Debug.Log("AllOutsideCharacters count: " + list.Count);
+        list.AddRange(characterPile);
+        list.AddRange(discardedCharacters);
+        list.AddRange(charactersBelow); // experimental
+        //foreach (Character character in charactersBelow) Debug.Log("charactersBelow list contains character: " + character.Name);
+        //foreach (Character character in list) Debug.Log("AllCharacters list contains character: " + character.Name);
+        //Debug.Log("AllOutsideCharacters count: " + list.Count);
         return list;
+    }
+
+    public void RemoveCharacter(Character character)
+    {
+        int index = disabledCards.FindIndex(x => x.Character.GetType() == character.GetType());
+        if (index >= 0)
+        {
+            RemoveFromTable(disabledCards[index], true);
+            return;
+        }
+        index = enabledCards.FindIndex(x => x.Character.GetType() == character.GetType());
+        if (index >= 0)
+        {
+            RemoveFromTable(enabledCards[index]);
+            return;
+        }
+        index = characterPile.FindIndex(x => x.GetType() == character.GetType());
+        if (index >= 0)
+        {
+            RemoveFromDrawPile();
+            characterPile.Remove(character);
+            return;
+        }
+        index = discardedCharacters.FindIndex(x => x.GetType() == character.GetType());
+        {
+            GameObject card = discardPile.transform.GetChild(index).gameObject;
+            if (!card.activeSelf) throw new Exception("Blank card not existing!");
+            card.SetActive(false);
+            discardedCharacters.Remove(character);
+            return;
+        }
+        throw new Exception("Unable to remove the following character: " + character.Name);
     }
 }

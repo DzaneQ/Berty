@@ -18,6 +18,11 @@ public class UnselectedCard : SelectStatus
 
     public override bool IsCardSelected => false;
 
+    public override void SetToBackup()
+    {
+        Debug.LogWarning("No backup for unselected card: " + card.name);
+    }
+
     //public override SelectStatus SetUnselected(Transform cardTransform)
     //{
     //    return this;

@@ -7,7 +7,6 @@ TODO:
 BertPogromca(); - Special GLOBAL cards resistance.
 CheBert();
 GotkaBerta();
-KrolPopuBert();
 KsiezniczkaBerta();
 RycerzBerti();
 TrenerPokebertow();
