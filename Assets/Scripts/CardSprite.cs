@@ -97,12 +97,12 @@ public class CardSprite : MonoBehaviour
         resistChar = new List<Character>();
     }
 
-    public void TryToActivateCard()
+    public void TryToActivateCard() // TODO: rework
     {
         if (IsCardSelected()) state = state.ActivateCard();
     }
 
-    public void ActivateCard()
+    public void ActivateCard() // TODO: rework
     {
         gameObject.SetActive(true);
         ImportFromCardImage();
@@ -125,7 +125,7 @@ public class CardSprite : MonoBehaviour
 
     public bool IsCardSelected()
     {
-        if (Turn.IsItPaymentTime()) return false;
+        if (!Turn.IsItMoveTime()) return false;
         return cardManager.SelectedCard() != null;
     }
 
@@ -164,14 +164,14 @@ public class CardSprite : MonoBehaviour
     private void DeactivateCard()
     {
         Debug.Log($"Deactivating card: {name}");
-        occupiedField.ConvertField(Alignment.None);
+        occupiedField.RemoveCard();
         //character = null;
         state = state.DeactivateCard();
     }
 
     public void SetCardToDefaultTransform()
     {
-        Grid.ResetCardTransform(transform);
+        if (occupiedField != null) Grid.ResetCardTransform(transform);
     }
 
     public void SetField(Field field)
@@ -185,6 +185,7 @@ public class CardSprite : MonoBehaviour
     {
         Debug.Log($"Set active for card on field: {occupiedField.GetX()}, {occupiedField.GetY()}");
         if (!cardStatus.isTired) state = state.SetActive;
+        else state = state.SetIdle;
     }
 
     public void SetIdle()
@@ -193,9 +194,19 @@ public class CardSprite : MonoBehaviour
         state = state.SetIdle;
     }
 
-    public void CallPayment(int price)
+    public void SetTelecinetic()
     {
-        Grid.DisableAllButtons();
+        state = state.SetTelecinetic;
+    }
+
+    public void SetTargetable()
+    {
+        state = state.SetTargetable;
+    }
+
+public void CallPayment(int price)
+    {
+        Grid.DisableAllButtons(occupiedField);
         Turn.SetPayment(price);
     }
 
@@ -206,12 +217,12 @@ public class CardSprite : MonoBehaviour
         if (!Turn.CheckOffer()) return;
         cardManager.DiscardCards();
         state.TakePaidAction();
-        Turn.UnsetPayment();
+        Turn.SetMoveTime();
     }
 
     public void CancelPayment()
     {
-        Turn.UnsetPayment();
+        Turn.SetMoveTime();
     }
 
     public void CancelDecision()
@@ -295,6 +306,7 @@ public class CardSprite : MonoBehaviour
 
     public bool CanUseSkill()
     {
+        if (OccupiedField.IsOpposed(Grid.CurrentStatus.Revolution) && GetRole() == Role.Special) return false;
         return true;
     }
 
@@ -371,9 +383,20 @@ public class CardSprite : MonoBehaviour
     private void SwitchSides()
     {
         occupiedField.GoToOppositeSide();
-        cardStatus.Power = Character.Power;
+        ResetPower();
+        if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
+        if (Grid.CurrentStatus.Revolution == Alignment.None) return;
+        if (GetRole() != Role.Special) return;
+        if (Character.Name == "che bert") return;
+        if (OccupiedField.IsAligned(Grid.CurrentStatus.Revolution)) AdvanceStrength(1);
+        else AdvanceStrength(-1);
         //if (occupiedField.IsAligned(Turn.CurrentAlignment)) SetActive();
         //else SetIdle();
+    }
+
+    public void ResetPower()
+    {
+        cardStatus.Power = Character.Power;
     }
 
     public void AdvanceDexterity(int value, CardSprite spellSource = null)
@@ -410,10 +433,10 @@ public class CardSprite : MonoBehaviour
     private void KillCard()
     {
         if (!gameObject.activeSelf) return;
+        Character.SkillOnDeath(this);
         foreach (Field field in Grid.Fields)
             if (field.IsOccupied() && field.OccupantCard.CanUseSkill())
                 field.OccupantCard.Character.SkillOnOtherCardDeath(field.OccupantCard, this);
-        Character.SkillOnDeath(this);
         DeactivateCard();
     }    
 
@@ -469,9 +492,10 @@ public class CardSprite : MonoBehaviour
     public void ConfirmNewCard()
     {
         ClearCardResistance();
+        if (occupiedField.IsAligned(Grid.CurrentStatus.Revolution) && GetRole() == Role.Special) AdvanceStrength(1);
+        if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
         if (CanUseSkill()) Character.SkillOnNewCard(this);
         TakeNeighborsEffect();
-        if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
         Grid.AttackNewStand(occupiedField);
     }
 
@@ -488,6 +512,7 @@ public class CardSprite : MonoBehaviour
 
     public void EnableNeutralButton(int index)
     {
+        DisableButtons();
         cardButton[index].ChangeButtonToNeutral();
         cardButton[index].EnableButton();
     }
@@ -507,10 +532,11 @@ public class CardSprite : MonoBehaviour
         }
     }
 
-    public void ShowDexterityButtons()
+    public void ShowDexterityButtons(bool onlyMove = false)
     {
         DisableButtons();
-        for (int i = 2; i <= 7; i++)
+        int firstIndex = onlyMove ? 4 : 2;
+        for (int i = firstIndex; i <= 7; i++)
         {
             cardButton[i].ChangeButtonToDexterity();
             cardButton[i].EnableButton();
@@ -568,6 +594,7 @@ public class CardSprite : MonoBehaviour
         int returnButtonIndex = (450 - angle) / 180;
         transform.Rotate(0, 0, -angle);
         UpdateRelativeCoordinates();
+        occupiedField.SynchronizeRotation();
         state = state.AdjustTransformChange(returnButtonIndex);
     }
 

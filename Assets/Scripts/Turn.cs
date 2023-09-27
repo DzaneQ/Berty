@@ -49,7 +49,7 @@ public partial class Turn : MonoBehaviour
             }
             fg.AdjustNewTurn();
             Debug.Log("Currently: " + value);
-            if (value == Alignment.Opponent && oc != null) oc.PlayTurn();
+            ExecuteAutomaticOpponentTurn();
         }
     }
 
@@ -78,11 +78,16 @@ public partial class Turn : MonoBehaviour
         CurrentAlignment = Alignment.Player;
     }
 
-    public void EndTurn()
+    public void EndTurn() // Note: If the character in CardManager.TakeRandomCharacter() not found, the game will end!
     {
         if (CheckWinConditions()) return;
         cm.DeselectCards();
         SwitchAlign();
+    }
+
+    public bool IsItMoveTime()
+    {
+        return CurrentStep == Step.Move;
     }
 
     public bool IsItPaymentTime()
@@ -90,9 +95,9 @@ public partial class Turn : MonoBehaviour
         return CurrentStep == Step.Payment;
     }
 
-    public void UnsetPayment()
+    public void SetMoveTime()
     {
-        if (!IsItPaymentTime()) throw new Exception("Trying to unset outside the payment step.");
+        if (IsItMoveTime()) throw new Exception("Trying to change move step into self.");
         CurrentStep = Step.Move;
     }
 
@@ -105,10 +110,22 @@ public partial class Turn : MonoBehaviour
 
     private void AdjustStep()
     {
-        ShowEndTurnButton(!IsItPaymentTime());
+        ShowEndTurnButton(IsItMoveTime());
         if (IsItPaymentTime()) return;
-        cm.DeselectCards();
+        cm.DeselectCards();  
         fg.ActivateCardButtons();
+    }
+
+    public void ExecuteSpecialTurn(Alignment decidingAlign)
+    {
+        Debug.Log("Executing special turn for alignment: " + decidingAlign);
+        if (decidingAlign == Alignment.None) throw new Exception("Special turn for no alignment.");
+        if (decidingAlign == Alignment.Opponent && oc != null) oc.ExecuteSpecialTurn();
+        else
+        {
+            CurrentStep = Step.Special;
+            fg.SetTargetableCards(decidingAlign);
+        }
     }
 
     public bool CheckOffer()
@@ -123,13 +140,13 @@ public partial class Turn : MonoBehaviour
 
     private bool CheckWinConditions(bool forceEnd = false)
     {
-        if (fg.AlignedFields(Alignment.Player).Count >= cardsToWin)
+        if (fg.AlignedFields(Alignment.Player, true).Count >= cardsToWin)
         {
             Debug.Log("Player got " + fg.AlignedFields(Alignment.Player).Count + " cards!");
             EndTheGame(Alignment.Player);
             return true;
         }
-        if (fg.AlignedFields(Alignment.Opponent).Count >= cardsToWin)
+        if (fg.AlignedFields(Alignment.Opponent, true).Count >= cardsToWin)
         {
             Debug.Log("Opponent got " + fg.AlignedFields(Alignment.Opponent).Count + " cards!");
             EndTheGame(Alignment.Opponent);
@@ -165,6 +182,11 @@ public partial class Turn : MonoBehaviour
         cm.HideTables();
         EndTurnButton.SetActive(false);
         interactableDisabled = true;
+    }
+
+    public void ExecuteAutomaticOpponentTurn() // TODO: Make it clean and private.
+    {
+        if (CurrentAlignment == Alignment.Opponent && oc != null) oc.PlayTurn();
     }
 
     private void ShowEndTurnButton(bool value = true)

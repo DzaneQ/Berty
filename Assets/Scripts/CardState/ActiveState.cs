@@ -16,12 +16,18 @@ internal class ActiveState : CardState
 
     public override void HandleClick()
     {
-        card.PrepareToAttack();
+        if (!card.IsCardSelected()) card.PrepareToAttack();
+        else if (!card.Character.SkillCardClick(card)) card.CardManager.DeselectCards();
     }
 
     public override CardState AdjustTransformChange(int buttonIndex)
     {
-        card.CallPayment(6 - card.CardStatus.Dexterity);
+        if (!card.OccupiedField.IsAligned(card.Grid.Turn.CurrentAlignment)) 
+            throw new System.Exception("Trying to adjust transform on active non-owned card!");
+        int dexterity = card.CardStatus.Dexterity;
+        if (buttonIndex > 3 && card.Grid.IsTelekineticMovement() && card.Grid.CurrentStatus.TelekinesisDex > dexterity)
+            dexterity = card.Grid.CurrentStatus.TelekinesisDex;
+        card.CallPayment(6 - dexterity);
         return new NewTransformState(card, buttonIndex);
     }
 

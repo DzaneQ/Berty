@@ -34,6 +34,11 @@ public class GridInitialization : MonoBehaviour
         cardOnBoard = new DefaultTransform(cardPrefab.transform);
     }
 
+    internal CardSprite InitializeBackupCard()
+    {
+        return Instantiate(cardPrefab, transform).GetComponent<CardSprite>();
+    }
+
     //private void InitializeCardSprite(Field field)
     //{
     //    field.OccupantCard = Instantiate(cardSpritePrefab, transform).GetComponent<CardSprite>();

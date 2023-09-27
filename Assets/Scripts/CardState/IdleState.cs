@@ -28,5 +28,9 @@ internal class IdleState : CardState
 
     public override CardState SetActive => new ActiveState(card);
 
+    public override CardState SetTelecinetic => new TelecineticState(card);
+
+    public override CardState SetTargetable => new TargetState(card);
+
     public override CardState SetIdle => this;
 }

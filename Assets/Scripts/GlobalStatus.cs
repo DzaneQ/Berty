@@ -11,9 +11,15 @@ public class GlobalStatus
     private bool judgementState;
     private Alignment judgementAwaiting;
     private Alignment judgementRevenge;
+    private Alignment revolution;
+    private Alignment telekinesis;
+    private int telekinesisDex;
 
     public bool IsJudgement => judgementState;
     public Alignment JudgementRevenge => judgementRevenge;
+    public Alignment Revolution => revolution;
+    public Alignment Telekinesis => telekinesis;
+    public int TelekinesisDex => telekinesisDex;
     public GlobalStatus(FieldGrid newGrid)
     {
         grid = newGrid;
@@ -21,6 +27,9 @@ public class GlobalStatus
         judgementState = false;
         judgementAwaiting = Alignment.None;
         judgementRevenge = Alignment.None;
+        revolution = Alignment.None;
+        telekinesis = Alignment.None;
+        telekinesisDex = 0;
     }
 
     public void AdjustNewTurn(Alignment currentAlign)
@@ -57,6 +66,37 @@ public class GlobalStatus
         //grid.RefreshBars();
     }
 
+    internal void CalmJudgement()
+    {
+        judgementState = false;
+    }
+
+    internal void SetRevolution(Alignment align)
+    {
+        revolution = align;
+    }
+
+    internal void RemoveRevolution()
+    {
+        revolution = Alignment.None;
+    }
+
+    internal void SetTelekinesis(Alignment align)
+    {
+        telekinesis = align;
+    }
+
+    internal void SetTelekinesisDexterity(int value)
+    {
+        telekinesisDex = value;
+    }
+
+    internal void RemoveTelekinesis()
+    {
+        telekinesis = Alignment.None;
+        telekinesisDex = 0;
+    }
+
     private void ProgressJudgementRevenge(Alignment currentAlign)
     {
         if (judgementAwaiting == currentAlign)
@@ -69,4 +109,9 @@ public class GlobalStatus
         else judgementRevenge = Alignment.None;
         //grid.RefreshBars();
     }
+
+    //private void CarryOnRevolution()
+    //{
+    //    if (revolution != Alignment.None) grid.CarryOnRevolution(revolution);
+    //}
 }

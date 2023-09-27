@@ -15,4 +15,30 @@
         //AddRange(-1, -1, riposteRange);
         //AddRange(-1, 1, riposteRange);
     }
+
+    public override void SkillOnNewCard(CardSprite card)
+    {
+        Field targetField = null;
+        for (int i = 0; i < 4; i++)
+        {
+            Field adjacentField = card.GetAdjacentField(i * 90);
+            if (adjacentField == null || !adjacentField.IsOccupied()) continue;
+            targetField = adjacentField;
+            if (adjacentField.IsOpposed(card.OccupiedField.Align)) break;
+        }
+        if (targetField != null) targetField.OccupantCard.AdvancePower(-3);
+        card.Grid.SetTelekinesis(card.OccupiedField.Align, card.CardStatus.Dexterity);
+    }
+
+    public override void SkillAdjustDexterityChange(int value, CardSprite card)
+    {
+        card.Grid.SetTelekinesis(card.OccupiedField.Align, card.CardStatus.Dexterity);
+    }
+
+    public override void SkillOnDeath(CardSprite card)
+    {
+        card.Grid.RemoveTelekinesis();
+    }
+
+    //TODO: BigMadB shouldn't be telekised.
 }

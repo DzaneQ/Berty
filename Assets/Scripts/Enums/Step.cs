@@ -2,5 +2,6 @@
 {
     Move,
     //Selection,
-    Payment
+    Payment,
+    Special
 }

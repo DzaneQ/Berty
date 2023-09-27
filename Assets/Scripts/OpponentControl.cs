@@ -31,6 +31,13 @@ public class OpponentControl : MonoBehaviour
         StartCoroutine(MakeMove(timeDelay));
     }
 
+    public void ExecuteSpecialTurn()
+    {
+        //CardSprite targetCard = BestTargetCard();
+        //if (targetCard == null) throw new Exception("No automatic opponent cards to execute special turn.");
+        fg.ApplyPrincessBuff(BestTargetCard());
+    }
+
     private IEnumerator MakeMove(int time)
     {
         bool nextMove = true;
@@ -40,6 +47,7 @@ public class OpponentControl : MonoBehaviour
             if (cm.EnabledCards.Count == 0) break;
             TryToPlayCard(out nextMove);
             if (!nextMove) TryToAttack(out nextMove);
+            if (!turn.IsItMoveTime()) break;
         }
         turn.EndTurn();
     }
@@ -72,6 +80,24 @@ public class OpponentControl : MonoBehaviour
             highestEfficiency = efficiency;
             bestCard = card;
         }
+        return bestCard;
+    }
+
+    private CardSprite BestTargetCard()
+    {
+        CardSprite bestCard = null;
+        foreach (Field field in fg.AlignedFields(Alignment.Opponent))
+        {
+            CardSprite card = field.OccupantCard;
+            if (bestCard != null)
+            {
+                if (card.CardStatus.Strength > 4 && bestCard.CardStatus.Strength < 6) continue;
+                if (card.CardStatus.Strength < bestCard.CardStatus.Strength) continue;
+                if (card.CardStatus.Health == 6 && bestCard.CardStatus.Health < 6) continue;
+            }
+            bestCard = card;
+        }
+        if (bestCard == null) throw new Exception("No automatic opponent cards to execute special turn.");
         return bestCard;
     }
 

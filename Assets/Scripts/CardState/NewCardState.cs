@@ -13,7 +13,8 @@ internal class NewCardState : CardState
 
     public override void HandleFieldCollision()
     {
-        card.ShowNeutralButtons();
+        if (!card.OccupiedField.AreThereTwoCards()) card.ShowNeutralButtons();
+        else card.EnableNeutralButton(1);
         card.ApplyPhysics(false);
     }
 

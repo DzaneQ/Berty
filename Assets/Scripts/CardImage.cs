@@ -54,7 +54,8 @@ public class CardImage : MonoBehaviour
     public bool CanSelect()
     {
         if (turn.IsItPaymentTime()) return !turn.CheckOffer();
-        return cardManager.SelectedCard() == null;
+        if (turn.IsItMoveTime()) return cardManager.SelectedCard() == null;
+        return false;
     }
 
     public void CardClick()

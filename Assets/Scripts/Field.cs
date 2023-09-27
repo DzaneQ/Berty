@@ -7,7 +7,8 @@ public class Field : MonoBehaviour
 {
     private FieldGrid fg;
     private CardSprite occupantCard;
-    private MeshRenderer meshRender;
+    private CardSprite backupCard;
+    private MeshRenderer mr;
     private readonly int[] coordinates = new int[2];
     Alignment align;
 
@@ -17,7 +18,7 @@ public class Field : MonoBehaviour
 
     private void Awake()
     {
-        meshRender = GetComponent<MeshRenderer>();  
+        mr = GetComponent<MeshRenderer>();  
     }
 
     private void Start()
@@ -45,7 +46,7 @@ public class Field : MonoBehaviour
 
     private void UpdateMeshMaterial()
     {
-        meshRender.material = fg.GetMaterial(align);
+        mr.material = fg.GetMaterial(align);
     }
 
     public void SetCoordinates(int x, int y)
@@ -64,10 +65,30 @@ public class Field : MonoBehaviour
         return coordinates[1];
     }
 
-    public void TakeCard(CardSprite card)
+    public void PlaceCard(CardSprite card, bool setBackup = false)
     {
+        if (setBackup)
+        {
+            backupCard = occupantCard;
+            backupCard.SetIdle();
+            card.DisableButtons();
+            card.transform.rotation = backupCard.transform.rotation;
+        }
         occupantCard = card;
         occupantCard.SetField(this);
+    }
+
+    public void SynchronizeRotation()
+    {
+        if (backupCard == null) return; 
+        backupCard.transform.rotation = occupantCard.transform.rotation;
+        backupCard.UpdateRelativeCoordinates();
+    }
+
+    public void SynchronizePosition()
+    {
+        if (backupCard == null) return;
+        backupCard.UpdateRelativeCoordinates();
     }
 
     public int[] GetRelativeCoordinates(float angle = 0) // TODO: Merge
@@ -92,9 +113,38 @@ public class Field : MonoBehaviour
         occupantCard.TryToActivateCard();
     }
 
+    public void RemoveCard()
+    {
+        if (backupCard == null) ConvertField(Alignment.None);
+        else
+        {
+            occupantCard = backupCard;
+            backupCard = null;
+        }
+    }
+
+    public void TransferBackupCard(Field destination)
+    {
+        destination.SetBackupCard(backupCard);
+        backupCard = null;
+    }
+
+    public void SetBackupCard(CardSprite card)
+    {
+        backupCard = card;
+        backupCard.SetField(this);
+    }
+
     public bool IsAligned(Alignment alignment)
     {
         return align == alignment;
+    }
+
+    public bool IsOpposed(Alignment alignment)
+    {
+        if (alignment == Alignment.None) return false;
+        if (align == Alignment.None) return false;
+        return align != alignment;
     }
 
     public bool IsOccupied()
@@ -110,4 +160,6 @@ public class Field : MonoBehaviour
         else if (align == Alignment.Opponent) ConvertField(Alignment.Player);
         else throw new Exception($"Can't switch sides for field {name}");
     }
+
+    public bool AreThereTwoCards() => backupCard != null;
 }

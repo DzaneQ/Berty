@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Character\KrolPopuBert.cs" />
     <Compile Include="Assets\Scripts\Character\KsiezniczkaBerta.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
+    <Compile Include="Assets\Scripts\CardState\TelecineticState.cs" />
     <Compile Include="Assets\Scripts\Structs\CharacterStat.cs" />
     <Compile Include="Assets\Scripts\Character\BertZawodowiec.cs" />
     <Compile Include="Assets\Scripts\Character\ZalobnyBert.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\Scripts\GridInitialization.cs" />
     <Compile Include="Assets\Scripts\Character\TrenerPokebertow.cs" />
+    <Compile Include="Assets\Scripts\CardState\TargetState.cs" />
     <Compile Include="Assets\Scripts\Enums\Step.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\Scripts\Character\BigMadB.cs" />

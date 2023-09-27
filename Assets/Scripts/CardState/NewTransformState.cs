@@ -30,10 +30,11 @@ internal class NewTransformState : CardState
         return new IdleState(card);
     }
 
-    public override CardState AdjustTransformChange(int buttonIndex)
+    public override CardState AdjustTransformChange(int buttonIndex) // TEST! Potential bug fiesta!
     {
         card.CancelPayment();
-        return new ActiveState(card);
+        if (card.OccupiedField.IsAligned(card.Grid.Turn.CurrentAlignment)) return new ActiveState(card);
+        else return new TelecineticState(card);
     }
 
     public override bool IsForPaymentConfirmation()
@@ -42,6 +43,8 @@ internal class NewTransformState : CardState
     }
 
     public override CardState SetActive => new ActiveState(card);
+
+    public override CardState SetTelecinetic => new TelecineticState(card);
 
     private bool IsMoving()
     {

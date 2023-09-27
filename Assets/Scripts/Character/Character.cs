@@ -4,12 +4,9 @@ using System.Collections.Generic;
 
 /*
 TODO:
-BertPogromca(); - Special GLOBAL cards resistance.
-CheBert();
+BertPogromca(); - Special GLOBAL cards resistance and during judgements.
 GotkaBerta();
-KsiezniczkaBerta();
-RycerzBerti();
-TrenerPokebertow();
+KsiezniczkaBerta(); - Targetable newly converted cards.
 */
 
 public abstract class Character
@@ -118,4 +115,6 @@ public abstract class Character
     public virtual int SkillAttackModifier(int damage, CardSprite target) => damage;
 
     public virtual void SkillOnDeath(CardSprite cardSprite) { }
+
+    public virtual bool SkillCardClick(CardSprite cardSprite) => false;
 }

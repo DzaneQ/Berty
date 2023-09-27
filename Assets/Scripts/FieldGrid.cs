@@ -13,6 +13,7 @@ public class FieldGrid : MonoBehaviour
     private Field[] fields;
     private DefaultTransform cardOnBoard;
     private GlobalStatus temporaryStatuses;
+    private CardSprite backupCard;
 
     public Turn Turn => turn;
     public Field[] Fields => fields;
@@ -29,6 +30,7 @@ public class FieldGrid : MonoBehaviour
         temporaryStatuses = new GlobalStatus(this);
         init.InitializeFields(out fields);
         init.InitializeDefaultCardTransform(out cardOnBoard);
+        backupCard = init.InitializeBackupCard();
         Destroy(init);
     }
 
@@ -61,24 +63,73 @@ public class FieldGrid : MonoBehaviour
     public void SetJudgement()
     {
         temporaryStatuses.SetJudgement();
+        if (temporaryStatuses.Revolution == Alignment.None) return;
+        foreach (Field field in fields) // not tested
+        {
+            if (!field.IsOccupied()) continue;
+            if (!field.IsAligned(temporaryStatuses.Revolution)) continue;
+            if (field.OccupantCard.GetRole() != field.OccupantCard.Character.Role) field.OccupantCard.AdvanceStrength(1);
+        }
     }
 
     public void RemoveJudgement(Alignment align)
     {
-        temporaryStatuses.RemoveJudgement(align);
+        if (temporaryStatuses.Revolution != Alignment.None)
+            foreach (Field field in fields) // not tested
+            {
+                if (!field.IsOccupied()) continue;
+                if (!field.IsAligned(temporaryStatuses.Revolution)) continue;
+                if (field.OccupantCard.GetRole() != field.OccupantCard.Character.Role) field.OccupantCard.AdvanceStrength(-1);
+            }
+        temporaryStatuses.RemoveJudgement(align);  
     }
 
-    //public void AcceptCharacterGlobalState(Character character)
-    //{
-    //    switch (character)
-    //    {
-    //        case BertWho _:
-    //            temporaryStatuses.LoadDouble(2);
-    //            break;
-    //        default:
-    //            throw new Exception("Attempting to accept global state from unknown character.");
-    //    }
-    //}
+    public void SetRevolution(Alignment align)
+    {
+        temporaryStatuses.SetRevolution(align);
+        CalmJudgement();
+    }
+
+    private void CalmJudgement()
+    {
+        if (temporaryStatuses.Revolution == Alignment.None) throw new Exception("There's no revolution to adjust judgement!");
+        if (!temporaryStatuses.IsJudgement) return;
+        if (IsJudgementWithRevolution()) return;
+        temporaryStatuses.CalmJudgement();
+    }
+
+    private bool IsJudgementWithRevolution()
+    {
+        foreach (Field field in fields) // not tested
+        {
+            if (!field.IsOccupied()) continue;
+            if (field.OccupantCard.Character.Name != "sedzia bertt") continue;
+            if (field.IsAligned(temporaryStatuses.Revolution)) return true;
+            if (field.IsOpposed(temporaryStatuses.Revolution)) return false;
+        }
+        throw new Exception("Card sedzia bertt not found!");
+    }
+
+    public void RemoveRevolution()
+    {
+        temporaryStatuses.RemoveRevolution();
+    }
+
+    public void SetTelekinesis(Alignment align, int dexterity)
+    {
+        temporaryStatuses.SetTelekinesis(align);
+        temporaryStatuses.SetTelekinesisDexterity(dexterity);
+    }
+
+    public void RemoveTelekinesis()
+    {
+        temporaryStatuses.RemoveTelekinesis();
+    }
+
+    public bool IsTelekineticMovement()
+    {
+        return turn.CurrentAlignment == temporaryStatuses.Telekinesis;
+    }
 
     public void AttackNewStand(Field targetField)
     {
@@ -94,15 +145,28 @@ public class FieldGrid : MonoBehaviour
 
     public void ActivateCardButtons()
     {
+        if (!Turn.IsItMoveTime()) return;
         foreach (Field field in fields)
         {
             //if (field.IsAligned(Alignment.None)) continue;
             //if (field.IsAligned(turn.CurrentAlignment))
             //    field.OccupantCard.SetActive();
             //else field.OccupantCard.SetIdle();
+            if (field.IsOpposed(turn.CurrentAlignment) && IsTelekineticMovement()) field.OccupantCard.SetTelecinetic();
             if (!field.IsAligned(turn.CurrentAlignment)) continue;
             field.OccupantCard.SetActive();
         }
+    }
+
+    public void SetTargetableCards(Alignment align)
+    {
+        foreach (Field field in AlignedFields(align)) field.OccupantCard.SetTargetable();
+    }
+
+    public void ApplyPrincessBuff(CardSprite card)
+    {
+        card.AdvanceStrength(2);
+        card.AdvanceHealth(1);
     }
 
     public void AdjustNewTurn() // Can be unstable due to unclear priorities.
@@ -132,6 +196,18 @@ public class FieldGrid : MonoBehaviour
         }
     }
 
+    public void SetBackupCard(Field field)
+    {
+        backupCard.transform.SetParent(field.transform, false);
+        field.PlaceCard(backupCard, true);
+        backupCard.TryToActivateCard();
+    }
+
+    //public void CarryOnRevolution(Alignment align)
+    //{
+    //    ShowJudgement(align);
+    //}
+
     //public void RefreshBars()
     //{
     //    foreach (Field field in fields)
@@ -146,13 +222,14 @@ public class FieldGrid : MonoBehaviour
         return Turn.InteractableDisabled;
     }
 
-    public void DisableAllButtons()
+    public void DisableAllButtons(Field exceptionField = null)
     {
         foreach (Field field in fields)
         {
             if (!field.IsOccupied()) continue;
-            if (field.IsAligned(turn.CurrentAlignment))
-                field.OccupantCard.SetIdle();
+            if (field == exceptionField) continue;
+            //if (field.IsAligned(turn.CurrentAlignment))
+            field.OccupantCard.SetIdle();
         }
     }
 
@@ -189,18 +266,27 @@ public class FieldGrid : MonoBehaviour
     {
         CardSprite tempCard = first.OccupantCard;
         Alignment tempAlign = first.Align;
-        first.TakeCard(second.OccupantCard);
+        SwapBackupCards(first, second);
+        first.PlaceCard(second.OccupantCard);
         first.ConvertField(second.Align);
-        second.TakeCard(tempCard);
+        second.PlaceCard(tempCard);
         second.ConvertField(tempAlign);
     }
 
-    public List<Field> AlignedFields(Alignment alignment)
+    private void SwapBackupCards(Field first, Field second)
+    {
+        if (first.AreThereTwoCards()) first.TransferBackupCard(second);
+        else if (second.AreThereTwoCards()) second.TransferBackupCard(first);
+    }
+
+    public List<Field> AlignedFields(Alignment alignment, bool countBackup = false)
     {
         List<Field> alignedFields = new List<Field>();
         foreach (Field field in fields)
         {
-            if (field.IsAligned(alignment)) alignedFields.Add(field);
+            if (!field.IsAligned(alignment)) continue;
+            alignedFields.Add(field);
+            if (countBackup && field.AreThereTwoCards()) alignedFields.Add(field);
         }
         return alignedFields;
     }
@@ -227,6 +313,7 @@ public class FieldGrid : MonoBehaviour
         foreach (Field field in AlignedFields(alignment))
         {
             if (field.OccupantCard.Character.Role == role) result++;
+            if (role == Role.Offensive && field.AreThereTwoCards()) result++;
         }
         return result;
     }

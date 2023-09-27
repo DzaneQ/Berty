@@ -14,4 +14,13 @@
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
     }
+
+    public override void SkillAdjustPowerChange(int value, CardSprite card, CardSprite spellSource)
+    {
+        if (card.CardStatus.Power > 0) return;
+        card.ResetPower();
+        Alignment buffTurn = card.Grid.Turn.CurrentAlignment;
+        if (spellSource != null) buffTurn = spellSource.OccupiedField.Align;
+        card.Grid.Turn.ExecuteSpecialTurn(buffTurn);
+    }
 }

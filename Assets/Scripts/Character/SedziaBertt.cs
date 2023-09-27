@@ -28,4 +28,13 @@
     {
         card.Grid.RemoveJudgement(card.OccupiedField.Align);
     }
+
+    public override void SkillOnOtherCardDeath(CardSprite card, CardSprite source)
+    {
+        if (card.Grid.CurrentStatus.IsJudgement) return;
+        if (!source.OccupiedField.IsOpposed(card.OccupiedField.Align)) return;
+        card.Grid.SetJudgement();
+    }
+
+    //TODO: Consider changing sides when revolution is going on.
 }

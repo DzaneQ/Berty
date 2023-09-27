@@ -11,16 +11,18 @@ public abstract class CardState
         card = sprite;
     }
     
-    public virtual CardState ActivateCard() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
-    public virtual CardState DeactivateCard() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
-    public virtual void HandleFieldCollision() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
+    public virtual CardState ActivateCard() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
+    public virtual CardState DeactivateCard() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
+    public virtual void HandleFieldCollision() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
     public abstract void HandleClick();
-    //public virtual void TakePaidAction() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
-    public virtual CardState TakePaidAction() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
-    public virtual CardState AdjustTransformChange(int buttonIndex) => throw new InvalidOperationException($"Invalid method for: {GetType()}");
-    public virtual void Cancel() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
+    //public virtual void TakePaidAction() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
+    public virtual CardState TakePaidAction() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
+    public virtual CardState AdjustTransformChange(int buttonIndex) => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
+    public virtual void Cancel() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
     public virtual bool IsForPaymentConfirmation() => false;
-    //public virtual bool IsJudgementRevenge() => throw new InvalidOperationException($"Invalid method for: {GetType()}");
-    public virtual CardState SetActive => throw new InvalidOperationException($"Invalid method for: {GetType()}");
-    public virtual CardState SetIdle => throw new InvalidOperationException($"Invalid method for: {GetType()}");
+    //public virtual bool IsJudgementRevenge() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
+    public virtual CardState SetActive => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
+    public virtual CardState SetIdle => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
+    public virtual CardState SetTelecinetic => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
+    public virtual CardState SetTargetable => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
 }
