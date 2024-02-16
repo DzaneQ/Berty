@@ -8,37 +8,42 @@ public class SelectedCard : SelectStatus
     private Transform returnTable;
 
 
-    public SelectedCard(RectTransform transform) : base(transform)
+    public SelectedCard(RectTransform transform, CardImage card) : base(transform, card)
     {
-        unselectedPosition = card.position;
+        unselectedPosition = cardTransform.position;
         Vector3 offset = new Vector3(0f, 25f, 0f);
-        card.position += offset;
+        cardTransform.position += offset;
         //card.SelectPosition();
     }
 
     public override SelectStatus ChangePosition(bool CanSelect = true)
     {
         //Debug.Log("Attempting to deselect.");
-        card.position = unselectedPosition;
-        return new UnselectedCard(card);
+        cardTransform.position = unselectedPosition;
+        return new UnselectedCard(cardTransform, card);
     }
 
     public override bool IsCardSelected => true;
 
     public override void SetToBackup()
     {
-        returnTable = card.parent;
+        returnTable = cardTransform.parent;
     }
 
     public override Transform ReturnCard()
     {
-        card.position = unselectedPosition;
+        cardTransform.position = unselectedPosition;
         return returnTable;
     }
+
+    //public override SelectStatus KillCard() // TODO: Remove this after fixing selection state.
+    //{
+    //    return new DeadCard(cardTransform, card);
+    //}
 
     //override public SelectStatus SetUnselected(Transform cardTransform) => ChangePosition(true);
     public override SelectStatus SetUnselected()
     {
-        return new UnselectedCard(card);
+        return new UnselectedCard(cardTransform, card);
     }
 }

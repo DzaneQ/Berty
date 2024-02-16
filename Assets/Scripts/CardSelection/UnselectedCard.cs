@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UnselectedCard : SelectStatus
 {
-    public UnselectedCard(RectTransform transform) : base(transform)
+    public UnselectedCard(RectTransform transform, CardImage card) : base(transform, card)
     {
         //Debug.Log("Unselecting card: " + card.gameObject.name);
     }
@@ -12,7 +12,7 @@ public class UnselectedCard : SelectStatus
     public override SelectStatus ChangePosition(bool canSelect)
     {
         if (!canSelect) return this;
-        return new SelectedCard(card);
+        return new SelectedCard(cardTransform, card);
         
     }
 
@@ -20,11 +20,16 @@ public class UnselectedCard : SelectStatus
 
     public override void SetToBackup()
     {
-        Debug.LogWarning("No backup for unselected card: " + card.name);
+        Debug.LogWarning("No backup for unselected card: " + cardTransform.name);
     }
 
-    //public override SelectStatus SetUnselected(Transform cardTransform)
+    //public override SelectStatus KillCard()
     //{
-    //    return this;
+    //    return new DeadCard(cardTransform, card);
     //}
+
+    public override SelectStatus SetUnselected() // TODO: Remove this after fixing selection state.
+    {
+        return this;
+    }
 }

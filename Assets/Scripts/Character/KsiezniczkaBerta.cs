@@ -21,6 +21,6 @@
         card.ResetPower();
         Alignment buffTurn = card.Grid.Turn.CurrentAlignment;
         if (spellSource != null) buffTurn = spellSource.OccupiedField.Align;
-        card.Grid.Turn.ExecuteSpecialTurn(buffTurn);
+        card.Grid.Turn.ExecutePrincessTurn(buffTurn);
     }
 }

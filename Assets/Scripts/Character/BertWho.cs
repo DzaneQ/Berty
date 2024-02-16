@@ -46,6 +46,6 @@
 
     public override void SkillOnDeath(CardSprite card)
     {
-        card.CardManager.ReturnCharacter(this);
+        card.ReturnCharacter();
     }
 }

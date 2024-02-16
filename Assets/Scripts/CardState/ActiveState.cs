@@ -20,6 +20,11 @@ internal class ActiveState : CardState
         else if (!card.Character.SkillCardClick(card)) card.CardManager.DeselectCards();
     }
 
+    public override void HandleSideClick()
+    {
+        if (card.CanUseSkill()) card.Character.SkillSideClick(card);
+    }
+
     public override CardState AdjustTransformChange(int buttonIndex)
     {
         if (!card.OccupiedField.IsAligned(card.Grid.Turn.CurrentAlignment)) 

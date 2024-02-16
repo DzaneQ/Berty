@@ -31,11 +31,16 @@ public class OpponentControl : MonoBehaviour
         StartCoroutine(MakeMove(timeDelay));
     }
 
-    public void ExecuteSpecialTurn()
+    public void ExecutePrincessTurn()
     {
         //CardSprite targetCard = BestTargetCard();
         //if (targetCard == null) throw new Exception("No automatic opponent cards to execute special turn.");
         fg.ApplyPrincessBuff(BestTargetCard());
+    }
+
+    public void ExecuteResurrection()
+    {
+        cm.ReviveCard(cm.FirstDeadCardForOpponent());
     }
 
     private IEnumerator MakeMove(int time)
@@ -49,6 +54,7 @@ public class OpponentControl : MonoBehaviour
             if (!nextMove) TryToAttack(out nextMove);
             if (!turn.IsItMoveTime()) break;
         }
+        yield return new WaitForSeconds(0.5f);
         turn.EndTurn();
     }
 
@@ -124,7 +130,7 @@ public class OpponentControl : MonoBehaviour
     private CardSprite PlaceCard(CardImage card)
     {
         List<Field> safeFields = GetSafestFields();
-        card.ChangePosition();
+        card.ChangeSelection();
         int index = rng.Next(safeFields.Count);
         //Debug.Log("Rolled field index: " + index);
         safeFields[index].PlayCard();
@@ -143,7 +149,7 @@ public class OpponentControl : MonoBehaviour
         for (int i = 0; i < price; i++)
         {
             //Debug.Log("Paying card no. " + i);
-            cm.EnabledCards[i].ChangePosition();
+            cm.EnabledCards[i].ChangeSelection();
         }
         card.ConfirmPayment();
     }

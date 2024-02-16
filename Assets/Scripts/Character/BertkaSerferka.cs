@@ -17,6 +17,8 @@
         //AddRange(-1, 1, riposteRange);
     }
 
+    // TODO: Fix bug that makes this character not rotate when killing target.
+
     public override bool SkillSpecialAttack(CardSprite card)
     {
         //bool swap = true;

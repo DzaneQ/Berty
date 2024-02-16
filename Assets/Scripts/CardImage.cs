@@ -33,7 +33,7 @@ public class CardImage : MonoBehaviour
         imageRenderer = GetComponent<Image>();
         turn = FindObjectOfType<Turn>();
         cardManager = FindObjectOfType<CardManager>();
-        select = new SelectedCard(GetComponent<RectTransform>());
+        select = new SelectedCard(GetComponent<RectTransform>(), this);
     }
 
     public void AssignCharacter(Character newCharacter)
@@ -41,7 +41,7 @@ public class CardImage : MonoBehaviour
         Character = newCharacter;
     }
 
-    public void AssignTable()
+    public void Unselect()
     {
         select = select.SetUnselected();
     }
@@ -60,12 +60,14 @@ public class CardImage : MonoBehaviour
 
     public void CardClick()
     {
-        if (Input.GetMouseButtonDown(0)) ChangePosition();
+        if (Input.GetMouseButtonDown(0)) ChangeSelection();
     }
 
-    public void ChangePosition()
+    public void ChangeSelection()
     {
-        select = select.ChangePosition(CanSelect());
+        //Debug.Log("Position changing...");
+        if (transform.parent.name.Contains("Dead")) ReviveCard();
+        else select = select.ChangePosition(CanSelect());
     }
 
     public void SetBackupTable()
@@ -73,9 +75,19 @@ public class CardImage : MonoBehaviour
         select.SetToBackup();
     }
 
+    //public void KillCard()
+    //{
+    //    select.KillCard();
+    //}
+
+    public void ReviveCard()
+    {
+        cardManager.ReviveCard(this);
+        turn.SetMoveTime();
+    }
+
     public void ReturnCard()
     {
-        //Transform lastTable = select.ReturnCard();
         cardManager.AddToTable(this, select.ReturnCard());
     }
 }

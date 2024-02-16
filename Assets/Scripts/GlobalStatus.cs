@@ -13,12 +13,14 @@ public class GlobalStatus
     private Alignment judgementRevenge;
     private Alignment revolution;
     private Alignment telekinesis;
+    private Alignment resurrection;
     private int telekinesisDex;
 
     public bool IsJudgement => judgementState;
     public Alignment JudgementRevenge => judgementRevenge;
     public Alignment Revolution => revolution;
     public Alignment Telekinesis => telekinesis;
+    public Alignment Resurrection => resurrection;
     public int TelekinesisDex => telekinesisDex;
     public GlobalStatus(FieldGrid newGrid)
     {
@@ -30,12 +32,14 @@ public class GlobalStatus
         revolution = Alignment.None;
         telekinesis = Alignment.None;
         telekinesisDex = 0;
+        resurrection = Alignment.None;
     }
 
     public void AdjustNewTurn(Alignment currentAlign)
     {
         TakeQueuedCards();
         ProgressJudgementRevenge(currentAlign);
+        Resurrect(currentAlign);
     }
 
     private void TakeQueuedCards()
@@ -97,6 +101,12 @@ public class GlobalStatus
         telekinesisDex = 0;
     }
 
+    internal void InitiateResurrection(Alignment align)
+    {
+        if (align == Alignment.None) throw new Exception("Initiating no resurrection!");
+        resurrection = align;
+    }
+
     private void ProgressJudgementRevenge(Alignment currentAlign)
     {
         if (judgementAwaiting == currentAlign)
@@ -108,6 +118,14 @@ public class GlobalStatus
         if (judgementRevenge == currentAlign) grid.ShowJudgement(currentAlign);
         else judgementRevenge = Alignment.None;
         //grid.RefreshBars();
+    }
+
+    private void Resurrect(Alignment currentAlign)
+    {
+        if (resurrection != currentAlign) return;
+        grid.Turn.ExecuteResurrection(currentAlign);
+        // TODO: Process resurrection code!
+        resurrection = Alignment.None;
     }
 
     //private void CarryOnRevolution()

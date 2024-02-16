@@ -12,4 +12,16 @@
         //AddRange(-1, -1, riposteRange);
         //AddRange(-1, 1, riposteRange);
     }
+
+    public override void SkillOnNewCard(CardSprite card)
+    {
+        card.Grid.InitiateResurrection(card.OccupiedField.Align);
+    }
+
+    public override void SkillSideClick(CardSprite card)
+    {
+        if (card.Grid.CurrentStatus.Resurrection != Alignment.None) return;
+        SkillOnNewCard(card);
+        card.DeactivateCard();
+    }
 }

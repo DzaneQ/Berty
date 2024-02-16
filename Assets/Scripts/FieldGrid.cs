@@ -131,6 +131,11 @@ public class FieldGrid : MonoBehaviour
         return turn.CurrentAlignment == temporaryStatuses.Telekinesis;
     }
 
+    public void InitiateResurrection(Alignment align)
+    {
+        temporaryStatuses.InitiateResurrection(align);
+    }
+
     public void AttackNewStand(Field targetField)
     {
         int targetPower = targetField.OccupantCard.CardStatus.Power;

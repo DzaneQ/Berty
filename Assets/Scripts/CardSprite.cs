@@ -71,11 +71,18 @@ public class CardSprite : MonoBehaviour
     public void OnMouseDown()
     {
         if (IsLeftClicked()) state.HandleClick();
+        if (IsRightClicked()) state.HandleSideClick();
     }
 
     private bool IsLeftClicked()
     {
         if (!Grid.IsLocked() && Input.GetMouseButtonDown(0)) return true;
+        else return false;
+    }
+
+    private bool IsRightClicked()
+    {
+        if (!Grid.IsLocked() && Input.GetMouseButtonDown(1)) return true;
         else return false;
     }
 
@@ -161,12 +168,13 @@ public class CardSprite : MonoBehaviour
         return !cardStatus.hasAttacked;
     }
 
-    private void DeactivateCard()
+    public void DeactivateCard()
     {
         Debug.Log($"Deactivating card: {name}");
         occupiedField.RemoveCard();
         //character = null;
         state = state.DeactivateCard();
+        //cardManager.RemoveFromField(imageReference);
     }
 
     public void SetCardToDefaultTransform()
@@ -183,7 +191,7 @@ public class CardSprite : MonoBehaviour
 
     public void SetActive()
     {
-        Debug.Log($"Set active for card on field: {occupiedField.GetX()}, {occupiedField.GetY()}");
+        //Debug.Log($"Set active for card on field: {occupiedField.GetX()}, {occupiedField.GetY()}");
         if (!cardStatus.isTired) state = state.SetActive;
         else state = state.SetIdle;
     }
@@ -256,7 +264,7 @@ public void CallPayment(int price)
 
     public void TryToAttackTarget(Field targetField)
     {
-        Debug.Log("Seeing attack on field - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
+        //Debug.Log("Seeing attack on field - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
         if (CanAttackField(targetField)) targetField.OccupantCard.TakeDamage(GetStrength(), targetField);
     }
 
@@ -328,22 +336,6 @@ public void CallPayment(int price)
         //Debug.Log("No Ventura in enemy cards.");
         return false;
     }
-
-    //public void QueueStat(int[] stats)
-    //{
-    //    if (stats.Length != 4) throw new Exception("Incorrect length of stat array to queue.");
-    //    foreach (int i in stats) cardStatus.FutureTempStatBonus[i] += stats[i];
-
-    //}
-
-    //public void AddTempStat(int[] stats)
-    //{
-    //    //Debug.Log("Current strength: " + cardStatus.Strength);
-    //    if (stats.Length != 4) throw new Exception("Incorrect length of stat array to add.");
-    //    for (int i = 0; i < stats.Length; i++) cardStatus.CurrentTempStatBonus[i] += stats[i];
-
-    //    UpdateBars();
-    //}
 
     public void AdvanceTempStrength(int value)
     {
@@ -438,6 +430,7 @@ public void CallPayment(int price)
             if (field.IsOccupied() && field.OccupantCard.CanUseSkill())
                 field.OccupantCard.Character.SkillOnOtherCardDeath(field.OccupantCard, this);
         DeactivateCard();
+        cardManager.KillCard(imageReference);
     }    
 
     public void AddResistance(Character character)
@@ -618,6 +611,12 @@ public void CallPayment(int price)
         Character = imageReference.Character;
         //cardStatus = new CharacterStat(Character);
         cardManager.RemoveFromTable(imageReference);
+        //cardManager.AddToField(imageReference);
+    }
+
+    public void ReturnCharacter()
+    {
+        cardManager.ReturnCharacter(imageReference);
     }
 
     private float GetRelativeAngle()

@@ -49,6 +49,7 @@ public partial class Turn : MonoBehaviour
             }
             fg.AdjustNewTurn();
             Debug.Log("Currently: " + value);
+            cm.DebugPrintCardCollection(value);
             ExecuteAutomaticOpponentTurn();
         }
     }
@@ -58,6 +59,7 @@ public partial class Turn : MonoBehaviour
 
     private void Awake()
     {
+        if (Debug.isDebugBuild) Application.targetFrameRate = 20;
         cm = GetComponent<CardManager>();
         oc = GetComponent<OpponentControl>();
         fg = FindObjectOfType<FieldGrid>();
@@ -112,19 +114,32 @@ public partial class Turn : MonoBehaviour
     {
         ShowEndTurnButton(IsItMoveTime());
         if (IsItPaymentTime()) return;
-        cm.DeselectCards();  
+        cm.DeselectCards();
         fg.ActivateCardButtons();
     }
 
-    public void ExecuteSpecialTurn(Alignment decidingAlign)
+    public void ExecutePrincessTurn(Alignment decidingAlign)
     {
         Debug.Log("Executing special turn for alignment: " + decidingAlign);
         if (decidingAlign == Alignment.None) throw new Exception("Special turn for no alignment.");
-        if (decidingAlign == Alignment.Opponent && oc != null) oc.ExecuteSpecialTurn();
+        if (decidingAlign == Alignment.Opponent && oc != null) oc.ExecutePrincessTurn();
         else
         {
             CurrentStep = Step.Special;
             fg.SetTargetableCards(decidingAlign);
+        }
+    }
+
+    public void ExecuteResurrection(Alignment decidingAlign)
+    {
+        Debug.Log("Executing special turn for alignment: " + decidingAlign);
+        if (decidingAlign == Alignment.None) throw new Exception("Special turn for no alignment.");
+        if (!cm.AreThereDeadCards()) return;
+        if (decidingAlign == Alignment.Opponent && oc != null) oc.ExecuteResurrection();
+        else
+        {
+            CurrentStep = Step.Special;
+            cm.DisplayDeadCards(decidingAlign);
         }
     }
 
