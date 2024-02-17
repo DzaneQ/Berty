@@ -20,7 +20,7 @@
 
     public override void SkillSideClick(CardSprite card)
     {
-        if (card.Grid.CurrentStatus.Resurrection != Alignment.None) return;
+        //if (card.Grid.CurrentStatus.Resurrection != Alignment.None) return;
         SkillOnNewCard(card);
         card.DeactivateCard();
     }

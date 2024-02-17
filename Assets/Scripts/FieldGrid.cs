@@ -133,7 +133,8 @@ public class FieldGrid : MonoBehaviour
 
     public void InitiateResurrection(Alignment align)
     {
-        temporaryStatuses.InitiateResurrection(align);
+        //temporaryStatuses.InitiateResurrection(align);
+        turn.ExecuteResurrection(align);
     }
 
     public void AttackNewStand(Field targetField)

@@ -82,7 +82,7 @@ public class CardManager : MonoBehaviour // BUG: Discarded cards go to pile card
     private CardImage TakeRandomCharacter()
     {
         CardImage character = pileCards[rng.Next(pileCards.Count)];
-        if (drawPile.transform.childCount == 40) character = pileCards.Find(x => x.Character is BertVentura); // Testing: Force a card!
+        if (drawPile.transform.childCount == 40) character = pileCards.Find(x => x.Character is GotkaBerta); // Testing: Force a card!
         //if (drawPile.transform.childCount == 39) chosenCard = pileCards.Find(x => x.Character is SedziaBertt); // Testing: Force another card!
         //if (drawPile.transform.childCount == 34) chosenCard = pileCards.Find(x => x.Character is KsiezniczkaBerta); // Testing: Force opposing card!
         pileCards.Remove(character);
