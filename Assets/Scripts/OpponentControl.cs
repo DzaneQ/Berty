@@ -12,6 +12,7 @@ public class OpponentControl : MonoBehaviour
     private CardManager cm;
     private Turn turn;
     private System.Random rng = new System.Random();
+    private DevTools dt;
 
     [SerializeField] private GameObject opponentTable;
 
@@ -129,8 +130,18 @@ public class OpponentControl : MonoBehaviour
 
     private CardSprite PlaceCard(CardImage card)
     {
-        List<Field> safeFields = GetSafestFields();
         card.ChangeSelection();
+        if (dt != null)
+        {
+            Field field = dt.OpponentPriorityField();
+            if (field != null)
+            {
+                Debug.LogWarning("Executing priority card!");
+                field.PlayCard();
+                return field.OccupantCard;
+            }
+        }
+        List<Field> safeFields = GetSafestFields();
         int index = rng.Next(safeFields.Count);
         //Debug.Log("Rolled field index: " + index);
         safeFields[index].PlayCard();
@@ -206,5 +217,11 @@ public class OpponentControl : MonoBehaviour
             //if (card.CanAttack(field)) Debug.Log("Substracting " + alignedWeight + " cause ally: " + field.GetX() + "," + field.GetY());
         }
         return efficiency;
+    }
+
+    public void DebugInit(DevTools dt)
+    {
+        if (!Debug.isDebugBuild) return;
+        this.dt = dt;
     }
 }

@@ -39,9 +39,9 @@ public class Field : MonoBehaviour
         else throw new Exception($"Field colliding not with card {collision.gameObject}"); 
     }
 
-    private void OnMouseDown()
+    private void OnMouseOver()
     {
-        occupantCard.OnMouseDown();
+        occupantCard.OnMouseOver();
     }
 
     private void UpdateMeshMaterial()
@@ -93,12 +93,6 @@ public class Field : MonoBehaviour
 
     public int[] GetRelativeCoordinates(float angle = 0) // TODO: Merge
     {
-        //int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
-        //int cosinus = (int)Math.Round(Math.Cos(angle / 180 * Math.PI));
-        //int[] relCoord = new int[2];
-        //relCoord[0] = cosinus * coordinates[0] - sinus * coordinates[1];
-        //relCoord[1] = sinus * coordinates[0] + cosinus * coordinates[1];
-        //Grid.GetRelativeField(coordinates[0], coordinates[1], angle)
         return Grid.GetRelativeCoordinates(GetX(), GetY(), -angle);
     }
 
@@ -113,7 +107,7 @@ public class Field : MonoBehaviour
         occupantCard.TryToActivateCard();
     }
 
-    public void RemoveCard()
+    public void AdjustCardRemoval()
     {
         if (backupCard == null) ConvertField(Alignment.None);
         else
@@ -150,7 +144,6 @@ public class Field : MonoBehaviour
     public bool IsOccupied()
     {
         if (align != Alignment.None) return true;
-        //if (occupantCard.gameObject.activeSelf) return true;
         return false;
     }
 

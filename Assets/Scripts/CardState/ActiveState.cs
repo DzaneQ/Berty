@@ -6,6 +6,7 @@ internal class ActiveState : CardState
 {
     public ActiveState(CardSprite sprite) : base(sprite)
     {
+        Debug.Log("Setting active state for " + card.name);
         card.ShowDexterityButtons();
     }
 

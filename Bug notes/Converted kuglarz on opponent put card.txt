@@ -1,0 +1,9 @@
+InvalidOperationException: Invalid method for: NewCardState in kuglarz bert
+CardState.get_SetIdle () (at Assets/Scripts/CardState/CardState.cs:27)
+CardSprite.SetIdle () (at Assets/Scripts/CardSprite.cs:204)
+FieldGrid.DisableAllButtons (Field exceptionField) (at Assets/Scripts/FieldGrid.cs:232)
+Turn.set_CurrentAlignment (Alignment value) (at Assets/Scripts/Turn.cs:40)
+Turn.SwitchAlign () (at Assets/Scripts/Turn.cs:160)
+Turn.EndTurn () (at Assets/Scripts/Turn.cs:87)
+OpponentControl+<MakeMove>d__11.MoveNext () (at Assets/Scripts/OpponentControl.cs:58)
+UnityEngine.SetupCoroutine.InvokeMoveNext (System.Collections.IEnumerator enumerator, System.IntPtr returnValueAddress) (at <913bb12059fd4cef8da5cc94ad2f0933>:0)

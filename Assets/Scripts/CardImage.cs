@@ -7,10 +7,11 @@ using UnityEngine.UI;
 public class CardImage : MonoBehaviour
 {
     private SelectStatus select;
-    private Turn turn;
     private CardManager cardManager;
     private Image imageRenderer;
     private Character character;
+
+    private Turn Turn => cardManager.Turn;
     public Character Character 
     { 
         get => character;
@@ -31,7 +32,7 @@ public class CardImage : MonoBehaviour
     private void Awake()
     {
         imageRenderer = GetComponent<Image>();
-        turn = FindObjectOfType<Turn>();
+        //turn = FindObjectOfType<Turn>();
         cardManager = FindObjectOfType<CardManager>();
         select = new SelectedCard(GetComponent<RectTransform>(), this);
     }
@@ -53,8 +54,8 @@ public class CardImage : MonoBehaviour
 
     public bool CanSelect()
     {
-        if (turn.IsItPaymentTime()) return !turn.CheckOffer();
-        if (turn.IsItMoveTime()) return cardManager.SelectedCard() == null;
+        if (Turn.IsItPaymentTime()) return !Turn.CheckOffer();
+        if (Turn.IsItMoveTime()) return cardManager.SelectedCard() == null;
         return false;
     }
 
@@ -83,7 +84,7 @@ public class CardImage : MonoBehaviour
     public void ReviveCard()
     {
         cardManager.ReviveCard(this);
-        turn.SetMoveTime();
+        Turn.SetMoveTime();
     }
 
     public void ReturnCard()

@@ -49,7 +49,7 @@ public partial class Turn : MonoBehaviour
             }
             fg.AdjustNewTurn();
             Debug.Log("Currently: " + value);
-            cm.DebugPrintCardCollection(value);
+            //cm.DebugPrintCardCollection(value);
             ExecuteAutomaticOpponentTurn();
         }
     }
@@ -70,6 +70,7 @@ public partial class Turn : MonoBehaviour
         endingMessage = GameOverText.transform.GetChild(0).GetComponent<Text>();
         ps = new PricingSystem(cm);
         SetStartingParameters();
+        DebugInit();
         //Debug.Log(SystemInfo.processorType);
         //Debug.Log(SystemInfo.graphicsDeviceName);
     }
@@ -97,8 +98,14 @@ public partial class Turn : MonoBehaviour
         return CurrentStep == Step.Payment;
     }
 
+    public bool IsItSpecialTime()
+    {
+        return CurrentStep == Step.Special;
+    }
+
     public void SetMoveTime()
     {
+        Debug.Log("Setting move step.");
         if (IsItMoveTime()) throw new Exception("Trying to change move step into self.");
         CurrentStep = Step.Move;
     }
@@ -113,9 +120,8 @@ public partial class Turn : MonoBehaviour
     private void AdjustStep()
     {
         ShowEndTurnButton(IsItMoveTime());
-        if (IsItPaymentTime()) return;
-        cm.DeselectCards();
-        fg.ActivateCardButtons();
+        if (!IsItPaymentTime()) cm.DeselectCards();
+        if (IsItMoveTime()) fg.ActivateCardButtons();
     }
 
     public void ExecutePrincessTurn(Alignment decidingAlign)
@@ -213,5 +219,18 @@ public partial class Turn : MonoBehaviour
     public void ReturnToMenu()
     {
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+    }
+
+    private void DebugInit()
+    {
+        if (!Debug.isDebugBuild) Destroy(GetComponent<DevTools>());
+        else
+        {
+            DevTools tool = GetComponent<DevTools>();
+            tool.Initialize(this, cm, fg);
+            if (oc != null) oc.DebugInit(tool);
+        }
+        //Destroy(GetComponent<DevTools>());
+        //Destroy(GameObject.Find("/CanvasOverlay/DummyBttn"));
     }
 }

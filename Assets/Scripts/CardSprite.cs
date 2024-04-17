@@ -68,10 +68,10 @@ public class CardSprite : MonoBehaviour
         if (collision.gameObject == occupiedField.gameObject) state.HandleFieldCollision();
     }
 
-    public void OnMouseDown()
+    public void OnMouseOver()
     {
         if (IsLeftClicked()) state.HandleClick();
-        if (IsRightClicked()) state.HandleSideClick();
+        else if (IsRightClicked()) state.HandleSideClick();
     }
 
     private bool IsLeftClicked()
@@ -82,6 +82,8 @@ public class CardSprite : MonoBehaviour
 
     private bool IsRightClicked()
     {
+        //Debug.Log($"Card " + name + " is checked whether right clicked.");
+        //if (Input.GetMouseButtonDown(1)) Debug.Log(($"Card {0} is right clicked.", name));
         if (!Grid.IsLocked() && Input.GetMouseButtonDown(1)) return true;
         else return false;
     }
@@ -104,7 +106,7 @@ public class CardSprite : MonoBehaviour
         resistChar = new List<Character>();
     }
 
-    public void TryToActivateCard() // TODO: rework
+    public void TryToActivateCard() // TODO: rework (not to state to this)
     {
         if (IsCardSelected()) state = state.ActivateCard();
     }
@@ -171,7 +173,7 @@ public class CardSprite : MonoBehaviour
     public void DeactivateCard()
     {
         Debug.Log($"Deactivating card: {name}");
-        occupiedField.RemoveCard();
+        occupiedField.AdjustCardRemoval();
         //character = null;
         state = state.DeactivateCard();
         //cardManager.RemoveFromField(imageReference);
@@ -224,8 +226,8 @@ public void CallPayment(int price)
         if (!state.IsForPaymentConfirmation()) throw new Exception("Wrong card state for payment..");
         if (!Turn.CheckOffer()) return;
         cardManager.DiscardCards();
-        state.TakePaidAction();
-        Turn.SetMoveTime();
+        state = state.TakePaidAction();
+        if (Turn.IsItPaymentTime()) Turn.SetMoveTime();
     }
 
     public void CancelPayment()
@@ -484,12 +486,14 @@ public void CallPayment(int price)
 
     public void ConfirmNewCard()
     {
+        //Debug.Log("Start confirming new card.");
         ClearCardResistance();
         if (occupiedField.IsAligned(Grid.CurrentStatus.Revolution) && GetRole() == Role.Special) AdvanceStrength(1);
         if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
         if (CanUseSkill()) Character.SkillOnNewCard(this);
         TakeNeighborsEffect();
         Grid.AttackNewStand(occupiedField);
+        //Debug.Log("Finishing confirming new card.");
     }
 
     private void TakeNeighborsEffect()
@@ -639,5 +643,34 @@ public void CallPayment(int price)
     {
         float angle = GetRelativeAngle();
         relCoord = occupiedField.GetRelativeCoordinates(angle);
+    }
+
+    public void DebugForceDeactivateCard()
+    {
+        if (!Debug.isDebugBuild) return;
+        Debug.Log($"Force deactivating card: {name}");
+        occupiedField.AdjustCardRemoval();
+        state = new InactiveState(this);
+    }
+    
+    public CardImage DebugGetReference()
+    {
+        if (!Debug.isDebugBuild) return null;
+        return imageReference;
+    }
+
+    public void DebugForceActivateCard(CardImage image, int angle)
+    {
+        gameObject.SetActive(true);
+        imageReference = image;
+        Character = imageReference.Character;
+        UpdateBars();
+        transform.Rotate(0, 0, -angle);
+        UpdateRelativeCoordinates();
+        occupiedField.SynchronizeRotation();
+        ApplyPhysics();
+        if (occupiedField.IsAligned(Turn.CurrentAlignment)) state = new ActiveState(this);
+        else if (occupiedField.IsOpposed(Turn.CurrentAlignment)) state = new IdleState(this);
+        else Debug.LogError("Wrongly activated card!");
     }
 }

@@ -16,12 +16,14 @@
     public override void SkillOnNewCard(CardSprite card)
     {
         card.Grid.InitiateResurrection(card.OccupiedField.Align);
+        card.Grid.DisableAllButtons(card.OccupiedField);
     }
 
     public override void SkillSideClick(CardSprite card)
     {
         //if (card.Grid.CurrentStatus.Resurrection != Alignment.None) return;
         SkillOnNewCard(card);
+        card.SetIdle();
         card.DeactivateCard();
     }
 }

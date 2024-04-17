@@ -3,26 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardManager : MonoBehaviour // BUG: Discarded cards go to pile cards.
+public class CardManager : MonoBehaviour
 {
     private const int tableCapacity = 6;
     private const float offsetFactor = 0.0001f;
 
+    private Turn turn;
     private List<CardImage> pileCards = new List<CardImage>();
     private List<CardImage> discardedCards;
     private List<CardImage> enabledCards = new List<CardImage>();
     private List<CardImage> disabledCards = new List<CardImage>();
-    //private List<CardImage> fieldCards = new List<CardImage>();
     private List<CardImage> deadCards = new List<CardImage>();
-    //private List<Character> characterPile;
-    //private List<Character> discardedCharacters;
-    //private List<Character> charactersBelow = new List<Character>();
     private CardImage cardBelow;
     private readonly System.Random rng = new System.Random();
-    private Alignment tempAlign = Alignment.None;
+    private Alignment tempAlign = Alignment.None; // TODO: Remove this.
     GridLayoutGroup deadScreenGrid;
 
-
+    public Turn Turn => turn;
     public List<CardImage> EnabledCards => enabledCards;
     public List<CardImage> DisabledCards => disabledCards;
 
@@ -35,26 +32,20 @@ public class CardManager : MonoBehaviour // BUG: Discarded cards go to pile card
 
     private void Start()
     {
+        turn = GetComponent<Turn>();
         CardInitialization init = GetComponent<CardInitialization>();
-        //init.InitializeCharacters(out discardedCharacters);
         init.InitializeAllCharacterCards(cardImageCollection, out discardedCards);
         init.InitializeCardPile(discardPile, discardedCards.Count);
         ShufflePile();
-        //init.InitializeCardImages(cardImageCollection, out discardedCards);
         Destroy(init);
         deadScreenGrid = deadScreen.GetComponent<GridLayoutGroup>();
     }
 
     public bool PullCards(Alignment align)
     {
-        //Transform table = align == Alignment.Player ? playerTable.transform : opponentTable.transform;
+        Transform table = align == Alignment.Player ? playerTable.transform : opponentTable.transform;
         int cardsToPull = tableCapacity - enabledCards.Count;
-        //Debug.Log("Cards to pull: " + cardsToPull);
-        //foreach (CardImage card in enabledCards)
-        //{
-        //    Debug.Log("Enabled card: " + card.name);
-        //}
-        for (int i = cardsToPull; i > 0; i--) if (!PullCard(align)) return false;
+        for (int i = cardsToPull; i > 0; i--) if (!PullCard(table)) return false;
         return true;
     }
 
@@ -82,7 +73,7 @@ public class CardManager : MonoBehaviour // BUG: Discarded cards go to pile card
     private CardImage TakeRandomCharacter()
     {
         CardImage character = pileCards[rng.Next(pileCards.Count)];
-        if (drawPile.transform.childCount == 40) character = pileCards.Find(x => x.Character is GotkaBerta); // Testing: Force a card!
+        //if (drawPile.transform.childCount == 40) character = pileCards.Find(x => x.Character is GotkaBerta); // Testing: Force a card!
         //if (drawPile.transform.childCount == 39) chosenCard = pileCards.Find(x => x.Character is SedziaBertt); // Testing: Force another card!
         //if (drawPile.transform.childCount == 34) chosenCard = pileCards.Find(x => x.Character is KsiezniczkaBerta); // Testing: Force opposing card!
         pileCards.Remove(character);
@@ -97,16 +88,6 @@ public class CardManager : MonoBehaviour // BUG: Discarded cards go to pile card
         RemoveFromDrawPile();
         return character;
     }
-
-
-    //private void AddCardToTable(Transform table, CardImage character) // IMPORTANT: Change this code!
-    //{
-    //    //Debug.Log("Amount of unassigned cards: " + unassignedCards.Count);
-    //    //Debug.Log("Size of character pile: " + characterPile.Count);
-    //    CardImage cardSubject = character;
-    //    cardSubject.AssignCharacter(character);
-    //    AddToTable(cardSubject, table);
-    //}
 
     private bool ShufflePile()
     {     
@@ -155,7 +136,7 @@ public class CardManager : MonoBehaviour // BUG: Discarded cards go to pile card
         }
     }
 
-    public void DiscardPileCard()
+    private void DiscardPileCard()
     {
         GameObject pileCard;
         //Debug.Log("Card in pile discarded");
@@ -170,58 +151,37 @@ public class CardManager : MonoBehaviour // BUG: Discarded cards go to pile card
         }
     }
 
-    /*public void PlaceFromTable(CardImage card)
-    {
-        card.SetBackupTable();
-        SetCardObjectIdle(card.transform);
-        Debug.Log($"{card.name}: Table placement");
-        enabledCards.Remove(card);
-        if (pileCards.Count + discardedCards.Count != cardImageCollection.transform.childCount)
-        {
-            Debug.Log($"Pile cards: {pileCards.Count}; Discarded cards: {discardedCards.Count}; Collection: {cardImageCollection.transform.childCount}");
-        }
-    }*/
-
     public void RemoveFromTable(CardImage card, bool disabledCard = false)
     {
         card.SetBackupTable();
-        SetCardObjectIdle(card.transform);
-        Debug.Log($"{card.name}: Table removal for enabled ones: {disabledCard}");
+        card.transform.SetParent(cardImageCollection.transform, false);
+        //SetCardObjectIdle(card.transform);
+        //Debug.Log($"{card.name}: Table removal for enabled ones: {disabledCard}");
         if (!disabledCard) enabledCards.Remove(card);
         else disabledCards.Remove(card);
-        if (pileCards.Count + discardedCards.Count != cardImageCollection.transform.childCount)
-        {
-            Debug.Log($"Pile cards: {pileCards.Count}; Discarded cards: {discardedCards.Count}; Collection: {cardImageCollection.transform.childCount}");
-        }
+        //if (pileCards.Count + discardedCards.Count != cardImageCollection.transform.childCount)
+        //{
+        //    Debug.Log($"Pile cards: {pileCards.Count}; Discarded cards: {discardedCards.Count}; Collection: {cardImageCollection.transform.childCount}");
+        //}
     }
 
     public void AddToTable(CardImage card, Transform table)
     {
         card.transform.SetParent(table, false);
-        card.Unselect();
-        Debug.Log($"{card.name}: Table addition.");
+        card.Unselect(); // TODO: Delete this after all non-enabled cards are made unselected.
+        //Debug.Log($"{card.name}: Table addition.");
         //if (pileCards.Contains(card)) pileCards.Remove(card);
         //else if (cardBelow == card) cardBelow = null;
         //else throw new Exception("Card to add doesn't exist anywhere.");
         enabledCards.Add(card);
-        if (enabledCards.Count != playerTable.transform.childCount && enabledCards.Count != opponentTable.transform.childCount)
-            Debug.LogWarning("Enabled cards not equal to any table!");
+        //if (enabledCards.Count != playerTable.transform.childCount && enabledCards.Count != opponentTable.transform.childCount)
+        //    Debug.LogWarning("Enabled cards not equal to any table!");
     }
 
-    //public void AddToField(CardImage card)
+    //private void SetCardObjectIdle(Transform card)
     //{
-    //    fieldCards.Add(card);
+    //    card.SetParent(cardImageCollection.transform, false);
     //}
-
-    //public void RemoveFromField(CardImage card)
-    //{
-    //    fieldCards.Remove(card);
-    //}
-
-    private void SetCardObjectIdle(Transform card)
-    {
-        card.SetParent(cardImageCollection.transform, false);
-    }
 
     public void SwitchTable(Alignment alignment)
     {
@@ -295,11 +255,6 @@ public class CardManager : MonoBehaviour // BUG: Discarded cards go to pile card
         foreach (CardImage image in pileCards) list.Add(image.Character);
         if (cardBelow != null) list.Add(cardBelow.Character);
         foreach (CardImage image in discardedCards) list.Add(image.Character);
-        //list.AddRange(characterPile);
-        //list.AddRange(discardedCharacters);
-        //list.AddRange(charactersBelow); // experimental
-        //foreach (Character character in charactersBelow) Debug.Log("charactersBelow list contains character: " + character.Name);
-        //foreach (Character character in list) Debug.Log("AllCharacters list contains character: " + character.Name);
         //Debug.Log("AllOutsideCharacters count: " + list.Count);
         return list;
     }
@@ -395,7 +350,7 @@ public class CardManager : MonoBehaviour // BUG: Discarded cards go to pile card
         tempAlign = Alignment.None;      
     }
 
-    public void DebugPrintCardCollection(Alignment newTurn)
+    /*public void DebugPrintCardCollection(Alignment newTurn)
     {
         if (newTurn == Alignment.Player && enabledCards.Count != playerTable.transform.childCount)
         {
@@ -421,18 +376,62 @@ public class CardManager : MonoBehaviour // BUG: Discarded cards go to pile card
                 Debug.Log("deadCards: " + card);
             }
         }
-        /*if (pileCards.Count + discardedCards.Count != cardImageCollection.transform.childCount)
+    }*/
+
+    public void DebugForceRemoveCardFromLists(CardImage card)
+    {
+        if (!Debug.isDebugBuild) return;
+        if (card == null) return;
+        if (pileCards.Contains(card))
         {
-            Debug.LogWarning($"pileCards: {pileCards.Count}; discardedCards: {discardedCards.Count}; 
-        cardImageCollection: {cardImageCollection.transform.childCount}");
-            foreach (CardImage card in pileCards)
+            pileCards.Remove(card);
+            RemoveFromDrawPile();
+        }
+        if (discardedCards.Contains(card))
+        {
+            discardedCards.Remove(card);
+            for (int i = discardPile.transform.childCount - 1; i >= 0; i--)
             {
-                Debug.Log("pileCards: " + card);
+                GameObject pileCard = discardPile.transform.GetChild(i).gameObject;
+                if (!pileCard.activeSelf) continue;
+                pileCard.SetActive(false);
+                break;
             }
-            foreach (CardImage card in discardedCards)
-            {
-                Debug.Log("discardedCards: " + card);
-            }
-        }*/
+            
+        }
+        enabledCards.Remove(card);
+        deadCards.Remove(card);
+        if (cardBelow == card) cardBelow = null;
+        card.Unselect();
+    }
+
+    public void DebugAssignCardToList(CardImage card, List<CardImage> list)
+    {
+        if (!Debug.isDebugBuild) return;
+        list.Insert(0, card);
+    }
+
+    public void DebugDiscardPileCard(CardImage image)
+    {
+        if (!Debug.isDebugBuild) return;
+        DiscardPileCard();
+        discardedCards.Add(image);
+    }
+
+    public void DebugAddPileCard(CardImage image)
+    {
+        //Debug.Log("Shuffling to: " + stack.name);
+        float offsetUnit = drawPile.transform.childCount * offsetFactor;
+        Transform card;
+        for (int i = discardPile.transform.childCount - 1; i >= 0; i--)
+        {
+            card = discardPile.transform.GetChild(i);
+            if (card.gameObject.activeSelf) continue;
+            card.SetParent(drawPile.transform, false);
+            card.localPosition = new Vector3(offsetUnit, offsetUnit, offsetUnit);
+            pileCards.Add(image);
+            return;
+        }
+        Debug.LogWarning("Something gone wrong with adding pile card!");
     }
 }

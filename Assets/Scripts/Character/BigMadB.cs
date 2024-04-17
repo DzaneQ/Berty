@@ -33,7 +33,7 @@ public class BigMadB : Character
 
     public override void SkillOnSuccessfulAttack(CardSprite card)
     {
-        card.AdvanceDexterity(-1);
+        card.AdvanceDexterity(-1, card);
         card.AdvanceStrength(1);
     }
 

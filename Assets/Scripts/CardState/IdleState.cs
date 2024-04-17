@@ -6,6 +6,7 @@ internal class IdleState : CardState
 {
     public IdleState(CardSprite sprite) : base(sprite)
     {
+        Debug.Log("Setting idle state for " + card.name);
         card.DisableButtons();
     }
 

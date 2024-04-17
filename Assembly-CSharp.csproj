@@ -70,6 +70,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\Scripts\Character\KrolPopuBert.cs" />
     <Compile Include="Assets\Scripts\Character\KsiezniczkaBerta.cs" />
+    <Compile Include="Assets\Scripts\DevTools.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\Scripts\CardState\TelecineticState.cs" />
     <Compile Include="Assets\Scripts\Structs\CharacterStat.cs" />

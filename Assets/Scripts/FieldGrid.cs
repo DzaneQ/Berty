@@ -133,7 +133,6 @@ public class FieldGrid : MonoBehaviour
 
     public void InitiateResurrection(Alignment align)
     {
-        //temporaryStatuses.InitiateResurrection(align);
         turn.ExecuteResurrection(align);
     }
 
@@ -208,11 +207,6 @@ public class FieldGrid : MonoBehaviour
         field.PlaceCard(backupCard, true);
         backupCard.TryToActivateCard();
     }
-
-    //public void CarryOnRevolution(Alignment align)
-    //{
-    //    ShowJudgement(align);
-    //}
 
     //public void RefreshBars()
     //{
@@ -345,5 +339,20 @@ public class FieldGrid : MonoBehaviour
         }
         Debug.Log("AllInsideCharacters count: " + list.Count);
         return list;
+    }
+
+    public void DebugForceRemoveCardFromField(CardSprite card)
+    {
+        if (!Debug.isDebugBuild) return;
+        if (card == null) return;
+        foreach (Field field in fields)
+        {
+            if (!field.IsOccupied()) continue;
+            if (field.OccupantCard == card)
+            {
+                field.OccupantCard.DebugForceDeactivateCard();
+                return;
+            }
+        }
     }
 }
