@@ -136,16 +136,15 @@ public partial class Turn : MonoBehaviour
         }
     }
 
-    public void ExecuteResurrection(Alignment decidingAlign)
+    public void ExecuteResurrection()
     {
-        Debug.Log("Executing special turn for alignment: " + decidingAlign);
-        if (decidingAlign == Alignment.None) throw new Exception("Special turn for no alignment.");
+        Debug.Log("Executing resurrection!");
         if (!cm.AreThereDeadCards()) return;
-        if (decidingAlign == Alignment.Opponent && oc != null) oc.ExecuteResurrection();
+        if (currentAlign == Alignment.Opponent && oc != null) oc.ExecuteResurrection();
         else
         {
             CurrentStep = Step.Special;
-            cm.DisplayDeadCards(decidingAlign);
+            cm.DisplayDeadCards();
         }
     }
 

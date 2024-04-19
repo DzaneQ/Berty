@@ -1568,13 +1568,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1414117062}
+  - component: {fileID: 1414117067}
   - component: {fileID: 1414117061}
   - component: {fileID: 1414117060}
   - component: {fileID: 1414117064}
   - component: {fileID: 1414117063}
   - component: {fileID: 1414117065}
   - component: {fileID: 1414117066}
-  - component: {fileID: 1414117067}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged

@@ -10,11 +10,6 @@ internal class ActiveState : CardState
         card.ShowDexterityButtons();
     }
 
-    public override void HandleFieldCollision()
-    {
-        card.ApplyPhysics(false);
-    }
-
     public override void HandleClick()
     {
         if (!card.IsCardSelected()) card.PrepareToAttack();
@@ -31,7 +26,7 @@ internal class ActiveState : CardState
         if (!card.OccupiedField.IsAligned(card.Grid.Turn.CurrentAlignment)) 
             throw new System.Exception("Trying to adjust transform on active non-owned card!");
         int dexterity = card.CardStatus.Dexterity;
-        if (buttonIndex > 3 && card.Grid.IsTelekineticMovement() && card.Grid.CurrentStatus.TelekinesisDex > dexterity)
+        if (buttonIndex > 3 && card.CanBeTelecinetic() && card.Grid.CurrentStatus.TelekinesisDex > dexterity)
             dexterity = card.Grid.CurrentStatus.TelekinesisDex;
         card.CallPayment(6 - dexterity);
         return new NewTransformState(card, buttonIndex);

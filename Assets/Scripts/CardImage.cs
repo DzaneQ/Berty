@@ -26,13 +26,9 @@ public class CardImage : MonoBehaviour
         get => imageRenderer.sprite;
     }
 
-    //private delegate void ClickHandler();
-    //ClickHandler leftClick;
-
     private void Awake()
     {
         imageRenderer = GetComponent<Image>();
-        //turn = FindObjectOfType<Turn>();
         cardManager = FindObjectOfType<CardManager>();
         select = new SelectedCard(GetComponent<RectTransform>(), this);
     }
@@ -75,11 +71,6 @@ public class CardImage : MonoBehaviour
     {
         select.SetToBackup();
     }
-
-    //public void KillCard()
-    //{
-    //    select.KillCard();
-    //}
 
     public void ReviveCard()
     {

@@ -7,7 +7,7 @@ internal class NewCardState : CardState
     public NewCardState(CardSprite sprite) : base(sprite)
     {
         Debug.Log("Setting new card state for " + card.name);
-        card.ActivateCard();
+        card.ActivateNewCard();
     }
 
     public override CardState DeactivateCard() => new InactiveState(card);
@@ -15,7 +15,7 @@ internal class NewCardState : CardState
     public override void HandleFieldCollision()
     {
         if (!card.OccupiedField.AreThereTwoCards()) card.ShowNeutralButtons();
-        else card.EnableNeutralButton(1);
+        else card.EnableCancelNeutralButton(1);
         card.ApplyPhysics(false);
     }
 

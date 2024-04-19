@@ -16,7 +16,6 @@ public class CardManager : MonoBehaviour
     private List<CardImage> deadCards = new List<CardImage>();
     private CardImage cardBelow;
     private readonly System.Random rng = new System.Random();
-    private Alignment tempAlign = Alignment.None; // TODO: Remove this.
     GridLayoutGroup deadScreenGrid;
 
     public Turn Turn => turn;
@@ -73,9 +72,6 @@ public class CardManager : MonoBehaviour
     private CardImage TakeRandomCharacter()
     {
         CardImage character = pileCards[rng.Next(pileCards.Count)];
-        //if (drawPile.transform.childCount == 40) character = pileCards.Find(x => x.Character is GotkaBerta); // Testing: Force a card!
-        //if (drawPile.transform.childCount == 39) chosenCard = pileCards.Find(x => x.Character is SedziaBertt); // Testing: Force another card!
-        //if (drawPile.transform.childCount == 34) chosenCard = pileCards.Find(x => x.Character is KsiezniczkaBerta); // Testing: Force opposing card!
         pileCards.Remove(character);
         RemoveFromDrawPile();
         return character;
@@ -234,7 +230,6 @@ public class CardManager : MonoBehaviour
     {
         deadCards.Add(card);
         card.transform.SetParent(deadScreen.transform, false);
-        //card.KillCard();
     }
 
     public void ReturnCharacter(CardImage card)
@@ -259,6 +254,18 @@ public class CardManager : MonoBehaviour
         return list;
     }
 
+    public List<CardImage> AllOutsideCards()
+    {
+        List<CardImage> list = new List<CardImage>();
+        foreach (CardImage image in enabledCards) list.Add(image);
+        foreach (CardImage image in disabledCards) list.Add(image);
+        foreach (CardImage image in pileCards) list.Add(image);
+        if (cardBelow != null) list.Add(cardBelow);
+        foreach (CardImage image in discardedCards) list.Add(image);
+        //Debug.Log("AllOutsideCharacters count: " + list.Count);
+        return list;
+    }
+
     public void RemoveCharacter(Character character)
     {
         int index = disabledCards.FindIndex(x => x.Character.GetType() == character.GetType());
@@ -273,14 +280,15 @@ public class CardManager : MonoBehaviour
             RemoveFromTable(enabledCards[index]);
             return;
         }
-        index = pileCards.FindIndex(x => x.GetType() == character.GetType());
+        index = pileCards.FindIndex(x => x.Character.GetType() == character.GetType());
         if (index >= 0)
         {
             RemoveFromDrawPile();
             pileCards.Remove(pileCards[index]);
             return;
         }
-        index = discardedCards.FindIndex(x => x.GetType() == character.GetType());
+        index = discardedCards.FindIndex(x => x.Character.GetType() == character.GetType());
+        if (index >= 0)
         {
             GameObject card = discardPile.transform.GetChild(index).gameObject;
             if (!card.activeSelf) throw new Exception("Blank card not existing!");
@@ -296,9 +304,8 @@ public class CardManager : MonoBehaviour
         return deadCards.Count > 0;
     }
 
-    public void DisplayDeadCards(Alignment decidingAlign)
+    public void DisplayDeadCards()
     {
-        tempAlign = decidingAlign;
         AdjustDeadScreenView();
         deadScreen.SetActive(true);
     }
@@ -325,29 +332,15 @@ public class CardManager : MonoBehaviour
 
     public CardImage FirstDeadCardForOpponent()
     {
-        tempAlign = Alignment.Opponent;
         return deadCards[0];
-    }
-
-    private GameObject GetIntendedTable()
-    {
-        switch (tempAlign)
-        {
-            case Alignment.Player:
-                return playerTable;
-            case Alignment.Opponent:
-                return opponentTable;
-            default:
-                throw new Exception("Trying to pick unknown align.");
-        }
     }
 
     public void ReviveCard(CardImage card)
     {
         deadCards.Remove(card);
-        AddToTable(card, GetIntendedTable().transform);
-        deadScreen.SetActive(false);
-        tempAlign = Alignment.None;      
+        if (Turn.CurrentAlignment == Alignment.Player) AddToTable(card, playerTable.transform);
+        else AddToTable(card, opponentTable.transform);
+        deadScreen.SetActive(false);    
     }
 
     /*public void DebugPrintCardCollection(Alignment newTurn)

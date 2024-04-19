@@ -15,7 +15,7 @@
 
     public override void SkillOnNewCard(CardSprite card)
     {
-        card.Grid.InitiateResurrection(card.OccupiedField.Align);
+        card.Grid.InitiateResurrection();
         card.Grid.DisableAllButtons(card.OccupiedField);
     }
 

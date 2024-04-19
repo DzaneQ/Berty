@@ -5,7 +5,6 @@ using System.Collections.Generic;
 /*
 TODO:
 BertPogromca(); - Special GLOBAL cards resistance and during judgements.
-GotkaBerta();
 KsiezniczkaBerta(); - Targetable newly converted cards.
 */
 

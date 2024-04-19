@@ -30,6 +30,7 @@ public class UnselectedCard : SelectStatus
 
     public override SelectStatus SetUnselected() // TODO: Remove this after fixing selection state.
     {
+        Debug.LogWarning("Unselecting unselected card!");
         return this;
     }
 }

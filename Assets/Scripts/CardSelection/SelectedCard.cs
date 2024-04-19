@@ -13,7 +13,6 @@ public class SelectedCard : SelectStatus
         unselectedPosition = cardTransform.position;
         Vector3 offset = new Vector3(0f, 25f, 0f);
         cardTransform.position += offset;
-        //card.SelectPosition();
     }
 
     public override SelectStatus ChangePosition(bool CanSelect = true)
@@ -36,12 +35,6 @@ public class SelectedCard : SelectStatus
         return returnTable;
     }
 
-    //public override SelectStatus KillCard() // TODO: Remove this after fixing selection state.
-    //{
-    //    return new DeadCard(cardTransform, card);
-    //}
-
-    //override public SelectStatus SetUnselected(Transform cardTransform) => ChangePosition(true);
     public override SelectStatus SetUnselected()
     {
         return new UnselectedCard(cardTransform, card);

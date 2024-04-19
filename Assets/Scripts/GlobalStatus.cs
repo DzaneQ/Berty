@@ -6,21 +6,18 @@ using UnityEngine;
 public class GlobalStatus
 {
     private FieldGrid grid;
-    //private int takeDouble = 0;
     private List<Alignment> TakeNextTurn;
     private bool judgementState;
     private Alignment judgementAwaiting;
     private Alignment judgementRevenge;
     private Alignment revolution;
     private Alignment telekinesis;
-    //private Alignment resurrection;
     private int telekinesisDex;
 
     public bool IsJudgement => judgementState;
     public Alignment JudgementRevenge => judgementRevenge;
     public Alignment Revolution => revolution;
     public Alignment Telekinesis => telekinesis;
-    //public Alignment Resurrection => resurrection;
     public int TelekinesisDex => telekinesisDex;
     public GlobalStatus(FieldGrid newGrid)
     {
@@ -32,14 +29,12 @@ public class GlobalStatus
         revolution = Alignment.None;
         telekinesis = Alignment.None;
         telekinesisDex = 0;
-        //resurrection = Alignment.None;
     }
 
     public void AdjustNewTurn(Alignment currentAlign)
     {
         TakeQueuedCards();
         ProgressJudgementRevenge(currentAlign);
-        //Resurrect(currentAlign);
     }
 
     private void TakeQueuedCards()
@@ -66,8 +61,6 @@ public class GlobalStatus
     {
         judgementState = false;
         judgementAwaiting = align;
-        //judgementRevenge = align;
-        //grid.RefreshBars();
     }
 
     internal void CalmJudgement()
@@ -101,12 +94,6 @@ public class GlobalStatus
         telekinesisDex = 0;
     }
 
-    //internal void InitiateResurrection(Alignment align)
-    //{
-    //    if (align == Alignment.None) throw new Exception("Initiating no resurrection!");
-    //    resurrection = align;
-    //}
-
     private void ProgressJudgementRevenge(Alignment currentAlign)
     {
         if (judgementAwaiting == currentAlign)
@@ -117,18 +104,5 @@ public class GlobalStatus
         else if (judgementRevenge == Alignment.None) return;
         if (judgementRevenge == currentAlign) grid.ShowJudgement(currentAlign);
         else judgementRevenge = Alignment.None;
-        //grid.RefreshBars();
     }
-
-    //private void Resurrect(Alignment currentAlign)
-    //{
-    //    if (resurrection != currentAlign) return;
-    //    grid.Turn.ExecuteResurrection(currentAlign);
-    //    resurrection = Alignment.None;
-    //}
-
-    //private void CarryOnRevolution()
-    //{
-    //    if (revolution != Alignment.None) grid.CarryOnRevolution(revolution);
-    //}
 }

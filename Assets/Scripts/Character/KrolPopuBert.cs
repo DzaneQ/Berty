@@ -20,21 +20,20 @@
     public override void SkillAdjustHealthChange(int value, CardSprite card)
     {
         if (card.CardStatus.Health > 0) return;
-        Character kid = null;
-        foreach (Character character in card.CardManager.AllOutsideCharacters())
+        CardImage kid = null;
+        foreach (CardImage image in card.CardManager.AllOutsideCards())
         {
-            if (character.Gender != Gender.Kid) continue;
-            if (IsEnemyCard(character, card)) continue;
-            kid = character;
+            if (image.Character.Gender != Gender.Kid) continue;
+            if (IsEnemyCard(image.Character, card)) continue;
+            kid = image;
             break;
         }
         if (kid == null) return;
-        card.CardManager.RemoveCharacter(kid);
+        card.CardManager.RemoveCharacter(kid.Character); // BUG: It throws error!
         foreach (Field field in card.Grid.Fields)
             if (field.IsOccupied() && field.OccupantCard.CanUseSkill())
                 field.OccupantCard.Character.SkillOnOtherCardDeath(field.OccupantCard, card);
         card.UpdateCard(kid);
-        // Put kid on the table.
     }
 
     private bool IsEnemyCard(Character character, CardSprite card)

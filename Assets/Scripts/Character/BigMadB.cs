@@ -36,6 +36,4 @@ public class BigMadB : Character
         card.AdvanceDexterity(-1, card);
         card.AdvanceStrength(1);
     }
-
-    //TODO: RycerzBerti shouldn't telekise.
 }

@@ -39,6 +39,7 @@ public class DevTools : MonoBehaviour
             Debug.LogWarning("Use this during move time!");
             return;
         }
+        if (targetCard == null || targetParent == null) return;
         CardImage image = targetCard.GetComponent<CardImage>();
         CardSprite sprite = targetCard.GetComponent<CardSprite>();
         Field field = targetParent.GetComponent<Field>();
@@ -90,6 +91,7 @@ public class DevTools : MonoBehaviour
 
     public Field OpponentPriorityField()
     {
+        if (targetParent == null) return null;
         Field field = targetParent.GetComponent<Field>();
         if (field == null || field.IsOccupied()) return null;
         return field;

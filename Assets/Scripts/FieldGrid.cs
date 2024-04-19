@@ -131,9 +131,9 @@ public class FieldGrid : MonoBehaviour
         return turn.CurrentAlignment == temporaryStatuses.Telekinesis;
     }
 
-    public void InitiateResurrection(Alignment align)
+    public void InitiateResurrection()
     {
-        turn.ExecuteResurrection(align);
+        turn.ExecuteResurrection();
     }
 
     public void AttackNewStand(Field targetField)
@@ -153,11 +153,7 @@ public class FieldGrid : MonoBehaviour
         if (!Turn.IsItMoveTime()) return;
         foreach (Field field in fields)
         {
-            //if (field.IsAligned(Alignment.None)) continue;
-            //if (field.IsAligned(turn.CurrentAlignment))
-            //    field.OccupantCard.SetActive();
-            //else field.OccupantCard.SetIdle();
-            if (field.IsOpposed(turn.CurrentAlignment) && IsTelekineticMovement()) field.OccupantCard.SetTelecinetic();
+            if (field.IsOpposed(turn.CurrentAlignment) && field.OccupantCard.CanBeTelecinetic()) field.OccupantCard.SetTelecinetic();
             if (!field.IsAligned(turn.CurrentAlignment)) continue;
             field.OccupantCard.SetActive();
         }

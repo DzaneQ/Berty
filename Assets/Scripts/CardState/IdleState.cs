@@ -12,20 +12,9 @@ internal class IdleState : CardState
 
     public override CardState DeactivateCard() => new InactiveState(card);
 
-    public override void HandleFieldCollision()
-    {
-        card.ApplyPhysics(false);
-    }
-
     public override void HandleClick() { }
 
     public override CardState AdjustTransformChange(int buttonIndex) => this;
-
-    //public override bool IsJudgementRevenge()
-    //{
-    //    Debug.Log("Asking for judgement revenge in idle state.");
-    //    return card.Grid.CurrentStatus.JudgementRevenge == card.OccupiedField.Align;
-    //}
 
     public override CardState SetActive => new ActiveState(card);
 

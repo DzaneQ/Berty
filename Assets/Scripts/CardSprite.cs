@@ -82,8 +82,6 @@ public class CardSprite : MonoBehaviour
 
     private bool IsRightClicked()
     {
-        //Debug.Log($"Card " + name + " is checked whether right clicked.");
-        //if (Input.GetMouseButtonDown(1)) Debug.Log(($"Card {0} is right clicked.", name));
         if (!Grid.IsLocked() && Input.GetMouseButtonDown(1)) return true;
         else return false;
     }
@@ -106,15 +104,15 @@ public class CardSprite : MonoBehaviour
         resistChar = new List<Character>();
     }
 
-    public void TryToActivateCard() // TODO: rework (not to state to this)
+    public void TryToActivateCard()
     {
         if (IsCardSelected()) state = state.ActivateCard();
     }
 
-    public void ActivateCard() // TODO: rework
+    public void ActivateNewCard()
     {
         gameObject.SetActive(true);
-        ImportFromCardImage();
+        ImportFromSelectedImage();
         UpdateBars();
         UpdateRelativeCoordinates();
         CallPayment(cardStatus.Power);
@@ -122,14 +120,12 @@ public class CardSprite : MonoBehaviour
         ApplyPhysics();
     }
 
-    public void UpdateCard(Character character)
+    public void UpdateCard(CardImage image)
     {
-        Character = character;
-        //cardStatus = new CharacterStat(Character);
-        spriteRenderer.sprite = Resources.Load<Sprite>("BERTY/" + character.Name);
+        imageReference = image;
+        Character = image.Character;
         UpdateBars();
         ConfirmNewCard(); // experimental - not tested
-        //ImportFromCardImage();
     }
 
     public bool IsCardSelected()
@@ -145,13 +141,9 @@ public class CardSprite : MonoBehaviour
 
     public void ProgressTemporaryStats()
     {
-        if (cardStatus.CurrentTempStatBonus.All(x => x == 0)) return;
-        //Debug.Log("Clearing stats for card: " + name);
-        //cardStatus.CurrentTempStatBonus = new int[4];
-        //Array.Clear(cardStatus.CurrentTempStatBonus, 0, 4);
+        if (cardStatus.CurrentTempStatBonus.All(x => x == 0)) return;;
         cardStatus.CurrentTempStatBonus = (int[]) cardStatus.NextTempStatBonus.Clone();
         Array.Clear(cardStatus.NextTempStatBonus, 0, 4);
-        //cardStatus.FutureTempStatBonus = new int[4];
         UpdateBars();
     }
 
@@ -174,7 +166,6 @@ public class CardSprite : MonoBehaviour
     {
         Debug.Log($"Deactivating card: {name}");
         occupiedField.AdjustCardRemoval();
-        //character = null;
         state = state.DeactivateCard();
         //cardManager.RemoveFromField(imageReference);
     }
@@ -202,6 +193,12 @@ public class CardSprite : MonoBehaviour
     {
         //Debug.Log($"Set idle for card on field: {occupiedField.GetX()}, {occupiedField.GetY()}");
         state = state.SetIdle;
+    }
+
+    public bool CanBeTelecinetic()
+    {
+        if (resistChar.OfType<RycerzBerti>().Any()) return false;
+        return Grid.IsTelekineticMovement();
     }
 
     public void SetTelecinetic()
@@ -266,7 +263,6 @@ public void CallPayment(int price)
 
     public void TryToAttackTarget(Field targetField)
     {
-        //Debug.Log("Seeing attack on field - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
         if (CanAttackField(targetField)) targetField.OccupantCard.TakeDamage(GetStrength(), targetField);
     }
 
@@ -297,7 +293,6 @@ public void CallPayment(int price)
         if (CanUseSkill()) damage = Character.SkillDefenceModifier(damage, source.OccupantCard);
         if (source.OccupantCard.CanUseSkill()) damage = source.OccupantCard.Character.SkillAttackModifier(damage, this);
         Debug.Log("Damage on field - X: " + occupiedField.GetX() + "; Y: " + occupiedField.GetY());
-        //if (!gameObject.activeSelf) throw new Exception("This card shouldn't be attacked!");
         if (!gameObject.activeSelf) return false;
         if (riposte)
         {
@@ -322,7 +317,6 @@ public void CallPayment(int price)
 
     private bool VenturaCheck()
     {
-        //Debug.Log("Ventura check!");
         foreach (CardSprite card in GetAdjacentCards())
         {
             if (card.Character.GetType() != typeof(BertVentura) || IsAllied(card.OccupiedField)) continue;
@@ -332,19 +326,15 @@ public void CallPayment(int price)
                 if (targetField == null || !targetField.IsOccupied()) continue;
                 if (targetField.OccupantCard.Character.GetType() == typeof(BertVentura)) return false;
             }
-            //Debug.Log("Ventura not targeted. Block!");
             return true;
         }
-        //Debug.Log("No Ventura in enemy cards.");
         return false;
     }
 
     public void AdvanceTempStrength(int value)
     {
         if (!Character.CanAffectStrength(this, null)) return;
-        Debug.Log("Next tempStr before: " + cardStatus.NextTempStatBonus.GetValue(0));
         cardStatus.TempStrength += value;
-        Debug.Log("Next tempStr after: " + cardStatus.NextTempStatBonus.GetValue(0));
         UpdateBar(0);
     }
 
@@ -384,8 +374,6 @@ public void CallPayment(int price)
         if (Character.Name == "che bert") return;
         if (OccupiedField.IsAligned(Grid.CurrentStatus.Revolution)) AdvanceStrength(1);
         else AdvanceStrength(-1);
-        //if (occupiedField.IsAligned(Turn.CurrentAlignment)) SetActive();
-        //else SetIdle();
     }
 
     public void ResetPower()
@@ -480,20 +468,17 @@ public void CallPayment(int price)
 
     public int GetStrength()
     {
-        //if (state.IsJudgementRevenge() && cardStatus.Strength <= 5) return cardStatus.Strength + 1;
         return cardStatus.Strength;
     }
 
     public void ConfirmNewCard()
     {
-        //Debug.Log("Start confirming new card.");
         ClearCardResistance();
         if (occupiedField.IsAligned(Grid.CurrentStatus.Revolution) && GetRole() == Role.Special) AdvanceStrength(1);
         if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
         if (CanUseSkill()) Character.SkillOnNewCard(this);
         TakeNeighborsEffect();
         Grid.AttackNewStand(occupiedField);
-        //Debug.Log("Finishing confirming new card.");
     }
 
     private void TakeNeighborsEffect()
@@ -507,7 +492,7 @@ public void CallPayment(int price)
         }
     }
 
-    public void EnableNeutralButton(int index)
+    public void EnableCancelNeutralButton(int index)
     {
         DisableButtons();
         cardButton[index].ChangeButtonToNeutral();
@@ -609,7 +594,7 @@ public void CallPayment(int price)
         if (sourceField != null) sourceField.OccupantCard.ConfirmMove();
     }
 
-    public void ImportFromCardImage()
+    public void ImportFromSelectedImage()
     {
         imageReference = cardManager.SelectedCard();
         Character = imageReference.Character;

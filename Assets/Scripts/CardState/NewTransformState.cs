@@ -6,15 +6,10 @@ internal class NewTransformState : CardState
 {
     private int displayedButtonIndex;
 
-    //public NewTransformState(CardSprite sprite) : base(sprite)
-    //{
-
-    //}
-
     public NewTransformState(CardSprite sprite, int buttonIndex) : base(sprite)
     {
         displayedButtonIndex = buttonIndex;
-        card.EnableNeutralButton(buttonIndex);
+        card.EnableCancelNeutralButton(buttonIndex);
     }
 
     public override void HandleFieldCollision() { }
