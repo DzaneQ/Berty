@@ -201,7 +201,7 @@ public class FieldGrid : MonoBehaviour
     {
         backupCard.transform.SetParent(field.transform, false);
         field.PlaceCard(backupCard, true);
-        backupCard.TryToActivateCard();
+        backupCard.LoadSelectedCard();
     }
 
     //public void RefreshBars()

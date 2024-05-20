@@ -17,6 +17,7 @@ public partial class Turn : MonoBehaviour
     private CardManager cm;
     private PricingSystem ps;
     private OpponentControl oc;
+    private CameraTransform ct;
     private Step currentStep;
     private Alignment currentAlign;
     private bool interactableDisabled = false;
@@ -62,7 +63,8 @@ public partial class Turn : MonoBehaviour
         if (Debug.isDebugBuild) Application.targetFrameRate = 20;
         cm = GetComponent<CardManager>();
         oc = GetComponent<OpponentControl>();
-        fg = FindObjectOfType<FieldGrid>();
+        fg = (FieldGrid)FindAnyObjectByType<FieldGrid>();
+        ct = (CameraTransform)FindAnyObjectByType<CameraTransform>();
     }
 
     private void Start()
@@ -148,15 +150,14 @@ public partial class Turn : MonoBehaviour
         }
     }
 
-    public bool CheckOffer()
-    {
-        return ps.CheckOffer();
-    }
+    public bool CheckOffer() => ps.CheckOffer();
 
     private void SwitchAlign()
     {
         CurrentAlignment = CurrentAlignment == Alignment.Player ? Alignment.Opponent : Alignment.Player;
     }
+
+    public float GetCameraRightAngle() => ct.RightAngleValue();
 
     private bool CheckWinConditions(bool forceEnd = false)
     {

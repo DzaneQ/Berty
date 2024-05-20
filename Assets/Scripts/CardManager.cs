@@ -16,7 +16,8 @@ public class CardManager : MonoBehaviour
     private List<CardImage> deadCards = new List<CardImage>();
     private CardImage cardBelow;
     private readonly System.Random rng = new System.Random();
-    GridLayoutGroup deadScreenGrid;
+    private GridLayoutGroup deadScreenGrid;
+    private LookupCard luCard;
 
     public Turn Turn => turn;
     public List<CardImage> EnabledCards => enabledCards;
@@ -35,6 +36,7 @@ public class CardManager : MonoBehaviour
         CardInitialization init = GetComponent<CardInitialization>();
         init.InitializeAllCharacterCards(cardImageCollection, out discardedCards);
         init.InitializeCardPile(discardPile, discardedCards.Count);
+        luCard = init.AttachLookupCard();
         ShufflePile();
         Destroy(init);
         deadScreenGrid = deadScreen.GetComponent<GridLayoutGroup>();
@@ -103,7 +105,7 @@ public class CardManager : MonoBehaviour
     {
         pileCards = discardedCards;
         discardedCards = new List<CardImage>();
-        Debug.Log("Character pile count: " + pileCards.Count);
+        //Debug.Log("Character pile count: " + pileCards.Count);
         return pileCards.Count != 0;
     }
 
@@ -151,6 +153,7 @@ public class CardManager : MonoBehaviour
     {
         card.SetBackupTable();
         card.transform.SetParent(cardImageCollection.transform, false);
+        card.Unselect();
         //SetCardObjectIdle(card.transform);
         //Debug.Log($"{card.name}: Table removal for enabled ones: {disabledCard}");
         if (!disabledCard) enabledCards.Remove(card);
@@ -164,7 +167,7 @@ public class CardManager : MonoBehaviour
     public void AddToTable(CardImage card, Transform table)
     {
         card.transform.SetParent(table, false);
-        card.Unselect(); // TODO: Delete this after all non-enabled cards are made unselected.
+        //card.Unselect(); // TODO: Delete this after all non-enabled cards are made unselected.
         //Debug.Log($"{card.name}: Table addition.");
         //if (pileCards.Contains(card)) pileCards.Remove(card);
         //else if (cardBelow == card) cardBelow = null;
@@ -341,6 +344,16 @@ public class CardManager : MonoBehaviour
         if (Turn.CurrentAlignment == Alignment.Player) AddToTable(card, playerTable.transform);
         else AddToTable(card, opponentTable.transform);
         deadScreen.SetActive(false);    
+    }
+
+    public void ShowLookupCard(Sprite sprite)
+    {
+        luCard.ShowLookupCard(sprite);
+    }
+
+    public void HideLookupCard()
+    {
+        luCard.HideLookupCard();
     }
 
     /*public void DebugPrintCardCollection(Alignment newTurn)

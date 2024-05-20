@@ -104,7 +104,7 @@ public class Field : MonoBehaviour
 
     public void PlayCard()
     {
-        occupantCard.TryToActivateCard();
+        occupantCard.LoadSelectedCard();
     }
 
     public void AdjustCardRemoval()

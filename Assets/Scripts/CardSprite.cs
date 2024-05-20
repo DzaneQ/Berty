@@ -50,16 +50,16 @@ public class CardSprite : MonoBehaviour
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
     }
 
     private void Start()
     {
         cardManager = GameObject.Find("EventSystem").GetComponent<CardManager>();
-        cardButton = transform.GetComponentsInChildren<CardButton>();
+        cardButton = transform.GetChild(0).GetComponentsInChildren<CardButton>();
         occupiedField = transform.GetComponentInParent<Field>();
         state = new InactiveState(this);
-        InitializeBars();
+        //InitializeBars();
         InitializeRigidbody();
     }
 
@@ -74,6 +74,16 @@ public class CardSprite : MonoBehaviour
         else if (IsRightClicked()) state.HandleSideClick();
     }
 
+    public void OnMouseEnter()
+    {
+        cardManager.ShowLookupCard(spriteRenderer.sprite);
+    }
+
+    public void OnMouseExit()
+    {
+        cardManager.HideLookupCard();
+    }
+
     private bool IsLeftClicked()
     {
         if (!Grid.IsLocked() && Input.GetMouseButtonDown(0)) return true;
@@ -86,7 +96,7 @@ public class CardSprite : MonoBehaviour
         else return false;
     }
 
-    private void InitializeBars()
+    private void InitializeBars() // It doesn't do anything!
     {
         bars = new Transform[4];
         for (int i = 0; i < bars.Length; i++) bars[i] = transform.GetChild(8).transform.GetChild(i+1);
@@ -104,20 +114,28 @@ public class CardSprite : MonoBehaviour
         resistChar = new List<Character>();
     }
 
-    public void TryToActivateCard()
+    public void LoadSelectedCard()
     {
         if (IsCardSelected()) state = state.ActivateCard();
     }
 
     public void ActivateNewCard()
     {
-        gameObject.SetActive(true);
+        AdjustRotationToCamera();
+        gameObject.SetActive(true);     
         ImportFromSelectedImage();
         UpdateBars();
-        UpdateRelativeCoordinates();
+        //UpdateRelativeCoordinates();
         CallPayment(cardStatus.Power);
         occupiedField.ConvertField(Turn.CurrentAlignment, false);
         ApplyPhysics();
+    }
+
+    private void AdjustRotationToCamera()
+    {
+        float rightAngle = 180f - Turn.GetCameraRightAngle();
+        Debug.Log("Right angle: " + rightAngle);
+        RotateCard((int)rightAngle);
     }
 
     public void UpdateCard(CardImage image)
@@ -439,11 +457,12 @@ public void CallPayment(int price)
 
     public void UpdateBars()
     {
-        for (int i = 0; i < bars.Length; i++) UpdateBar(i);
+        //for (int i = 0; i < bars.Length; i++) UpdateBar(i);
     }
 
     private void UpdateBar(int index)
     {
+        return; // TODO: Fix this code!
         var barValue = index switch
         {
             0 => GetStrength(),
@@ -577,7 +596,7 @@ public void CallPayment(int price)
         transform.Rotate(0, 0, -angle);
         UpdateRelativeCoordinates();
         occupiedField.SynchronizeRotation();
-        state = state.AdjustTransformChange(returnButtonIndex);
+        if (gameObject.activeSelf) state = state.AdjustTransformChange(returnButtonIndex);
     }
 
     public void SwapWith(Field targetField)

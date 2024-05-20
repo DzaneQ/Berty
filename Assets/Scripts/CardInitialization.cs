@@ -8,6 +8,7 @@ public class CardInitialization : MonoBehaviour
 
     [SerializeField] private GameObject cardBlankPrefab;
     [SerializeField] private GameObject cardImagePrefab;
+    [SerializeField] private GameObject lookupCard;
 
 
     public void InitializeCardPile(GameObject pile, int amount)
@@ -27,5 +28,11 @@ public class CardInitialization : MonoBehaviour
             cardCollection[i].AssignCharacter(characters[i]);
             cardImage.name = cardCollection[i].Character.Name;
         }
+    }
+
+    public LookupCard AttachLookupCard()
+    {
+        //lookupCard.SetActive(false);
+        return lookupCard.GetComponent<LookupCard>();
     }
 }

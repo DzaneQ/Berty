@@ -18,8 +18,13 @@ internal class InactiveState : CardState
     }
     public override void HandleClick()
     {
-        card.TryToActivateCard();
+        card.LoadSelectedCard();
     }
+
+    //public override CardState AdjustTransformChange(int buttonIndex)
+    //{
+    //    return this;
+    //}
 
     //public override bool IsJudgementRevenge()
     //{

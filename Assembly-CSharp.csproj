@@ -77,11 +77,13 @@
     <Compile Include="Assets\Scripts\Character\BertZawodowiec.cs" />
     <Compile Include="Assets\Scripts\Character\ZalobnyBert.cs" />
     <Compile Include="Assets\Scripts\Character\KonstablBert.cs" />
+    <Compile Include="Assets\Scripts\CameraTransform.cs" />
     <Compile Include="Assets\Scripts\CardManager.cs" />
     <Compile Include="Assets\Scripts\Character\KrzyzowiecBert.cs" />
     <Compile Include="Assets\Scripts\CardImage.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Scripts\Character\Bertolaj.cs" />
+    <Compile Include="Assets\Scripts\LookupCard.cs" />
     <Compile Include="Assets\Scripts\Menu\Menu.cs" />
     <Compile Include="Assets\Scripts\Character\KowbojBert.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
@@ -169,6 +171,7 @@
     <Compile Include="Assets\Scripts\FieldAlign\PlayerField.cs" />
     <Compile Include="Assets\Scripts\CardSelection\SelectedCard.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
+    <Compile Include="Assets\Scripts\RotationLocker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

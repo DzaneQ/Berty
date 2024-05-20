@@ -6,7 +6,7 @@ internal class NewCardState : CardState
 {
     public NewCardState(CardSprite sprite) : base(sprite)
     {
-        Debug.Log("Setting new card state for " + card.name);
+        //Debug.Log("Setting new card state for " + card.name);
         card.ActivateNewCard();
     }
 

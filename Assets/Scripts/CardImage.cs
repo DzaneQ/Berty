@@ -10,6 +10,7 @@ public class CardImage : MonoBehaviour
     private CardManager cardManager;
     private Image imageRenderer;
     private Character character;
+    private Transform returnTable;
 
     private Turn Turn => cardManager.Turn;
     public Character Character 
@@ -18,7 +19,7 @@ public class CardImage : MonoBehaviour
         private set
         {
             character = value;
-            imageRenderer.sprite = Resources.Load<Sprite>("BERTY/" + character.Name);
+            imageRenderer.sprite = Resources.Load<Sprite>("BERTYmirrorY/" + character.Name);
         }
     }
     public Sprite Sprite
@@ -30,7 +31,7 @@ public class CardImage : MonoBehaviour
     {
         imageRenderer = GetComponent<Image>();
         cardManager = FindObjectOfType<CardManager>();
-        select = new SelectedCard(GetComponent<RectTransform>(), this);
+        select = new UnselectedCard(GetComponent<RectTransform>(), this);
     }
 
     public void AssignCharacter(Character newCharacter)
@@ -60,6 +61,16 @@ public class CardImage : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) ChangeSelection();
     }
 
+    public void CardFocusOn()
+    {
+        cardManager.ShowLookupCard(imageRenderer.sprite);
+    }
+
+    public void CardFocusOff()
+    {
+        cardManager.HideLookupCard();
+    }
+
     public void ChangeSelection()
     {
         //Debug.Log("Position changing...");
@@ -69,7 +80,7 @@ public class CardImage : MonoBehaviour
 
     public void SetBackupTable()
     {
-        select.SetToBackup();
+        returnTable = transform.parent;
     }
 
     public void ReviveCard()
@@ -80,6 +91,6 @@ public class CardImage : MonoBehaviour
 
     public void ReturnCard()
     {
-        cardManager.AddToTable(this, select.ReturnCard());
+        cardManager.AddToTable(this, returnTable);
     }
 }
