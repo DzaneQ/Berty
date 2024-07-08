@@ -10,7 +10,8 @@ public class CardSprite : MonoBehaviour
     private Field occupiedField;
     private CardManager cardManager;
     private CardButton[] cardButton;
-    private Transform[] bars;
+    private CardBar[] cardBar;
+    //private Transform[] bars;
     private CardImage imageReference;
     private int[] relCoord = new int[2];
     private Rigidbody cardRB;
@@ -57,10 +58,17 @@ public class CardSprite : MonoBehaviour
     {
         cardManager = GameObject.Find("EventSystem").GetComponent<CardManager>();
         cardButton = transform.GetChild(0).GetComponentsInChildren<CardButton>();
+        cardBar = transform.GetChild(1).GetComponentsInChildren<CardBar>();
         occupiedField = transform.GetComponentInParent<Field>();
         state = new InactiveState(this);
-        //InitializeBars();
         InitializeRigidbody();
+    }
+
+    private void InitializeRigidbody()
+    {
+        cardRB = GetComponent<Rigidbody>();
+        cardRB.detectCollisions = true;
+        cardRB.isKinematic = true;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -77,11 +85,13 @@ public class CardSprite : MonoBehaviour
     public void OnMouseEnter()
     {
         cardManager.ShowLookupCard(spriteRenderer.sprite);
+        //HighlightAttackRange();
     }
 
     public void OnMouseExit()
     {
         cardManager.HideLookupCard();
+        //Grid.StopHighlightingCards();
     }
 
     private bool IsLeftClicked()
@@ -94,19 +104,6 @@ public class CardSprite : MonoBehaviour
     {
         if (!Grid.IsLocked() && Input.GetMouseButtonDown(1)) return true;
         else return false;
-    }
-
-    private void InitializeBars() // It doesn't do anything!
-    {
-        bars = new Transform[4];
-        for (int i = 0; i < bars.Length; i++) bars[i] = transform.GetChild(8).transform.GetChild(i+1);
-    }
-
-    private void InitializeRigidbody()
-    {
-        cardRB = GetComponent<Rigidbody>();
-        cardRB.detectCollisions = true;
-        cardRB.isKinematic = true;
     }
 
     private void ClearCardResistance()
@@ -143,7 +140,7 @@ public class CardSprite : MonoBehaviour
         imageReference = image;
         Character = image.Character;
         UpdateBars();
-        ConfirmNewCard(); // experimental - not tested
+        ConfirmNewCard(); // experimental - maybe tested?
     }
 
     public bool IsCardSelected()
@@ -288,7 +285,7 @@ public void CallPayment(int price)
     {
         Debug.Log("Start ordering attack");
         cardStatus.hasAttacked = true;
-        if (VenturaCheck()) return; // TODO: Swap place after adjusting opponent script.
+        if (VenturaCheck()) return; // TODO: Swap place after adjusting opponent script. (with?)
         if (CanUseSkill() && Character.SkillSpecialAttack(this)) return;
         bool successfulAttack = false;
         Debug.Log("Check ranges");
@@ -317,14 +314,22 @@ public void CallPayment(int price)
             AdvanceHealth(-damage);
             return false;
         }
-        int[] srcRel = source.GetRelativeCoordinates(GetRelativeAngle());
-        int[] srcDistance = { srcRel[0] - relCoord[0], srcRel[1] - relCoord[1] };
+        //int[] srcRel = source.GetRelativeCoordinates(GetRelativeAngle());
+        //int[] srcDistance = { srcRel[0] - relCoord[0], srcRel[1] - relCoord[1] };
+        int[] srcDistance = GetFieldDistance(source);
         Debug.Log("Character health: " + CardStatus.Health);
         if (Character.CanRiposte(srcDistance)) source.OccupantCard.TakeDamage(GetStrength(), OccupiedField, true);
         if (Character.CanBlock(srcDistance)) return false;
         AdvanceHealth(-damage);
         Debug.Log($"{damage} damage taken for card {name}. Remaining HP: {cardStatus.Health}");
         return true;
+    }
+
+    public int[] GetFieldDistance(Field targetField)
+    {
+        int[] fieldRel = targetField.GetRelativeCoordinates(GetRelativeAngle());
+        int[] fieldDistance = { fieldRel[0] - relCoord[0], fieldRel[1] - relCoord[1] };
+        return fieldDistance;
     }
 
     public bool CanUseSkill()
@@ -457,12 +462,13 @@ public void CallPayment(int price)
 
     public void UpdateBars()
     {
-        //for (int i = 0; i < bars.Length; i++) UpdateBar(i);
+        for (int i = 0; i < cardBar.Length; i++) UpdateBar(i);
     }
 
     private void UpdateBar(int index)
     {
-        return; // TODO: Fix this code!
+        cardBar[index].UpdateBar();
+        /*return; // TODO: Fix this code!
         var barValue = index switch
         {
             0 => GetStrength(),
@@ -475,8 +481,8 @@ public void CallPayment(int price)
         float positionX0Unit = 3.04f;
         float positionX6Unit = 11.05f;
         float currentX = (positionX6Unit - positionX0Unit) / 6 * barValue + positionX0Unit;
-        bars[index].localPosition = new Vector3(currentX, bars[index].localPosition.y, bars[index].localPosition.z);
-        bars[index].localScale = new Vector3(unitScale * barValue, bars[index].localScale.y, bars[index].localScale.z);
+       // bars[index].localPosition = new Vector3(currentX, bars[index].localPosition.y, bars[index].localPosition.z);
+        //bars[index].localScale = new Vector3(unitScale * barValue, bars[index].localScale.y, bars[index].localScale.z);*/
     }
 
     public Role GetRole()
@@ -611,6 +617,21 @@ public void CallPayment(int price)
         Grid.SwapCards(occupiedField, targetField);
         ConfirmMove(); // Note: experimental!
         if (sourceField != null) sourceField.OccupantCard.ConfirmMove();
+    }
+
+    private void HighlightAttackRange()
+    {
+        foreach (int[] distance in Character.AttackRange)
+        {
+            Field targetField = GetTargetField(distance);
+            if (targetField == null || !targetField.IsOccupied()) continue;
+            targetField.HighlightField();
+        }
+    }
+
+    public void HighlightCard()
+    {
+        // TODO: Do something to the card!
     }
 
     public void ImportFromSelectedImage()

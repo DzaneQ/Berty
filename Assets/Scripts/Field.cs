@@ -49,6 +49,12 @@ public class Field : MonoBehaviour
         mr.material = fg.GetMaterial(align);
     }
 
+    public void HighlightField()
+    {
+        // TODO: Highlight this field!
+        if (occupantCard.gameObject.activeSelf) occupantCard.HighlightCard();
+    }
+
     public void SetCoordinates(int x, int y)
     {
         coordinates[0] = x;

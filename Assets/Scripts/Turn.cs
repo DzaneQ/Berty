@@ -60,7 +60,7 @@ public partial class Turn : MonoBehaviour
 
     private void Awake()
     {
-        if (Debug.isDebugBuild) Application.targetFrameRate = 20;
+        if (Debug.isDebugBuild) Application.targetFrameRate = 15;
         cm = GetComponent<CardManager>();
         oc = GetComponent<OpponentControl>();
         fg = (FieldGrid)FindAnyObjectByType<FieldGrid>();

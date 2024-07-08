@@ -50,6 +50,11 @@ public class FieldGrid : MonoBehaviour
         cardSprite.localRotation = cardOnBoard.defaultRotation;
     }
 
+    internal void StopHighlightingCards()
+    {
+        throw new NotImplementedException();
+    }
+
     public float GetDefaultAngle()
     {
         return cardOnBoard.defaultRotation.eulerAngles.z;

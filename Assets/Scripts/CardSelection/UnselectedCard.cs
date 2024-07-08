@@ -6,7 +6,7 @@ public class UnselectedCard : SelectStatus
 {
     public UnselectedCard(RectTransform transform, CardImage card) : base(transform, card)
     {
-        Debug.Log("Unselecting card: " + card.gameObject.name + "; rotation: " + card.transform.eulerAngles.z);
+        //Debug.Log("Unselecting card: " + card.gameObject.name + "; rotation: " + card.transform.eulerAngles.z);
     }
 
     public override SelectStatus ChangePosition(bool canSelect)

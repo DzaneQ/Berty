@@ -5,10 +5,11 @@ using UnityEngine;
 public class RotationLocker : MonoBehaviour
 {
     private Quaternion rotation;
+    private Vector3 setRotation = new Vector3(90, 0, 0);
 
     void Start()
     {
-        rotation = transform.rotation;
+        rotation = Quaternion.Euler(setRotation);
     }
 
     // Update is called once per frame
