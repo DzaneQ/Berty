@@ -14,8 +14,8 @@ internal class NewCardState : CardState
 
     public override void HandleFieldCollision()
     {
-        if (!card.OccupiedField.AreThereTwoCards()) card.ShowNeutralButtons();
-        else card.EnableCancelNeutralButton(1);
+        //if (!card.OccupiedField.AreThereTwoCards()) card.ShowNeutralButtons();
+        //else card.EnableCancelNeutralButton(1);
         card.ApplyPhysics(false);
     }
 
@@ -48,4 +48,10 @@ internal class NewCardState : CardState
     }
 
     public override CardState SetActive => new ActiveState(card);
+
+    public override void EnableButtons()
+    {
+        if (!card.OccupiedField.AreThereTwoCards()) card.ShowNeutralButtons();
+        else card.EnableCancelNeutralButton(1);
+    }
 }

@@ -9,9 +9,14 @@ public class FieldGrid : MonoBehaviour
     [SerializeField] private Material player;
     [SerializeField] private Material opponent;
 
+    [SerializeField] private Material defaultAttacked;
+    //[SerializeField] private Material playerAttacked;
+    //[SerializeField] private Material opponentAttacked;
+
     private Turn turn;
     private Field[] fields;
     private DefaultTransform cardOnBoard;
+    private Color defaultColor;
     private GlobalStatus temporaryStatuses;
     private CardSprite backupCard;
 
@@ -29,18 +34,18 @@ public class FieldGrid : MonoBehaviour
         GridInitialization init = GetComponent<GridInitialization>();
         temporaryStatuses = new GlobalStatus(this);
         init.InitializeFields(out fields);
-        init.InitializeDefaultCardTransform(out cardOnBoard);
+        init.InitializeDefaultCardTransform(out cardOnBoard, out defaultColor);
         backupCard = init.InitializeBackupCard();
         Destroy(init);
     }
 
-    public Material GetMaterial(Alignment alignment)
+    public Material GetMaterial(Alignment alignment, bool underAttack)
     {
         switch (alignment)
         {
             case Alignment.Player: return player;
             case Alignment.Opponent: return opponent;
-            default: return defaultMaterial;
+            default: return underAttack ? defaultAttacked : defaultMaterial;
         }
     }
 
@@ -48,6 +53,11 @@ public class FieldGrid : MonoBehaviour
     {
         cardSprite.localPosition = cardOnBoard.defaultPosition;
         cardSprite.localRotation = cardOnBoard.defaultRotation;
+    }
+
+    public void UnhighlightCard(SpriteRenderer cardRenderer)
+    {
+        cardRenderer.color = defaultColor;
     }
 
     internal void StopHighlightingCards()

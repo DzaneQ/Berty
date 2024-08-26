@@ -24,19 +24,23 @@ public class CustomSOC : MonoBehaviour
         ColorizeOccluded = 1,
         OnlyVisible = 2
     }
-    private Material OutlineMat;
+    private Material OutlineAttMat;
+    private Material OutlineBckMat;
     private Shader OutlineShader, TargetShader;
-    private RenderTexture Mask, Outline;
+    private RenderTexture Mask, Outline, Source, Dest;
     private Camera cam;
     private CommandBuffer cmd;
-    private bool Ini = false, Selected = false;
+    private bool Ini = false;//, Selected = false;
     [Tooltip("The last two type will require rendering an extra Camera Depth Texture.")]
     public OutlineMode OutlineType = OutlineMode.ColorizeOccluded;
     //[Tooltip("Decide whether the alpha data of the main texture affect the outline.")]
     //public AlphaType AlphaMode = AlphaType.KeepHoles;
     private Renderer TargetRenderer, lastTarget;
-    [ColorUsageAttribute(true, true)]
-    public Color OutlineColor = new Color(1f, 0.55f, 0f, 1f), OccludedColor = new Color(0.5f, 0.9f, 0.3f, 1f);
+    //[ColorUsageAttribute(true, true)]
+    //public Color OutlineColor = new Color(1f, 0.55f, 0f, 1f);
+    public Color OccludedColor = new Color(0.5f, 0.9f, 0.3f, 1f);
+    private Color AttackColor = new Color(1f, 0.55f, 0f, 1f);
+    private Color BlockColor = new Color(0f, 0.35f, 0.8f, 1f);
     [Range(0, 1)]
     public float OutlineWidth = 0.1f;
     [Range(0, 1)]
@@ -44,27 +48,25 @@ public class CustomSOC : MonoBehaviour
 
     // Custom
     private Field[] fields;
-    private Renderer[] fieldRenders;
+    private CardSprite selectedCard;
 
-    void OnEnable()
+    void Awake()
     {
         //Inital();
         AssignFields();
     }
+
     private void AssignFields()
     {
         FieldGrid fg = (FieldGrid)FindFirstObjectByType(typeof(FieldGrid));
         fields = new Field[9];
-        fieldRenders = new Renderer[9];
         if (fields.Length != fg.transform.childCount) Debug.LogError("Number of fields is not equal to number of child count!");
-        for (int index = 0; index < fields.Length; index++)
-        {
-            fields[index] = fg.transform.GetChild(index).GetComponent<Field>();
-            fieldRenders[index] = fields[index].GetComponent<Renderer>();
-        }
+        for (int index = 0; index < fields.Length; index++) fields[index] = fg.transform.GetChild(index).GetComponent<Field>();
     }
+
     void Inital()
     {
+        //Debug.Log("SOC: Inital");
 #if UNITY_WEBGL
         Shader.EnableKeyword("_WEBGL");
 #endif
@@ -77,7 +79,8 @@ public class CustomSOC : MonoBehaviour
         }
         cam = GetComponent<Camera>();
         cam.depthTextureMode = OutlineType > 0 ? DepthTextureMode.None : DepthTextureMode.Depth;
-        OutlineMat = new Material(OutlineShader);
+        OutlineAttMat = new Material(OutlineShader);
+        OutlineBckMat = new Material(OutlineShader);
         if (OutlineType > 0)
         {
             Shader.EnableKeyword("_COLORIZE");
@@ -102,15 +105,12 @@ public class CustomSOC : MonoBehaviour
         cam.AddCommandBuffer(CameraEvent.BeforeImageEffects, cmd);
         FieldGrid fg = (FieldGrid)FindFirstObjectByType(typeof(FieldGrid));
         fields = fg.Fields;
-        if (fields == null)
-        {
-            Debug.LogWarning("Fields not loaded yet.");
-            return;
-        }
-        Ini = true;
+        if (fields != null) Ini = true;
     }
+
     private void OnValidate()
     {
+        //Debug.Log("SOC: On validate");
         if (!Ini) Inital();
         cam.depthTextureMode = OutlineType > 0 ? DepthTextureMode.Depth : DepthTextureMode.None;
         if (OutlineType > 0)
@@ -131,64 +131,72 @@ public class CustomSOC : MonoBehaviour
     }
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        if (OutlineMat == null)
+        //Debug.Log("SOC: OnRenderImage");
+        if (Ini) return;
+        if (OutlineAttMat == null)
         {
             Inital();
             if(!Ini)
-            return;
-        }
-        OutlineMat.SetFloat("_OutlineWidth", OutlineWidth * 10f);
-        OutlineMat.SetFloat("_OutlineHardness", 8.99f * (1f - OutlineHardness) + 0.01f);
-        OutlineMat.SetColor("_OutlineColor", OutlineColor);
-        OutlineMat.SetColor("_OccludedColor", OccludedColor);
-
-        OutlineMat.SetTexture("_Mask", Mask);
-        Graphics.Blit(source, Outline, OutlineMat, 0);
-        OutlineMat.SetTexture("_Outline", Outline);
-        Graphics.Blit(source, destination, OutlineMat, 1);
-        //Graphics.Blit(Outline, destination);
-
-    }
-    void RenderTarget(Renderer target, bool blockState = false)
-    {
-        Material TargetMat = new Material(TargetShader);
-        /*bool MainTexFlag = false;
-        string[] attrs = target.sharedMaterial.GetTexturePropertyNames();
-        foreach (var c in attrs)
-        {
-            if (c == "_MainTex")
             {
-                MainTexFlag = true;
-                break;
+                Debug.LogError("Initialization failed!");
+                return;
             }
         }
-        if (MainTexFlag && target.sharedMaterial.mainTexture != null && AlphaMode == AlphaType.KeepHoles)
-        {
-            TargetMat.mainTexture = target.sharedMaterial.mainTexture;
-        }*/
+        Source = source;
+        Dest = destination;
+
+        OutlineAttMat.SetFloat("_OutlineWidth", OutlineWidth * 10f);
+        OutlineAttMat.SetFloat("_OutlineHardness", 8.99f * (1f - OutlineHardness) + 0.01f);
+        OutlineAttMat.SetColor("_OutlineColor", AttackColor);
+        OutlineAttMat.SetColor("_OccludedColor", OccludedColor);
+
+        OutlineBckMat.SetFloat("_OutlineWidth", OutlineWidth * 10f);
+        OutlineBckMat.SetFloat("_OutlineHardness", 8.99f * (1f - OutlineHardness) + 0.01f);
+        OutlineBckMat.SetColor("_OutlineColor", BlockColor);
+        OutlineBckMat.SetColor("_OccludedColor", OccludedColor);
+
+        OutlineAttMat.SetTexture("_Mask", Mask);
+        OutlineBckMat.SetTexture("_Mask", Mask);
+        OutlineAttMat.SetTexture("_Outline", Outline);
+        OutlineBckMat.SetTexture("_Outline", Outline);
+        Graphics.Blit(Source, Outline, OutlineAttMat, 0);
+        Graphics.Blit(Source, Dest, OutlineAttMat, 1);
+        //Graphics.Blit(Outline, destination);
+    }
+
+    void RenderTarget(Renderer target, bool blockState = false)
+    {
+        //if (!blockState)
+        //{
+        //    Graphics.Blit(Source, Outline, OutlineBckMat, 0);
+        //    Graphics.Blit(Source, Dest, OutlineBckMat, 1);
+        //}
+        //Material TargetMat = new Material(TargetShader);
+        Material TargetMat = blockState ? OutlineBckMat : OutlineBckMat;
         cmd.DrawRenderer(target, TargetMat);
         Graphics.ExecuteCommandBuffer(cmd);
+        //if (!blockState)
+        //{
+        //    Graphics.Blit(Source, Outline, OutlineAttMat, 0);
+        //    Graphics.Blit(Source, Dest, OutlineAttMat, 1);
+        //}
     }
-    void SetTarget()
-    {
-        cmd.SetRenderTarget(Mask);
-        cmd.ClearRenderTarget(true, true, Color.black);
-        Selected = true;
-        if (TargetRenderer != null) RenderTarget(TargetRenderer);
-        else Debug.LogWarning("No renderer provided for outline.");
-    }
+
     void SetTargets(int sourceIndex)
     {
+        //cmd.Clear();  // TODO: Understand this command.
         cmd.SetRenderTarget(Mask);
-        cmd.ClearRenderTarget(true, true, Color.black);
-        Selected = true;
-        CardSprite sourceCard = fields[sourceIndex].OccupantCard;
+        cmd.ClearRenderTarget(true, true, Color.black); 
+        if (fields[sourceIndex].OccupantCard == selectedCard) return;
+        if (selectedCard != null) selectedCard.DisableButtons();
+        selectedCard = fields[sourceIndex].OccupantCard;
+        selectedCard.EnableButtons();
         if (TargetRenderer != null)
         {
             bool riposte = false;
-            foreach (int[] distance in sourceCard.Character.AttackRange)
+            foreach (int[] distance in selectedCard.Character.AttackRange)
             {
-                Field targetField = sourceCard.GetTargetField(distance);
+                Field targetField = selectedCard.GetTargetField(distance);
                 if (targetField == null) continue;
                 bool block = false;
                 if (targetField.IsOccupied())
@@ -200,15 +208,18 @@ public class CustomSOC : MonoBehaviour
                 }
                 int targetIndex = Array.IndexOf(fields, targetField);
                 if (targetIndex < 0) throw new Exception("Target index not found! It's " + targetIndex);
-                RenderTarget(fieldRenders[targetIndex], block);
+                RenderTarget(fields[targetIndex].FieldRenderer, block);
             }
-            if (riposte) RenderTarget(fieldRenders[sourceIndex]);
+            if (riposte) RenderTarget(fields[sourceIndex].FieldRenderer);
         }
         else Debug.LogWarning("No renderer provided for outline.");
     }
+
     void ClearTarget()
     {
-        Selected = false;
+        //Selected = false;
+        selectedCard.DisableButtons();
+        selectedCard = null;
         cmd.ClearRenderTarget(true, true, Color.black);
 
         Graphics.ExecuteCommandBuffer(cmd);
@@ -222,35 +233,32 @@ public class CustomSOC : MonoBehaviour
         int fieldIndex;
         if (Physics.Raycast(ray, out hit) && IsValidField(hit, out fieldIndex))
         {
-            //Debug.Log("Hit: " + hit.transform.gameObject.name);
-            //TargetRenderer = hit.transform.GetComponent<Renderer>();
-            TargetRenderer = fieldRenders[fieldIndex];
+            TargetRenderer = fields[fieldIndex].FieldRenderer;
             if (lastTarget == null) lastTarget = TargetRenderer;
-
-            if (TargetRenderer != lastTarget || !Selected)
-            {
-                //SetTarget();
-                SetTargets(fieldIndex);
-            }
+            if (TargetRenderer != lastTarget || selectedCard == null) SetTargets(fieldIndex);
             //Debug.DrawRay(transform.position, hit.point - transform.position, Color.blue);
             lastTarget = TargetRenderer;
         }
         else
         {
+            if (TargetRenderer == null)
+            {
+                if (lastTarget != null) Debug.LogError("Last target not null with target renderer being null");
+                return;
+            }
             TargetRenderer = null;
             lastTarget = null;
-            if (Selected) ClearTarget();
+            ClearTarget();
         }
     }
 
     private bool IsValidField(RaycastHit hit, out int index)
     {
-        GameObject targetObject = hit.transform.gameObject;
-        //if (fields == null) return false;
+        Transform targetObject = hit.transform;
         index = -1;
         for (int i = 0; i < fields.Length; i++)
         {
-            if (fields[i].gameObject == targetObject || fields[i].OccupantCard.gameObject == targetObject)
+            if (IsFieldTargeted(fields[i], targetObject))
             {
                 if (fields[i].OccupantCard.gameObject.activeSelf)
                 {
@@ -260,6 +268,15 @@ public class CustomSOC : MonoBehaviour
                 else return false;
             }
         }
+        return false;
+    }
+
+    private bool IsFieldTargeted(Field field, Transform targetTransform)
+    {
+        if (field.transform == targetTransform) return true;
+        if (field.OccupantCard.transform == targetTransform) return true;
+        if (targetTransform.parent != null && targetTransform.parent.parent != null 
+            && field.OccupantCard.transform == targetTransform.parent.parent) return true;
         return false;
     }
 }

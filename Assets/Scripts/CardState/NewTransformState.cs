@@ -9,7 +9,7 @@ internal class NewTransformState : CardState
     public NewTransformState(CardSprite sprite, int buttonIndex) : base(sprite)
     {
         displayedButtonIndex = buttonIndex;
-        card.EnableCancelNeutralButton(buttonIndex);
+        //card.EnableCancelNeutralButton(buttonIndex);
     }
 
     public override void HandleFieldCollision() { }
@@ -45,5 +45,10 @@ internal class NewTransformState : CardState
     {
         if (4 <= displayedButtonIndex && displayedButtonIndex <= 7) return true;
         return false;
+    }
+
+    public override void EnableButtons()
+    {
+        card.EnableCancelNeutralButton(displayedButtonIndex);
     }
 }

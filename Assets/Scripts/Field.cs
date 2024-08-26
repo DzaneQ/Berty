@@ -9,16 +9,22 @@ public class Field : MonoBehaviour
     private CardSprite occupantCard;
     private CardSprite backupCard;
     private MeshRenderer mr;
+    //private Outline outline;
     private readonly int[] coordinates = new int[2];
     Alignment align;
+    private bool underAttack = false;
 
     public FieldGrid Grid => fg;
     public CardSprite OccupantCard => occupantCard;
     public Alignment Align => align;
+    public Renderer FieldRenderer => mr; // TODO: Delete when CustomCOS not used.
+    //public Outline FieldOutline => outline;
 
     private void Awake()
     {
-        mr = GetComponent<MeshRenderer>();  
+        mr = GetComponent<MeshRenderer>();
+        //outline = GetComponent<Outline>();
+        //outline.enabled = false;
     }
 
     private void Start()
@@ -46,14 +52,14 @@ public class Field : MonoBehaviour
 
     private void UpdateMeshMaterial()
     {
-        mr.material = fg.GetMaterial(align);
+        mr.material = fg.GetMaterial(align, underAttack);
     }
 
-    public void HighlightField()
-    {
-        // TODO: Highlight this field!
-        if (occupantCard.gameObject.activeSelf) occupantCard.HighlightCard();
-    }
+    //public void HighlightField()
+    //{
+    //    // TODO: Highlight this field!
+    //    if (occupantCard.gameObject.activeSelf) occupantCard.HighlightCard();
+    //}
 
     public void SetCoordinates(int x, int y)
     {
@@ -106,6 +112,20 @@ public class Field : MonoBehaviour
     {
         align = alignment;
         if (colorize) UpdateMeshMaterial();
+    }
+
+    public void HighlightField(Color color)
+    {
+        underAttack = true;
+        if (OccupantCard.gameObject.activeSelf) OccupantCard.HighlightCard(color);
+        else UpdateMeshMaterial();
+    }
+
+    public void UnhighlightField()
+    {
+        underAttack = false;
+        if (OccupantCard.gameObject.activeSelf) OccupantCard.UnhighlightCard();
+        else UpdateMeshMaterial();
     }
 
     public void PlayCard()

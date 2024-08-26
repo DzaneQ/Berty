@@ -23,4 +23,9 @@ internal class TelecineticState : CardState
     public override CardState SetActive => new ActiveState(card);
 
     public override CardState SetIdle => new IdleState(card);
+
+    public override void EnableButtons()
+    {
+        card.ShowDexterityButtons(true);
+    }
 }

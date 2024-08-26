@@ -469,6 +469,7 @@ GameObject:
   - component: {fileID: 4981055730667556088}
   - component: {fileID: -5376501008452014823}
   - component: {fileID: 8381700777038043422}
+  - component: {fileID: 3783023826540089380}
   m_Layer: 7
   m_Name: CardSquare
   m_TagString: Untagged
@@ -609,6 +610,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
+--- !u!95 &3783023826540089380
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9048551618771972388}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a0f5a3f515c115642b80dd54f77f39c4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &9186373653933539617
 GameObject:
   m_ObjectHideFlags: 0

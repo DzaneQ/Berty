@@ -29,9 +29,10 @@ public class GridInitialization : MonoBehaviour
         }
     }
 
-    internal void InitializeDefaultCardTransform(out DefaultTransform cardOnBoard)
+    internal void InitializeDefaultCardTransform(out DefaultTransform cardOnBoard, out Color defaultColor)
     {
         cardOnBoard = new DefaultTransform(cardPrefab.transform);
+        defaultColor = cardPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().color;
     }
 
     internal CardSprite InitializeBackupCard()

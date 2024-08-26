@@ -82,15 +82,17 @@ public class CardSprite : MonoBehaviour
         else if (IsRightClicked()) state.HandleSideClick();
     }
 
-    public void OnMouseEnter()
+    public void OnMouseEnter() // TODO: Include focus on arrows.
     {
         cardManager.ShowLookupCard(spriteRenderer.sprite);
+        //EnableButtons();
         //HighlightAttackRange();
     }
 
     public void OnMouseExit()
     {
         cardManager.HideLookupCard();
+        //DisableButtons();
         //Grid.StopHighlightingCards();
     }
 
@@ -114,6 +116,16 @@ public class CardSprite : MonoBehaviour
     public void LoadSelectedCard()
     {
         if (IsCardSelected()) state = state.ActivateCard();
+    }
+
+    public void HighlightCard(Color color)
+    {
+        spriteRenderer.color = color;
+    }
+
+    public void UnhighlightCard()
+    {
+        if (occupiedField != null) Grid.UnhighlightCard(spriteRenderer);
     }
 
     public void ActivateNewCard()
@@ -524,6 +536,11 @@ public void CallPayment(int price)
         cardButton[index].EnableButton();
     }
 
+    public void EnableButtons()
+    {
+        state.EnableButtons();
+    }
+
     public void DisableButtons()
     {
         foreach (CardButton button in cardButton) button.DisableButton();
@@ -619,7 +636,7 @@ public void CallPayment(int price)
         if (sourceField != null) sourceField.OccupantCard.ConfirmMove();
     }
 
-    private void HighlightAttackRange()
+    /*private void HighlightAttackRange()
     {
         foreach (int[] distance in Character.AttackRange)
         {
@@ -627,12 +644,12 @@ public void CallPayment(int price)
             if (targetField == null || !targetField.IsOccupied()) continue;
             targetField.HighlightField();
         }
-    }
+    }*/
 
-    public void HighlightCard()
-    {
-        // TODO: Do something to the card!
-    }
+    //spublic void HighlightCard()
+    //{
+    //    // TODO: Do something to the card!
+    //}
 
     public void ImportFromSelectedImage()
     {

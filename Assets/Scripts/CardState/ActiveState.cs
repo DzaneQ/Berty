@@ -7,7 +7,7 @@ internal class ActiveState : CardState
     public ActiveState(CardSprite sprite) : base(sprite)
     {
         Debug.Log("Setting active state for " + card.name);
-        card.ShowDexterityButtons();
+        //card.ShowDexterityButtons();
     }
 
     public override void HandleClick()
@@ -39,4 +39,9 @@ internal class ActiveState : CardState
     //}
 
     public override CardState SetIdle => new IdleState(card);
+
+    public override void EnableButtons()
+    {
+        card.ShowDexterityButtons();
+    }
 }

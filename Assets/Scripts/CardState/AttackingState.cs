@@ -6,7 +6,7 @@ internal class AttackingState : CardState
 {
     public AttackingState(CardSprite sprite) : base(sprite)
     {
-        card.EnableCancelNeutralButton(1);
+        //card.EnableCancelNeutralButton(1);
     }
 
     public override CardState DeactivateCard() => new InactiveState(card);
@@ -44,4 +44,9 @@ internal class AttackingState : CardState
     //}
 
     public override CardState SetActive => new ActiveState(card);
+
+    public override void EnableButtons()
+    {
+        card.EnableCancelNeutralButton(1);
+    }
 }

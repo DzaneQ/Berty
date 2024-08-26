@@ -17,7 +17,7 @@ public partial class Turn : MonoBehaviour
     private CardManager cm;
     private PricingSystem ps;
     private OpponentControl oc;
-    private CameraTransform ct;
+    private CameraMechanics ct;
     private Step currentStep;
     private Alignment currentAlign;
     private bool interactableDisabled = false;
@@ -60,11 +60,11 @@ public partial class Turn : MonoBehaviour
 
     private void Awake()
     {
-        if (Debug.isDebugBuild) Application.targetFrameRate = 15;
+        if (Debug.isDebugBuild) Application.targetFrameRate = 10;
         cm = GetComponent<CardManager>();
         oc = GetComponent<OpponentControl>();
         fg = (FieldGrid)FindAnyObjectByType<FieldGrid>();
-        ct = (CameraTransform)FindAnyObjectByType<CameraTransform>();
+        ct = (CameraMechanics)FindAnyObjectByType<CameraMechanics>();
     }
 
     private void Start()

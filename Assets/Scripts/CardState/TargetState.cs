@@ -21,4 +21,6 @@ public class TargetState : CardState
     public override CardState SetTelecinetic => new TelecineticState(card);
 
     public override CardState SetIdle => new IdleState(card);
+
+    public override void EnableButtons() { }
 }

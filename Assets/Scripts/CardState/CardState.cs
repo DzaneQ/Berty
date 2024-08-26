@@ -27,4 +27,5 @@ public abstract class CardState
     public virtual CardState SetIdle => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
     public virtual CardState SetTelecinetic => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
     public virtual CardState SetTargetable => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
+    public virtual void EnableButtons() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
 }

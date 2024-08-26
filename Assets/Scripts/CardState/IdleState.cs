@@ -23,4 +23,6 @@ internal class IdleState : CardState
     public override CardState SetTargetable => new TargetState(card);
 
     public override CardState SetIdle => this;
+
+    public override void EnableButtons() { }
 }

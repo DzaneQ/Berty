@@ -484,6 +484,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[2]
       value: 
       objectReference: {fileID: 2100000, guid: 4a5ac261353070242afff535d2f1d138, type: 2}
+    - target: {fileID: 6868676152894888100, guid: 46123e19c96aeb34c84bd01b22933bbd, type: 3}
+      propertyPath: outlineWidth
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8150709641322809120, guid: 46123e19c96aeb34c84bd01b22933bbd, type: 3}
       propertyPath: m_Center.x
       value: 0
@@ -1618,6 +1622,9 @@ MonoBehaviour:
   defaultMaterial: {fileID: 2100000, guid: df708ec219096514e96138b76981f752, type: 2}
   player: {fileID: 2100000, guid: 5ac1a1c44ebd8cc489881f6c2e952685, type: 2}
   opponent: {fileID: 2100000, guid: e9eec283829ab824eaf7f6f27531824b, type: 2}
+  defaultAttacked: {fileID: 2100000, guid: 7023073fad8653f42964900686862bee, type: 2}
+  playerAttacked: {fileID: 2100000, guid: e90536d77b2ab284084111835af6d039, type: 2}
+  opponentAttacked: {fileID: 2100000, guid: 47eddd6c05637c34f957145141907ee6, type: 2}
 --- !u!114 &1181834775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2448,19 +2455,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1722526535}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e1c9d51d3e824cc4ea896732f93fe880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OutlineType: 0
-  AlphaMode: 1
-  OutlineColor: {r: 1, g: 0.09836704, b: 0, a: 1}
   OccludedColor: {r: 1, g: 0.38365448, b: 0.12549019, a: 0.24313726}
-  OutlineWidth: 0.1
-  OutlineHardness: 0.1
-  fields: []
-  fieldRenders: []
+  OutlineWidth: 0.2
+  OutlineHardness: 0.5
 --- !u!1 &1740268250
 GameObject:
   m_ObjectHideFlags: 0
