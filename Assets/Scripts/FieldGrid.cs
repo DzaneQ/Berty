@@ -163,7 +163,7 @@ public class FieldGrid : MonoBehaviour
     }
     
 
-    public void ActivateCardButtons()
+    public void SetAlignedCardsActive()
     {
         if (!Turn.IsItMoveTime()) return;
         foreach (Field field in fields)
@@ -200,7 +200,7 @@ public class FieldGrid : MonoBehaviour
             field.OccupantCard.Character.SkillOnNewTurn(field.OccupantCard);
         }
         temporaryStatuses.AdjustNewTurn(turn.CurrentAlignment);
-        ActivateCardButtons();
+        SetAlignedCardsActive();
     }
 
     public void ShowJudgement(Alignment align) // TODO: Fix repeats!
@@ -215,25 +215,17 @@ public class FieldGrid : MonoBehaviour
     public void SetBackupCard(Field field)
     {
         backupCard.transform.SetParent(field.transform, false);
-        field.PlaceCard(backupCard, true);
+        field.PlaceCard(backupCard, field.Align, true);
         backupCard.LoadSelectedCard();
     }
 
-    //public void RefreshBars()
-    //{
-    //    foreach (Field field in fields)
-    //    {
-    //        if (field.IsAligned(Alignment.None)) continue;
-    //        field.OccupantCard.UpdateBars();
-    //    }
-    //}
 
     public bool IsLocked()
     {
         return Turn.InteractableDisabled;
     }
 
-    public void DisableAllButtons(Field exceptionField = null)
+    public void MakeAllStatesIdle(Field exceptionField = null)
     {
         foreach (Field field in fields)
         {
@@ -278,10 +270,10 @@ public class FieldGrid : MonoBehaviour
         CardSprite tempCard = first.OccupantCard;
         Alignment tempAlign = first.Align;
         SwapBackupCards(first, second);
-        first.PlaceCard(second.OccupantCard);
-        first.ConvertField(second.Align);
-        second.PlaceCard(tempCard);
-        second.ConvertField(tempAlign);
+        first.PlaceCard(second.OccupantCard, second.Align);
+        //first.ConvertField(second.Align);
+        second.PlaceCard(tempCard, tempAlign);
+        //second.ConvertField(tempAlign);
     }
 
     private void SwapBackupCards(Field first, Field second)

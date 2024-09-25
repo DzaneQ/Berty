@@ -152,7 +152,7 @@ public class OpponentControl : MonoBehaviour
     {
         List<int> bestRotation = GetBestRotation(card);
         int index = rng.Next(bestRotation.Count);
-        card.RotateCard(bestRotation[index]);
+        card.RotateCard(bestRotation[index], true);
     }
 
     private void Pay(CardSprite card, int price)
@@ -187,7 +187,7 @@ public class OpponentControl : MonoBehaviour
             //Debug.Log("Checking rotation: " + (i * 90));
             efficiency[i] = Efficiency(card, 2, 1);
             if (maxEfficiency < efficiency[i]) maxEfficiency = efficiency[i];
-            card.RotateCard(90);
+            card.RotateCard(90, true);
         }
         //Debug.Log("Max efficiency: " + maxEfficiency);
         for (int i = 0; i < 4; i++)

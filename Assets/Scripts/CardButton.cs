@@ -58,16 +58,17 @@ public class CardButton : MonoBehaviour
 
     public void EnableButton()
     {
-        //Debug.Log("Enable attempt: " + name);
+        //Debug.Log("Enable attempt: " + name + " on card: " + card.name);
         if (card.Grid.IsLocked()) return;
-        //Debug.Log("Enable: " + name);
+        if (card != card.Grid.Turn.GetFocusedCard()) return;
+        //Debug.Log("Enable: " + name + " on card: " + card.name);
         rend.enabled = true;
         coll.enabled = true;
     }
 
     public void DisableButton()
     {
-        //Debug.Log("Disable: " + name);
+        //Debug.Log("Disable: " + name + " on card: " + card.name);
         rend.enabled = false;
         coll.enabled = false;
     }

@@ -14,7 +14,7 @@ public abstract class CardState
     
     public virtual CardState ActivateCard() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
     public virtual CardState DeactivateCard() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
-    public virtual void HandleFieldCollision() => card.ApplyPhysics(false);
+    //public virtual void HandleFieldCollision() => card.ApplyPhysics(false);
     public abstract void HandleClick();
     public virtual void HandleSideClick() { }
     //public virtual void TakePaidAction() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");

@@ -16,7 +16,7 @@
     public override void SkillOnNewCard(CardSprite card)
     {
         card.Grid.InitiateResurrection();
-        card.Grid.DisableAllButtons(card.OccupiedField);
+        card.Grid.MakeAllStatesIdle(card.OccupiedField);
     }
 
     public override void SkillSideClick(CardSprite card)

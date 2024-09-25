@@ -90,4 +90,14 @@ public class CardBar : MonoBehaviour
         rend.size = new Vector2(newWidth, rend.size.y);
         MoveBar((oldWidth - newWidth) / 2);
     }
+
+    public void HideBar()
+    {
+        rend.enabled = false;
+    }
+
+    public void ShowBar()
+    {
+        rend.enabled = true;
+    }
 }

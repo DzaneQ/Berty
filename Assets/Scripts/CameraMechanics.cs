@@ -22,6 +22,8 @@ public class CameraMechanics : MonoBehaviour
     private Color highlightAttackColor;
     private Color highlightBlockColor;
 
+    public CardSprite FocusedCard => selectedCard;
+
 
     private void Awake()
     {
@@ -32,6 +34,12 @@ public class CameraMechanics : MonoBehaviour
     private void Start()
     {
         AdjustHighlightSaturation(0.8f);
+    }
+
+    void Update()
+    {
+        HandleCameraTransform();
+        HandleCardSpriteFocus();
     }
 
     private void AssignFields()
@@ -55,12 +63,6 @@ public class CameraMechanics : MonoBehaviour
     {
         //Debug.Log("Saturate return value: " + ((255 - colorValue) * (1 - saturation) + colorValue));
         return ((1 - colorValue) * (1 - saturation) + colorValue);
-    }
-
-    void Update()
-    {
-        HandleCameraTransform();
-        HandleCardSpriteFocus();
     }
 
     private void HandleCameraTransform()

@@ -38,7 +38,7 @@ public partial class Turn : MonoBehaviour
         {
             if (value == Alignment.None) return;
             if (value == currentAlign) throw new Exception("Switching to the same alignment."); 
-            fg.DisableAllButtons();
+            fg.MakeAllStatesIdle();
             currentAlign = value;
             cm.SwitchTable(value);
             if (value == Alignment.Player) EnableInteractions();
@@ -123,7 +123,7 @@ public partial class Turn : MonoBehaviour
     {
         ShowEndTurnButton(IsItMoveTime());
         if (!IsItPaymentTime()) cm.DeselectCards();
-        if (IsItMoveTime()) fg.ActivateCardButtons();
+        if (IsItMoveTime()) fg.SetAlignedCardsActive();
     }
 
     public void ExecutePrincessTurn(Alignment decidingAlign)
@@ -158,6 +158,8 @@ public partial class Turn : MonoBehaviour
     }
 
     public float GetCameraRightAngle() => ct.RightAngleValue();
+
+    public CardSprite GetFocusedCard() => ct.FocusedCard;
 
     private bool CheckWinConditions(bool forceEnd = false)
     {

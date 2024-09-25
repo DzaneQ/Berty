@@ -6,7 +6,8 @@ internal class ActiveState : CardState
 {
     public ActiveState(CardSprite sprite) : base(sprite)
     {
-        Debug.Log("Setting active state for " + card.name);
+        Debug.Log("Setting active state for " + card.name + " on field " + card.OccupiedField.name);
+        EnableButtons();
         //card.ShowDexterityButtons();
     }
 
@@ -28,8 +29,7 @@ internal class ActiveState : CardState
         int dexterity = card.CardStatus.Dexterity;
         if (buttonIndex > 3 && card.CanBeTelecinetic() && card.Grid.CurrentStatus.TelekinesisDex > dexterity)
             dexterity = card.Grid.CurrentStatus.TelekinesisDex;
-        card.CallPayment(6 - dexterity);
-        return new NewTransformState(card, buttonIndex);
+        return new NewTransformState(card, buttonIndex, dexterity);
     }
 
     //public override bool IsJudgementRevenge()

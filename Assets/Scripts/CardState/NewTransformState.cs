@@ -6,13 +6,16 @@ internal class NewTransformState : CardState
 {
     private int displayedButtonIndex;
 
-    public NewTransformState(CardSprite sprite, int buttonIndex) : base(sprite)
+    public NewTransformState(CardSprite sprite, int buttonIndex, int dexterity) : base(sprite)
     {
+        Debug.Log("Setting new transform state for " + card.name + " on field " + card.OccupiedField.name);
+        card.CallPayment(6 - dexterity);
         displayedButtonIndex = buttonIndex;
+        EnableButtons();
         //card.EnableCancelNeutralButton(buttonIndex);
     }
 
-    public override void HandleFieldCollision() { }
+    //public override void HandleFieldCollision() { }
 
     public override void HandleClick()
     {

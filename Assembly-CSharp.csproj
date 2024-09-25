@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\Character\RoninBert.cs" />
     <Compile Include="Assets\Scripts\CardState\CardState.cs" />
     <Compile Include="Assets\Scripts\CardSprite.cs" />
+    <Compile Include="Assets\Scripts\AnimatingCard.cs" />
     <Compile Include="Assets\Scripts\Turn.cs" />
     <Compile Include="Assets\Scripts\FieldAlign\FieldAlign.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />

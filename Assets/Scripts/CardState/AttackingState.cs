@@ -6,7 +6,8 @@ internal class AttackingState : CardState
 {
     public AttackingState(CardSprite sprite) : base(sprite)
     {
-        //card.EnableCancelNeutralButton(1);
+        Debug.Log("Setting attacking state for " + card.name + " on field " + card.OccupiedField.name);
+        EnableButtons();
     }
 
     public override CardState DeactivateCard() => new InactiveState(card);

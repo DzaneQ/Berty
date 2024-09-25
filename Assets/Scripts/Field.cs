@@ -23,13 +23,13 @@ public class Field : MonoBehaviour
     private void Awake()
     {
         mr = GetComponent<MeshRenderer>();
+        fg = GetComponentInParent<FieldGrid>();
         //outline = GetComponent<Outline>();
         //outline.enabled = false;
     }
 
     private void Start()
     {
-        fg = GetComponentInParent<FieldGrid>();
         ConvertField(Alignment.None);
     }
 
@@ -41,8 +41,9 @@ public class Field : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject == occupantCard.gameObject) UpdateMeshMaterial();
-        else throw new Exception($"Field colliding not with card {collision.gameObject}"); 
+        //if (collision.gameObject == occupantCard.gameObject) UpdateMeshMaterial();
+        //else throw new Exception($"Field colliding not with card {collision.gameObject}"); 
+        if (collision.gameObject != occupantCard.gameObject) throw new Exception($"Field colliding not with card {collision.gameObject}");
     }
 
     private void OnMouseOver()
@@ -77,7 +78,7 @@ public class Field : MonoBehaviour
         return coordinates[1];
     }
 
-    public void PlaceCard(CardSprite card, bool setBackup = false)
+    public void PlaceCard(CardSprite card, Alignment newAlign, bool setBackup = false)
     {
         if (setBackup)
         {
@@ -86,8 +87,27 @@ public class Field : MonoBehaviour
             card.DisableButtons();
             card.transform.rotation = backupCard.transform.rotation;
         }
+        if (setBackup || !card.gameObject.activeSelf)
+        {
+            occupantCard = card;
+            card.SetField(this, false);
+            ConvertField(newAlign);
+        }
+        else
+        {
+            StartCoroutine(MoveCardCoroutine(card, newAlign));
+        }
+    }
+
+    private IEnumerator MoveCardCoroutine(CardSprite card, Alignment newAlign)
+    {
+        card.DisableButtons();
+        yield return card.Animate.MoveToField(this, 2f);
+        card.EnableButtons();
         occupantCard = card;
-        occupantCard.SetField(this);
+        card.SetField(this, true);
+        ConvertField(newAlign);
+        yield return null;
     }
 
     public void SynchronizeRotation()
@@ -108,10 +128,10 @@ public class Field : MonoBehaviour
         return Grid.GetRelativeCoordinates(GetX(), GetY(), -angle);
     }
 
-    public void ConvertField(Alignment alignment, bool colorize = true)
+    public void ConvertField(Alignment alignment)
     {
         align = alignment;
-        if (colorize) UpdateMeshMaterial();
+        UpdateMeshMaterial();
     }
 
     public void HighlightField(Color color)
@@ -152,7 +172,7 @@ public class Field : MonoBehaviour
     public void SetBackupCard(CardSprite card)
     {
         backupCard = card;
-        backupCard.SetField(this);
+        backupCard.SetField(this, false);
     }
 
     public bool IsAligned(Alignment alignment)

@@ -6,7 +6,7 @@ internal class TelecineticState : CardState
 {
     public TelecineticState(CardSprite sprite) : base(sprite)
     {
-        card.ShowDexterityButtons(true);
+        EnableButtons();
     }
 
     public override void HandleClick() { }
@@ -16,8 +16,7 @@ internal class TelecineticState : CardState
         if (card.OccupiedField.IsAligned(card.Grid.Turn.CurrentAlignment))
             throw new System.Exception("Trying to adjust transform on telecinetic owned card!");
         int dexterity = card.Grid.CurrentStatus.TelekinesisDex;
-        card.CallPayment(6 - dexterity);
-        return new NewTransformState(card, buttonIndex);
+        return new NewTransformState(card, buttonIndex, dexterity);
     }
 
     public override CardState SetActive => new ActiveState(card);
