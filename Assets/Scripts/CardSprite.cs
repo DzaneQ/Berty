@@ -21,12 +21,13 @@ public class CardSprite : MonoBehaviour
     private CharacterStat cardStatus;
     private List<Character> resistChar;
     private AnimatingCard animating;
-    private bool animatingProcess = false;
+    //private bool animatingProcess = false;
 
     public Field OccupiedField => occupiedField;
     public CardManager CardManager => cardManager;
     private Turn Turn => Grid.Turn;
     public FieldGrid Grid => occupiedField.Grid;
+    public CardState ResultState => state;
     public CharacterStat CardStatus => cardStatus;
     public AnimatingCard Animate => animating;
     public Character Character
@@ -78,6 +79,10 @@ public class CardSprite : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject == occupiedField.gameObject) ApplyPhysics(false);  //state.HandleFieldCollision();
+        if (occupiedField.AreThereTwoCards())
+        {
+            occupiedField.AttachCards();
+        }
     }
 
     public void OnMouseOver()
@@ -102,14 +107,19 @@ public class CardSprite : MonoBehaviour
 
     private bool IsLeftClicked()
     {
-        if (!Grid.IsLocked() && Input.GetMouseButtonDown(0)) return true;
+        if (!Grid.IsLocked() && !IsAnimating() && Input.GetMouseButtonDown(0)) return true;
         else return false;
     }
 
     private bool IsRightClicked()
     {
-        if (!Grid.IsLocked() && Input.GetMouseButtonDown(1)) return true;
+        if (!Grid.IsLocked() && !IsAnimating() && Input.GetMouseButtonDown(1)) return true;
         else return false;
+    }
+
+    public bool IsAnimating()
+    {
+        return animating.CoroutineCount > 0;
     }
 
     private void ClearCardResistance()
@@ -146,9 +156,13 @@ public class CardSprite : MonoBehaviour
 
     private void AdjustRotationToCamera()
     {
-        float rightAngle = 180f - Turn.GetCameraRightAngle();
-        Debug.Log("Right angle: " + rightAngle);
-        RotateCard((int)rightAngle);
+        if (!occupiedField.AreThereTwoCards())
+        {
+            float rightAngle = 180f - Turn.GetCameraRightAngle();
+            //Debug.Log("Right angle: " + rightAngle);
+            RotateCard(Mathf.RoundToInt(rightAngle), false);
+        }
+        else occupiedField.SynchronizeRotation();
     }
 
     public void UpdateCard(CardImage image)
@@ -213,6 +227,11 @@ public class CardSprite : MonoBehaviour
         UpdateRelativeCoordinates();
     }
 
+    public void ApplyField(Field field)
+    {
+        occupiedField = field;
+    }
+
     public void SetActive()
     {
         //Debug.Log($"Set active for card on field: {occupiedField.GetX()}, {occupiedField.GetY()}");
@@ -263,9 +282,9 @@ public void CallPayment(int price)
         Turn.SetMoveTime();
     }
 
-    public void CancelDecision()
+    public bool CancelDecision()
     {
-        state.Cancel();
+        return state.Cancel();
     }
 
     public void CancelCard()
@@ -484,21 +503,6 @@ public void CallPayment(int price)
     private void UpdateBar(int index)
     {
         cardBar[index].UpdateBar();
-        /*return; // TODO: Fix this code!
-        var barValue = index switch
-        {
-            0 => GetStrength(),
-            1 => cardStatus.Power,
-            2 => cardStatus.Dexterity,
-            3 => cardStatus.Health,
-            _ => throw new IndexOutOfRangeException($"Updating bar of index {index}."),
-        };
-        float unitScale = 15.9f / 6f;
-        float positionX0Unit = 3.04f;
-        float positionX6Unit = 11.05f;
-        float currentX = (positionX6Unit - positionX0Unit) / 6 * barValue + positionX0Unit;
-       // bars[index].localPosition = new Vector3(currentX, bars[index].localPosition.y, bars[index].localPosition.z);
-        //bars[index].localScale = new Vector3(unitScale * barValue, bars[index].localScale.y, bars[index].localScale.z);*/
     }
 
     public Role GetRole()
@@ -542,7 +546,7 @@ public void CallPayment(int price)
 
     public void EnableButtons()
     {
-        if (!animatingProcess && this == Turn.GetFocusedCard()) state.EnableButtons();
+        if (!IsAnimating() && this == Turn.GetFocusedCard()) state.EnableButtons();
     }
 
     public void DisableButtons()
@@ -560,28 +564,38 @@ public void CallPayment(int price)
         foreach (CardBar bar in cardBar) bar.ShowBar();
     }
 
-    public void ShowNeutralButtons()
+    public void PrepareNeutralRotationButtons()
     {
-        Debug.Log("Showing neutral buttons. Debug GetType:" + state.GetType());
-        //if (state.GetType() != typeof(NewCardState)) throw new Exception("New card buttons reveal attempt for not new card state!");
-        for (int i = 1; i <= 3; i++)
-        {
-            cardButton[i].ChangeButtonToNeutral();
-            cardButton[i].EnableButton();
-        }
+        cardButton[2].ChangeButtonToNeutral();
+        cardButton[3].ChangeButtonToNeutral();
     }
 
-    public void ShowDexterityButtons(bool onlyMove = false)
+    public void PrepareDexterityButtons()
     {
-        Debug.Log("Showing dexterity buttons");
         DisableButtons();
-        int firstIndex = onlyMove ? 4 : 2;
-        for (int i = firstIndex; i <= 7; i++)
+        for (int i = 2; i <= 7; i++) cardButton[i].ChangeButtonToDexterity();
+    }
+
+    public void ShowButtons(bool canMove, bool canRotate, bool canCancel = false)
+    {
+        DisableButtons();
+        if (canCancel) cardButton[1].EnableButton();
+        if (canRotate)
         {
-            cardButton[i].ChangeButtonToDexterity();
-            cardButton[i].EnableButton();
+            cardButton[2].EnableButton();
+            cardButton[3].EnableButton();
         }
-        UpdateMoveButtons();
+        if (canMove) UpdateMoveButtons();
+    }
+
+    public void UpdateMoveButtons()
+    {
+        for (int i = 4; i <= 7; i++)
+        {
+            Field targetField = GetAdjacentField(i * 90);
+            if (targetField == null || targetField.IsOccupied()) cardButton[i].DisableButton();
+            else cardButton[i].EnableButton();
+        }
     }
 
     public Field GetAdjacentField(float angle)
@@ -603,16 +617,6 @@ public void CallPayment(int price)
         return adjacentCards;
     }
 
-    public void UpdateMoveButtons()
-    {
-        for (int i = 4; i <= 7; i++)
-        {
-            Field targetField = GetAdjacentField(i * 90);
-            if (targetField == null || targetField.IsOccupied()) cardButton[i].DisableButton();
-            else cardButton[i].EnableButton();
-        }
-    }
-
     public void MoveCard(int angle)
     {
         int returnButtonIndex = ((angle / 90 + 2) % 4) + 4;
@@ -624,14 +628,14 @@ public void CallPayment(int price)
 
     public void ConfirmMove()
     {
-        Debug.Log("Confirming move for " + Character.Name);
+        //Debug.Log("Confirming move for " + Character.Name);
         if (CanUseSkill()) Character.SkillOnMove(this);
         TakeNeighborsEffect();
     }
 
     public void RotateCard(int angle, bool skipAnimation = false)
     {
-        //skipAnimation = true;
+        //Debug.Log("Rotating card for " + name);
         int returnButtonIndex = (450 - angle) / 180;
         if (!gameObject.activeSelf || animating == null) skipAnimation = true;
         if (skipAnimation)
@@ -641,41 +645,29 @@ public void CallPayment(int price)
         }
         else
         {
-            animatingProcess = true;
             StartCoroutine(RotateCardCoroutine(angle, returnButtonIndex));
         }
     }
 
     private IEnumerator RotateCardCoroutine(int angle, int returnButtonIndex)
     {
-        //transform.Rotate(0, 0, -angle);
         DisableButtons();
         HideBars();
-        yield return StartCoroutine(animating.RotateObject(-angle, 200f));
+        yield return StartCoroutine(animating.RotateObject(-angle, 1f));
         AfterRotationAdjustment(returnButtonIndex, true);
         yield return null;
-        //UpdateRelativeCoordinates();
-        //occupiedField.SynchronizeRotation();
-        //if (gameObject.activeSelf) state = state.AdjustTransformChange(returnButtonIndex);
     }
 
     public void AfterRotationAdjustment(int returnButtonIndex, bool wasAnimated)
     {
         if (wasAnimated)
         {
-            animatingProcess = false;
             EnableButtons();
             ShowBars();
         }
         UpdateRelativeCoordinates();
-        occupiedField.SynchronizeRotation();
         if (gameObject.activeSelf) state = state.AdjustTransformChange(returnButtonIndex);
     }
-
-    //private void AnimateRotation(int angle)
-    //{
-    //    animating.RotateObject(-angle, 200f);
-    //}
 
     public void SwapWith(Field targetField)
     {
@@ -691,21 +683,6 @@ public void CallPayment(int price)
         if (sourceField != null) sourceField.OccupantCard.ConfirmMove();
     }
 
-    /*private void HighlightAttackRange()
-    {
-        foreach (int[] distance in Character.AttackRange)
-        {
-            Field targetField = GetTargetField(distance);
-            if (targetField == null || !targetField.IsOccupied()) continue;
-            targetField.HighlightField();
-        }
-    }*/
-
-    //spublic void HighlightCard()
-    //{
-    //    // TODO: Do something to the card!
-    //}
-
     public void ImportFromSelectedImage()
     {
         imageReference = cardManager.SelectedCard();
@@ -720,7 +697,7 @@ public void CallPayment(int price)
         cardManager.ReturnCharacter(imageReference);
     }
 
-    private float GetRelativeAngle()
+    public float GetRelativeAngle()
     {
         return Grid.GetDefaultAngle() - transform.localRotation.eulerAngles.z;
     }
@@ -736,10 +713,13 @@ public void CallPayment(int price)
         return GetRelativeField(distance[0] + relCoord[0], distance[1] + relCoord[1]);
     }
 
-    public void UpdateRelativeCoordinates()
+    public void UpdateRelativeCoordinates() // NOTE: Moving to adjacent field displayed it 9 times - not anymore for unknown reason.
     {
+        //Debug.Log("Updating relative coords for: " + name);
+        if (IsAnimating()) Debug.LogWarning("Updating animating object!");
         float angle = GetRelativeAngle();
         relCoord = occupiedField.GetRelativeCoordinates(angle);
+        //Turn.RefreshCardSpriteFocus();
     }
 
     public void DebugForceDeactivateCard()
@@ -764,7 +744,8 @@ public void CallPayment(int price)
         UpdateBars();
         transform.Rotate(0, 0, -angle);
         UpdateRelativeCoordinates();
-        occupiedField.SynchronizeRotation();
+        //SynchronizeRotation();
+        ClearCardResistance();
         ApplyPhysics();
         if (occupiedField.IsAligned(Turn.CurrentAlignment)) state = new ActiveState(this);
         else if (occupiedField.IsOpposed(Turn.CurrentAlignment)) state = new IdleState(this);

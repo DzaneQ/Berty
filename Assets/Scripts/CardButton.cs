@@ -49,8 +49,9 @@ public class CardButton : MonoBehaviour
                 break;
 
             case "Return":
-                card.CancelDecision();
-                break;
+                //card.CancelDecision();
+                //break;
+                throw new System.Exception("The return button shouldn't be there!");
 
             default: break;   
         }
@@ -60,6 +61,11 @@ public class CardButton : MonoBehaviour
     {
         //Debug.Log("Enable attempt: " + name + " on card: " + card.name);
         if (card.Grid.IsLocked()) return;
+        if (name == "Return")
+        {
+            card.Grid.Turn.ShowCancelButton();
+            return;
+        }
         if (card != card.Grid.Turn.GetFocusedCard()) return;
         //Debug.Log("Enable: " + name + " on card: " + card.name);
         rend.enabled = true;

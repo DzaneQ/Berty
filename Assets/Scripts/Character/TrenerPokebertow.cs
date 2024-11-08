@@ -12,9 +12,9 @@
         //AddRange(-1, 1, riposteRange);
     }
 
-    public override bool SkillCardClick(CardSprite card)
+    public override void SkillCardClick(CardSprite card)
     {
         card.Grid.SetBackupCard(card.OccupiedField);
-        return true;
+        card.CardManager.DeselectCards();
     }
 }

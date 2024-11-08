@@ -164,8 +164,9 @@ public class CameraMechanics : MonoBehaviour
         target.HighlightField(blockState ? highlightBlockColor : highlightAttackColor);
     }
 
-    private void ClearTarget()
+    public void ClearTarget()
     {
+        if (selectedCard == null) return;
         foreach (Field field in fields)
         {
             //field.FieldOutline.enabled = false;
@@ -181,15 +182,15 @@ public class CameraMechanics : MonoBehaviour
         index = -1;
         for (int i = 0; i < fields.Length; i++)
         {
-            if (IsFieldTargeted(fields[i], targetObject))
-            {
-                if (fields[i].OccupantCard.gameObject.activeSelf)
-                {
-                    index = i;
-                    return true;
-                }
-                else return false;
-            }
+            if (!IsFieldTargeted(fields[i], targetObject)) continue;
+            index = i;
+            return fields[i].OccupantCard.gameObject.activeSelf && !fields[i].OccupantCard.IsAnimating();
+            //if (fields[i].OccupantCard.gameObject.activeSelf && !fields[i].OccupantCard.IsAnimating())
+            //{
+            //    index = i;
+            //    return true;
+            //}
+            //else return false;
         }
         return false;
     }

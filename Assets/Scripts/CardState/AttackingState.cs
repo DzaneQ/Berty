@@ -6,7 +6,7 @@ internal class AttackingState : CardState
 {
     public AttackingState(CardSprite sprite) : base(sprite)
     {
-        Debug.Log("Setting attacking state for " + card.name + " on field " + card.OccupiedField.name);
+        //Debug.Log("Setting attacking state for " + card.name + " on field " + card.OccupiedField.name);
         EnableButtons();
     }
 
@@ -31,9 +31,10 @@ internal class AttackingState : CardState
         return this;
     }
 
-    public override void Cancel()
+    public override bool Cancel()
     {
         card.CancelPayment();
+        return true;
     }
 
     public override bool IsForPaymentConfirmation() => true;

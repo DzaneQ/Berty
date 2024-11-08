@@ -19,7 +19,7 @@ public class SuperfanBert : Character
     public override void SkillOnNewCard(CardSprite card)
     {
         int hour = DateTime.Now.Hour;
-        UnityEngine.Debug.Log($"Current hour is: {hour}");
+        //UnityEngine.Debug.Log($"Current hour is: {hour}");
         if (hour < 5 || 18 <= hour)
         {
             card.AdvanceStrength(1, card);

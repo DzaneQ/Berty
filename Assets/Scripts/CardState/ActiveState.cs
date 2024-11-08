@@ -6,15 +6,16 @@ internal class ActiveState : CardState
 {
     public ActiveState(CardSprite sprite) : base(sprite)
     {
-        Debug.Log("Setting active state for " + card.name + " on field " + card.OccupiedField.name);
+        //Debug.Log("Setting active state for " + card.name + " on field " + card.OccupiedField.name);
+        card.PrepareDexterityButtons();
         EnableButtons();
         //card.ShowDexterityButtons();
     }
 
-    public override void HandleClick()
+    public override void HandleClick() // Experimental change.
     {
         if (!card.IsCardSelected()) card.PrepareToAttack();
-        else if (!card.Character.SkillCardClick(card)) card.CardManager.DeselectCards();
+        else card.Character.SkillCardClick(card);
     }
 
     public override void HandleSideClick()
@@ -42,6 +43,7 @@ internal class ActiveState : CardState
 
     public override void EnableButtons()
     {
-        card.ShowDexterityButtons();
+        //card.ShowDexterityButtons();
+        card.ShowButtons(true, true);
     }
 }

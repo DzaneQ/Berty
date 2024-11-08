@@ -48,12 +48,12 @@ public class DevTools : MonoBehaviour
         fg.DebugForceRemoveCardFromField(sprite);
         switch (targetParent.name)
         {
-            case "PlayerPosition":
+            case "PlayerSide":
                 image.transform.SetParent(targetParent.transform, false);
                 if (turn.CurrentAlignment == Alignment.Player) cm.DebugAssignCardToList(image, cm.EnabledCards);
                 else cm.DebugAssignCardToList(image, cm.DisabledCards);
                 break;
-            case "OpponentPosition":
+            case "OpponentSide":
                 image.transform.SetParent(targetParent.transform, false);
                 if (turn.CurrentAlignment == Alignment.Player) cm.DebugAssignCardToList(image, cm.DisabledCards);
                 else cm.DebugAssignCardToList(image, cm.EnabledCards);

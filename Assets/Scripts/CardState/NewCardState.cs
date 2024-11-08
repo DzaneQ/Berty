@@ -6,9 +6,10 @@ internal class NewCardState : CardState
 {
     public NewCardState(CardSprite sprite) : base(sprite)
     {
-        Debug.Log("Setting new card state for " + card.name + " on field " + card.OccupiedField.name);
+        //Debug.Log("Setting new card state for " + card.name + " on field " + card.OccupiedField.name);
         card.ActivateNewCard();
-        EnableButtons();
+        card.PrepareNeutralRotationButtons();
+        //EnableButtons();
     }
 
     public override CardState DeactivateCard() => new InactiveState(card);
@@ -30,10 +31,11 @@ internal class NewCardState : CardState
         return this;
     }
 
-    public override void Cancel()
+    public override bool Cancel()
     {
         card.CancelCard();
         card.CancelPayment();
+        return true;
     }
 
     public override bool IsForPaymentConfirmation()
@@ -45,7 +47,7 @@ internal class NewCardState : CardState
 
     public override void EnableButtons()
     {
-        if (!card.OccupiedField.AreThereTwoCards()) card.ShowNeutralButtons();
+        if (!card.OccupiedField.AreThereTwoCards()) card.ShowButtons(false, true, true);
         else card.EnableCancelNeutralButton(1);
     }
 }

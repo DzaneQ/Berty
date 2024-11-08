@@ -9,9 +9,10 @@ public partial class Turn : MonoBehaviour
 {
     const int cardsToWin = 6;
 
-    [SerializeField] private GameObject EndTurnButton;
+    [SerializeField] private GameObject TheButton;
     [SerializeField] private GameObject GameOverText;
 
+    private Text theButtonText;
     private Text endingMessage;
     private FieldGrid fg;
     private CardManager cm;
@@ -57,12 +58,21 @@ public partial class Turn : MonoBehaviour
 
     public bool InteractableDisabled => interactableDisabled;
     public CardManager CM => cm;
+    private string TheButtonText
+    {
+        get => theButtonText.text;
+        set
+        {
+            theButtonText.text = value;
+        }
+    }
+
 
     private void Awake()
     {
         if (Debug.isDebugBuild) Application.targetFrameRate = 10;
         cm = GetComponent<CardManager>();
-        oc = GetComponent<OpponentControl>();
+        //oc = GetComponent<OpponentControl>();
         fg = (FieldGrid)FindAnyObjectByType<FieldGrid>();
         ct = (CameraMechanics)FindAnyObjectByType<CameraMechanics>();
     }
@@ -70,6 +80,7 @@ public partial class Turn : MonoBehaviour
     private void Start()
     {
         endingMessage = GameOverText.transform.GetChild(0).GetComponent<Text>();
+        theButtonText = TheButton.transform.GetChild(0).GetComponent<Text>();
         ps = new PricingSystem(cm);
         SetStartingParameters();
         DebugInit();
@@ -83,7 +94,22 @@ public partial class Turn : MonoBehaviour
         CurrentAlignment = Alignment.Player;
     }
 
-    public void EndTurn() // Note: If the character in CardManager.TakeRandomCharacter() not found, the game will end!
+    public void HandleTheButtonClick() // Note: If the character in CardManager.TakeRandomCharacter() not found, the game will end!
+    {
+        switch (TheButtonText)
+        {
+            case "Koniec tury":
+                EndTurn();
+                break;
+            case "Cofnij":
+                fg.CancelCard();
+                break;
+            default:
+                throw new Exception("Unknown ending button!");
+        }
+    }
+
+    private void EndTurn()
     {
         if (CheckWinConditions()) return;
         cm.DeselectCards();
@@ -150,6 +176,8 @@ public partial class Turn : MonoBehaviour
         }
     }
 
+    //public void RefreshCardSpriteFocus() => ct.ClearTarget();
+
     public bool CheckOffer() => ps.CheckOffer();
 
     private void SwitchAlign()
@@ -194,16 +222,14 @@ public partial class Turn : MonoBehaviour
 
     public void EnableInteractions()
     {
-        //fg.UnlockInteractables();
         interactableDisabled = false;
         ShowEndTurnButton(true);
     }
 
     public void DisableInteractions()
     {
-        //fg.LockInteractables();
         cm.HideTables();
-        EndTurnButton.SetActive(false);
+        TheButton.SetActive(false);
         interactableDisabled = true;
     }
 
@@ -214,8 +240,19 @@ public partial class Turn : MonoBehaviour
 
     private void ShowEndTurnButton(bool value = true)
     {
-        if (!interactableDisabled) EndTurnButton.SetActive(value);
-        else EndTurnButton.SetActive(false);
+        if (!interactableDisabled)
+        {
+            TheButtonText = "Koniec tury";
+            TheButton.SetActive(value);
+        }
+        else TheButton.SetActive(false);
+    }
+
+    public void ShowCancelButton()
+    {
+        if (interactableDisabled) return;
+        TheButtonText = "Cofnij";
+        TheButton.SetActive(true);
     }
 
     public void ReturnToMenu()

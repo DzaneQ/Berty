@@ -49,6 +49,15 @@ public class FieldGrid : MonoBehaviour
         }
     }
 
+    public void CancelCard()
+    {
+        foreach (Field field in fields)
+        {
+            if (!field.IsOccupied()) continue;
+            if (field.OccupantCard.CancelDecision()) return;
+        }
+    }
+
     public void ResetCardTransform(Transform cardSprite)
     {
         cardSprite.localPosition = cardOnBoard.defaultPosition;
@@ -197,6 +206,7 @@ public class FieldGrid : MonoBehaviour
                 
             }
             field.OccupantCard.ProgressTemporaryStats();
+            if (!field.OccupantCard.CanUseSkill()) continue;
             field.OccupantCard.Character.SkillOnNewTurn(field.OccupantCard);
         }
         temporaryStatuses.AdjustNewTurn(turn.CurrentAlignment);
@@ -214,9 +224,8 @@ public class FieldGrid : MonoBehaviour
 
     public void SetBackupCard(Field field)
     {
-        backupCard.transform.SetParent(field.transform, false);
-        field.PlaceCard(backupCard, field.Align, true);
-        backupCard.LoadSelectedCard();
+        //backupCard.transform.SetParent(field.transform, false);
+        field.PlaceBackupCard(backupCard);
     }
 
 

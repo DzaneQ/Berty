@@ -6,8 +6,8 @@ internal class InactiveState : CardState
 {
     public InactiveState(CardSprite sprite) : base(sprite)
     {
-        if (card.OccupiedField == null) Debug.Log("Setting inactive state for " + card.name);
-        else Debug.Log("Setting inactive state for " + card.name + " on field " + card.OccupiedField.name);
+        //if (card.OccupiedField == null) Debug.Log("Setting inactive state for " + card.name);
+        //else Debug.Log("Setting inactive state for " + card.name + " on field " + card.OccupiedField.name);
         card.gameObject.SetActive(false);
         card.DisableButtons();
         card.SetCardToDefaultTransform();

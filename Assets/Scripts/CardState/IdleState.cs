@@ -6,7 +6,7 @@ internal class IdleState : CardState
 {
     public IdleState(CardSprite sprite) : base(sprite)
     {
-        Debug.Log("Setting idle state for " + card.name + " on field " + card.OccupiedField.name);
+        //Debug.Log("Setting idle state for " + card.name + " on field " + card.OccupiedField.name);
         card.DisableButtons();
     }
 
@@ -15,6 +15,11 @@ internal class IdleState : CardState
     public override void HandleClick() { }
 
     public override CardState AdjustTransformChange(int buttonIndex) => this;
+
+    public override bool Cancel()
+    {
+        return false;
+    }
 
     public override CardState SetActive => new ActiveState(card);
 

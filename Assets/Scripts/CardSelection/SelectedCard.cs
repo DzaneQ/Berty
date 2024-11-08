@@ -10,7 +10,7 @@ public class SelectedCard : SelectStatus
 
     public SelectedCard(RectTransform transform, CardImage card) : base(transform, card)
     {
-        Debug.Log("Selecting card...");
+        //Debug.Log("Selecting card...");
         unselectedPosition = cardTransform.position;
         unselectedRotation = cardTransform.eulerAngles;
         Vector3 posOffset = new Vector3(10f, 5f, 0f);

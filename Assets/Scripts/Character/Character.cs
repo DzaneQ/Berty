@@ -115,7 +115,7 @@ public abstract class Character
 
     public virtual void SkillOnDeath(CardSprite cardSprite) { }
 
-    public virtual bool SkillCardClick(CardSprite cardSprite) => false;
+    public virtual void SkillCardClick(CardSprite cardSprite) { }
     
     public virtual void SkillSideClick(CardSprite cardSprite) { }
 }

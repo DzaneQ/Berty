@@ -18,10 +18,16 @@
     public override void SkillOnNewTurn(CardSprite card)
     {
         if (!card.OccupiedField.IsAligned(card.Grid.Turn.CurrentAlignment)) return;
+        //if (IsBlockedDuringRevolution(card)) return;
         foreach (Field field in card.Grid.Fields)
         {
             if (!field.IsOccupied() || field.IsAligned(card.OccupiedField.Align)) continue;
             field.OccupantCard.AdvancePower(-2, card);
         }
     }
+
+    /*private bool IsBlockedDuringRevolution(CardSprite card)
+    {
+        return card.OccupiedField.IsOpposed(card.Grid.CurrentStatus.Revolution) && card.GetRole() == Role.Special;
+    }*/
 }

@@ -1623,8 +1623,6 @@ MonoBehaviour:
   player: {fileID: 2100000, guid: 5ac1a1c44ebd8cc489881f6c2e952685, type: 2}
   opponent: {fileID: 2100000, guid: e9eec283829ab824eaf7f6f27531824b, type: 2}
   defaultAttacked: {fileID: 2100000, guid: 7023073fad8653f42964900686862bee, type: 2}
-  playerAttacked: {fileID: 2100000, guid: e90536d77b2ab284084111835af6d039, type: 2}
-  opponentAttacked: {fileID: 2100000, guid: 47eddd6c05637c34f957145141907ee6, type: 2}
 --- !u!114 &1181834775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1763,7 +1761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b874b2cc7705b3240abf83e1d183cc62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EndTurnButton: {fileID: 1498936183}
+  TheButton: {fileID: 1498936183}
   GameOverText: {fileID: 2809475}
 --- !u!114 &1414117065
 MonoBehaviour:
@@ -2027,10 +2025,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 5dd49b3eacc540408c98eee0de38e0f1, type: 3}
-    m_FontSize: 14
+    m_FontSize: 16
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -2083,8 +2081,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -52.200012, y: -21.699997}
-  m_SizeDelta: {x: 90, y: 30}
+  m_AnchoredPosition: {x: -57.2, y: -24.2}
+  m_SizeDelta: {x: 100, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1498936185
 MonoBehaviour:
@@ -2131,8 +2129,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1414117064}
-        m_TargetAssemblyTypeName: TurnManager, Assembly-CSharp
-        m_MethodName: EndTurn
+        m_TargetAssemblyTypeName: Turn, Assembly-CSharp
+        m_MethodName: HandleTheButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2354,7 +2352,6 @@ GameObject:
   - component: {fileID: 1722526538}
   - component: {fileID: 1722526537}
   - component: {fileID: 1722526539}
-  - component: {fileID: 1722526540}
   m_Layer: 0
   m_Name: Ort Camera
   m_TagString: MainCamera
@@ -2448,22 +2445,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5596438ef397c84ea0f40b0c4b581e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1722526540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1722526535}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1c9d51d3e824cc4ea896732f93fe880, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OutlineType: 0
-  OccludedColor: {r: 1, g: 0.38365448, b: 0.12549019, a: 0.24313726}
-  OutlineWidth: 0.2
-  OutlineHardness: 0.5
 --- !u!1 &1740268250
 GameObject:
   m_ObjectHideFlags: 0
@@ -2498,13 +2479,13 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 3
   m_StartCorner: 0
   m_StartAxis: 1
-  m_CellSize: {x: 100, y: 140}
-  m_Spacing: {x: 1, y: 0}
+  m_CellSize: {x: 80, y: 112}
+  m_Spacing: {x: 15, y: 15}
   m_Constraint: 2
-  m_ConstraintCount: 1
+  m_ConstraintCount: 3
 --- !u!224 &1740268252
 RectTransform:
   m_ObjectHideFlags: 0

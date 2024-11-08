@@ -6,6 +6,7 @@ internal class TelecineticState : CardState
 {
     public TelecineticState(CardSprite sprite) : base(sprite)
     {
+        card.PrepareDexterityButtons();
         EnableButtons();
     }
 
@@ -25,6 +26,7 @@ internal class TelecineticState : CardState
 
     public override void EnableButtons()
     {
-        card.ShowDexterityButtons(true);
+        //card.ShowDexterityButtons(true);
+        card.ShowButtons(true, false);
     }
 }

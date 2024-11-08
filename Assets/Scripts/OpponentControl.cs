@@ -56,7 +56,7 @@ public class OpponentControl : MonoBehaviour
             if (!turn.IsItMoveTime()) break;
         }
         yield return new WaitForSeconds(0.5f);
-        turn.EndTurn();
+        turn.HandleTheButtonClick();
     }
 
     private void TryToAttack(out bool isSuccessful)
