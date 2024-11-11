@@ -60,7 +60,7 @@ public class CardButton : MonoBehaviour
     public void EnableButton()
     {
         //Debug.Log("Enable attempt: " + name + " on card: " + card.name);
-        if (card.Grid.IsLocked()) return;
+        if (card.IsLocked()) return;
         if (name == "Return")
         {
             card.Grid.Turn.ShowCancelButton();

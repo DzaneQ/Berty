@@ -53,6 +53,7 @@ public class CardSprite : MonoBehaviour
         7 - MoveLeft
      */
 
+    #region SetupAndEvents
     private void Awake()
     {
         spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
@@ -107,29 +108,14 @@ public class CardSprite : MonoBehaviour
 
     private bool IsLeftClicked()
     {
-        if (!Grid.IsLocked() && !IsAnimating() && Input.GetMouseButtonDown(0)) return true;
+        if (!IsLocked() && !IsAnimating() && Input.GetMouseButtonDown(0)) return true;
         else return false;
     }
 
     private bool IsRightClicked()
     {
-        if (!Grid.IsLocked() && !IsAnimating() && Input.GetMouseButtonDown(1)) return true;
+        if (!IsLocked() && !IsAnimating() && Input.GetMouseButtonDown(1)) return true;
         else return false;
-    }
-
-    public bool IsAnimating()
-    {
-        return animating.CoroutineCount > 0;
-    }
-
-    private void ClearCardResistance()
-    {
-        resistChar = new List<Character>();
-    }
-
-    public void LoadSelectedCard()
-    {
-        if (IsCardSelected()) state = state.ActivateCard();
     }
 
     public void HighlightCard(Color color)
@@ -140,6 +126,19 @@ public class CardSprite : MonoBehaviour
     public void UnhighlightCard()
     {
         if (occupiedField != null) Grid.UnhighlightCard(spriteRenderer);
+    }
+    #endregion
+
+    #region ActivatationProcess
+    public void LoadSelectedCard()
+    {
+        if (IsCardSelected()) state = state.ActivateCard();
+    }
+
+    public bool IsCardSelected()
+    {
+        if (!Turn.IsItMoveTime()) return false;
+        return cardManager.SelectedCard() != null;
     }
 
     public void ActivateNewCard()
@@ -165,18 +164,13 @@ public class CardSprite : MonoBehaviour
         else occupiedField.SynchronizeRotation();
     }
 
-    public void UpdateCard(CardImage image)
+    public void ImportFromSelectedImage()
     {
-        imageReference = image;
-        Character = image.Character;
-        UpdateBars();
-        ConfirmNewCard(); // experimental - maybe tested?
-    }
-
-    public bool IsCardSelected()
-    {
-        if (!Turn.IsItMoveTime()) return false;
-        return cardManager.SelectedCard() != null;
+        imageReference = cardManager.SelectedCard();
+        Character = imageReference.Character;
+        //cardStatus = new CharacterStat(Character);
+        cardManager.RemoveFromTable(imageReference);
+        //cardManager.AddToField(imageReference);
     }
 
     public void ApplyPhysics(bool isApplied = true)
@@ -184,29 +178,29 @@ public class CardSprite : MonoBehaviour
         cardRB.isKinematic = !isApplied;
     }
 
-    public void ProgressTemporaryStats()
+    private void ClearCardResistance()
     {
-        if (cardStatus.CurrentTempStatBonus.All(x => x == 0)) return;;
-        cardStatus.CurrentTempStatBonus = (int[]) cardStatus.NextTempStatBonus.Clone();
-        Array.Clear(cardStatus.NextTempStatBonus, 0, 4);
-        UpdateBars();
+        resistChar = new List<Character>();
     }
 
-    public void ResetAttack()
+    public void ConfirmNewCard()
     {
-        cardStatus.hasAttacked = false;
+        ClearCardResistance();
+        if (occupiedField.IsAligned(Grid.CurrentStatus.Revolution) && GetRole() == Role.Special) AdvanceStrength(1);
+        if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
+        if (CanUseSkill()) Character.SkillOnNewCard(this);
+        TakeNeighborsEffect();
+        Grid.AttackNewStand(occupiedField);
     }
 
-    public void BlockAttack()
+    public void CancelCard()
     {
-        cardStatus.hasAttacked = true;
+        imageReference.ReturnCard();
+        DeactivateCard();
     }
+    #endregion
 
-    public bool CanCharacterAttack()
-    {
-        return !cardStatus.hasAttacked;
-    }
-
+    #region DeactivationProcess
     public void DeactivateCard()
     {
         Debug.Log($"Deactivating card: {name}");
@@ -219,49 +213,10 @@ public class CardSprite : MonoBehaviour
     {
         if (occupiedField != null) Grid.ResetCardTransform(transform);
     }
+    #endregion
 
-    public void SetField(Field field, bool wasAnimated)
-    {
-        occupiedField = field;
-        transform.SetParent(field.transform, wasAnimated);
-        UpdateRelativeCoordinates();
-    }
-
-    public void ApplyField(Field field)
-    {
-        occupiedField = field;
-    }
-
-    public void SetActive()
-    {
-        //Debug.Log($"Set active for card on field: {occupiedField.GetX()}, {occupiedField.GetY()}");
-        if (!cardStatus.isTired) state = state.SetActive;
-        else state = state.SetIdle;
-    }
-
-    public void SetIdle()
-    {
-        //Debug.Log($"Set idle for card on field: {occupiedField.GetX()}, {occupiedField.GetY()}");
-        state = state.SetIdle;
-    }
-
-    public bool CanBeTelecinetic()
-    {
-        if (resistChar.OfType<RycerzBerti>().Any()) return false;
-        return Grid.IsTelekineticMovement();
-    }
-
-    public void SetTelecinetic()
-    {
-        state = state.SetTelecinetic;
-    }
-
-    public void SetTargetable()
-    {
-        state = state.SetTargetable;
-    }
-
-public void CallPayment(int price)
+    #region Payment
+    public void CallPayment(int price)
     {
         Grid.MakeAllStatesIdle(occupiedField);
         Turn.SetPayment(price);
@@ -286,11 +241,22 @@ public void CallPayment(int price)
     {
         return state.Cancel();
     }
+    #endregion
 
-    public void CancelCard()
+    #region AttackPhase
+    public void ResetAttack()
     {
-        imageReference.ReturnCard();
-        DeactivateCard();
+        cardStatus.hasAttacked = false;
+    }
+
+    public void BlockAttack()
+    {
+        cardStatus.hasAttacked = true;
+    }
+
+    public bool CanCharacterAttack()
+    {
+        return !cardStatus.hasAttacked;
     }
 
     public void PrepareToAttack()
@@ -359,36 +325,9 @@ public void CallPayment(int price)
         Debug.Log($"{damage} damage taken for card {name}. Remaining HP: {cardStatus.Health}");
         return true;
     }
+    #endregion
 
-    public int[] GetFieldDistance(Field targetField)
-    {
-        int[] fieldRel = targetField.GetRelativeCoordinates(GetRelativeAngle());
-        int[] fieldDistance = { fieldRel[0] - relCoord[0], fieldRel[1] - relCoord[1] };
-        return fieldDistance;
-    }
-
-    public bool CanUseSkill()
-    {
-        if (OccupiedField.IsOpposed(Grid.CurrentStatus.Revolution) && GetRole() == Role.Special) return false;
-        return true;
-    }
-
-    private bool VenturaCheck()
-    {
-        foreach (CardSprite card in GetAdjacentCards())
-        {
-            if (card.Character.GetType() != typeof(BertVentura) || IsAllied(card.OccupiedField)) continue;
-            foreach (int[] range in Character.AttackRange)
-            {
-                Field targetField = GetTargetField(range);
-                if (targetField == null || !targetField.IsOccupied()) continue;
-                if (targetField.OccupantCard.Character.GetType() == typeof(BertVentura)) return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
+    #region StatAdvancement
     public void AdvanceTempStrength(int value, CardSprite spellSource = null)
     {
         if (!Character.CanAffectStrength(this, spellSource)) return;
@@ -479,22 +418,10 @@ public void CallPayment(int price)
                 field.OccupantCard.Character.SkillOnOtherCardDeath(field.OccupantCard, this);
         DeactivateCard();
         cardManager.KillCard(imageReference);
-    }    
-
-    public void AddResistance(Character character)
-    {
-        Debug.Log($"Adding resistance of {character} to card: {name}");
-        if (character == null) throw new Exception("Trying to resist null.");
-        if (character == Character) throw new Exception("Trying to resist self.");
-        if (resistChar.Contains(character)) return;
-        resistChar.Add(character);
     }
+    #endregion
 
-    public bool IsAllied(Field targetField)
-    {
-        return targetField.IsAligned(occupiedField.Align);
-    }    
-
+    #region BarsDisplay
     public void UpdateBars()
     {
         for (int i = 0; i < cardBar.Length; i++) UpdateBar(i);
@@ -505,45 +432,18 @@ public void CallPayment(int price)
         cardBar[index].UpdateBar();
     }
 
-    public Role GetRole()
+    public void HideBars()
     {
-        if (Grid.CurrentStatus.IsJudgement) return Role.Special;
-        return Character.Role;
+        foreach (CardBar bar in cardBar) bar.HideBar();
     }
 
-    public int GetStrength()
+    public void ShowBars()
     {
-        return cardStatus.Strength;
+        foreach (CardBar bar in cardBar) bar.ShowBar();
     }
+    #endregion
 
-    public void ConfirmNewCard()
-    {
-        ClearCardResistance();
-        if (occupiedField.IsAligned(Grid.CurrentStatus.Revolution) && GetRole() == Role.Special) AdvanceStrength(1);
-        if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
-        if (CanUseSkill()) Character.SkillOnNewCard(this);
-        TakeNeighborsEffect();
-        Grid.AttackNewStand(occupiedField);
-    }
-
-    private void TakeNeighborsEffect()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            Field adjacentField = GetAdjacentField(i * 90);
-            if (adjacentField == null || !adjacentField.IsOccupied()) continue;
-            if (adjacentField.OccupantCard.CanUseSkill())
-                adjacentField.OccupantCard.Character.SkillOnNeighbor(adjacentField.OccupantCard, this);
-        }
-    }
-
-    public void EnableCancelNeutralButton(int index)
-    {
-        DisableButtons();
-        cardButton[index].ChangeButtonToNeutral();
-        cardButton[index].EnableButton();
-    }
-
+    #region ButtonDisplay
     public void EnableButtons()
     {
         if (!IsAnimating() && this == Turn.GetFocusedCard()) state.EnableButtons();
@@ -554,14 +454,11 @@ public void CallPayment(int price)
         if (!gameObject.activeSelf || this == Turn.GetFocusedCard()) foreach (CardButton button in cardButton) button.DisableButton();
     }
 
-    public void HideBars()
+    public void EnableCancelNeutralButton(int index)
     {
-        foreach (CardBar bar in cardBar) bar.HideBar();
-    }
-
-    public void ShowBars()
-    {
-        foreach (CardBar bar in cardBar) bar.ShowBar();
+        DisableButtons();
+        cardButton[index].ChangeButtonToNeutral();
+        cardButton[index].EnableButton();
     }
 
     public void PrepareNeutralRotationButtons()
@@ -597,26 +494,9 @@ public void CallPayment(int price)
             else cardButton[i].EnableButton();
         }
     }
+    #endregion
 
-    public Field GetAdjacentField(float angle)
-    {
-        int targetX = (int)Math.Round(relCoord[0] + Math.Sin(angle * Math.PI / 180));
-        int targetY = (int)Math.Round(relCoord[1] + Math.Cos(angle * Math.PI / 180));
-        int[] target = { targetX, targetY };
-        return GetRelativeField(target[0], target[1]);
-    }
-
-    public List<CardSprite> GetAdjacentCards()
-    {
-        List<CardSprite> adjacentCards = new List<CardSprite>();
-        for (int i = 0; i < 4; i++)
-        {
-            Field adj = GetAdjacentField(i * 90);
-            if (adj != null && adj.IsOccupied()) adjacentCards.Add(adj.OccupantCard);
-        }
-        return adjacentCards;
-    }
-
+    #region Navigation
     public void MoveCard(int angle)
     {
         int returnButtonIndex = ((angle / 90 + 2) % 4) + 4;
@@ -682,14 +562,15 @@ public void CallPayment(int price)
         ConfirmMove(); // Note: experimental!
         if (sourceField != null) sourceField.OccupantCard.ConfirmMove();
     }
+    #endregion
 
-    public void ImportFromSelectedImage()
+    #region CharacterSkillBased
+    public void UpdateCard(CardImage image)
     {
-        imageReference = cardManager.SelectedCard();
-        Character = imageReference.Character;
-        //cardStatus = new CharacterStat(Character);
-        cardManager.RemoveFromTable(imageReference);
-        //cardManager.AddToField(imageReference);
+        imageReference = image;
+        Character = image.Character;
+        UpdateBars();
+        ConfirmNewCard(); // experimental - maybe tested?
     }
 
     public void ReturnCharacter()
@@ -697,6 +578,51 @@ public void CallPayment(int price)
         cardManager.ReturnCharacter(imageReference);
     }
 
+    private void TakeNeighborsEffect()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            Field adjacentField = GetAdjacentField(i * 90);
+            if (adjacentField == null || !adjacentField.IsOccupied()) continue;
+            if (adjacentField.OccupantCard.CanUseSkill())
+                adjacentField.OccupantCard.Character.SkillOnNeighbor(adjacentField.OccupantCard, this);
+        }
+    }
+
+    private bool VenturaCheck()
+    {
+        foreach (CardSprite card in GetAdjacentCards())
+        {
+            if (card.Character.GetType() != typeof(BertVentura) || IsAllied(card.OccupiedField)) continue;
+            foreach (int[] range in Character.AttackRange)
+            {
+                Field targetField = GetTargetField(range);
+                if (targetField == null || !targetField.IsOccupied()) continue;
+                if (targetField.OccupantCard.Character.GetType() == typeof(BertVentura)) return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public bool CanBeTelecinetic()
+    {
+        if (resistChar.OfType<RycerzBerti>().Any()) return false;
+        return Grid.IsTelekineticMovement();
+    }
+
+    public void SetTelecinetic()
+    {
+        state = state.SetTelecinetic;
+    }
+
+    public void SetTargetable()
+    {
+        state = state.SetTargetable;
+    }
+    #endregion
+
+    #region PositionRead
     public float GetRelativeAngle()
     {
         return Grid.GetDefaultAngle() - transform.localRotation.eulerAngles.z;
@@ -713,6 +639,110 @@ public void CallPayment(int price)
         return GetRelativeField(distance[0] + relCoord[0], distance[1] + relCoord[1]);
     }
 
+    public Field GetAdjacentField(float angle)
+    {
+        int targetX = (int)Math.Round(relCoord[0] + Math.Sin(angle * Math.PI / 180));
+        int targetY = (int)Math.Round(relCoord[1] + Math.Cos(angle * Math.PI / 180));
+        int[] target = { targetX, targetY };
+        return GetRelativeField(target[0], target[1]);
+    }
+
+    public List<CardSprite> GetAdjacentCards()
+    {
+        List<CardSprite> adjacentCards = new List<CardSprite>();
+        for (int i = 0; i < 4; i++)
+        {
+            Field adj = GetAdjacentField(i * 90);
+            if (adj != null && adj.IsOccupied()) adjacentCards.Add(adj.OccupantCard);
+        }
+        return adjacentCards;
+    }
+
+    public int[] GetFieldDistance(Field targetField)
+    {
+        int[] fieldRel = targetField.GetRelativeCoordinates(GetRelativeAngle());
+        int[] fieldDistance = { fieldRel[0] - relCoord[0], fieldRel[1] - relCoord[1] };
+        return fieldDistance;
+    }
+    #endregion
+
+    #region StatusRead
+    public bool IsLocked()
+    {
+        return Turn.InteractableDisabled;
+    }
+
+    public bool IsAnimating()
+    {
+        return animating.CoroutineCount > 0;
+    }
+
+    public Role GetRole()
+    {
+        if (Grid.CurrentStatus.IsJudgement) return Role.Special;
+        return Character.Role;
+    }
+
+    public int GetStrength()
+    {
+        return cardStatus.Strength;
+    }
+
+    public bool IsAllied(Field targetField)
+    {
+        return targetField.IsAligned(occupiedField.Align);
+    }
+
+    public bool CanUseSkill()
+    {
+        if (OccupiedField.IsOpposed(Grid.CurrentStatus.Revolution) && GetRole() == Role.Special) return false;
+        return true;
+    }
+    #endregion
+
+    #region StatusUpdate
+    public void ProgressTemporaryStats()
+    {
+        if (cardStatus.CurrentTempStatBonus.All(x => x == 0)) return; ;
+        cardStatus.CurrentTempStatBonus = (int[])cardStatus.NextTempStatBonus.Clone();
+        Array.Clear(cardStatus.NextTempStatBonus, 0, 4);
+        UpdateBars();
+    }
+
+    public void SetField(Field field, bool wasAnimated)
+    {
+        occupiedField = field;
+        transform.SetParent(field.transform, wasAnimated);
+        UpdateRelativeCoordinates();
+    }
+
+    public void ApplyField(Field field)
+    {
+        occupiedField = field;
+    }
+
+    public void SetActive()
+    {
+        //Debug.Log($"Set active for card on field: {occupiedField.GetX()}, {occupiedField.GetY()}");
+        if (!cardStatus.isTired) state = state.SetActive;
+        else state = state.SetIdle;
+    }
+
+    public void SetIdle()
+    {
+        //Debug.Log($"Set idle for card on field: {occupiedField.GetX()}, {occupiedField.GetY()}");
+        state = state.SetIdle;
+    }
+    public void AddResistance(Character character)
+    {
+        Debug.Log($"Adding resistance of {character} to card: {name}");
+        if (character == null) throw new Exception("Trying to resist null.");
+        if (character == Character) throw new Exception("Trying to resist self.");
+        if (resistChar.Contains(character)) return;
+        resistChar.Add(character);
+    }
+
+
     public void UpdateRelativeCoordinates() // NOTE: Moving to adjacent field displayed it 9 times - not anymore for unknown reason.
     {
         //Debug.Log("Updating relative coords for: " + name);
@@ -721,7 +751,9 @@ public void CallPayment(int price)
         relCoord = occupiedField.GetRelativeCoordinates(angle);
         //Turn.RefreshCardSpriteFocus();
     }
+    #endregion
 
+    #region Debug
     public void DebugForceDeactivateCard()
     {
         if (!Debug.isDebugBuild) return;
@@ -751,4 +783,5 @@ public void CallPayment(int price)
         else if (occupiedField.IsOpposed(Turn.CurrentAlignment)) state = new IdleState(this);
         else Debug.LogError("Wrongly activated card!");
     }
+    #endregion
 }

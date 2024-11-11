@@ -61,18 +61,15 @@ public partial class Turn : MonoBehaviour
     private string TheButtonText
     {
         get => theButtonText.text;
-        set
-        {
-            theButtonText.text = value;
-        }
+        set => theButtonText.text = value;
     }
 
-
+    #region Setup
     private void Awake()
     {
         if (Debug.isDebugBuild) Application.targetFrameRate = 10;
         cm = GetComponent<CardManager>();
-        //oc = GetComponent<OpponentControl>();
+        oc = GetComponent<OpponentControl>();
         fg = (FieldGrid)FindAnyObjectByType<FieldGrid>();
         ct = (CameraMechanics)FindAnyObjectByType<CameraMechanics>();
     }
@@ -93,8 +90,10 @@ public partial class Turn : MonoBehaviour
         currentStep = Step.Move;
         CurrentAlignment = Alignment.Player;
     }
+    #endregion
 
-    public void HandleTheButtonClick() // Note: If the character in CardManager.TakeRandomCharacter() not found, the game will end!
+    #region TurnsAndSteps
+    public void HandleTheButtonClick()
     {
         switch (TheButtonText)
         {
@@ -152,6 +151,38 @@ public partial class Turn : MonoBehaviour
         if (IsItMoveTime()) fg.SetAlignedCardsActive();
     }
 
+    public bool CheckOffer() => ps.CheckOffer();
+
+    private void SwitchAlign()
+    {
+        CurrentAlignment = CurrentAlignment == Alignment.Player ? Alignment.Opponent : Alignment.Player;
+    }
+
+    private void ShowEndTurnButton(bool value = true)
+    {
+        if (!interactableDisabled)
+        {
+            TheButtonText = "Koniec tury";
+            TheButton.SetActive(value);
+        }
+        else TheButton.SetActive(false);
+    }
+
+    public void ShowCancelButton()
+    {
+        if (interactableDisabled) return;
+        TheButtonText = "Cofnij";
+        TheButton.SetActive(true);
+    }
+    #endregion
+
+    #region CameraControl
+    public float GetCameraRightAngle() => ct.RightAngleValue();
+
+    public CardSprite GetFocusedCard() => ct.FocusedCard;
+    #endregion
+
+    #region CharacterSkillBased
     public void ExecutePrincessTurn(Alignment decidingAlign)
     {
         Debug.Log("Executing special turn for alignment: " + decidingAlign);
@@ -175,20 +206,29 @@ public partial class Turn : MonoBehaviour
             cm.DisplayDeadCards();
         }
     }
+    #endregion
 
-    //public void RefreshCardSpriteFocus() => ct.ClearTarget();
-
-    public bool CheckOffer() => ps.CheckOffer();
-
-    private void SwitchAlign()
+    #region AutomaticOpponentBased
+    public void EnableInteractions()
     {
-        CurrentAlignment = CurrentAlignment == Alignment.Player ? Alignment.Opponent : Alignment.Player;
+        interactableDisabled = false;
+        ShowEndTurnButton(true);
     }
 
-    public float GetCameraRightAngle() => ct.RightAngleValue();
+    public void DisableInteractions()
+    {
+        cm.HideTables();
+        TheButton.SetActive(false);
+        interactableDisabled = true;
+    }
 
-    public CardSprite GetFocusedCard() => ct.FocusedCard;
+    public void ExecuteAutomaticOpponentTurn()
+    {
+        if (CurrentAlignment == Alignment.Opponent && oc != null) oc.PlayTurn();
+    }
+    #endregion
 
+    #region GameOver
     private bool CheckWinConditions(bool forceEnd = false)
     {
         if (fg.AlignedFields(Alignment.Player, true).Count >= cardsToWin)
@@ -220,46 +260,13 @@ public partial class Turn : MonoBehaviour
         GameOverText.SetActive(true);
     }
 
-    public void EnableInteractions()
-    {
-        interactableDisabled = false;
-        ShowEndTurnButton(true);
-    }
-
-    public void DisableInteractions()
-    {
-        cm.HideTables();
-        TheButton.SetActive(false);
-        interactableDisabled = true;
-    }
-
-    public void ExecuteAutomaticOpponentTurn() // TODO: Make it clean and private.
-    {
-        if (CurrentAlignment == Alignment.Opponent && oc != null) oc.PlayTurn();
-    }
-
-    private void ShowEndTurnButton(bool value = true)
-    {
-        if (!interactableDisabled)
-        {
-            TheButtonText = "Koniec tury";
-            TheButton.SetActive(value);
-        }
-        else TheButton.SetActive(false);
-    }
-
-    public void ShowCancelButton()
-    {
-        if (interactableDisabled) return;
-        TheButtonText = "Cofnij";
-        TheButton.SetActive(true);
-    }
-
-    public void ReturnToMenu()
+    public void ReturnToMenu() // Note: Executed after clicking GameOver object.
     {
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
     }
+    #endregion
 
+    #region Debug
     private void DebugInit()
     {
         if (!Debug.isDebugBuild) Destroy(GetComponent<DevTools>());
@@ -269,7 +276,6 @@ public partial class Turn : MonoBehaviour
             tool.Initialize(this, cm, fg);
             if (oc != null) oc.DebugInit(tool);
         }
-        //Destroy(GetComponent<DevTools>());
-        //Destroy(GameObject.Find("/CanvasOverlay/DummyBttn"));
     }
+    #endregion
 }

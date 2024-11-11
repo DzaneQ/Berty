@@ -42,6 +42,7 @@ public class CardManager : MonoBehaviour
         deadScreenGrid = deadScreen.GetComponent<GridLayoutGroup>();
     }
 
+    #region PullingCard
     public bool PullCards(Alignment align)
     {
         Transform table = align == Alignment.Player ? playerTable.transform : opponentTable.transform;
@@ -86,7 +87,9 @@ public class CardManager : MonoBehaviour
         RemoveFromDrawPile();
         return character;
     }
+    #endregion
 
+    #region ShuffleCard
     private bool ShufflePile()
     {     
         GameObject card;
@@ -108,7 +111,9 @@ public class CardManager : MonoBehaviour
         //Debug.Log("Character pile count: " + pileCards.Count);
         return pileCards.Count != 0;
     }
+    #endregion
 
+    #region DrawPile
     private void RemoveFromDrawPile()
     {
         GameObject card = drawPile.transform.GetChild(drawPile.transform.childCount - 1).gameObject;
@@ -123,7 +128,9 @@ public class CardManager : MonoBehaviour
         cardTransform.SetParent(stack, false);
         cardTransform.localPosition = new Vector3(offsetUnit, offsetUnit, offsetUnit);
     }
+    #endregion
 
+    #region DiscardCard
     public void DiscardCards()
     {
         foreach (CardImage card in SelectedCards())
@@ -148,13 +155,14 @@ public class CardManager : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region Table
     public void RemoveFromTable(CardImage card, bool disabledCard = false)
     {
         card.SetBackupTable();
         card.transform.SetParent(cardImageCollection.transform, false);
         card.Unselect();
-        //SetCardObjectIdle(card.transform);
         //Debug.Log($"{card.name}: Table removal for enabled ones: {disabledCard}");
         if (!disabledCard) enabledCards.Remove(card);
         else disabledCards.Remove(card);
@@ -167,20 +175,8 @@ public class CardManager : MonoBehaviour
     public void AddToTable(CardImage card, Transform table)
     {
         card.transform.SetParent(table, false);
-        //card.Unselect(); // TODO: Delete this after all non-enabled cards are made unselected.
-        //Debug.Log($"{card.name}: Table addition.");
-        //if (pileCards.Contains(card)) pileCards.Remove(card);
-        //else if (cardBelow == card) cardBelow = null;
-        //else throw new Exception("Card to add doesn't exist anywhere.");
         enabledCards.Add(card);
-        //if (enabledCards.Count != playerTable.transform.childCount && enabledCards.Count != opponentTable.transform.childCount)
-        //    Debug.LogWarning("Enabled cards not equal to any table!");
     }
-
-    //private void SetCardObjectIdle(Transform card)
-    //{
-    //    card.SetParent(cardImageCollection.transform, false);
-    //}
 
     public void SwitchTable(Alignment alignment)
     {
@@ -207,7 +203,9 @@ public class CardManager : MonoBehaviour
         playerTable.SetActive(false);
         opponentTable.SetActive(false);
     }
+    #endregion
 
+    #region CardSelection
     public void DeselectCards()
     {
         foreach (CardImage card in SelectedCards()) card.ChangeSelection();
@@ -228,6 +226,7 @@ public class CardManager : MonoBehaviour
             if (card.IsCardSelected()) return card;
         return null;
     }
+    #endregion
 
     public void KillCard(CardImage card)
     {
@@ -235,6 +234,7 @@ public class CardManager : MonoBehaviour
         card.transform.SetParent(deadScreen.transform, false);
     }
 
+    #region CharacterSkillBased
     public void ReturnCharacter(CardImage card)
     {
         if (cardBelow != null) throw new Exception("There's a set card below!");
@@ -345,7 +345,9 @@ public class CardManager : MonoBehaviour
         else AddToTable(card, opponentTable.transform);
         deadScreen.SetActive(false);    
     }
+    #endregion
 
+    #region LookupCard
     public void ShowLookupCard(Sprite sprite)
     {
         luCard.ShowLookupCard(sprite);
@@ -355,7 +357,9 @@ public class CardManager : MonoBehaviour
     {
         luCard.HideLookupCard();
     }
+    #endregion
 
+    #region Debug
     /*public void DebugPrintCardCollection(Alignment newTurn)
     {
         if (newTurn == Alignment.Player && enabledCards.Count != playerTable.transform.childCount)
@@ -440,4 +444,5 @@ public class CardManager : MonoBehaviour
         }
         Debug.LogWarning("Something gone wrong with adding pile card!");
     }
+    #endregion
 }

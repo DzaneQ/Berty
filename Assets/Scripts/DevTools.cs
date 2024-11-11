@@ -12,7 +12,7 @@ public class DevTools : MonoBehaviour
     [SerializeField] private GameObject targetCard;
     [SerializeField] private GameObject targetParent;
     [SerializeField] private Alignment targetAlignment;
-    [SerializeField] private int cardRotation;
+    [SerializeField] private int rightAngleCount;
 
     void Start()
     {
@@ -83,7 +83,7 @@ public class DevTools : MonoBehaviour
                 else
                 {
                     field.ConvertField(targetAlignment);
-                    field.OccupantCard.DebugForceActivateCard(image, cardRotation * 90);
+                    field.OccupantCard.DebugForceActivateCard(image, rightAngleCount * 90);
                     break;
                 }
         }

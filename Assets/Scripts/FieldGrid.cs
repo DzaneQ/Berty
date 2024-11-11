@@ -39,6 +39,7 @@ public class FieldGrid : MonoBehaviour
         Destroy(init);
     }
 
+    #region SingleFieldRead
     public Material GetMaterial(Alignment alignment, bool underAttack)
     {
         switch (alignment)
@@ -49,6 +50,13 @@ public class FieldGrid : MonoBehaviour
         }
     }
 
+    public float GetDefaultAngle()
+    {
+        return cardOnBoard.defaultRotation.eulerAngles.z;
+    }
+    #endregion
+
+    #region SingleFieldAction
     public void CancelCard()
     {
         foreach (Field field in fields)
@@ -69,16 +77,124 @@ public class FieldGrid : MonoBehaviour
         cardRenderer.color = defaultColor;
     }
 
-    internal void StopHighlightingCards()
+    public void AttackNewStand(Field targetField)
     {
-        throw new NotImplementedException();
+        int targetPower = targetField.OccupantCard.CardStatus.Power;
+        foreach (Field field in fields)
+        {
+            if (field.IsAligned(Alignment.None)) continue;
+            if (field.IsAligned(turn.CurrentAlignment)) continue;
+            if (field.OccupantCard.CardStatus.Power > targetPower) field.OccupantCard.TryToAttackTarget(targetField);
+        }
+    }
+    #endregion
+
+    public void AdjustNewTurn() // Can be unstable due to unclear priorities.
+    {  
+        foreach (Field field in fields)
+        {
+            if (field.IsAligned(Alignment.None)) continue;
+            if (field.IsAligned(turn.CurrentAlignment))
+            {
+                field.OccupantCard.ResetAttack();
+                field.OccupantCard.RegenerateDexterity();
+                
+            }
+            field.OccupantCard.ProgressTemporaryStats();
+            if (!field.OccupantCard.CanUseSkill()) continue;
+            field.OccupantCard.Character.SkillOnNewTurn(field.OccupantCard);
+        }
+        temporaryStatuses.AdjustNewTurn(turn.CurrentAlignment);
+        SetAlignedCardsActive();
     }
 
-    public float GetDefaultAngle()
+    #region StateControl
+    public void SetAlignedCardsActive()
     {
-        return cardOnBoard.defaultRotation.eulerAngles.z;
+        if (!Turn.IsItMoveTime()) return;
+        foreach (Field field in fields)
+        {
+            if (field.IsOpposed(turn.CurrentAlignment) && field.OccupantCard.CanBeTelecinetic()) field.OccupantCard.SetTelecinetic();
+            if (!field.IsAligned(turn.CurrentAlignment)) continue;
+            field.OccupantCard.SetActive();
+        }
     }
 
+    public void MakeAllStatesIdle(Field exceptionField = null)
+    {
+        foreach (Field field in fields)
+        {
+            if (!field.IsOccupied()) continue;
+            if (field == exceptionField) continue;
+            //if (field.IsAligned(turn.CurrentAlignment))
+            field.OccupantCard.SetIdle();
+        }
+    }
+    #endregion
+
+    #region FieldRead
+    public Field GetField(int x, int y)
+    {
+        foreach (Field field in fields)
+        {
+            if (field.GetX() != x) continue;
+            if (field.GetY() != y) continue;
+            //Debug.Log("Got x=" + x + "; y=" + y);
+            return field;
+        }
+        //Debug.Log("Got x=" + x + "; y=" + y + "as null!");
+        return null;
+    }
+
+    public int[] GetRelativeCoordinates(int x, int y, float angle = 0)
+    {
+        int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
+        int cosinus = (int)Math.Round(Math.Cos(angle / 180 * Math.PI));
+        int[] relCoord = new int[2];
+        relCoord[0] = cosinus * x + sinus * y;
+        relCoord[1] = cosinus * y - sinus * x;
+        return relCoord;
+    }
+
+    public Field GetRelativeField(int x, int y, float angle = 0) // TODO: Merge
+    {
+        int[] relCoord = GetRelativeCoordinates(x, y, angle);
+        return GetField(relCoord[0], relCoord[1]);
+    }
+
+    public List<Field> AlignedFields(Alignment alignment, bool countBackup = false)
+    {
+        List<Field> alignedFields = new List<Field>();
+        foreach (Field field in fields)
+        {
+            if (!field.IsAligned(alignment)) continue;
+            alignedFields.Add(field);
+            if (countBackup && field.AreThereTwoCards()) alignedFields.Add(field);
+        }
+        return alignedFields;
+    }
+    #endregion
+
+    #region CardMove
+    public void SwapCards(Field first, Field second)
+    {
+        CardSprite tempCard = first.OccupantCard;
+        Alignment tempAlign = first.Align;
+        SwapBackupCards(first, second);
+        first.PlaceCard(second.OccupantCard, second.Align);
+        //first.ConvertField(second.Align);
+        second.PlaceCard(tempCard, tempAlign);
+        //second.ConvertField(tempAlign);
+    }
+
+    private void SwapBackupCards(Field first, Field second)
+    {
+        if (first.AreThereTwoCards()) first.TransferBackupCard(second);
+        else if (second.AreThereTwoCards()) second.TransferBackupCard(first);
+    }
+    #endregion
+
+    #region CharacterSkillBased
     public void AddCardIntoQueue(Alignment align)
     {
         temporaryStatuses.RequestCard(align);
@@ -105,7 +221,7 @@ public class FieldGrid : MonoBehaviour
                 if (!field.IsAligned(temporaryStatuses.Revolution)) continue;
                 if (field.OccupantCard.GetRole() != field.OccupantCard.Character.Role) field.OccupantCard.AdvanceStrength(-1);
             }
-        temporaryStatuses.RemoveJudgement(align);  
+        temporaryStatuses.RemoveJudgement(align);
     }
 
     public void SetRevolution(Alignment align)
@@ -160,29 +276,6 @@ public class FieldGrid : MonoBehaviour
         turn.ExecuteResurrection();
     }
 
-    public void AttackNewStand(Field targetField)
-    {
-        int targetPower = targetField.OccupantCard.CardStatus.Power;
-        foreach (Field field in fields)
-        {
-            if (field.IsAligned(Alignment.None)) continue;
-            if (field.IsAligned(turn.CurrentAlignment)) continue;
-            if (field.OccupantCard.CardStatus.Power > targetPower) field.OccupantCard.TryToAttackTarget(targetField);
-        }
-    }
-    
-
-    public void SetAlignedCardsActive()
-    {
-        if (!Turn.IsItMoveTime()) return;
-        foreach (Field field in fields)
-        {
-            if (field.IsOpposed(turn.CurrentAlignment) && field.OccupantCard.CanBeTelecinetic()) field.OccupantCard.SetTelecinetic();
-            if (!field.IsAligned(turn.CurrentAlignment)) continue;
-            field.OccupantCard.SetActive();
-        }
-    }
-
     public void SetTargetableCards(Alignment align)
     {
         foreach (Field field in AlignedFields(align)) field.OccupantCard.SetTargetable();
@@ -192,25 +285,6 @@ public class FieldGrid : MonoBehaviour
     {
         card.AdvanceStrength(2);
         card.AdvanceHealth(1);
-    }
-
-    public void AdjustNewTurn() // Can be unstable due to unclear priorities.
-    {  
-        foreach (Field field in fields)
-        {
-            if (field.IsAligned(Alignment.None)) continue;
-            if (field.IsAligned(turn.CurrentAlignment))
-            {
-                field.OccupantCard.ResetAttack();
-                field.OccupantCard.RegenerateDexterity();
-                
-            }
-            field.OccupantCard.ProgressTemporaryStats();
-            if (!field.OccupantCard.CanUseSkill()) continue;
-            field.OccupantCard.Character.SkillOnNewTurn(field.OccupantCard);
-        }
-        temporaryStatuses.AdjustNewTurn(turn.CurrentAlignment);
-        SetAlignedCardsActive();
     }
 
     public void ShowJudgement(Alignment align) // TODO: Fix repeats!
@@ -228,81 +302,20 @@ public class FieldGrid : MonoBehaviour
         field.PlaceBackupCard(backupCard);
     }
 
-
-    public bool IsLocked()
+    public List<Character> AllInsideCharacters()
     {
-        return Turn.InteractableDisabled;
-    }
-
-    public void MakeAllStatesIdle(Field exceptionField = null)
-    {
+        List<Character> list = new List<Character>();
         foreach (Field field in fields)
         {
             if (!field.IsOccupied()) continue;
-            if (field == exceptionField) continue;
-            //if (field.IsAligned(turn.CurrentAlignment))
-            field.OccupantCard.SetIdle();
+            list.Add(field.OccupantCard.Character);
         }
+        Debug.Log("AllInsideCharacters count: " + list.Count);
+        return list;
     }
+    #endregion
 
-    public Field GetField(int x, int y)
-    {
-        foreach (Field field in fields)
-        {
-            if (field.GetX() != x) continue;
-            if (field.GetY() != y) continue;
-            //Debug.Log("Got x=" + x + "; y=" + y);
-            return field;
-        }
-        //Debug.Log("Got x=" + x + "; y=" + y + "as null!");
-        return null;
-    }
-
-    public int[] GetRelativeCoordinates(int x, int y, float angle = 0)
-    {
-        int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
-        int cosinus = (int)Math.Round(Math.Cos(angle / 180 * Math.PI));
-        int[] relCoord = new int[2];
-        relCoord[0] = cosinus * x + sinus * y;
-        relCoord[1] = cosinus * y - sinus * x;
-        return relCoord;
-    }
-
-    public Field GetRelativeField(int x, int y, float angle = 0) // TODO: Merge
-    {
-        int[] relCoord = GetRelativeCoordinates(x, y, angle);
-        return GetField(relCoord[0], relCoord[1]);
-    }
-
-    public void SwapCards(Field first, Field second)
-    {
-        CardSprite tempCard = first.OccupantCard;
-        Alignment tempAlign = first.Align;
-        SwapBackupCards(first, second);
-        first.PlaceCard(second.OccupantCard, second.Align);
-        //first.ConvertField(second.Align);
-        second.PlaceCard(tempCard, tempAlign);
-        //second.ConvertField(tempAlign);
-    }
-
-    private void SwapBackupCards(Field first, Field second)
-    {
-        if (first.AreThereTwoCards()) first.TransferBackupCard(second);
-        else if (second.AreThereTwoCards()) second.TransferBackupCard(first);
-    }
-
-    public List<Field> AlignedFields(Alignment alignment, bool countBackup = false)
-    {
-        List<Field> alignedFields = new List<Field>();
-        foreach (Field field in fields)
-        {
-            if (!field.IsAligned(alignment)) continue;
-            alignedFields.Add(field);
-            if (countBackup && field.AreThereTwoCards()) alignedFields.Add(field);
-        }
-        return alignedFields;
-    }
-
+    #region WinConditionCheck
     private int HighestAmountOfType(Alignment alignment)
     {
         int result = AmountOfType(alignment, Role.Offensive);
@@ -329,7 +342,9 @@ public class FieldGrid : MonoBehaviour
         }
         return result;
     }
+    #endregion
 
+    #region AutomaticOpponentHelper
     public int HeatLevel(Field field, Alignment enemy)
     {
         int heat = 0;
@@ -340,19 +355,9 @@ public class FieldGrid : MonoBehaviour
         }
         return heat;
     }
+    #endregion
 
-    public List<Character> AllInsideCharacters()
-    {
-        List<Character> list = new List<Character>();
-        foreach (Field field in fields)
-        {
-            if (!field.IsOccupied()) continue;
-            list.Add(field.OccupantCard.Character);
-        }
-        Debug.Log("AllInsideCharacters count: " + list.Count);
-        return list;
-    }
-
+    #region Debug
     public void DebugForceRemoveCardFromField(CardSprite card)
     {
         if (!Debug.isDebugBuild) return;
@@ -367,4 +372,5 @@ public class FieldGrid : MonoBehaviour
             }
         }
     }
+    #endregion
 }

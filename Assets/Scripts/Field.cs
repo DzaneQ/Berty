@@ -18,7 +18,6 @@ public class Field : MonoBehaviour
     public CardSprite OccupantCard => occupantCard;
     //public CardSprite BackupCard => backupCard;
     public Alignment Align => align;
-    public Renderer FieldRenderer => mr; // TODO: Delete when CustomCOS not used.
     //public Outline FieldOutline => outline;
 
     private void Awake()
@@ -56,12 +55,6 @@ public class Field : MonoBehaviour
     {
         mr.material = fg.GetMaterial(align, underAttack);
     }
-
-    //public void HighlightField()
-    //{
-    //    // TODO: Highlight this field!
-    //    if (occupantCard.gameObject.activeSelf) occupantCard.HighlightCard();
-    //}
 
     public void SetCoordinates(int x, int y)
     {
@@ -124,12 +117,6 @@ public class Field : MonoBehaviour
         occupantCard.transform.rotation = backupCard.transform.rotation;
         //backupCard.UpdateRelativeCoordinates();
     }
-
-    /*public void SynchronizePosition()
-    {
-        if (backupCard == null) return;
-        backupCard.UpdateRelativeCoordinates();
-    }*/
 
     public bool AreThereTwoCards() => backupCard != null;
 
