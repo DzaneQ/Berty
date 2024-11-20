@@ -10,6 +10,7 @@ public class AnimatingCard : MonoBehaviour
     //float rotSpeed;
     float durationSeconds;
     Vector3 targetPosition;
+    //Vector3 targetBarPosition; // TODO: Make a table of vectors!
     //Vector3 backupPosition;
     int coroutineCount;
     //CardSprite backupCard;
@@ -49,6 +50,12 @@ public class AnimatingCard : MonoBehaviour
         SetTargetField(target, duration);
         //Debug.Log($"Card target coordinates: {targetPosition.x}; {targetPosition.y}; {targetPosition.z}");
         yield return StartCoroutine(AnimateMove());
+    }
+
+    public IEnumerator MoveAndScaleBar(NewBar target, float duration) // TODO: Test
+    {
+        durationSeconds = duration;
+        yield return StartCoroutine(AnimateBarChange(target));
     }
 
     private void SetRotation(float angle, float duration)
@@ -92,6 +99,21 @@ public class AnimatingCard : MonoBehaviour
         coroutineCount--;
     }
 
+    private IEnumerator AnimateBarChange(NewBar target)
+    {
+        coroutineCount++;
+        float currentTime = 0;
+        Debug.Log($"Supposed {target.bar.parent.parent.name} : {target.bar.name} width: {target.rendSize.x}");
+        for (; target.barLocation != target.bar.localPosition;)
+        {
+            BarChangeFrame(target, ref currentTime);
+            yield return null;
+        }
+        Debug.Log("Ending animating bar change. Total time: " + currentTime);
+        Debug.Log($"Result {target.bar.parent.parent.name} : {target.bar.name} width: {target.rend.size.x}");
+        coroutineCount--;
+    }
+
     private void RotateFrame(ref float currentTime)
     {
         float frameTime = Time.deltaTime;
@@ -119,6 +141,25 @@ public class AnimatingCard : MonoBehaviour
         {
             float step = frameTime / (durationSeconds - currentTime);
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+        }
+        currentTime += frameTime;
+    }
+
+    private void BarChangeFrame(NewBar target, ref float currentTime)
+    {
+        float frameTime = Time.deltaTime;
+        if (currentTime + frameTime >= durationSeconds)
+        {
+            Debug.Log($"Last frame, changing width to {target.rendSize}");
+            target.bar.localPosition = target.barLocation;
+            target.rend.size = target.rendSize;
+            Debug.Log($"Last frame, changed width to {target.rend.size}");
+        }
+        else
+        {
+            float step = frameTime / (durationSeconds - currentTime);
+            target.bar.localPosition = Vector3.MoveTowards(target.bar.localPosition, target.barLocation, step / 2);
+            target.rend.size = Vector2.MoveTowards(target.rend.size, target.rendSize, step);
         }
         currentTime += frameTime;
     }

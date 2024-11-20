@@ -226,6 +226,18 @@ public partial class Turn : MonoBehaviour
     {
         if (CurrentAlignment == Alignment.Opponent && oc != null) oc.PlayTurn();
     }
+
+    public void SelectField(Field target)
+    {
+        target.OccupantCard.ShowLookupCard(true);
+        ct.SetTargets(target);
+    }
+
+    public void UnselectField()
+    {
+        cm.HideLookupCard(true);
+        ct.ClearTarget();
+    }
     #endregion
 
     #region GameOver

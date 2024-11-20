@@ -12,6 +12,7 @@ public class CameraMechanics : MonoBehaviour
     private Field[] fields;
     private CardSprite selectedCard;
     Camera cam;
+    private Turn turn;
 
     private Field targetField;
     private Field lastTarget;
@@ -38,13 +39,14 @@ public class CameraMechanics : MonoBehaviour
 
     void Update()
     {
-        HandleCameraTransform();
+        //HandleCameraTransform();
         HandleCardSpriteFocus();
     }
 
     private void AssignFields()
     {
         FieldGrid fg = (FieldGrid)FindFirstObjectByType(typeof(FieldGrid));
+        turn = fg.Turn;
         fields = new Field[9];
         if (fields.Length != fg.transform.childCount) Debug.LogError("Number of fields is not equal to number of child count!");
         for (int index = 0; index < fields.Length; index++) fields[index] = fg.transform.GetChild(index).GetComponent<Field>();
@@ -107,6 +109,7 @@ public class CameraMechanics : MonoBehaviour
 
     private void HandleCardSpriteFocus()
     {
+        if (turn.InteractableDisabled) return;
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         int fieldIndex;
@@ -114,7 +117,7 @@ public class CameraMechanics : MonoBehaviour
         {
             targetField = fields[fieldIndex];
             if (lastTarget == null) lastTarget = targetField;
-            if (targetField != lastTarget || selectedCard == null) SetTargets(fieldIndex);
+            if (targetField != lastTarget || selectedCard == null) SetTargets(targetField);
             //Debug.DrawRay(transform.position, hit.point - transform.position, Color.blue);
             lastTarget = targetField;
         }
@@ -131,11 +134,11 @@ public class CameraMechanics : MonoBehaviour
         }
     }
 
-    private void SetTargets(int sourceIndex)
+    public void SetTargets(Field sourceField)
     {
-        if (fields[sourceIndex].OccupantCard == selectedCard) return;
+        if (sourceField.OccupantCard == selectedCard) return;
         if (selectedCard != null) ClearTarget();
-        selectedCard = fields[sourceIndex].OccupantCard;
+        selectedCard = sourceField.OccupantCard;
         selectedCard.EnableButtons();
         bool riposte = false;
         foreach (int[] distance in selectedCard.Character.AttackRange)
@@ -147,14 +150,14 @@ public class CameraMechanics : MonoBehaviour
             {
                 CardSprite targetCard = targetField.OccupantCard;
                 if (!riposte &&
-                    targetCard.Character.CanRiposte(targetCard.GetFieldDistance(fields[sourceIndex]))) riposte = true;
-                if (targetCard.Character.CanBlock(targetCard.GetFieldDistance(fields[sourceIndex]))) block = true;
+                    targetCard.Character.CanRiposte(targetCard.GetFieldDistance(sourceField))) riposte = true;
+                if (targetCard.Character.CanBlock(targetCard.GetFieldDistance(sourceField))) block = true;
             }
             int targetIndex = Array.IndexOf(fields, targetField);
             if (targetIndex < 0) throw new Exception("Target index not found! It's " + targetIndex);
             HighlightTarget(fields[targetIndex], block);
         }
-        if (riposte) HighlightTarget(fields[sourceIndex]);
+        if (riposte) HighlightTarget(sourceField);
     }
 
     private void HighlightTarget(Field target, bool blockState = false)

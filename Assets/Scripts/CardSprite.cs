@@ -94,7 +94,7 @@ public class CardSprite : MonoBehaviour
 
     public void OnMouseEnter() // TODO: Include focus on arrows.
     {
-        cardManager.ShowLookupCard(spriteRenderer.sprite);
+        ShowLookupCard(false);
         //EnableButtons();
         //HighlightAttackRange();
     }
@@ -117,6 +117,8 @@ public class CardSprite : MonoBehaviour
         if (!IsLocked() && !IsAnimating() && Input.GetMouseButtonDown(1)) return true;
         else return false;
     }
+
+    public void ShowLookupCard(bool ignoreLock) => cardManager.ShowLookupCard(spriteRenderer.sprite, ignoreLock);
 
     public void HighlightCard(Color color)
     {
@@ -146,7 +148,7 @@ public class CardSprite : MonoBehaviour
         AdjustRotationToCamera();
         gameObject.SetActive(true);     
         ImportFromSelectedImage();
-        UpdateBars();
+        UpdateBars(false);
         //UpdateRelativeCoordinates();
         CallPayment(cardStatus.Power);
         occupiedField.ConvertField(Turn.CurrentAlignment);
@@ -332,7 +334,7 @@ public class CardSprite : MonoBehaviour
     {
         if (!Character.CanAffectStrength(this, spellSource)) return;
         cardStatus.TempStrength += value;
-        UpdateBar(0);
+        UpdateBar(0, true);
     }
 
     public void AdvanceStrength(int value, CardSprite spellSource = null)
@@ -341,14 +343,14 @@ public class CardSprite : MonoBehaviour
         if (!Character.CanAffectStrength(this, spellSource)) return;
         cardStatus.Strength += value;
         if (CanUseSkill()) Character.SkillAdjustStrengthChange(value, this);
-        UpdateBar(0);
+        UpdateBar(0, true);
     }
 
     public void AdvanceTempPower(int value, CardSprite spellSource = null)
     {
         if (!Character.CanAffectPower(this, spellSource)) return;
         cardStatus.TempPower += value;
-        UpdateBar(1);
+        UpdateBar(1, true);
     }
 
     public void AdvancePower(int value, CardSprite spellSource = null)
@@ -358,7 +360,7 @@ public class CardSprite : MonoBehaviour
         cardStatus.Power += value;
         if (CanUseSkill()) Character.SkillAdjustPowerChange(value, this, spellSource);
         if (cardStatus.Power <= 0) SwitchSides();
-        UpdateBar(1);
+        UpdateBar(1, true);
     }
 
     private void SwitchSides()
@@ -386,7 +388,7 @@ public class CardSprite : MonoBehaviour
         if (CanUseSkill()) Character.SkillAdjustDexterityChange(value, this);
         if (cardStatus.Dexterity <= 0) cardStatus.isTired = true;
         if (cardStatus.Dexterity >= Character.Dexterity) cardStatus.isTired = false;
-        UpdateBar(2);
+        UpdateBar(2, true);
     }
 
     public void RegenerateDexterity()
@@ -401,7 +403,7 @@ public class CardSprite : MonoBehaviour
         cardStatus.Health += value;
         if (CanUseSkill()) Character.SkillAdjustHealthChange(value, this);
         if (IsDead()) KillCard();
-        UpdateBar(3);
+        UpdateBar(3, true);
     }
 
     private bool IsDead()
@@ -422,14 +424,15 @@ public class CardSprite : MonoBehaviour
     #endregion
 
     #region BarsDisplay
-    public void UpdateBars()
+    public void UpdateBars(bool animate)
     {
-        for (int i = 0; i < cardBar.Length; i++) UpdateBar(i);
+        for (int i = 0; i < cardBar.Length; i++) UpdateBar(i, animate);
     }
 
-    private void UpdateBar(int index)
+    private void UpdateBar(int index, bool animate)
     {
-        cardBar[index].UpdateBar();
+        if (animate) cardBar[index].UpdateBar(animating);
+        else cardBar[index].UpdateBar(null);
     }
 
     public void HideBars()
@@ -569,7 +572,7 @@ public class CardSprite : MonoBehaviour
     {
         imageReference = image;
         Character = image.Character;
-        UpdateBars();
+        UpdateBars(false);
         ConfirmNewCard(); // experimental - maybe tested?
     }
 
@@ -706,7 +709,7 @@ public class CardSprite : MonoBehaviour
         if (cardStatus.CurrentTempStatBonus.All(x => x == 0)) return; ;
         cardStatus.CurrentTempStatBonus = (int[])cardStatus.NextTempStatBonus.Clone();
         Array.Clear(cardStatus.NextTempStatBonus, 0, 4);
-        UpdateBars();
+        UpdateBars(true);
     }
 
     public void SetField(Field field, bool wasAnimated)
@@ -773,7 +776,7 @@ public class CardSprite : MonoBehaviour
         gameObject.SetActive(true);
         imageReference = image;
         Character = imageReference.Character;
-        UpdateBars();
+        UpdateBars(false);
         transform.Rotate(0, 0, -angle);
         UpdateRelativeCoordinates();
         //SynchronizeRotation();

@@ -49,13 +49,6 @@ public class CardImage : MonoBehaviour
         return select.IsCardSelected;
     }
 
-    public bool CanSelect()
-    {
-        if (Turn.IsItPaymentTime()) return !Turn.CheckOffer();
-        if (Turn.IsItMoveTime()) return cardManager.SelectedCard() == null;
-        return false;
-    }
-
     public void CardClick()
     {
         if (Input.GetMouseButtonDown(0)) ChangeSelection();
@@ -76,6 +69,13 @@ public class CardImage : MonoBehaviour
         //Debug.Log("Position changing...");
         if (transform.parent.name.Contains("Dead")) ReviveCard();
         else select = select.ChangePosition(CanSelect());
+    }
+
+    public bool CanSelect()
+    {
+        if (Turn.IsItPaymentTime()) return !Turn.CheckOffer();
+        if (Turn.IsItMoveTime()) return cardManager.SelectedCard() == null;
+        return false;
     }
 
     public void SetBackupTable()

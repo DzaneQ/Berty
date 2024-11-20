@@ -348,14 +348,14 @@ public class CardManager : MonoBehaviour
     #endregion
 
     #region LookupCard
-    public void ShowLookupCard(Sprite sprite)
+    public void ShowLookupCard(Sprite sprite, bool ignoreLock = false)
     {
-        luCard.ShowLookupCard(sprite);
+        if (!Turn.InteractableDisabled || ignoreLock) luCard.ShowLookupCard(sprite);
     }
 
-    public void HideLookupCard()
+    public void HideLookupCard(bool ignoreLock = false)
     {
-        luCard.HideLookupCard();
+        if (!Turn.InteractableDisabled || ignoreLock) luCard.HideLookupCard();
     }
     #endregion
 

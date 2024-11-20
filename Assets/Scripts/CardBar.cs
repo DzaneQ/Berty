@@ -5,12 +5,14 @@ using UnityEngine;
 public class CardBar : MonoBehaviour
 {
     private CardSprite card;
+    private Transform barFill;
     private SpriteRenderer rend;
 
     void Awake()
     {
         card = GetComponentInParent<CardSprite>();
-        rend = GetComponent<SpriteRenderer>();
+        barFill = transform.GetChild(0);
+        rend = barFill.GetComponent<SpriteRenderer>();
         //Debug.Log("Max width value: " + maxWidth);
     }
 
@@ -35,69 +37,86 @@ public class CardBar : MonoBehaviour
         }
     }
 
-    private void MoveBar(float value)
+    private void MoveAndScaleBar(float widthDiff, Vector2 targetSize, AnimatingCard animate)
     {
-        switch (name)
+        Vector3 targetPosition = barFill.localPosition;
+        targetPosition.x += widthDiff / 2;
+        /*switch (name)
         {
             case "StrengthBar":
-                transform.localPosition += new Vector3(-value, 0, 0);
+                targetPosition.x += widthDiff / 2;
                 break;
 
             case "PowerBar":
-                transform.localPosition += new Vector3(0, value, 0);
+                targetPosition.y += -widthDiff / 2;
                 break;
 
             case "DexterityBar":
-                transform.localPosition += new Vector3(value, 0, 0);
+                targetPosition.x += -widthDiff / 2;
                 break;
 
             case "HealthBar":
-                transform.localPosition += new Vector3(0, -value, 0);
+                targetPosition.y += widthDiff / 2;
                 break;
 
             default:
                 throw new System.Exception("Unknown stat for bar: " + name);
+        }*/
+        if (animate == null)
+        {
+            barFill.localPosition = targetPosition;
+            rend.size = targetSize;
+        }
+        else
+        {
+            //Debug.Log($"Animating {name} for card {barFill.parent.parent.name} with target width: {targetSize.x}");
+            NewBar properties = new(barFill, rend, targetPosition, targetSize);
+            StartCoroutine(animate.MoveAndScaleBar(properties, 1f));
         }
     }
 
-    public void UpdateBar()
+    public void UpdateBar(AnimatingCard animation)
     {
-        float oldWidth = rend.size.x;
-        float newWidth;  
+        Vector2 barSize = rend.size;
+        float oldWidth = barSize.x;
+        //float newWidth;
         
         int stat = ReadStat();
-        float startOutlineWidth = .33f;
+        float startOutlineWidth = .165f;
         float unitWidth = 2.66f;
-        float maxWidth = 16.36f;
-        switch (stat)
+        //float maxWidth = 16.36f;
+        barSize.x = startOutlineWidth + (unitWidth * stat);
+        /*switch (stat)
         {
             case 0:
-                newWidth = 0;
+                barSize.x = 0;
                 break;
             case 1:
             case 2:
             case 3:
             case 4:
             case 5:
-                newWidth = startOutlineWidth + (unitWidth * stat);
+                barSize.x = startOutlineWidth + (unitWidth * stat);
                 break;
             case 6:
-                newWidth = maxWidth;
+                barSize.x = maxWidth;
                 break;
             default:
                 throw new System.Exception("Wrong stat number: " + stat);
-        }
-        rend.size = new Vector2(newWidth, rend.size.y);
-        MoveBar((oldWidth - newWidth) / 2);
+        }*/
+        //Debug.Log($"Checking {name}: {stat} for card {barFill.parent.parent.name}. Changing width from {oldWidth} to {barSize.x}");
+        MoveAndScaleBar(barSize.x - oldWidth, barSize, animation);
     }
 
     public void HideBar()
     {
-        rend.enabled = false;
+        barFill.parent.gameObject.SetActive(false);
+        //rend.enabled = false;
     }
 
     public void ShowBar()
     {
-        rend.enabled = true;
+        barFill.parent.gameObject.SetActive(true);
+        //rend.enabled = true;
     }
 }

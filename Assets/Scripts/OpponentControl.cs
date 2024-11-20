@@ -50,6 +50,7 @@ public class OpponentControl : MonoBehaviour
         while (nextMove)
         {
             yield return new WaitForSeconds(time);
+            turn.UnselectField();
             if (cm.EnabledCards.Count == 0) break;
             TryToPlayCard(out nextMove);
             if (!nextMove) TryToAttack(out nextMove);
@@ -69,6 +70,7 @@ public class OpponentControl : MonoBehaviour
             attackingCard.PrepareToAttack();
             Pay(attackingCard, 6 - attackingCard.CardStatus.Dexterity);
             isSuccessful = true;
+            turn.SelectField(attackingCard.OccupiedField);
         }
         else isSuccessful = false;
     }
@@ -126,6 +128,7 @@ public class OpponentControl : MonoBehaviour
         //CardSprite cardSprite = safeFields[index].OccupantCard;
         RotateCard(cardSprite);
         Pay(cardSprite, price);
+        turn.SelectField(cardSprite.OccupiedField);
     }
 
     private CardSprite PlaceCard(CardImage card)
