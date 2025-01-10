@@ -14,6 +14,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("400174__jgriffie919__flesh-bite");
     }
 
     public override void SkillOnSuccessfulAttack(CardSprite card)

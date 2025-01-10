@@ -19,8 +19,9 @@ internal class NewCardState : CardState
         card.ConfirmPayment();
     }
 
-    public override CardState TakePaidAction()
+    public override CardState TakePaidAction(AnimatingCardSprite animating)
     {
+        if (animating != null) animating.ConfirmSound();
         card.ConfirmNewCard();
         card.ResetAttack();
         return new IdleState(card);

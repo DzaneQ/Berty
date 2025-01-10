@@ -14,6 +14,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("182577__qubodup__whip-2.8-3.7");
     }
 
     public override void SkillOnSuccessfulAttack(CardSprite card)

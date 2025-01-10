@@ -16,6 +16,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("456658__ethanchase7744__samurai-sword");
     }
 
     public override void SkillOnNewCard(CardSprite card)

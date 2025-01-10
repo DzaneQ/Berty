@@ -165,7 +165,7 @@ public class OpponentControl : MonoBehaviour
             //Debug.Log("Paying card no. " + i);
             cm.EnabledCards[i].ChangeSelection();
         }
-        card.ConfirmPayment();
+        card.ConfirmPayment(true);
     }
 
     private List<Field> GetSafestFields()

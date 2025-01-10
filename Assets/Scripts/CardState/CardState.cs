@@ -9,7 +9,7 @@ public abstract class CardState
     protected CardState(CardSprite sprite)
     {
         card = sprite;
-        //Debug.Log($"Setting state {GetType()} for {card.name}");
+        Debug.Log($"Setting state {GetType()} for {card.name}");
     }
     
     public virtual CardState ActivateCard() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
@@ -18,7 +18,7 @@ public abstract class CardState
     public abstract void HandleClick();
     public virtual void HandleSideClick() { }
     //public virtual void TakePaidAction() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
-    public virtual CardState TakePaidAction() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
+    public virtual CardState TakePaidAction(AnimatingCardSprite animating) => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
     public virtual CardState AdjustTransformChange(int buttonIndex) => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
     public virtual bool Cancel() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");
     public virtual bool IsForPaymentConfirmation() => false;

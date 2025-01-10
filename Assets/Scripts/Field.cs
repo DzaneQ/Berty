@@ -33,10 +33,16 @@ public class Field : MonoBehaviour
         ConvertField(Alignment.None);
     }
 
-    public void InstantiateCardSprite(GameObject prefab) // TODO: Change it!
+    public void InstantiateCardSprite(GameObject prefab)
     {
         occupantCard = Instantiate(prefab, transform).GetComponent<CardSprite>();
         occupantCard.name = $"Card ({GetX()}, {GetY()})"; //For debugging purposes.
+    }
+
+    public void SetCoordinates(int x, int y)
+    {
+        coordinates[0] = x;
+        coordinates[1] = y;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -54,12 +60,6 @@ public class Field : MonoBehaviour
     private void UpdateMeshMaterial()
     {
         mr.material = fg.GetMaterial(align, underAttack);
-    }
-
-    public void SetCoordinates(int x, int y)
-    {
-        coordinates[0] = x;
-        coordinates[1] = y;
     }
 
     public int GetX()
@@ -91,7 +91,6 @@ public class Field : MonoBehaviour
         backupCard = occupantCard;
         backupCard.SetIdle();
         card.DisableButtons();
-        //card.transform.rotation = backupCard.transform.rotation; // TODO: Change rotation appropriately!
         occupantCard = card;
         card.SetField(this, false);
         card.RotateCard(Mathf.RoundToInt(card.transform.localEulerAngles.z - backupCard.transform.localEulerAngles.z));
@@ -135,7 +134,7 @@ public class Field : MonoBehaviour
         occupantCard.UpdateRelativeCoordinates();
     }
 
-    public int[] GetRelativeCoordinates(float angle = 0) // TODO: Merge
+    public int[] GetRelativeCoordinates(float angle = 0)
     {
         return Grid.GetRelativeCoordinates(GetX(), GetY(), -angle);
     }

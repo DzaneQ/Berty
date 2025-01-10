@@ -15,7 +15,7 @@ public class MisiekBert : Character
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
-
+        AddSoundEffect("661402__sascharettberg__dj_puzzle_scratch_02-0-1.2");
     }
 
     public override void SkillOnNewCard(CardSprite card)

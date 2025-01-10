@@ -21,20 +21,26 @@
 
     public override void SkillOnNewCard(CardSprite card)
     {
-        card.Grid.SetJudgement();
+        card.Grid.SetJudgement(card.OccupiedField.Align);
     }
 
     public override void SkillOnDeath(CardSprite card)
     {
-        card.Grid.RemoveJudgement(card.OccupiedField.Align);
+        card.Grid.RemoveJudgement();
     }
 
     public override void SkillOnOtherCardDeath(CardSprite card, CardSprite source)
     {
         if (card.Grid.CurrentStatus.IsJudgement) return;
         if (!source.OccupiedField.IsOpposed(card.OccupiedField.Align)) return;
-        card.Grid.SetJudgement();
+        card.Grid.SetJudgement(card.OccupiedField.Align);
     }
 
-    //TODO: Consider changing sides when revolution is going on.
+    public override void SkillAdjustPowerChange(int value, CardSprite card, CardSprite spellSource)
+    {
+        if (card.CardStatus.Power > 0) return;
+        if (card.OccupiedField.Align == Alignment.Opponent) card.Grid.SetJudgement(Alignment.Player);
+        else if (card.OccupiedField.Align == Alignment.Opponent) card.Grid.SetJudgement(Alignment.Opponent);
+        else throw new System.Exception("Unidentified align for judgement change");
+    }
 }

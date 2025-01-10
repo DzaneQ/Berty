@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class CharacterData
 {
     Character character;
-    public void LoadCharacter(List<Character> list, string name)
+    private void LoadCharacter(List<Character> list, string name)
     {
         switch (name)
         {

@@ -16,19 +16,24 @@ public class DevTools : MonoBehaviour
 
     void Start()
     {
-        if (!Debug.isDebugBuild) Destroy(this);
+        if (!Debug.isDebugBuild) Destroy(gameObject);
         else
         {
+            GameObject sys = GameObject.Find("/EventSystem");
+            turn = sys.GetComponent<Turn>();
+            cm = sys.GetComponent<CardManager>();
+            fg = GameObject.Find("/GameBoard/FieldBoard").GetComponent<FieldGrid>();
+            sys.GetComponent<OpponentControl>().DebugInit(this);
             collection = GameObject.Find("/CardImageCollection").transform;
         }
     }
 
-    public void Initialize(Turn turn, CardManager cm, FieldGrid fg)
+    /*public void Initialize(Turn turn, CardManager cm, FieldGrid fg)
     {
         this.turn = turn;
         this.cm = cm;
         this.fg = fg;
-    }
+    }*/
 
     public void SetCardParent()
     {

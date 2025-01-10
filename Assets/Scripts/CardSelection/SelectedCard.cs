@@ -8,23 +8,33 @@ public class SelectedCard : SelectStatus
     private Vector3 unselectedRotation;
 
 
-    public SelectedCard(RectTransform transform, CardImage card) : base(transform, card)
+    public SelectedCard(RectTransform transform, AnimatingCardImage animating) : base(transform, animating)
     {
         //Debug.Log("Selecting card...");
         unselectedPosition = cardTransform.position;
         unselectedRotation = cardTransform.eulerAngles;
         Vector3 posOffset = new Vector3(10f, 5f, 0f);
         Vector3 rotOffset = new Vector3(0f, 0f, -15f);
-        cardTransform.position += posOffset;
-        cardTransform.eulerAngles += rotOffset;
+        if (animating == null)
+        {
+            cardTransform.position += posOffset;
+            cardTransform.eulerAngles += rotOffset;
+        }
+        else animating.MoveCard(unselectedPosition + posOffset, unselectedRotation + rotOffset, true, 0.15f);
     }
 
-    public override SelectStatus ChangePosition(bool CanSelect = true)
+    public override SelectStatus ChangePosition(bool animate)
     {
-        //Debug.Log("Attempting to deselect.");
-        cardTransform.position = unselectedPosition;
-        cardTransform.eulerAngles = unselectedRotation;
-        return new UnselectedCard(cardTransform, card);
+        if (IsAnimating()) return this;
+        Debug.Log("Attempting to deselect " + animating.name);
+        Debug.Log("Unselect rotation before change: " + unselectedRotation);
+        if (!animate || animating == null)
+        {
+            cardTransform.position = unselectedPosition;
+            cardTransform.eulerAngles = unselectedRotation;
+        }
+        else animating.MoveCard(unselectedPosition, unselectedRotation, false, 0.15f);
+        return new UnselectedCard(cardTransform, animating);
     }
 
     public override bool IsCardSelected => true;
@@ -42,6 +52,6 @@ public class SelectedCard : SelectStatus
 
     public override SelectStatus SetUnselected()
     {
-        return ChangePosition();
+        return ChangePosition(false);
     }
 }

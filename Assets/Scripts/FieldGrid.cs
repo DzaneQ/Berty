@@ -94,22 +94,23 @@ public class FieldGrid : MonoBehaviour
         foreach (Field field in fields)
         {
             if (field.IsAligned(Alignment.None)) continue;
+            CardSprite card = field.OccupantCard;
+            Debug.Log($"Card type for {card.name}: {card.GetRole()}");
             if (field.IsAligned(turn.CurrentAlignment))
             {
-                field.OccupantCard.ResetAttack();
-                field.OccupantCard.RegenerateDexterity();
-                
+                card.ResetAttack();
+                card.RegenerateDexterity();
             }
-            field.OccupantCard.ProgressTemporaryStats();
-            if (!field.OccupantCard.CanUseSkill()) continue;
-            field.OccupantCard.Character.SkillOnNewTurn(field.OccupantCard);
+            card.ProgressTemporaryStats();
+            if (!card.CanUseSkill()) continue;
+            card.Character.SkillOnNewTurn(field.OccupantCard);
         }
         temporaryStatuses.AdjustNewTurn(turn.CurrentAlignment);
-        SetAlignedCardsActive();
+        UpdateCardStates();
     }
 
     #region StateControl
-    public void SetAlignedCardsActive()
+    public void UpdateCardStates()
     {
         if (!Turn.IsItMoveTime()) return;
         foreach (Field field in fields)
@@ -156,7 +157,7 @@ public class FieldGrid : MonoBehaviour
         return relCoord;
     }
 
-    public Field GetRelativeField(int x, int y, float angle = 0) // TODO: Merge
+    public Field GetRelativeField(int x, int y, float angle = 0)
     {
         int[] relCoord = GetRelativeCoordinates(x, y, angle);
         return GetField(relCoord[0], relCoord[1]);
@@ -200,9 +201,9 @@ public class FieldGrid : MonoBehaviour
         temporaryStatuses.RequestCard(align);
     }
 
-    public void SetJudgement()
+    public void SetJudgement(Alignment align)
     {
-        temporaryStatuses.SetJudgement();
+        temporaryStatuses.SetJudgement(align);
         if (temporaryStatuses.Revolution == Alignment.None) return;
         foreach (Field field in fields) // not tested
         {
@@ -212,7 +213,7 @@ public class FieldGrid : MonoBehaviour
         }
     }
 
-    public void RemoveJudgement(Alignment align)
+    public void RemoveJudgement()
     {
         if (temporaryStatuses.Revolution != Alignment.None)
             foreach (Field field in fields) // not tested
@@ -221,22 +222,22 @@ public class FieldGrid : MonoBehaviour
                 if (!field.IsAligned(temporaryStatuses.Revolution)) continue;
                 if (field.OccupantCard.GetRole() != field.OccupantCard.Character.Role) field.OccupantCard.AdvanceStrength(-1);
             }
-        temporaryStatuses.RemoveJudgement(align);
+        temporaryStatuses.RemoveJudgement();
     }
 
     public void SetRevolution(Alignment align)
     {
         temporaryStatuses.SetRevolution(align);
-        CalmJudgement();
+        //CalmJudgement();
     }
 
-    private void CalmJudgement()
+    /*private void CalmJudgement()
     {
         if (temporaryStatuses.Revolution == Alignment.None) throw new Exception("There's no revolution to adjust judgement!");
         if (!temporaryStatuses.IsJudgement) return;
         if (IsJudgementWithRevolution()) return;
         temporaryStatuses.CalmJudgement();
-    }
+    }*/
 
     private bool IsJudgementWithRevolution()
     {
@@ -287,7 +288,7 @@ public class FieldGrid : MonoBehaviour
         card.AdvanceHealth(1);
     }
 
-    public void ShowJudgement(Alignment align) // TODO: Fix repeats!
+    public void ShowJudgement(Alignment align)
     {
         foreach (Field field in fields)
         {

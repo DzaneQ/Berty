@@ -13,6 +13,7 @@
         AddRange(0, -1, riposteRange);
         //AddRange(-1, -1, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("347884__arcandio__razorback-archery-66-66.6");
     }
 
     public override bool SkillSpecialAttack(CardSprite card)

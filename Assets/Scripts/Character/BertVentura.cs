@@ -20,6 +20,7 @@ public class BertVentura : Character
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("759965__thekingofgeeks360__parrots-goffins-cockatoo-squawk");
     }
 
     public override void SkillOnNewCard(CardSprite card)

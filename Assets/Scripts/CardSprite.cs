@@ -20,7 +20,7 @@ public class CardSprite : MonoBehaviour
     private CardState state;
     private CharacterStat cardStatus;
     private List<Character> resistChar;
-    private AnimatingCard animating;
+    private AnimatingCardSprite animating;
     //private bool animatingProcess = false;
 
     public Field OccupiedField => occupiedField;
@@ -29,7 +29,7 @@ public class CardSprite : MonoBehaviour
     public FieldGrid Grid => occupiedField.Grid;
     public CardState ResultState => state;
     public CharacterStat CardStatus => cardStatus;
-    public AnimatingCard Animate => animating;
+    public AnimatingCardSprite Animate => animating;
     public Character Character
     {
         get => character;
@@ -66,7 +66,8 @@ public class CardSprite : MonoBehaviour
         cardBar = transform.GetChild(1).GetComponentsInChildren<CardBar>();
         occupiedField = transform.GetComponentInParent<Field>();
         state = new InactiveState(this);
-        animating = GetComponent<AnimatingCard>();
+        animating = GetComponent<AnimatingCardSprite>();
+        if (animating != null) animating.AttachSound();
         InitializeRigidbody();
     }
 
@@ -90,20 +91,6 @@ public class CardSprite : MonoBehaviour
     {
         if (IsLeftClicked()) state.HandleClick();
         else if (IsRightClicked()) state.HandleSideClick();
-    }
-
-    public void OnMouseEnter() // TODO: Include focus on arrows.
-    {
-        ShowLookupCard(false);
-        //EnableButtons();
-        //HighlightAttackRange();
-    }
-
-    public void OnMouseExit()
-    {
-        cardManager.HideLookupCard();
-        //DisableButtons();
-        //Grid.StopHighlightingCards();
     }
 
     private bool IsLeftClicked()
@@ -152,6 +139,7 @@ public class CardSprite : MonoBehaviour
         //UpdateRelativeCoordinates();
         CallPayment(cardStatus.Power);
         occupiedField.ConvertField(Turn.CurrentAlignment);
+        if (animating != null) animating.PutCardSound();
         ApplyPhysics();
     }
 
@@ -187,6 +175,7 @@ public class CardSprite : MonoBehaviour
 
     public void ConfirmNewCard()
     {
+        if (animating != null) animating.ConfirmSound();
         ClearCardResistance();
         if (occupiedField.IsAligned(Grid.CurrentStatus.Revolution) && GetRole() == Role.Special) AdvanceStrength(1);
         if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
@@ -205,8 +194,9 @@ public class CardSprite : MonoBehaviour
     #region DeactivationProcess
     public void DeactivateCard()
     {
-        Debug.Log($"Deactivating card: {name}");
+        //Debug.Log($"Deactivating card: {name}");
         occupiedField.AdjustCardRemoval();
+        if (animating != null) animating.TakeCardSound();
         state = state.DeactivateCard();
         //cardManager.RemoveFromField(imageReference);
     }
@@ -224,13 +214,13 @@ public class CardSprite : MonoBehaviour
         Turn.SetPayment(price);
     }
 
-    public void ConfirmPayment()
+    public void ConfirmPayment(bool ignoreSound = false)
     {
         if (!Turn.IsItPaymentTime()) throw new Exception("Confirming payment when not in payment mode.");
         if (!state.IsForPaymentConfirmation()) throw new Exception("Wrong card state for payment..");
         if (!Turn.CheckOffer()) return;
         cardManager.DiscardCards();
-        state = state.TakePaidAction();
+        state = state.TakePaidAction(ignoreSound ? null : animating);
         if (Turn.IsItPaymentTime()) Turn.SetMoveTime();
     }
 
@@ -286,12 +276,12 @@ public class CardSprite : MonoBehaviour
 
     public void OrderAttack()
     {
-        Debug.Log("Start ordering attack");
+        //Debug.Log("Start ordering attack");
         cardStatus.hasAttacked = true;
         if (VenturaCheck()) return; // TODO: Swap place after adjusting opponent script. (with?)
         if (CanUseSkill() && Character.SkillSpecialAttack(this)) return;
         bool successfulAttack = false;
-        Debug.Log("Check ranges");
+        //Debug.Log("Check ranges");
         foreach (int[] distance in Character.AttackRange)
         {
             Field targetField = GetTargetField(distance);
@@ -299,10 +289,10 @@ public class CardSprite : MonoBehaviour
             if (targetField.OccupantCard.TakeDamage(GetStrength(), occupiedField)) successfulAttack = true;
             Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
         }
-        Debug.Log("Ranges checked");
+        //Debug.Log("Ranges checked");
         if (successfulAttack && CanUseSkill()) Character.SkillOnSuccessfulAttack(this);
         if (CanUseSkill()) Character.SkillOnAttack(this);
-        Debug.Log("End ordering attack");
+        //Debug.Log("End ordering attack");
     }
 
 
@@ -310,7 +300,7 @@ public class CardSprite : MonoBehaviour
     {
         if (CanUseSkill()) damage = Character.SkillDefenceModifier(damage, source.OccupantCard);
         if (source.OccupantCard.CanUseSkill()) damage = source.OccupantCard.Character.SkillAttackModifier(damage, this);
-        Debug.Log("Damage on field - X: " + occupiedField.GetX() + "; Y: " + occupiedField.GetY());
+        //Debug.Log("Damage on field - X: " + occupiedField.GetX() + "; Y: " + occupiedField.GetY());
         if (!gameObject.activeSelf) return false;
         if (riposte)
         {
@@ -320,11 +310,11 @@ public class CardSprite : MonoBehaviour
         //int[] srcRel = source.GetRelativeCoordinates(GetRelativeAngle());
         //int[] srcDistance = { srcRel[0] - relCoord[0], srcRel[1] - relCoord[1] };
         int[] srcDistance = GetFieldDistance(source);
-        Debug.Log("Character health: " + CardStatus.Health);
+        //Debug.Log("Character health: " + CardStatus.Health);
         if (Character.CanRiposte(srcDistance)) source.OccupantCard.TakeDamage(GetStrength(), OccupiedField, true);
         if (Character.CanBlock(srcDistance)) return false;
         AdvanceHealth(-damage);
-        Debug.Log($"{damage} damage taken for card {name}. Remaining HP: {cardStatus.Health}");
+        //Debug.Log($"{damage} damage taken for card {name}. Remaining HP: {cardStatus.Health}");
         return true;
     }
     #endregion
@@ -359,14 +349,21 @@ public class CardSprite : MonoBehaviour
         if (!Character.CanAffectPower(this, spellSource)) return;
         cardStatus.Power += value;
         if (CanUseSkill()) Character.SkillAdjustPowerChange(value, this, spellSource);
-        if (cardStatus.Power <= 0) SwitchSides();
         UpdateBar(1, true);
     }
 
-    private void SwitchSides()
+    public void ZeroPowerAdjustment()
+    {
+        if (cardStatus.Power <= 0) SwitchSides();
+    }
+
+    private void SwitchSides() //TODO: Change state!
     {
         occupiedField.GoToOppositeSide();
         ResetPower();
+        UpdateAlignedCardState();
+        if (occupiedField.IsAligned(Turn.CurrentAlignment)) SetActive();
+        else SetIdle(); // TODO: Adjust side conversion!
         if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
         if (Grid.CurrentStatus.Revolution == Alignment.None) return;
         if (GetRole() != Role.Special) return;
@@ -375,9 +372,21 @@ public class CardSprite : MonoBehaviour
         else AdvanceStrength(-1);
     }
 
+    private void UpdateAlignedCardState()
+    {
+        if (!occupiedField.IsOccupied()) throw new Exception("Updating state of non-occupied card!");
+        if (occupiedField.IsAligned(Turn.CurrentAlignment)) SetActive();
+        else
+        {
+            if (CanBeTelecinetic()) SetTelecinetic();
+            else SetIdle();
+        }
+    }
+
     public void ResetPower()
     {
         cardStatus.Power = Character.Power;
+        UpdateBar(1, true);
     }
 
     public void AdvanceDexterity(int value, CardSprite spellSource = null)
@@ -402,8 +411,12 @@ public class CardSprite : MonoBehaviour
         if (spellSource != null && resistChar.Contains(spellSource.Character)) return;
         cardStatus.Health += value;
         if (CanUseSkill()) Character.SkillAdjustHealthChange(value, this);
-        if (IsDead()) KillCard();
         UpdateBar(3, true);
+    }
+
+    public void ZeroHealthAdjustment()
+    {
+        if (IsDead()) KillCard();
     }
 
     private bool IsDead()
@@ -431,8 +444,8 @@ public class CardSprite : MonoBehaviour
 
     private void UpdateBar(int index, bool animate)
     {
-        if (animate) cardBar[index].UpdateBar(animating);
-        else cardBar[index].UpdateBar(null);
+        if (animate) StartCoroutine(cardBar[index].UpdateBar(animating));
+        else StartCoroutine(cardBar[index].UpdateBar(null));
     }
 
     public void HideBars()
@@ -549,7 +562,7 @@ public class CardSprite : MonoBehaviour
             ShowBars();
         }
         UpdateRelativeCoordinates();
-        if (gameObject.activeSelf) state = state.AdjustTransformChange(returnButtonIndex);
+        if (gameObject.activeSelf && cardManager.SelectedCard() != null) state = state.AdjustTransformChange(returnButtonIndex);
     }
 
     public void SwapWith(Field targetField)
@@ -749,9 +762,8 @@ public class CardSprite : MonoBehaviour
     public void UpdateRelativeCoordinates() // NOTE: Moving to adjacent field displayed it 9 times - not anymore for unknown reason.
     {
         //Debug.Log("Updating relative coords for: " + name);
-        if (IsAnimating()) Debug.LogWarning("Updating animating object!");
-        float angle = GetRelativeAngle();
-        relCoord = occupiedField.GetRelativeCoordinates(angle);
+        //if (IsAnimating()) Debug.LogWarning("Updating animating object!");
+        relCoord = occupiedField.GetRelativeCoordinates(GetRelativeAngle());
         //Turn.RefreshCardSpriteFocus();
     }
     #endregion

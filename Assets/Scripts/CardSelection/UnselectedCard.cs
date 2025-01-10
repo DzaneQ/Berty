@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class UnselectedCard : SelectStatus
 {
-    public UnselectedCard(RectTransform transform, CardImage card) : base(transform, card)
+    public UnselectedCard(RectTransform transform, AnimatingCardImage animating) : base(transform, animating)
     {
         //Debug.Log("Unselecting card: " + card.gameObject.name + "; rotation: " + card.transform.eulerAngles.z);
     }
 
     public override SelectStatus ChangePosition(bool canSelect)
     {
-        if (!canSelect) return this;
-        return new SelectedCard(cardTransform, card);
-        
+        if (!canSelect || IsAnimating()) return this;
+        return new SelectedCard(cardTransform, animating);  
     }
 
     public override bool IsCardSelected => false;

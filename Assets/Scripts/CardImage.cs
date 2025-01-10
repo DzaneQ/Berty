@@ -31,7 +31,7 @@ public class CardImage : MonoBehaviour
     {
         imageRenderer = GetComponent<Image>();
         cardManager = FindObjectOfType<CardManager>();
-        select = new UnselectedCard(GetComponent<RectTransform>(), this);
+        select = new UnselectedCard(GetComponent<RectTransform>(), GetComponent<AnimatingCardImage>());
     }
 
     public void AssignCharacter(Character newCharacter)
@@ -64,11 +64,12 @@ public class CardImage : MonoBehaviour
         cardManager.HideLookupCard();
     }
 
-    public void ChangeSelection()
+    public void ChangeSelection(bool ignoreAnimation = false)
     {
-        //Debug.Log("Position changing...");
+        Debug.Log("Position changing...");
+        //if (!gameObject.activeSelf) ignoreAnimation = true;
         if (transform.parent.name.Contains("Dead")) ReviveCard();
-        else select = select.ChangePosition(CanSelect());
+        else select = select.ChangePosition(CanSelect() || (select.GetType() == typeof(SelectedCard) && !ignoreAnimation));
     }
 
     public bool CanSelect()

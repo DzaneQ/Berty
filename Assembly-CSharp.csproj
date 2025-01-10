@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\CardState\TelecineticState.cs" />
     <Compile Include="Assets\Scripts\Enums\Alignment.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
+    <Compile Include="Assets\Scripts\Menu\ButtonFunction.cs" />
     <Compile Include="Assets\Scripts\CardSelection\SelectStatus.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
@@ -95,12 +96,12 @@
     <Compile Include="Assets\Scripts\Character\RoninBert.cs" />
     <Compile Include="Assets\Scripts\CardState\CardState.cs" />
     <Compile Include="Assets\Scripts\CardSprite.cs" />
-    <Compile Include="Assets\Scripts\AnimatingCard.cs" />
     <Compile Include="Assets\Scripts\Turn.cs" />
     <Compile Include="Assets\Scripts\FieldAlign\FieldAlign.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\Scripts\Character\MisiekBert.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
+    <Compile Include="Assets\Scripts\AnimatingCardImage.cs" />
     <Compile Include="Assets\Scripts\CardState\ActiveState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\Scripts\Character\KsiezniczkaBerta.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Assets\Scripts\Character\KonstablBert.cs" />
     <Compile Include="Assets\Scripts\Character\TrenerPokebertow.cs" />
     <Compile Include="Assets\Scripts\CardSelection\SelectedCard.cs" />
+    <Compile Include="Assets\Scripts\Menu\NavigationMenu.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Character\BertWick.cs" />
     <Compile Include="Assets\Scripts\Character\CheBert.cs" />
@@ -144,6 +146,7 @@
     <Compile Include="Assets\Scripts\Character\BertPogromca.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
+    <Compile Include="Assets\Scripts\SoundSystem.cs" />
     <Compile Include="Assets\Scripts\CardSelection\BackupCard.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\Scripts\Character\BertWho.cs" />
@@ -168,7 +171,6 @@
     <Compile Include="Assets\Scripts\LookupCard.cs" />
     <Compile Include="Assets\Scripts\PricingSystem.cs" />
     <Compile Include="Assets\Scripts\CardState\NewTransformState.cs" />
-    <Compile Include="Assets\Scripts\Menu\Menu.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
     <Compile Include="Assets\Scripts\Character\SamurajBert.cs" />
@@ -180,6 +182,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\Scripts\Character\KoszmarZBertwood.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
+    <Compile Include="Assets\Scripts\AnimatingCardSprite.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\FreeSelectionOutline\Scripts\SelectionOutlineController.cs" />

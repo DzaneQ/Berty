@@ -13,6 +13,7 @@
         AddRange(0, -1, blockRange);
         //AddRange(-1, -1, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("182429__qubodup__explosion");
     }
 
     public override void SkillAdjustHealthChange(int value, CardSprite card)

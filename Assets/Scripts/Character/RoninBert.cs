@@ -14,6 +14,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("370204__nekoninja__samurai-slash");
     }
 
     public override bool SkillSpecialAttack(CardSprite card)

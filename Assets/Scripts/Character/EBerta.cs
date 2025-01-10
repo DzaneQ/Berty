@@ -15,6 +15,7 @@ public class EBerta : Character
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("487832__bendrain__cardboard_impact_02");
     }
 
     public override void SkillOnNewCard(CardSprite card)

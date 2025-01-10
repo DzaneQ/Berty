@@ -14,20 +14,21 @@ internal class AttackingState : CardState
 
     public override void HandleClick()
     {
-        Debug.Log("Attacking state go!");
+        //Debug.Log("Attacking state go!");
         card.ConfirmPayment();
     }
 
-    public override CardState TakePaidAction()
+    public override CardState TakePaidAction(AnimatingCardSprite animating)
     {
         Debug.Log("Attack!");
+        if (animating != null) animating.AttackingSound(card.Character);
         card.OrderAttack();
         return new IdleState(card);
     }
 
     public override CardState AdjustTransformChange(int buttonIndex)
     {
-        Debug.Log($"{card} makes a swap!");
+        //Debug.Log($"{card} makes a swap!");
         return this;
     }
 

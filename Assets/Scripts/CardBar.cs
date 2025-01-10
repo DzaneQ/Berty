@@ -6,13 +6,15 @@ public class CardBar : MonoBehaviour
 {
     private CardSprite card;
     private Transform barFill;
-    private SpriteRenderer rend;
+    private SpriteRenderer fillRend;
+    private SpriteRenderer outlineRend;
 
     void Awake()
     {
         card = GetComponentInParent<CardSprite>();
         barFill = transform.GetChild(0);
-        rend = barFill.GetComponent<SpriteRenderer>();
+        fillRend = barFill.GetComponent<SpriteRenderer>();
+        outlineRend = barFill.parent.GetComponent<SpriteRenderer>();
         //Debug.Log("Max width value: " + maxWidth);
     }
 
@@ -37,7 +39,7 @@ public class CardBar : MonoBehaviour
         }
     }
 
-    private void MoveAndScaleBar(float widthDiff, Vector2 targetSize, AnimatingCard animate)
+    private IEnumerator MoveAndScaleBar(float widthDiff, Vector2 targetSize, AnimatingCardSprite animate)
     {
         Vector3 targetPosition = barFill.localPosition;
         targetPosition.x += widthDiff / 2;
@@ -65,19 +67,20 @@ public class CardBar : MonoBehaviour
         if (animate == null)
         {
             barFill.localPosition = targetPosition;
-            rend.size = targetSize;
+            fillRend.size = targetSize;
+            yield return null;
         }
         else
         {
             //Debug.Log($"Animating {name} for card {barFill.parent.parent.name} with target width: {targetSize.x}");
-            NewBar properties = new(barFill, rend, targetPosition, targetSize);
-            StartCoroutine(animate.MoveAndScaleBar(properties, 1f));
+            NewBar properties = new(barFill, fillRend, targetPosition, targetSize);
+            yield return StartCoroutine(animate.MoveAndScaleBar(properties, 1f));
         }
     }
 
-    public void UpdateBar(AnimatingCard animation)
+    public IEnumerator UpdateBar(AnimatingCardSprite animation)
     {
-        Vector2 barSize = rend.size;
+        Vector2 barSize = fillRend.size;
         float oldWidth = barSize.x;
         //float newWidth;
         
@@ -105,18 +108,24 @@ public class CardBar : MonoBehaviour
                 throw new System.Exception("Wrong stat number: " + stat);
         }*/
         //Debug.Log($"Checking {name}: {stat} for card {barFill.parent.parent.name}. Changing width from {oldWidth} to {barSize.x}");
-        MoveAndScaleBar(barSize.x - oldWidth, barSize, animation);
+        yield return StartCoroutine(MoveAndScaleBar(barSize.x - oldWidth, barSize, animation));
+        if (stat > 0) yield break;
+        if (name == "PowerBar") card.ZeroPowerAdjustment();
+        else if (name == "HealthBar") card.ZeroHealthAdjustment();
+        yield return null;
     }
 
     public void HideBar()
     {
-        barFill.parent.gameObject.SetActive(false);
-        //rend.enabled = false;
+        //barFill.parent.gameObject.SetActive(false);
+        fillRend.enabled = false;
+        outlineRend.enabled = false;
     }
 
     public void ShowBar()
     {
-        barFill.parent.gameObject.SetActive(true);
-        //rend.enabled = true;
+        //barFill.parent.gameObject.SetActive(true);
+        fillRend.enabled = true;
+        outlineRend.enabled = true;
     }
 }

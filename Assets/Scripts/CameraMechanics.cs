@@ -140,6 +140,7 @@ public class CameraMechanics : MonoBehaviour
         if (selectedCard != null) ClearTarget();
         selectedCard = sourceField.OccupantCard;
         selectedCard.EnableButtons();
+        selectedCard.ShowLookupCard(false);
         bool riposte = false;
         foreach (int[] distance in selectedCard.Character.AttackRange)
         {
@@ -153,17 +154,13 @@ public class CameraMechanics : MonoBehaviour
                     targetCard.Character.CanRiposte(targetCard.GetFieldDistance(sourceField))) riposte = true;
                 if (targetCard.Character.CanBlock(targetCard.GetFieldDistance(sourceField))) block = true;
             }
-            int targetIndex = Array.IndexOf(fields, targetField);
-            if (targetIndex < 0) throw new Exception("Target index not found! It's " + targetIndex);
-            HighlightTarget(fields[targetIndex], block);
+            HighlightTarget(targetField, block);
         }
         if (riposte) HighlightTarget(sourceField);
     }
 
     private void HighlightTarget(Field target, bool blockState = false)
     {
-        //target.FieldOutline.OutlineColor = blockState ? blockColor : attackColor;
-        //target.FieldOutline.enabled = true;
         target.HighlightField(blockState ? highlightBlockColor : highlightAttackColor);
     }
 
@@ -175,6 +172,7 @@ public class CameraMechanics : MonoBehaviour
             //field.FieldOutline.enabled = false;
             field.UnhighlightField();
         }
+        turn.CM.HideLookupCard(false);
         selectedCard.DisableButtons();
         selectedCard = null;
     }
@@ -188,12 +186,6 @@ public class CameraMechanics : MonoBehaviour
             if (!IsFieldTargeted(fields[i], targetObject)) continue;
             index = i;
             return fields[i].OccupantCard.gameObject.activeSelf && !fields[i].OccupantCard.IsAnimating();
-            //if (fields[i].OccupantCard.gameObject.activeSelf && !fields[i].OccupantCard.IsAnimating())
-            //{
-            //    index = i;
-            //    return true;
-            //}
-            //else return false;
         }
         return false;
     }

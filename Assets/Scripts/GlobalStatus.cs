@@ -7,14 +7,14 @@ public class GlobalStatus
 {
     private FieldGrid grid;
     private List<Alignment> TakeNextTurn;
-    private bool judgementState;
+    private Alignment judgementState;
     private Alignment judgementAwaiting;
     private Alignment judgementRevenge;
     private Alignment revolution;
     private Alignment telekinesis;
     private int telekinesisDex;
 
-    public bool IsJudgement => judgementState;
+    public bool IsJudgement => judgementState != Alignment.None;
     public Alignment JudgementRevenge => judgementRevenge;
     public Alignment Revolution => revolution;
     public Alignment Telekinesis => telekinesis;
@@ -23,7 +23,7 @@ public class GlobalStatus
     {
         grid = newGrid;
         TakeNextTurn = new List<Alignment>();
-        judgementState = false;
+        judgementState = Alignment.None;
         judgementAwaiting = Alignment.None;
         judgementRevenge = Alignment.None;
         revolution = Alignment.None;
@@ -52,25 +52,30 @@ public class GlobalStatus
         TakeNextTurn.Add(align);
     }
 
-    internal void SetJudgement()
+    internal void SetJudgement(Alignment align)
     {
-        judgementState = true;
+        if (Revolution != Alignment.None && Revolution != align) return;
+        judgementState = align;
     }
 
-    internal void RemoveJudgement(Alignment align)
+    internal void RemoveJudgement()
     {
-        judgementState = false;
-        judgementAwaiting = align;
+        judgementAwaiting = judgementState;
+        judgementState = Alignment.None;
     }
 
-    internal void CalmJudgement()
+    private void CalmJudgement()
     {
-        judgementState = false;
+        if (Revolution == Alignment.None) throw new Exception("There's no revolution to adjust judgement!");
+        if (!IsJudgement) return;
+        if (judgementState == Revolution) return;
+        judgementState = Alignment.None;
     }
 
     internal void SetRevolution(Alignment align)
     {
         revolution = align;
+        CalmJudgement();
     }
 
     internal void RemoveRevolution()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 /*
 TODO:
@@ -20,6 +21,7 @@ public abstract class Character
     protected List<int[]> blockRange = new List<int[]>();
     protected List<int[]> riposteRange = new List<int[]>();
     protected List<int[]> attackRange = new List<int[]>();
+    protected AudioClip attackSound;
     public string Name { get => name; }
     public Gender Gender { get => gender; }
     public Role Role { get => role; }
@@ -28,6 +30,7 @@ public abstract class Character
     public int Dexterity { get => dexterity; }
     public int Health { get => health; }
     public List<int[]> AttackRange { get => attackRange; }
+    public AudioClip AttackSound { get => attackSound; }
 
 
     public bool CanBlock(int[] source)
@@ -69,6 +72,12 @@ public abstract class Character
         if (relativeX == 0 && relativeY == 0) throw new System.Exception("Attempt to target self as a range.");
         if (range.Contains(coordinate)) throw new System.Exception("Duplicate coordinates.");
         range.Add(coordinate);
+    }
+    protected void AddSoundEffect(string fileName)
+    {
+        Debug.Log($"Sound for {name} null before load? {attackSound == null}");
+        attackSound = Resources.Load<AudioClip>("CharacterAttackSfx/" + fileName);
+        Debug.Log($"Sound for {name} null after load? {attackSound == null}");
     }
 
     private bool AreCoordinatesEqual(int[] first, int[] second)

@@ -19,6 +19,7 @@ public partial class Turn : MonoBehaviour
     private PricingSystem ps;
     private OpponentControl oc;
     private CameraMechanics ct;
+    private SoundSystem ss;
     private Step currentStep;
     private Alignment currentAlign;
     private bool interactableDisabled = false;
@@ -57,6 +58,7 @@ public partial class Turn : MonoBehaviour
     }
 
     public bool InteractableDisabled => interactableDisabled;
+    public SoundSystem SS => ss;
     public CardManager CM => cm;
     private string TheButtonText
     {
@@ -72,6 +74,7 @@ public partial class Turn : MonoBehaviour
         oc = GetComponent<OpponentControl>();
         fg = (FieldGrid)FindAnyObjectByType<FieldGrid>();
         ct = (CameraMechanics)FindAnyObjectByType<CameraMechanics>();
+        ss = GetComponent<SoundSystem>();
     }
 
     private void Start()
@@ -80,7 +83,7 @@ public partial class Turn : MonoBehaviour
         theButtonText = TheButton.transform.GetChild(0).GetComponent<Text>();
         ps = new PricingSystem(cm);
         SetStartingParameters();
-        DebugInit();
+        //DebugInit();
         //Debug.Log(SystemInfo.processorType);
         //Debug.Log(SystemInfo.graphicsDeviceName);
     }
@@ -95,6 +98,7 @@ public partial class Turn : MonoBehaviour
     #region TurnsAndSteps
     public void HandleTheButtonClick()
     {
+        ss.ButtonClickSound();
         switch (TheButtonText)
         {
             case "Koniec tury":
@@ -132,7 +136,7 @@ public partial class Turn : MonoBehaviour
 
     public void SetMoveTime()
     {
-        Debug.Log("Setting move step.");
+        //Debug.Log("Setting move step.");
         if (IsItMoveTime()) throw new Exception("Trying to change move step into self.");
         CurrentStep = Step.Move;
     }
@@ -148,7 +152,7 @@ public partial class Turn : MonoBehaviour
     {
         ShowEndTurnButton(IsItMoveTime());
         if (!IsItPaymentTime()) cm.DeselectCards();
-        if (IsItMoveTime()) fg.SetAlignedCardsActive();
+        if (IsItMoveTime()) fg.UpdateCardStates();
     }
 
     public bool CheckOffer() => ps.CheckOffer();
@@ -278,7 +282,7 @@ public partial class Turn : MonoBehaviour
     }
     #endregion
 
-    #region Debug
+    /*#region Debug
     private void DebugInit()
     {
         if (!Debug.isDebugBuild) Destroy(GetComponent<DevTools>());
@@ -289,5 +293,5 @@ public partial class Turn : MonoBehaviour
             if (oc != null) oc.DebugInit(tool);
         }
     }
-    #endregion
+    #endregion*/
 }

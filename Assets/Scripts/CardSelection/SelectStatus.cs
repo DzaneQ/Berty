@@ -6,18 +6,23 @@ using UnityEngine;
 abstract public class SelectStatus
 {
     protected RectTransform cardTransform;
-    protected CardImage card;
+    protected AnimatingCardImage animating;
 
-    protected SelectStatus(RectTransform cardImageTransform, CardImage cardImage) 
+    protected SelectStatus(RectTransform cardImageTransform, AnimatingCardImage animation) 
     {
         cardTransform = cardImageTransform;
-        card = cardImage;
+        animating = animation;
     }
 
-    public virtual SelectStatus ChangePosition(bool canSelect) => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
+    public virtual SelectStatus ChangePosition(bool animateOrSelect) => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
     public virtual bool IsCardSelected { get => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!"); }
     //public virtual void SetToBackup() => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
     //public virtual Transform ReturnCard() => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
     //public virtual SelectStatus KillCard() => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
     public virtual SelectStatus SetUnselected() => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
+    protected bool IsAnimating()
+    {
+        if (animating == null) return false;
+        return animating.CoroutineCount > 0;
+    }
 }
