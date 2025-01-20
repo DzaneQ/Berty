@@ -13,6 +13,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("706382__agglow__slap");
     }
 
     public override void SkillOnNewCard(CardSprite card)

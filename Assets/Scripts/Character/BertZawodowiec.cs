@@ -15,6 +15,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("632821__cloud-10__gunshot");
     }
 
     public override void SkillOnNewCard(CardSprite card)

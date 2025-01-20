@@ -12,6 +12,7 @@
         AddRange(0, -1, riposteRange);
         //AddRange(-1, -1, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("518292__logicogonist__gong-2");
     }
 
     public override void SkillOnNewCard(CardSprite card)

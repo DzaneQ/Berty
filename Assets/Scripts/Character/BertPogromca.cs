@@ -15,6 +15,7 @@ public class BertPogromca : Character
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("536528__smice_6__chop-off-head-with-axe");
     }
 
     public override void SkillOnNewCard(CardSprite card)

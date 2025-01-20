@@ -21,6 +21,7 @@
         AddRange(0, -1, blockRange);
         //AddRange(-1, -1, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("564485__rizzard__monster-growl");
     }
 
     public override void SkillOnNewCard(CardSprite card)

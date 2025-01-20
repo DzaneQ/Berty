@@ -13,6 +13,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, blockRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("733887__velcronator__sword-impact");
     }
 
     public override void SkillAdjustHealthChange(int value, CardSprite card)

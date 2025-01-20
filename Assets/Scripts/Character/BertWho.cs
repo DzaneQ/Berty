@@ -14,6 +14,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, blockRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("189575__unopiate__breaking-glass");
     }
 
     //public override void SkillOnNewTurn(CardSprite card)

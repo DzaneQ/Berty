@@ -14,6 +14,7 @@ public class SuperfanBert : Character
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("718109__riippumattog__fight-punch-hit");
     }
 
     public override void SkillOnNewCard(CardSprite card)

@@ -13,6 +13,7 @@
         //AddRange(1, -1, riposteRange);
         //AddRange(-1, -1, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("181679__gingie__knife-throw");
     }
 
     public override void SkillOnSuccessfulAttack(CardSprite card)

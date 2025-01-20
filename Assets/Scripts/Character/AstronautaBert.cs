@@ -17,6 +17,7 @@ public class AstronautaBert : Character
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, blockRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("657936__matrixxx__satellite-signal-02");
     }
 
     public override void SkillAdjustPowerChange(int value, CardSprite card, CardSprite spellSource)

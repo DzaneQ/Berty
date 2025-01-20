@@ -14,6 +14,7 @@ public class BertWick : Character
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("587172__derplayer__pistol-fire-until-empty");
     }
 
     public override void SkillAdjustHealthChange(int value, CardSprite card)

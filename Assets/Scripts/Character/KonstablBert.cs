@@ -12,6 +12,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, blockRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("577354__thecrow_br__club");
     }
 
     public override void SkillOnNewCard(CardSprite card)

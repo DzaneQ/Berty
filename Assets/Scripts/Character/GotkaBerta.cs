@@ -11,6 +11,7 @@
         //AddRange(1, -1, riposteRange);
         //AddRange(-1, -1, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("467777__sgak__thunder");
     }
 
     public override void SkillOnNewCard(CardSprite card)

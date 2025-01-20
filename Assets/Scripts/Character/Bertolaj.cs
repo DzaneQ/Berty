@@ -19,6 +19,7 @@
         AddRange(0, -1, riposteRange);
         //AddRange(-1, -1, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("441649__crownieyt__open-package-box-parcel");
     }
 
     public override bool SkillSpecialAttack(CardSprite card)

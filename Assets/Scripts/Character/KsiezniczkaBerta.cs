@@ -13,6 +13,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("335354__littlerainyseasons__magic");
     }
 
     public override void SkillAdjustPowerChange(int value, CardSprite card, CardSprite spellSource)

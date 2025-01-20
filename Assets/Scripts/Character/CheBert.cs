@@ -12,6 +12,7 @@
         AddRange(0, -1, riposteRange);
         //AddRange(-1, -1, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("251243__endlessenigma__piledriver");
     }
 
     public override void SkillOnNewCard(CardSprite card)

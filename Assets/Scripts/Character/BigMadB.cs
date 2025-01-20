@@ -15,6 +15,7 @@ public class BigMadB : Character
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, blockRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("539125__badoink__wobblelooper");
     }
 
     public override void SkillOnNewCard(CardSprite card)

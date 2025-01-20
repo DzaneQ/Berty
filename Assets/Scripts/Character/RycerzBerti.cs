@@ -14,6 +14,7 @@
         AddRange(0, -1, riposteRange);
         //AddRange(-1, -1, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("638292__captainyulef__laser-sword");
     }
 
     public override void SkillOnNewCard(CardSprite card)

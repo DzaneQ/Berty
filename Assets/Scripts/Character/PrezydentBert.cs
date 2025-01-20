@@ -12,6 +12,7 @@
         //AddRange(1, -1, riposteRange);
         //AddRange(-1, -1, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("557114__firediesproductions__fdp-coin-flip-3");
     }
 
     public override void SkillOnAttack(CardSprite card)
