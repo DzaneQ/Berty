@@ -15,6 +15,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("570804__soundslikewillem__orchestra-hit-2");
     }
 
     public override void SkillAdjustHealthChange(int value, CardSprite card)

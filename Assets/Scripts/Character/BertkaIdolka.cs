@@ -14,6 +14,7 @@
         AddRange(0, -1, riposteRange);
         //AddRange(-1, -1, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("392483__gpag1__footsteps-boots-1.5");
     }
 
     public override bool CanAffectStrength(CardSprite card, CardSprite spellSource)

@@ -13,6 +13,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("217656__reitanna__knuckles-cracking");
     }
 
     public override void SkillOnNewCard(CardSprite card)

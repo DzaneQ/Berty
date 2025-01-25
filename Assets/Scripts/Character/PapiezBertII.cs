@@ -13,6 +13,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("676109__vcs2683__church-claps-2.1-4.4");
     }
 
     public override void SkillOnNewTurn(CardSprite card)

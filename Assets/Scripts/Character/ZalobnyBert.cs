@@ -15,6 +15,7 @@ public class ZalobnyBert : Character
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("474266__mkzing__bell-with-crows-6.1-8.3");
     }
 
     public override int SkillDefenceModifier(int damage, CardSprite attacker)

@@ -13,7 +13,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
-        AddSoundEffect("706382__agglow__slap");
+        AddSoundEffect("418417__wormer2__water-splash-emptying-a-bucket-9");
     }
 
     public override void SkillOnNewCard(CardSprite card)

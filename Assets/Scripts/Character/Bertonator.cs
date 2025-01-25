@@ -13,6 +13,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("233053__lukeupf__footballtable");
     }
 
     public override bool SkillSpecialAttack(CardSprite card)

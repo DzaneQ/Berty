@@ -15,7 +15,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
-        AddSoundEffect("212143__qubodup__splash-by-blaukreuz");
+        AddSoundEffect("756350__indythecringemaster__retro-ocean-noise");
     }
 
     // TODO: Fix bug that makes this character not rotate when killing target.

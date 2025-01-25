@@ -13,6 +13,7 @@
         //AddRange(-1, -1, riposteRange);
         AddRange(-1, 0, riposteRange);
         //AddRange(-1, 1, riposteRange);
+        AddSoundEffect("212143__qubodup__splash-by-blaukreuz");
     }
 
     public override int SkillAttackModifier(int damage, CardSprite target)
