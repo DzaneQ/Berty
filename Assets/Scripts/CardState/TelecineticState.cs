@@ -10,6 +10,8 @@ internal class TelecineticState : CardState
         EnableButtons();
     }
 
+    public override CardState DeactivateCard() => new InactiveState(card);
+
     public override void HandleClick() { }
 
     public override CardState AdjustTransformChange(int buttonIndex)

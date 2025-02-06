@@ -89,12 +89,14 @@ public class CardSprite : MonoBehaviour
 
     public void OnMouseOver()
     {
+        //Debug.Log("OnMouseOver event trigger on: " + name);
         if (IsLeftClicked()) state.HandleClick();
         else if (IsRightClicked()) state.HandleSideClick();
     }
 
     private bool IsLeftClicked()
     {
+        //Debug.Log($"Card {name} was left clicked. Is it locked? {IsLocked()}");
         if (!IsLocked() && !IsAnimating() && Input.GetMouseButtonDown(0)) return true;
         else return false;
     }
@@ -238,17 +240,19 @@ public class CardSprite : MonoBehaviour
     #region AttackPhase
     public void ResetAttack()
     {
-        cardStatus.hasAttacked = false;
+        cardStatus.HasAttacked = false;
     }
 
-    public void BlockAttack()
+    public void ExhaustAttack()
     {
-        cardStatus.hasAttacked = true;
+        if (cardStatus.HasAttacked) throw new Exception("Exhausting when already attacked!");
+        cardStatus.HasAttacked = true;
     }
 
     public bool CanCharacterAttack()
     {
-        return !cardStatus.hasAttacked;
+        if (VenturaCheck()) return false;
+        return !cardStatus.HasAttacked;
     }
 
     public void PrepareToAttack()
@@ -277,8 +281,7 @@ public class CardSprite : MonoBehaviour
     public void OrderAttack()
     {
         //Debug.Log("Start ordering attack");
-        cardStatus.hasAttacked = true;
-        if (VenturaCheck()) return; // TODO: Swap place after adjusting opponent script. (with?)
+        ExhaustAttack();
         if (CanUseSkill() && Character.SkillSpecialAttack(this)) return;
         bool successfulAttack = false;
         //Debug.Log("Check ranges");
@@ -323,6 +326,7 @@ public class CardSprite : MonoBehaviour
     public void AdvanceTempStrength(int value, CardSprite spellSource = null)
     {
         if (!Character.CanAffectStrength(this, spellSource)) return;
+        if (Character.GlobalSkillResistance() && spellSource == null) return;
         cardStatus.TempStrength += value;
         UpdateBar(0, true);
     }
@@ -330,6 +334,7 @@ public class CardSprite : MonoBehaviour
     public void AdvanceStrength(int value, CardSprite spellSource = null)
     {
         if (spellSource != null && resistChar.Contains(spellSource.Character)) return;
+        if (Character.GlobalSkillResistance() && spellSource == null) return;
         if (!Character.CanAffectStrength(this, spellSource)) return;
         cardStatus.Strength += value;
         if (CanUseSkill()) Character.SkillAdjustStrengthChange(value, this);
@@ -339,6 +344,7 @@ public class CardSprite : MonoBehaviour
     public void AdvanceTempPower(int value, CardSprite spellSource = null)
     {
         if (!Character.CanAffectPower(this, spellSource)) return;
+        if (Character.GlobalSkillResistance() && spellSource == null) return;
         cardStatus.TempPower += value;
         UpdateBar(1, true);
     }
@@ -347,6 +353,7 @@ public class CardSprite : MonoBehaviour
     {
         if (spellSource != null && resistChar.Contains(spellSource.Character)) return;
         if (!Character.CanAffectPower(this, spellSource)) return;
+        if (Character.GlobalSkillResistance() && spellSource == null) return;
         cardStatus.Power += value;
         if (CanUseSkill()) Character.SkillAdjustPowerChange(value, this, spellSource);
         UpdateBar(1, true);
@@ -357,13 +364,17 @@ public class CardSprite : MonoBehaviour
         if (cardStatus.Power <= 0) SwitchSides();
     }
 
-    private void SwitchSides() //TODO: Change state!
+    private void SwitchSides()
     {
         occupiedField.GoToOppositeSide();
         ResetPower();
         UpdateAlignedCardState();
-        if (occupiedField.IsAligned(Turn.CurrentAlignment)) SetActive();
-        else SetIdle(); // TODO: Adjust side conversion!
+        AdjustGlobalStatusesToNewSide();
+    }
+
+    private void AdjustGlobalStatusesToNewSide()
+    {
+        if (Character.GlobalSkillResistance()) return;
         if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
         if (Grid.CurrentStatus.Revolution == Alignment.None) return;
         if (GetRole() != Role.Special) return;
@@ -395,14 +406,14 @@ public class CardSprite : MonoBehaviour
         if (spellSource == null) Debug.LogWarning($"No spell source affecting {Character.Name}");
         cardStatus.Dexterity += value;
         if (CanUseSkill()) Character.SkillAdjustDexterityChange(value, this);
-        if (cardStatus.Dexterity <= 0) cardStatus.isTired = true;
-        if (cardStatus.Dexterity >= Character.Dexterity) cardStatus.isTired = false;
+        if (cardStatus.Dexterity <= 0) cardStatus.IsTired = true;
+        if (cardStatus.Dexterity >= Character.Dexterity) cardStatus.IsTired = false;
         UpdateBar(2, true);
     }
 
     public void RegenerateDexterity()
     {
-        if (!CardStatus.isTired) return;
+        if (!CardStatus.IsTired) return;
         AdvanceDexterity(1, this);
     }
 
@@ -545,10 +556,11 @@ public class CardSprite : MonoBehaviour
         }
     }
 
-    private IEnumerator RotateCardCoroutine(int angle, int returnButtonIndex)
+    private IEnumerator RotateCardCoroutine(int angle, int returnButtonIndex) // BUG: Rotating doesn't ask for payment.
     {
         DisableButtons();
         HideBars();
+        Turn.DisableInteractions(false);
         yield return StartCoroutine(animating.RotateObject(-angle, 1f));
         AfterRotationAdjustment(returnButtonIndex, true);
         yield return null;
@@ -560,9 +572,10 @@ public class CardSprite : MonoBehaviour
         {
             EnableButtons();
             ShowBars();
+            if (!IsAnimating()) Turn.EnableInteractions();
         }
         UpdateRelativeCoordinates();
-        if (gameObject.activeSelf && cardManager.SelectedCard() != null) state = state.AdjustTransformChange(returnButtonIndex);
+        if (gameObject.activeSelf) state = state.AdjustTransformChange(returnButtonIndex);
     }
 
     public void SwapWith(Field targetField)
@@ -690,6 +703,7 @@ public class CardSprite : MonoBehaviour
 
     public bool IsAnimating()
     {
+        if (animating == null) return false;
         return animating.CoroutineCount > 0;
     }
 
@@ -740,7 +754,7 @@ public class CardSprite : MonoBehaviour
     public void SetActive()
     {
         //Debug.Log($"Set active for card on field: {occupiedField.GetX()}, {occupiedField.GetY()}");
-        if (!cardStatus.isTired) state = state.SetActive;
+        if (!cardStatus.IsTired) state = state.SetActive;
         else state = state.SetIdle;
     }
 
@@ -794,6 +808,7 @@ public class CardSprite : MonoBehaviour
         //SynchronizeRotation();
         ClearCardResistance();
         ApplyPhysics();
+        ConfirmNewCard();
         if (occupiedField.IsAligned(Turn.CurrentAlignment)) state = new ActiveState(this);
         else if (occupiedField.IsOpposed(Turn.CurrentAlignment)) state = new IdleState(this);
         else Debug.LogError("Wrongly activated card!");

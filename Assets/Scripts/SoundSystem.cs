@@ -38,7 +38,7 @@ public class SoundSystem : MonoBehaviour
         src.Play();
     }
 
-    public void TakeSound(Transform src) // TODO: execute sound from card that is deactivated!
+    public void TakeSound(Transform src)
     {
         transform.position = src.position;
         soundSrc.clip = retractCardClip;

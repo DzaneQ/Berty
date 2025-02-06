@@ -74,7 +74,10 @@ public class CardBar : MonoBehaviour
         {
             //Debug.Log($"Animating {name} for card {barFill.parent.parent.name} with target width: {targetSize.x}");
             NewBar properties = new(barFill, fillRend, targetPosition, targetSize);
+            card.Grid.Turn.DisableInteractions(false);
             yield return StartCoroutine(animate.MoveAndScaleBar(properties, 1f));
+            if (!card.IsAnimating()) card.Grid.Turn.EnableInteractions();
+            yield return null;
         }
     }
 

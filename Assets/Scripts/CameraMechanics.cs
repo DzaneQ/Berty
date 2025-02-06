@@ -39,7 +39,7 @@ public class CameraMechanics : MonoBehaviour
 
     void Update()
     {
-        //HandleCameraTransform();
+        HandleCameraTransform();
         HandleCardSpriteFocus();
     }
 
@@ -89,13 +89,10 @@ public class CameraMechanics : MonoBehaviour
         float currentAngle = AngleValue();
         if (Mathf.Approximately(currentAngle % 90, 0)) return;
         float rightAngle = RightAngleValue();
-        if (Mathf.Abs(currentAngle - rightAngle) < rotManSpeed * rotAutoMultiplier)
-            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, rightAngle);
-        else
-        {
-            float targetAngle = (currentAngle - rightAngle) * (1 - rotAutoMultiplier) + rightAngle;
-            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, targetAngle);
-        }
+        Vector3 targetAngles = transform.localEulerAngles;
+        if (Mathf.Abs(currentAngle - rightAngle) < rotManSpeed * rotAutoMultiplier) targetAngles.z = rightAngle;
+        else targetAngles.z = (currentAngle - rightAngle) * (1 - rotAutoMultiplier) + rightAngle;
+        transform.localEulerAngles = targetAngles;
     }
 
     public float RightAngleValue()

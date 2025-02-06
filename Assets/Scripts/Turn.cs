@@ -71,7 +71,7 @@ public partial class Turn : MonoBehaviour
     {
         if (Debug.isDebugBuild) Application.targetFrameRate = 10;
         cm = GetComponent<CardManager>();
-        oc = GetComponent<OpponentControl>();
+        //oc = GetComponent<OpponentControl>();
         fg = (FieldGrid)FindAnyObjectByType<FieldGrid>();
         ct = (CameraMechanics)FindAnyObjectByType<CameraMechanics>();
         ss = GetComponent<SoundSystem>();
@@ -191,10 +191,18 @@ public partial class Turn : MonoBehaviour
     {
         Debug.Log("Executing special turn for alignment: " + decidingAlign);
         if (decidingAlign == Alignment.None) throw new Exception("Special turn for no alignment.");
+        StartCoroutine(WaitForPrincessTurn(decidingAlign));
+    }
+
+    private IEnumerator WaitForPrincessTurn(Alignment decidingAlign)
+    {
+        DisableInteractions();
+        yield return new WaitForSeconds(0.2f);
         if (decidingAlign == Alignment.Opponent && oc != null) oc.ExecutePrincessTurn();
         else
         {
             CurrentStep = Step.Special;
+            EnableInteractions();
             fg.SetTargetableCards(decidingAlign);
         }
     }
@@ -203,10 +211,18 @@ public partial class Turn : MonoBehaviour
     {
         Debug.Log("Executing resurrection!");
         if (!cm.AreThereDeadCards()) return;
+        StartCoroutine(WaitForResurrection());
+    }
+
+    private IEnumerator WaitForResurrection()
+    {
+        DisableInteractions();
+        yield return new WaitForSeconds(0.2f);
         if (currentAlign == Alignment.Opponent && oc != null) oc.ExecuteResurrection();
         else
         {
             CurrentStep = Step.Special;
+            EnableInteractions();
             cm.DisplayDeadCards();
         }
     }
@@ -216,12 +232,12 @@ public partial class Turn : MonoBehaviour
     public void EnableInteractions()
     {
         interactableDisabled = false;
-        ShowEndTurnButton(true);
+        ShowEndTurnButton(IsItMoveTime());
     }
 
-    public void DisableInteractions()
+    public void DisableInteractions(bool hideTables = true)
     {
-        cm.HideTables();
+        if (hideTables) cm.HideTables();
         TheButton.SetActive(false);
         interactableDisabled = true;
     }

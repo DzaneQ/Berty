@@ -45,4 +45,6 @@ public class BertPogromca : Character
         }
         return true;
     }
+
+    public override bool GlobalSkillResistance() => true;
 }

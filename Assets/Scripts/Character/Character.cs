@@ -3,12 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
-TODO:
-BertPogromca(); - Special GLOBAL cards resistance and during judgements.
-KsiezniczkaBerta(); - Targetable newly converted cards.
-*/
-
 public abstract class Character
 {
     protected string name;
@@ -127,4 +121,6 @@ public abstract class Character
     public virtual void SkillCardClick(CardSprite cardSprite) { }
     
     public virtual void SkillSideClick(CardSprite cardSprite) { }
+
+    public virtual bool GlobalSkillResistance() => false;
 }

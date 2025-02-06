@@ -82,6 +82,7 @@ public class Field : MonoBehaviour
         }
         else
         {
+            ConvertField(Alignment.None);
             StartCoroutine(MoveCardCoroutine(card, newAlign));
         }
     }
@@ -102,11 +103,13 @@ public class Field : MonoBehaviour
     private IEnumerator MoveCardCoroutine(CardSprite card, Alignment newAlign)
     {
         card.DisableButtons();
+        fg.Turn.DisableInteractions(false);
         yield return card.Animate.MoveToField(this, 1f);
         occupantCard = card;
         card.SetField(this, true);
         ConvertField(newAlign);
         card.EnableButtons();
+        if (!card.IsAnimating()) fg.Turn.EnableInteractions();
         yield return null;
     }
 

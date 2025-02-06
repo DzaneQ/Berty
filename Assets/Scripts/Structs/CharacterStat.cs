@@ -7,6 +7,8 @@ public struct CharacterStat
     private int[] currentStat;
     private int[] currentTempStatBonus;
     private int[] nextTempStatBonus;
+    private bool hasAttacked;
+    private bool isTired;
     public int Strength { get => Stat(currentStat[0] + currentTempStatBonus[0]); set => currentStat[0] = Stat(value); }
     public int Power { get => Stat(currentStat[1] + currentTempStatBonus[1]); set => currentStat[1] = Stat(value); }
     public int Dexterity { get => Stat(currentStat[2] + currentTempStatBonus[2]); set => currentStat[2] = Stat(value); }
@@ -15,8 +17,8 @@ public struct CharacterStat
     public int TempPower { get => currentTempStatBonus[1]; set { currentTempStatBonus[1] = value; nextTempStatBonus[1] = value; } }
     public int TempDexterity { get => currentTempStatBonus[2]; set { currentTempStatBonus[2] = value; nextTempStatBonus[2] = value; } }
     public int TempHealth { get => currentTempStatBonus[3]; set { currentTempStatBonus[3] = value; nextTempStatBonus[3] = value; } }
-    public bool hasAttacked;
-    public bool isTired;
+    public bool HasAttacked { get => hasAttacked; set => hasAttacked = value; }
+    public bool IsTired { get => isTired; set => isTired = value; }
     public int[] CurrentTempStatBonus { get => currentTempStatBonus; set => currentTempStatBonus = value; }
     public int[] NextTempStatBonus { get => nextTempStatBonus; set => nextTempStatBonus = value; }
 

@@ -40,8 +40,8 @@
         {
             Field targetField = card.GetTargetField(distance);
             if (targetField == null || !targetField.IsOccupied()) continue;
-            targetField.OccupantCard.AdvanceTempStrength(1);
-            targetField.OccupantCard.AdvanceTempPower(1);
+            targetField.OccupantCard.AdvanceTempStrength(1, card);
+            targetField.OccupantCard.AdvanceTempPower(1, card);
             targetField.OccupantCard.TakeDamage(card.GetStrength(), card.OccupiedField);
         }
         SkillOnAttack(card);
@@ -54,7 +54,7 @@
         if (attackPause)
         {
             attackPause = false;
-            card.BlockAttack();
+            card.ExhaustAttack();
         }
     }
 }

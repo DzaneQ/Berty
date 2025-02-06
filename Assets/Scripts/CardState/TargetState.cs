@@ -11,6 +11,7 @@ public class TargetState : CardState
 
     public override void HandleClick() 
     {
+        Debug.Log("Target clicked!");
         card.Grid.ApplyPrincessBuff(card);
         card.Grid.Turn.SetMoveTime();
         card.Grid.Turn.ExecuteAutomaticOpponentTurn();

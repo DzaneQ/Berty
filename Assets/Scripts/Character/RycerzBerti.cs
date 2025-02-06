@@ -27,7 +27,7 @@
             targetField = adjacentField;
             if (adjacentField.IsOpposed(card.OccupiedField.Align)) break;
         }
-        if (targetField != null) targetField.OccupantCard.AdvancePower(-3);
+        if (targetField != null) targetField.OccupantCard.AdvancePower(-3, card);
         card.Grid.SetTelekinesis(card.OccupiedField.Align, card.CardStatus.Dexterity);
     }
 
@@ -40,6 +40,4 @@
     {
         card.Grid.RemoveTelekinesis();
     }
-
-    //TODO: BigMadB shouldn't be telekised.
 }
