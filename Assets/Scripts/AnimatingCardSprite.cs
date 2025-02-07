@@ -17,7 +17,7 @@ public class AnimatingCardSprite : MonoBehaviour
         private set
         {
             coroutineCount = value;
-            if (coroutineCount < 0) throw new Exception("Negative coroutine count!");
+            if (coroutineCount < 0) throw new Exception($"Negative coroutine count for card {name}!");
         }
     }
 
@@ -133,7 +133,7 @@ public class AnimatingCardSprite : MonoBehaviour
         yield return StartCoroutine(AnimateBarChange(target, duration));
     }
 
-    private IEnumerator AnimateBarChange(NewBar target, float durationSeconds)
+    private IEnumerator AnimateBarChange(NewBar target, float durationSeconds) // BUG: Negative coroutine count was triggered here!
     {
         CoroutineCount++;
         float currentTime = 0;

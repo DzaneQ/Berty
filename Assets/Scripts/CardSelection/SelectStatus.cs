@@ -14,12 +14,12 @@ abstract public class SelectStatus
         animating = animation;
     }
 
-    public virtual SelectStatus ChangePosition(bool animateOrSelect) => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
-    public virtual bool IsCardSelected { get => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!"); }
+    public virtual SelectStatus ChangePosition(bool isAnimated) => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
+    public virtual bool IsCardSelected { get => false; }
     //public virtual void SetToBackup() => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
     //public virtual Transform ReturnCard() => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
     //public virtual SelectStatus KillCard() => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
-    public virtual SelectStatus SetUnselected() => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
+    public virtual SelectStatus UnselectAutomatically() => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
     protected bool IsAnimating()
     {
         if (animating == null) return false;

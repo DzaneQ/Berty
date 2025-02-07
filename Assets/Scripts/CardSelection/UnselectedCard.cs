@@ -9,13 +9,13 @@ public class UnselectedCard : SelectStatus
         //Debug.Log("Unselecting card: " + card.gameObject.name + "; rotation: " + card.transform.eulerAngles.z);
     }
 
-    public override SelectStatus ChangePosition(bool canSelect)
+    public override SelectStatus ChangePosition(bool isAnimated)
     {
-        if (!canSelect || IsAnimating()) return this;
-        return new SelectedCard(cardTransform, animating);  
+        if (IsAnimating()) return this;
+        return new SelectedCard(cardTransform, animating);
     }
 
-    public override bool IsCardSelected => false;
+    //public override bool IsCardSelected => false;
 
     //public override void SetToBackup()
     //{
@@ -33,9 +33,5 @@ public class UnselectedCard : SelectStatus
     //}
 
 
-    public override SelectStatus SetUnselected() // TODO: Remove this after fixing selection state.
-    {
-        Debug.LogWarning("Unselecting unselected card!");
-        return this;
-    }
+    public override SelectStatus UnselectAutomatically() => this;
 }

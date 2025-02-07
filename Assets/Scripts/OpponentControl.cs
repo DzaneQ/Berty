@@ -133,7 +133,7 @@ public class OpponentControl : MonoBehaviour
 
     private CardSprite PlaceCard(CardImage card)
     {
-        card.ChangeSelection();
+        card.ChangeSelection(true);
         if (dt != null)
         {
             Field field = dt.OpponentPriorityField();
@@ -163,9 +163,9 @@ public class OpponentControl : MonoBehaviour
         for (int i = 0; i < price; i++)
         {
             //Debug.Log("Paying card no. " + i);
-            cm.EnabledCards[i].ChangeSelection();
+            cm.EnabledCards[i].ChangeSelection(true);
         }
-        card.ConfirmPayment(true);
+        card.ConfirmPayment(false);
     }
 
     private List<Field> GetSafestFields()

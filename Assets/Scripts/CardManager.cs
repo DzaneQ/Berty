@@ -208,7 +208,7 @@ public class CardManager : MonoBehaviour
     #region CardSelection
     public void DeselectCards()
     {
-        foreach (CardImage card in SelectedCards()) card.ChangeSelection(true);
+        foreach (CardImage card in SelectedCards()) card.Unselect();
     }
 
     public List<CardImage> SelectedCards()

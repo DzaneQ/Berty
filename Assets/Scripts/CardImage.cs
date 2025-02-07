@@ -41,7 +41,7 @@ public class CardImage : MonoBehaviour
 
     public void Unselect()
     {
-        select = select.SetUnselected();
+        select = select.UnselectAutomatically();
     }
 
     public bool IsCardSelected()
@@ -51,7 +51,9 @@ public class CardImage : MonoBehaviour
 
     public void CardClick()
     {
-        if (Input.GetMouseButtonDown(0)) ChangeSelection();
+        if (!Input.GetMouseButtonDown(0)) return;
+        if (transform.parent.name.Contains("Dead")) ReviveCard();
+        else ChangeSelection();
     }
 
     public void CardFocusOn()
@@ -66,14 +68,12 @@ public class CardImage : MonoBehaviour
 
     public void ChangeSelection(bool ignoreAnimation = false)
     {
-        Debug.Log("Position changing...");
-        //if (!gameObject.activeSelf) ignoreAnimation = true;
-        if (transform.parent.name.Contains("Dead")) ReviveCard();
-        else select = select.ChangePosition(CanSelect() || (select.GetType() == typeof(SelectedCard) && !ignoreAnimation));
+        if (CanSelect()) select = select.ChangePosition(!ignoreAnimation);
     }
 
     public bool CanSelect()
     {
+        if (IsCardSelected()) return true;
         if (Turn.IsItPaymentTime()) return !Turn.CheckOffer();
         if (Turn.IsItMoveTime()) return cardManager.SelectedCard() == null;
         return false;

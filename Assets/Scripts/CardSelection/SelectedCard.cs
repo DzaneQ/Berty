@@ -15,7 +15,7 @@ public class SelectedCard : SelectStatus
         unselectedRotation = cardTransform.eulerAngles;
         Vector3 posOffset = new Vector3(10f, 5f, 0f);
         Vector3 rotOffset = new Vector3(0f, 0f, -15f);
-        if (animating == null)
+        if (animating == null || !cardTransform.parent.gameObject.activeSelf)
         {
             cardTransform.position += posOffset;
             cardTransform.eulerAngles += rotOffset;
@@ -50,8 +50,5 @@ public class SelectedCard : SelectStatus
     //    return returnTable;
     //}
 
-    public override SelectStatus SetUnselected()
-    {
-        return ChangePosition(false);
-    }
+    public override SelectStatus UnselectAutomatically() => ChangePosition(false);
 }

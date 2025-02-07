@@ -556,7 +556,7 @@ public class CardSprite : MonoBehaviour
         }
     }
 
-    private IEnumerator RotateCardCoroutine(int angle, int returnButtonIndex) // BUG: Rotating doesn't ask for payment.
+    private IEnumerator RotateCardCoroutine(int angle, int returnButtonIndex)
     {
         DisableButtons();
         HideBars();
