@@ -9,8 +9,8 @@ public abstract class CardState
     protected CardState(CardSprite sprite)
     {
         card = sprite;
-        if (card.OccupiedField == null) Debug.Log($"Setting state {GetType()} for {card.name}");
-        else Debug.Log($"Setting state {GetType()} for {card.name} on {card.OccupiedField.name}");
+        //if (card.OccupiedField == null) Debug.Log($"Setting state {GetType()} for {card.name}");
+        //else Debug.Log($"Setting state {GetType()} for {card.name} on {card.OccupiedField.name}");
     }
     
     public virtual CardState ActivateCard() => throw new InvalidOperationException($"Invalid method for: {GetType()} in {card.name}");

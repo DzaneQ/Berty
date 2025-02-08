@@ -51,7 +51,7 @@ public partial class Turn : MonoBehaviour
                 return;
             }
             fg.AdjustNewTurn();
-            Debug.Log("Currently: " + value);
+            //Debug.Log("Currently: " + value);
             //cm.DebugPrintCardCollection(value);
             ExecuteAutomaticOpponentTurn();
         }

@@ -26,8 +26,6 @@ public class SelectedCard : SelectStatus
     public override SelectStatus ChangePosition(bool animate)
     {
         if (IsAnimating()) return this;
-        Debug.Log("Attempting to deselect " + animating.name);
-        Debug.Log("Unselect rotation before change: " + unselectedRotation);
         if (!animate || animating == null)
         {
             cardTransform.position = unselectedPosition;

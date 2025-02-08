@@ -765,7 +765,7 @@ public class CardSprite : MonoBehaviour
     }
     public void AddResistance(Character character)
     {
-        Debug.Log($"Adding resistance of {character} to card: {name}");
+        //Debug.Log($"Adding resistance of {character} to card: {name}");
         if (character == null) throw new Exception("Trying to resist null.");
         if (character == Character) throw new Exception("Trying to resist self.");
         if (resistChar.Contains(character)) return;

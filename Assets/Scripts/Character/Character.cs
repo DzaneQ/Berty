@@ -69,9 +69,7 @@ public abstract class Character
     }
     protected void AddSoundEffect(string fileName)
     {
-        Debug.Log($"Sound for {name} null before load? {attackSound == null}");
         attackSound = Resources.Load<AudioClip>("CharacterAttackSfx/" + fileName);
-        Debug.Log($"Sound for {name} null after load? {attackSound == null}");
     }
 
     private bool AreCoordinatesEqual(int[] first, int[] second)

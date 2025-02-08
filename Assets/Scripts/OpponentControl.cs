@@ -62,7 +62,7 @@ public class OpponentControl : MonoBehaviour
 
     private void TryToAttack(out bool isSuccessful)
     {
-        Debug.Log("Attack attempt!");
+        //Debug.Log("Attack attempt!");
         CardSprite attackingCard = BestAttackingCard();
         if (attackingCard != null)
         {

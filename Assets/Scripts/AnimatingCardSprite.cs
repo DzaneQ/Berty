@@ -21,7 +21,7 @@ public class AnimatingCardSprite : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         rotatingAngle = 0;
         coroutineCount = 0;
@@ -102,7 +102,7 @@ public class AnimatingCardSprite : MonoBehaviour
         CoroutineCount++;
         if (sound != null) sound.MoveSound(soundSrc);
         float currentTime = 0;
-        Debug.Log($"Target location for {transform.name}: {targetPosition.x}, {targetPosition.y}, {targetPosition.z}");
+        //Debug.Log($"Target location for {transform.name}: {targetPosition.x}, {targetPosition.y}, {targetPosition.z}");
         for (; targetPosition != transform.position;)
         {
             MoveFrame(ref currentTime, durationSeconds);
@@ -133,7 +133,7 @@ public class AnimatingCardSprite : MonoBehaviour
         yield return StartCoroutine(AnimateBarChange(target, duration));
     }
 
-    private IEnumerator AnimateBarChange(NewBar target, float durationSeconds) // BUG: Negative coroutine count was triggered here!
+    private IEnumerator AnimateBarChange(NewBar target, float durationSeconds)
     {
         CoroutineCount++;
         float currentTime = 0;
@@ -165,6 +165,7 @@ public class AnimatingCardSprite : MonoBehaviour
     }
     #endregion
 
+    #region Sound
     public void PutCardSound()
     {
         if (sound == null) return;
@@ -188,4 +189,5 @@ public class AnimatingCardSprite : MonoBehaviour
         if (sound == null) return;
         sound.ConfirmSound(soundSrc);
     }
+    #endregion
 }

@@ -95,7 +95,6 @@ public class FieldGrid : MonoBehaviour
         {
             if (field.IsAligned(Alignment.None)) continue;
             CardSprite card = field.OccupantCard;
-            Debug.Log($"Card type for {card.name}: {card.GetRole()}");
             if (field.IsAligned(turn.CurrentAlignment))
             {
                 card.ResetAttack();
@@ -311,7 +310,7 @@ public class FieldGrid : MonoBehaviour
             if (!field.IsOccupied()) continue;
             list.Add(field.OccupantCard.Character);
         }
-        Debug.Log("AllInsideCharacters count: " + list.Count);
+        //Debug.Log("AllInsideCharacters count: " + list.Count);
         return list;
     }
     #endregion
