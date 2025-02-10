@@ -46,7 +46,7 @@ internal class AttackingState : CardState
     //    return card.Grid.CurrentStatus.JudgementRevenge == card.OccupiedField.Align;
     //}
 
-    public override CardState SetActive => new ActiveState(card);
+    public override CardState SetActive() => new ActiveState(card);
 
     public override void EnableButtons()
     {

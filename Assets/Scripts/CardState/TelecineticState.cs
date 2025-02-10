@@ -22,7 +22,7 @@ internal class TelecineticState : CardState
         return new NewTransformState(card, buttonIndex, dexterity);
     }
 
-    public override CardState SetActive => new ActiveState(card);
+    public override CardState SetActive() => new ActiveState(card);
 
     public override CardState SetIdle => new IdleState(card);
 

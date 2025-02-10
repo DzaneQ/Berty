@@ -18,7 +18,7 @@
         AddSoundEffect("570804__soundslikewillem__orchestra-hit-2");
     }
 
-    public override void SkillAdjustHealthChange(int value, CardSprite card)
+    public override void SkillAdjustHealthChange(int value, CardSprite card) // BUG: glitchy interaction with cards that move on attack (serferka berta, ronin bert)
     {
         if (card.CardStatus.Health > 0) return;
         CardImage kid = null;
@@ -30,11 +30,12 @@
             break;
         }
         if (kid == null) return;
-        card.CardManager.RemoveCharacter(kid.Character); // BUG: It throws error!
+        card.CardManager.RemoveCharacter(kid.Character);
         foreach (Field field in card.Grid.Fields)
             if (field.IsOccupied() && field.OccupantCard.CanUseSkill())
                 field.OccupantCard.Character.SkillOnOtherCardDeath(field.OccupantCard, card);
         card.UpdateCard(kid);
+        if (card.CanUseSkill()) card.Character.SkillOnNewCard(card);
     }
 
     private bool IsEnemyCard(Character character, CardSprite card)

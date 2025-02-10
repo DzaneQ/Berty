@@ -8,6 +8,7 @@ public class CardBar : MonoBehaviour
     private Transform barFill;
     private SpriteRenderer fillRend;
     private SpriteRenderer outlineRend;
+    //private int statValue;
 
     void Awake()
     {
@@ -15,6 +16,7 @@ public class CardBar : MonoBehaviour
         barFill = transform.GetChild(0);
         fillRend = barFill.GetComponent<SpriteRenderer>();
         outlineRend = barFill.parent.GetComponent<SpriteRenderer>();
+        //statValue = ReadStat();
         //Debug.Log("Max width value: " + maxWidth);
     }
 
@@ -81,6 +83,31 @@ public class CardBar : MonoBehaviour
         }
     }
 
+    /*private void NewStatAdjustment()
+    {
+        switch (name)
+        {
+            case "StrengthBar":
+                card.NewStrengthAdjustment(statValue);
+                break;
+
+            case "PowerBar":
+                card.NewPowerAdjustment(statValue);
+                break;
+
+            case "DexterityBar":
+                card.NewDexterityAdjustment(statValue);
+                break;
+
+            case "HealthBar":
+                card.NewHealthAdjustment(statValue);
+                break;
+
+            default:
+                throw new System.Exception("Unknown stat for bar: " + name);
+        }
+    }*/
+
     public IEnumerator UpdateBar(AnimatingCardSprite animation)
     {
         Vector2 barSize = fillRend.size;
@@ -91,6 +118,7 @@ public class CardBar : MonoBehaviour
         float startOutlineWidth = .165f;
         float unitWidth = 2.66f;
         //float maxWidth = 16.36f;
+        //if (oldWidth != startOutlineWidth + (unitWidth * statValue)) Debug.LogWarning("Old value doesn't match the width!");
         barSize.x = startOutlineWidth + (unitWidth * stat);
         /*switch (stat)
         {
@@ -112,10 +140,9 @@ public class CardBar : MonoBehaviour
         }*/
         //Debug.Log($"Checking {name}: {stat} for card {barFill.parent.parent.name}. Changing width from {oldWidth} to {barSize.x}");
         yield return StartCoroutine(MoveAndScaleBar(barSize.x - oldWidth, barSize, animation));
-        if (stat > 0) yield break;
-        if (name == "PowerBar") card.ZeroPowerAdjustment();
-        else if (name == "HealthBar") card.ZeroHealthAdjustment();
-        yield return null;
+        //NewStatAdjustment();
+        //statValue = stat;
+        //yield return null;
     }
 
     public void HideBar()

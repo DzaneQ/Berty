@@ -39,7 +39,7 @@ internal class ActiveState : CardState
     //    return card.Grid.CurrentStatus.JudgementRevenge == card.OccupiedField.Align;
     //}
 
-    public override CardState SetTargetable => new TargetState(card);
+    public override CardState SetTargetable() => new TargetState(card);
 
     public override CardState SetIdle => new IdleState(card);
 

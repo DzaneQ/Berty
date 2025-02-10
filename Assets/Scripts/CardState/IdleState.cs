@@ -21,13 +21,32 @@ internal class IdleState : CardState
         return false;
     }
 
-    public override CardState SetActive => new ActiveState(card);
+    public override CardState SetActive()
+    {
+        if (HasLostControl()) return this;
+        return new ActiveState(card);
+    }
 
-    public override CardState SetTelecinetic => new TelecineticState(card);
+    public override CardState SetTelecinetic()
+    {
+        if (HasLostControl()) return this;
+        return new TelecineticState(card);
+    }
 
-    public override CardState SetTargetable => new TargetState(card);
+    public override CardState SetTargetable()
+    {
+        if (HasLostControl()) return this;
+        return new TargetState(card);
+    }
 
     public override CardState SetIdle => this;
 
     public override void EnableButtons() { }
+
+    private bool HasLostControl()
+    {
+        if (card.IsDead()) return true;
+        if (card.HasLostWill()) return true;
+        return false;
+    }
 }

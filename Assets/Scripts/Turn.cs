@@ -71,7 +71,8 @@ public partial class Turn : MonoBehaviour
     {
         if (Debug.isDebugBuild) Application.targetFrameRate = 10;
         cm = GetComponent<CardManager>();
-        oc = GetComponent<OpponentControl>();
+        OpponentControl tempOC = GetComponent<OpponentControl>();
+        if (tempOC != null && tempOC.enabled) oc = tempOC;
         fg = FindAnyObjectByType<FieldGrid>();
         ct = FindAnyObjectByType<CameraMechanics>();
         ss = GetComponent<SoundSystem>();

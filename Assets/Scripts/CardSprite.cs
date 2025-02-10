@@ -181,9 +181,10 @@ public class CardSprite : MonoBehaviour
         ClearCardResistance();
         if (occupiedField.IsAligned(Grid.CurrentStatus.Revolution) && GetRole() == Role.Special) AdvanceStrength(1);
         if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
+        Grid.AttackNewStand(occupiedField);
+        if (IsDead()) return;
         if (CanUseSkill()) Character.SkillOnNewCard(this);
         TakeNeighborsEffect();
-        Grid.AttackNewStand(occupiedField);
     }
 
     public void CancelCard()
@@ -328,7 +329,7 @@ public class CardSprite : MonoBehaviour
         if (!Character.CanAffectStrength(this, spellSource)) return;
         if (Character.GlobalSkillResistance() && spellSource == null) return;
         cardStatus.TempStrength += value;
-        UpdateBar(0, true);
+        StartCoroutine(AdvanceStrengthCoroutine(value, spellSource));
     }
 
     public void AdvanceStrength(int value, CardSprite spellSource = null)
@@ -337,8 +338,18 @@ public class CardSprite : MonoBehaviour
         if (Character.GlobalSkillResistance() && spellSource == null) return;
         if (!Character.CanAffectStrength(this, spellSource)) return;
         cardStatus.Strength += value;
-        if (CanUseSkill()) Character.SkillAdjustStrengthChange(value, this);
-        UpdateBar(0, true);
+        StartCoroutine(AdvanceStrengthCoroutine(value, spellSource));     
+    }
+
+    private IEnumerator AdvanceStrengthCoroutine(int value, CardSprite spellSource)
+    {
+        yield return StartCoroutine(UpdateBar(0, true, true));
+        NewStrengthAdjustment(value);
+    }
+
+    public void NewStrengthAdjustment(int valueChange)
+    {
+        if (CanUseSkill()) Character.SkillAdjustStrengthChange(valueChange, this);
     }
 
     public void AdvanceTempPower(int value, CardSprite spellSource = null)
@@ -346,7 +357,7 @@ public class CardSprite : MonoBehaviour
         if (!Character.CanAffectPower(this, spellSource)) return;
         if (Character.GlobalSkillResistance() && spellSource == null) return;
         cardStatus.TempPower += value;
-        UpdateBar(1, true);
+        StartCoroutine(AdvancePowerCoroutine(value, spellSource));
     }
 
     public void AdvancePower(int value, CardSprite spellSource = null)
@@ -355,13 +366,24 @@ public class CardSprite : MonoBehaviour
         if (!Character.CanAffectPower(this, spellSource)) return;
         if (Character.GlobalSkillResistance() && spellSource == null) return;
         cardStatus.Power += value;
-        if (CanUseSkill()) Character.SkillAdjustPowerChange(value, this, spellSource);
-        UpdateBar(1, true);
+        StartCoroutine(AdvancePowerCoroutine(value, spellSource));
     }
 
-    public void ZeroPowerAdjustment()
+    private IEnumerator AdvancePowerCoroutine(int value, CardSprite spellSource)
     {
-        if (cardStatus.Power <= 0) SwitchSides();
+        yield return StartCoroutine(UpdateBar(1, true, true));
+        NewPowerAdjustment(value, spellSource);
+    }
+
+    public void NewPowerAdjustment(int valueChange, CardSprite spellSource)
+    {
+        if (CanUseSkill()) Character.SkillAdjustPowerChange(valueChange, this, spellSource);
+        if (HasLostWill()) SwitchSides();
+    }
+
+    public bool HasLostWill()
+    {
+        return cardStatus.Power <= 0;
     }
 
     private void SwitchSides()
@@ -405,10 +427,20 @@ public class CardSprite : MonoBehaviour
         if (spellSource != null && resistChar.Contains(spellSource.Character)) return;
         if (spellSource == null) Debug.LogWarning($"No spell source affecting {Character.Name}");
         cardStatus.Dexterity += value;
-        if (CanUseSkill()) Character.SkillAdjustDexterityChange(value, this);
+        StartCoroutine(AdvanceDexterityCoroutine(value));
+    }
+
+    private IEnumerator AdvanceDexterityCoroutine(int value)
+    {
+        yield return StartCoroutine(UpdateBar(2, true, true));
+        NewDexterityAdjustment(value);
+    }
+
+    public void NewDexterityAdjustment(int valueChange)
+    {
+        if (CanUseSkill()) Character.SkillAdjustDexterityChange(valueChange, this);
         if (cardStatus.Dexterity <= 0) cardStatus.IsTired = true;
         if (cardStatus.Dexterity >= Character.Dexterity) cardStatus.IsTired = false;
-        UpdateBar(2, true);
     }
 
     public void RegenerateDexterity()
@@ -421,16 +453,23 @@ public class CardSprite : MonoBehaviour
     {
         if (spellSource != null && resistChar.Contains(spellSource.Character)) return;
         cardStatus.Health += value;
-        if (CanUseSkill()) Character.SkillAdjustHealthChange(value, this);
-        UpdateBar(3, true);
+        StartCoroutine(AdvanceHealthCoroutine(value));
     }
 
-    public void ZeroHealthAdjustment()
+    private IEnumerator AdvanceHealthCoroutine(int value)
     {
+        yield return StartCoroutine(UpdateBar(3, true, true));
+        NewHealthAdjustment(value);
+        yield return null;
+    }
+
+    public void NewHealthAdjustment(int valueChange)
+    {
+        if (CanUseSkill()) Character.SkillAdjustHealthChange(valueChange, this);
         if (IsDead()) KillCard();
     }
 
-    private bool IsDead()
+    public bool IsDead()
     {
         return cardStatus.Health <= 0;
     }
@@ -450,13 +489,16 @@ public class CardSprite : MonoBehaviour
     #region BarsDisplay
     public void UpdateBars(bool animate)
     {
-        for (int i = 0; i < cardBar.Length; i++) UpdateBar(i, animate);
+        for (int i = 0; i < cardBar.Length; i++) StartCoroutine(UpdateBar(i, animate, true));
     }
 
-    private void UpdateBar(int index, bool animate)
+    private IEnumerator UpdateBar(int index, bool animate, bool waitUntilFinished = false)
     {
-        if (animate) StartCoroutine(cardBar[index].UpdateBar(animating));
-        else StartCoroutine(cardBar[index].UpdateBar(null));
+        if (!gameObject.activeSelf) animate = false;
+        if (!animate) StartCoroutine(cardBar[index].UpdateBar(null));
+        else if (!waitUntilFinished) StartCoroutine(cardBar[index].UpdateBar(animating));
+        else yield return StartCoroutine(cardBar[index].UpdateBar(animating));
+        yield return null;
     }
 
     public void HideBars()
@@ -642,12 +684,12 @@ public class CardSprite : MonoBehaviour
 
     public void SetTelecinetic()
     {
-        state = state.SetTelecinetic;
+        state = state.SetTelecinetic();
     }
 
     public void SetTargetable()
     {
-        state = state.SetTargetable;
+        state = state.SetTargetable();
     }
     #endregion
 
@@ -754,7 +796,7 @@ public class CardSprite : MonoBehaviour
     public void SetActive()
     {
         //Debug.Log($"Set active for card on field: {occupiedField.GetX()}, {occupiedField.GetY()}");
-        if (!cardStatus.IsTired) state = state.SetActive;
+        if (!cardStatus.IsTired) state = state.SetActive();
         else state = state.SetIdle;
     }
 

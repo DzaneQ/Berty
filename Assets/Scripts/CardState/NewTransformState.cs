@@ -42,9 +42,9 @@ internal class NewTransformState : CardState
         return true;
     }
 
-    public override CardState SetActive => new ActiveState(card);
+    public override CardState SetActive() => new ActiveState(card);
 
-    public override CardState SetTelecinetic => new TelecineticState(card);
+    public override CardState SetTelecinetic() => new TelecineticState(card);
 
     private bool IsMoving()
     {

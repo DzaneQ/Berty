@@ -44,7 +44,7 @@ internal class NewCardState : CardState
         return true;
     }
 
-    public override CardState SetActive => new ActiveState(card);
+    public override CardState SetActive() => new ActiveState(card);
 
     public override void EnableButtons()
     {

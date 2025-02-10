@@ -17,9 +17,9 @@ public class TargetState : CardState
         card.Grid.Turn.ExecuteAutomaticOpponentTurn();
     }
 
-    public override CardState SetActive => new ActiveState(card);
+    public override CardState SetActive() => new ActiveState(card);
 
-    public override CardState SetTelecinetic => new TelecineticState(card);
+    public override CardState SetTelecinetic() => new TelecineticState(card);
 
     public override CardState SetIdle => new IdleState(card);
 

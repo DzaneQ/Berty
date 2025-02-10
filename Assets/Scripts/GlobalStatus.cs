@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-public class GlobalStatus
+public class GlobalStatus // TODO: Adjust switching sides. Maybe put characters here.
 {
     private FieldGrid grid;
     private List<Alignment> TakeNextTurn;
