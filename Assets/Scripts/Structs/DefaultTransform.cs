@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct DefaultTransform
+namespace Berty.Structs
 {
-    public Vector3 defaultPosition;
-    public Quaternion defaultRotation;
-
-    public DefaultTransform(Transform obj)
+    public struct DefaultTransform
     {
-        defaultPosition = obj.position;
-        defaultRotation = obj.rotation;
+        public Vector3 defaultPosition;
+        public Quaternion defaultRotation;
+
+        public DefaultTransform(Transform obj)
+        {
+            defaultPosition = obj.position;
+            defaultRotation = obj.rotation;
+        }
     }
 }

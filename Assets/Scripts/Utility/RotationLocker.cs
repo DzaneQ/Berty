@@ -2,19 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotationLocker : MonoBehaviour
+namespace Berty.Utility
 {
-    private Quaternion rotation;
-    private Vector3 setRotation = new Vector3(90, 0, 0);
-
-    void Start()
+    public class RotationLocker : MonoBehaviour
     {
-        rotation = Quaternion.Euler(setRotation);
-    }
+        private Quaternion rotation;
+        private Vector3 setRotation = new Vector3(90, 0, 0);
 
-    // Update is called once per frame
-    void LateUpdate()
-    {
-        transform.rotation = rotation;
+        void Start()
+        {
+            rotation = Quaternion.Euler(setRotation);
+        }
+
+        // Update is called once per frame
+        void LateUpdate()
+        {
+            transform.rotation = rotation;
+        }
     }
 }

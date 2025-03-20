@@ -1,198 +1,202 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Berty.CardSprite;
+using Berty.Field;
+using Berty.Field.Grid;
+using Berty.Gameplay;
 using UnityEngine;
 
-public class CameraMechanics : MonoBehaviour
+namespace Berty.Display
 {
-    float edgeWidth = 10f;
-    float rotManSpeed = 90f;
-    float rotAutoMultiplier = 0.25f;
-
-    private Field[] fields;
-    private CardSpriteBehaviour selectedCard;
-    Camera cam;
-    private Turn turn;
-
-    private Field targetField;
-    private Field lastTarget;
-
-    private Color attackColor = new Color(1f, 0.55f, 0f, 1f);
-    private Color blockColor = new Color(0f, 0.35f, 0.8f, 1f);
-
-    private Color highlightAttackColor;
-    private Color highlightBlockColor;
-
-    public CardSpriteBehaviour FocusedCard => selectedCard;
-
-
-    private void Awake()
+    public class CameraMechanics : MonoBehaviour
     {
-        cam = GetComponent<Camera>();
-        AssignFields();
-    }
+        float edgeWidth = 10f;
+        float rotManSpeed = 90f;
+        float rotAutoMultiplier = 0.25f;
 
-    private void Start()
-    {
-        AdjustHighlightSaturation(0.8f);
-    }
+        private FieldBehaviour[] fields;
+        private CardSpriteBehaviour selectedCard;
+        Camera cam;
+        private Turn turn;
 
-    void Update()
-    {
-        HandleCameraTransform();
-        HandleCardSpriteFocus();
-    }
+        private FieldBehaviour targetField;
+        private FieldBehaviour lastTarget;
 
-    private void AssignFields()
-    {
-        FieldGrid fg = (FieldGrid)FindFirstObjectByType(typeof(FieldGrid));
-        turn = fg.Turn;
-        fields = new Field[9];
-        if (fields.Length != fg.transform.childCount) Debug.LogError("Number of fields is not equal to number of child count!");
-        for (int index = 0; index < fields.Length; index++) fields[index] = fg.transform.GetChild(index).GetComponent<Field>();
-    }
+        private Color attackColor = new Color(1f, 0.55f, 0f, 1f);
+        private Color blockColor = new Color(0f, 0.35f, 0.8f, 1f);
 
-    private void AdjustHighlightSaturation(float saturation)
-    {
-        highlightAttackColor = new Color(
-            Saturate(attackColor.r, saturation), Saturate(attackColor.g, saturation), Saturate(attackColor.b, saturation));
-        highlightBlockColor = new Color(
-            Saturate(blockColor.r, saturation), Saturate(blockColor.g, saturation), Saturate(blockColor.b, saturation));
-        //Debug.Log($"Highlight attack color values: {attackColor.r}, {attackColor.g}, {attackColor.b}");
-    }
-    
-    private float Saturate(float colorValue, float saturation)
-    {
-        //Debug.Log("Saturate return value: " + ((255 - colorValue) * (1 - saturation) + colorValue));
-        return ((1 - colorValue) * (1 - saturation) + colorValue);
-    }
+        private Color highlightAttackColor;
+        private Color highlightBlockColor;
 
-    private void HandleCameraTransform()
-    {
-        if (Input.mousePosition.x <= edgeWidth) RotateCameraCounterclockwise(rotManSpeed);
-        else if (Input.mousePosition.x >= Screen.width - edgeWidth) RotateCameraClockwise(rotManSpeed);
-        else RotateAutomatically();
-    }
+        public CardSpriteBehaviour FocusedCard => selectedCard;
 
-    private void RotateCameraCounterclockwise(float rotSpeed)
-    {
-        transform.Rotate(Vector3.back, rotSpeed * Time.deltaTime);
-    }
 
-    private void RotateCameraClockwise(float rotSpeed)
-    {
-        transform.Rotate(Vector3.forward, rotSpeed * Time.deltaTime);
-    }
-
-    private void RotateAutomatically()
-    {
-        float currentAngle = AngleValue();
-        if (Mathf.Approximately(currentAngle % 90, 0)) return;
-        float rightAngle = RightAngleValue();
-        Vector3 targetAngles = transform.localEulerAngles;
-        if (Mathf.Abs(currentAngle - rightAngle) < rotManSpeed * rotAutoMultiplier) targetAngles.z = rightAngle;
-        else targetAngles.z = (currentAngle - rightAngle) * (1 - rotAutoMultiplier) + rightAngle;
-        transform.localEulerAngles = targetAngles;
-    }
-
-    public float RightAngleValue()
-    { 
-        float cameraRotation = AngleValue();
-        //Debug.Log("Camera rotation: " + cameraRotation);
-        return Mathf.Round(cameraRotation / 90) * 90;
-    }
-
-    private float AngleValue() => transform.localEulerAngles.z;
-
-    private void HandleCardSpriteFocus()
-    {
-        if (turn.InteractableDisabled) return;
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        int fieldIndex;
-        if (Physics.Raycast(ray, out hit) && IsValidField(hit, out fieldIndex))
+        private void Awake()
         {
-            targetField = fields[fieldIndex];
-            if (lastTarget == null) lastTarget = targetField;
-            if (targetField != lastTarget || selectedCard == null) SetTargets(targetField);
-            //Debug.DrawRay(transform.position, hit.point - transform.position, Color.blue);
-            lastTarget = targetField;
+            cam = GetComponent<Camera>();
+            AssignFields();
         }
-        else
+
+        private void Start()
         {
-            if (targetField == null)
+            AdjustHighlightSaturation(0.8f);
+        }
+
+        void Update()
+        {
+            HandleCameraTransform();
+            HandleCardSpriteFocus();
+        }
+
+        private void AssignFields()
+        {
+            FieldGrid fg = (FieldGrid)FindFirstObjectByType(typeof(FieldGrid));
+            turn = fg.Turn;
+            fields = new FieldBehaviour[9];
+            if (fields.Length != fg.transform.childCount) Debug.LogError("Number of fields is not equal to number of child count!");
+            for (int index = 0; index < fields.Length; index++) fields[index] = fg.transform.GetChild(index).GetComponent<FieldBehaviour>();
+        }
+
+        private void AdjustHighlightSaturation(float saturation)
+        {
+            highlightAttackColor = new Color(
+                Saturate(attackColor.r, saturation), Saturate(attackColor.g, saturation), Saturate(attackColor.b, saturation));
+            highlightBlockColor = new Color(
+                Saturate(blockColor.r, saturation), Saturate(blockColor.g, saturation), Saturate(blockColor.b, saturation));
+            //Debug.Log($"Highlight attack color values: {attackColor.r}, {attackColor.g}, {attackColor.b}");
+        }
+
+        private float Saturate(float colorValue, float saturation)
+        {
+            //Debug.Log("Saturate return value: " + ((255 - colorValue) * (1 - saturation) + colorValue));
+            return (1 - colorValue) * (1 - saturation) + colorValue;
+        }
+
+        private void HandleCameraTransform()
+        {
+            if (Input.mousePosition.x <= edgeWidth) RotateCameraCounterclockwise(rotManSpeed);
+            else if (Input.mousePosition.x >= Screen.width - edgeWidth) RotateCameraClockwise(rotManSpeed);
+            else RotateAutomatically();
+        }
+
+        private void RotateCameraCounterclockwise(float rotSpeed)
+        {
+            transform.Rotate(Vector3.back, rotSpeed * Time.deltaTime);
+        }
+
+        private void RotateCameraClockwise(float rotSpeed)
+        {
+            transform.Rotate(Vector3.forward, rotSpeed * Time.deltaTime);
+        }
+
+        private void RotateAutomatically()
+        {
+            float currentAngle = AngleValue();
+            if (Mathf.Approximately(currentAngle % 90, 0)) return;
+            float rightAngle = RightAngleValue();
+            Vector3 targetAngles = transform.localEulerAngles;
+            if (Mathf.Abs(currentAngle - rightAngle) < rotManSpeed * rotAutoMultiplier) targetAngles.z = rightAngle;
+            else targetAngles.z = (currentAngle - rightAngle) * (1 - rotAutoMultiplier) + rightAngle;
+            transform.localEulerAngles = targetAngles;
+        }
+
+        public float RightAngleValue()
+        {
+            float cameraRotation = AngleValue();
+            //Debug.Log("Camera rotation: " + cameraRotation);
+            return Mathf.Round(cameraRotation / 90) * 90;
+        }
+
+        private float AngleValue() => transform.localEulerAngles.z;
+
+        private void HandleCardSpriteFocus()
+        {
+            if (turn.InteractableDisabled) return;
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            int fieldIndex;
+            if (Physics.Raycast(ray, out hit) && IsValidField(hit, out fieldIndex))
             {
-                if (lastTarget != null) Debug.LogError("Last target not null with target renderer being null");
-                return;
+                targetField = fields[fieldIndex];
+                if (lastTarget == null) lastTarget = targetField;
+                if (targetField != lastTarget || selectedCard == null) SetTargets(targetField);
+                //Debug.DrawRay(transform.position, hit.point - transform.position, Color.blue);
+                lastTarget = targetField;
             }
-            targetField = null;
-            lastTarget = null;
-            ClearTarget();
-        }
-    }
-
-    public void SetTargets(Field sourceField)
-    {
-        if (sourceField.OccupantCard == selectedCard) return;
-        if (selectedCard != null) ClearTarget();
-        selectedCard = sourceField.OccupantCard;
-        selectedCard.EnableButtons();
-        selectedCard.ShowLookupCard(false);
-        bool riposte = false;
-        foreach (int[] distance in selectedCard.Character.AttackRange)
-        {
-            Field targetField = selectedCard.GetTargetField(distance);
-            if (targetField == null) continue;
-            bool block = false;
-            if (targetField.IsOccupied())
+            else
             {
-                CardSpriteBehaviour targetCard = targetField.OccupantCard;
-                if (!riposte &&
-                    targetCard.Character.CanRiposte(targetCard.GetFieldDistance(sourceField))) riposte = true;
-                if (targetCard.Character.CanBlock(targetCard.GetFieldDistance(sourceField))) block = true;
+                if (targetField == null)
+                {
+                    if (lastTarget != null) Debug.LogError("Last target not null with target renderer being null");
+                    return;
+                }
+                targetField = null;
+                lastTarget = null;
+                ClearTarget();
             }
-            HighlightTarget(targetField, block);
         }
-        if (riposte) HighlightTarget(sourceField);
-    }
 
-    private void HighlightTarget(Field target, bool blockState = false)
-    {
-        target.HighlightField(blockState ? highlightBlockColor : highlightAttackColor);
-    }
-
-    public void ClearTarget()
-    {
-        if (selectedCard == null) return;
-        foreach (Field field in fields)
+        public void SetTargets(FieldBehaviour sourceField)
         {
-            //field.FieldOutline.enabled = false;
-            field.UnhighlightField();
+            if (sourceField.OccupantCard == selectedCard) return;
+            if (selectedCard != null) ClearTarget();
+            selectedCard = sourceField.OccupantCard;
+            selectedCard.EnableButtons();
+            selectedCard.ShowLookupCard(false);
+            bool riposte = false;
+            foreach (int[] distance in selectedCard.Character.AttackRange)
+            {
+                FieldBehaviour targetField = selectedCard.GetTargetField(distance);
+                if (targetField == null) continue;
+                bool block = false;
+                if (targetField.IsOccupied())
+                {
+                    CardSpriteBehaviour targetCard = targetField.OccupantCard;
+                    if (!riposte &&
+                        targetCard.Character.CanRiposte(targetCard.GetFieldDistance(sourceField))) riposte = true;
+                    if (targetCard.Character.CanBlock(targetCard.GetFieldDistance(sourceField))) block = true;
+                }
+                HighlightTarget(targetField, block);
+            }
+            if (riposte) HighlightTarget(sourceField);
         }
-        turn.CM.HideLookupCard(false);
-        selectedCard.DisableButtons();
-        selectedCard = null;
-    }
 
-    private bool IsValidField(RaycastHit hit, out int index)
-    {
-        Transform targetObject = hit.transform;
-        index = -1;
-        for (int i = 0; i < fields.Length; i++)
+        private void HighlightTarget(FieldBehaviour target, bool blockState = false)
         {
-            if (!IsFieldTargeted(fields[i], targetObject)) continue;
-            index = i;
-            return fields[i].OccupantCard.gameObject.activeSelf && !fields[i].OccupantCard.IsAnimating();
+            target.HighlightField(blockState ? highlightBlockColor : highlightAttackColor);
         }
-        return false;
-    }
 
-    private bool IsFieldTargeted(Field field, Transform targetTransform)
-    {
-        if (field.transform == targetTransform) return true;
-        if (field.OccupantCard.transform == targetTransform) return true;
-        if (targetTransform.parent != null && targetTransform.parent.parent != null
-            && field.OccupantCard.transform == targetTransform.parent.parent) return true;
-        return false;
+        public void ClearTarget()
+        {
+            if (selectedCard == null) return;
+            foreach (FieldBehaviour field in fields)
+            {
+                //field.FieldOutline.enabled = false;
+                field.UnhighlightField();
+            }
+            turn.CM.HideLookupCard(false);
+            selectedCard.DisableButtons();
+            selectedCard = null;
+        }
+
+        private bool IsValidField(RaycastHit hit, out int index)
+        {
+            Transform targetObject = hit.transform;
+            index = -1;
+            for (int i = 0; i < fields.Length; i++)
+            {
+                if (!IsFieldTargeted(fields[i], targetObject)) continue;
+                index = i;
+                return fields[i].OccupantCard.gameObject.activeSelf && !fields[i].OccupantCard.IsAnimating();
+            }
+            return false;
+        }
+
+        private bool IsFieldTargeted(FieldBehaviour field, Transform targetTransform)
+        {
+            if (field.transform == targetTransform) return true;
+            if (field.OccupantCard.transform == targetTransform) return true;
+            if (targetTransform.parent != null && targetTransform.parent.parent != null
+                && field.OccupantCard.transform == targetTransform.parent.parent) return true;
+            return false;
+        }
     }
 }

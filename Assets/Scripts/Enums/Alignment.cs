@@ -1,6 +1,9 @@
-public enum Alignment
+namespace Berty.Enums
 {
-    None,
-    Player,
-    Opponent
+    public enum Alignment
+    {
+        None,
+        Player,
+        Opponent
+    }
 }

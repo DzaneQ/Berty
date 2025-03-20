@@ -1,7 +1,10 @@
-﻿public enum Step
+﻿namespace Berty.Enums
 {
-    Move,
-    //Selection,
-    Payment,
-    Special
+    public enum Step
+    {
+        Move,
+        //Selection,
+        Payment,
+        Special
+    }
 }

@@ -1,376 +1,385 @@
+using Berty.CardSprite;
+using Berty.Characters.Data;
+using Berty.Enums;
+using Berty.Field;
+using Berty.Gameplay;
+using Berty.Structs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FieldGrid : MonoBehaviour
+namespace Berty.Field.Grid
 {
-    [SerializeField] private Material defaultMaterial;
-    [SerializeField] private Material player;
-    [SerializeField] private Material opponent;
-
-    [SerializeField] private Material defaultAttacked;
-    //[SerializeField] private Material playerAttacked;
-    //[SerializeField] private Material opponentAttacked;
-
-    private Turn turn;
-    private Field[] fields;
-    private DefaultTransform cardOnBoard;
-    private Color defaultColor;
-    private GlobalStatus temporaryStatuses;
-    private CardSpriteBehaviour backupCard;
-
-    public Turn Turn => turn;
-    public Field[] Fields => fields;
-    public GlobalStatus CurrentStatus => temporaryStatuses;
-
-    private void Awake()
+    public class FieldGrid : MonoBehaviour
     {
-        turn = FindObjectOfType<Turn>();
-    }
+        [SerializeField] private Material defaultMaterial;
+        [SerializeField] private Material player;
+        [SerializeField] private Material opponent;
 
-    private void Start()
-    {
-        GridInitialization init = GetComponent<GridInitialization>();
-        temporaryStatuses = new GlobalStatus(this);
-        init.InitializeFields(out fields);
-        init.InitializeDefaultCardTransform(out cardOnBoard, out defaultColor);
-        backupCard = init.InitializeBackupCard();
-        Destroy(init);
-    }
+        [SerializeField] private Material defaultAttacked;
+        //[SerializeField] private Material playerAttacked;
+        //[SerializeField] private Material opponentAttacked;
 
-    #region SingleFieldRead
-    public Material GetMaterial(Alignment alignment, bool underAttack)
-    {
-        switch (alignment)
+        private Turn turn;
+        private FieldBehaviour[] fields;
+        private DefaultTransform cardOnBoard;
+        private Color defaultColor;
+        private GlobalStatus temporaryStatuses;
+        private CardSpriteBehaviour backupCard;
+
+        public Turn Turn => turn;
+        public FieldBehaviour[] Fields => fields;
+        public GlobalStatus CurrentStatus => temporaryStatuses;
+
+        private void Awake()
         {
-            case Alignment.Player: return player;
-            case Alignment.Opponent: return opponent;
-            default: return underAttack ? defaultAttacked : defaultMaterial;
+            turn = FindObjectOfType<Turn>();
         }
-    }
 
-    public float GetDefaultAngle()
-    {
-        return cardOnBoard.defaultRotation.eulerAngles.z;
-    }
-    #endregion
-
-    #region SingleFieldAction
-    public void CancelCard()
-    {
-        foreach (Field field in fields)
+        private void Start()
         {
-            if (!field.IsOccupied()) continue;
-            if (field.OccupantCard.CancelDecision()) return;
+            GridInitialization init = GetComponent<GridInitialization>();
+            temporaryStatuses = new GlobalStatus(this);
+            init.InitializeFields(out fields);
+            init.InitializeDefaultCardTransform(out cardOnBoard, out defaultColor);
+            backupCard = init.InitializeBackupCard();
+            Destroy(init);
         }
-    }
 
-    public void ResetCardTransform(Transform cardSprite)
-    {
-        cardSprite.localPosition = cardOnBoard.defaultPosition;
-        cardSprite.localRotation = cardOnBoard.defaultRotation;
-    }
-
-    public void UnhighlightCard(SpriteRenderer cardRenderer)
-    {
-        cardRenderer.color = defaultColor;
-    }
-
-    public void AttackNewStand(Field targetField)
-    {
-        int targetPower = targetField.OccupantCard.CardStatus.Power;
-        foreach (Field field in fields)
+        #region SingleFieldRead
+        public Material GetMaterial(Alignment alignment, bool underAttack)
         {
-            if (field.IsAligned(Alignment.None)) continue;
-            if (field.IsAligned(turn.CurrentAlignment)) continue;
-            if (field.OccupantCard.CardStatus.Power > targetPower) field.OccupantCard.TryToAttackTarget(targetField);
-        }
-    }
-    #endregion
-
-    public void AdjustNewTurn() // Can be unstable due to unclear priorities.
-    {  
-        foreach (Field field in fields)
-        {
-            if (field.IsAligned(Alignment.None)) continue;
-            CardSpriteBehaviour card = field.OccupantCard;
-            if (field.IsAligned(turn.CurrentAlignment))
+            switch (alignment)
             {
-                card.ResetAttack();
-                card.RegenerateDexterity();
+                case Alignment.Player: return player;
+                case Alignment.Opponent: return opponent;
+                default: return underAttack ? defaultAttacked : defaultMaterial;
             }
-            card.ProgressTemporaryStats();
-            if (!card.CanUseSkill()) continue;
-            card.Character.SkillOnNewTurn(field.OccupantCard);
         }
-        temporaryStatuses.AdjustNewTurn(turn.CurrentAlignment);
-        UpdateCardStates();
-    }
 
-    #region StateControl
-    public void UpdateCardStates()
-    {
-        if (!Turn.IsItMoveTime()) return;
-        foreach (Field field in fields)
+        public float GetDefaultAngle()
         {
-            if (field.IsOpposed(turn.CurrentAlignment) && field.OccupantCard.CanBeTelecinetic()) field.OccupantCard.SetTelecinetic();
-            if (!field.IsAligned(turn.CurrentAlignment)) continue;
-            field.OccupantCard.SetActive();
+            return cardOnBoard.defaultRotation.eulerAngles.z;
         }
-    }
+        #endregion
 
-    public void MakeAllStatesIdle(Field exceptionField = null)
-    {
-        foreach (Field field in fields)
+        #region SingleFieldAction
+        public void CancelCard()
         {
-            if (!field.IsOccupied()) continue;
-            if (field == exceptionField) continue;
-            //if (field.IsAligned(turn.CurrentAlignment))
-            field.OccupantCard.SetIdle();
+            foreach (FieldBehaviour field in fields)
+            {
+                if (!field.IsOccupied()) continue;
+                if (field.OccupantCard.CancelDecision()) return;
+            }
         }
-    }
-    #endregion
 
-    #region FieldRead
-    public Field GetField(int x, int y)
-    {
-        foreach (Field field in fields)
+        public void ResetCardTransform(Transform cardSprite)
         {
-            if (field.GetX() != x) continue;
-            if (field.GetY() != y) continue;
-            //Debug.Log("Got x=" + x + "; y=" + y);
-            return field;
+            cardSprite.localPosition = cardOnBoard.defaultPosition;
+            cardSprite.localRotation = cardOnBoard.defaultRotation;
         }
-        //Debug.Log("Got x=" + x + "; y=" + y + "as null!");
-        return null;
-    }
 
-    public int[] GetRelativeCoordinates(int x, int y, float angle = 0)
-    {
-        int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
-        int cosinus = (int)Math.Round(Math.Cos(angle / 180 * Math.PI));
-        int[] relCoord = new int[2];
-        relCoord[0] = cosinus * x + sinus * y;
-        relCoord[1] = cosinus * y - sinus * x;
-        return relCoord;
-    }
-
-    public Field GetRelativeField(int x, int y, float angle = 0)
-    {
-        int[] relCoord = GetRelativeCoordinates(x, y, angle);
-        return GetField(relCoord[0], relCoord[1]);
-    }
-
-    public List<Field> AlignedFields(Alignment alignment, bool countBackup = false)
-    {
-        List<Field> alignedFields = new List<Field>();
-        foreach (Field field in fields)
+        public void UnhighlightCard(SpriteRenderer cardRenderer)
         {
-            if (!field.IsAligned(alignment)) continue;
-            alignedFields.Add(field);
-            if (countBackup && field.AreThereTwoCards()) alignedFields.Add(field);
+            cardRenderer.color = defaultColor;
         }
-        return alignedFields;
-    }
-    #endregion
 
-    #region CardMove
-    public void SwapCards(Field first, Field second)
-    {
-        CardSpriteBehaviour tempCard = first.OccupantCard;
-        Alignment tempAlign = first.Align;
-        SwapBackupCards(first, second);
-        first.PlaceCard(second.OccupantCard, second.Align);
-        //first.ConvertField(second.Align);
-        second.PlaceCard(tempCard, tempAlign);
-        //second.ConvertField(tempAlign);
-    }
-
-    private void SwapBackupCards(Field first, Field second)
-    {
-        if (first.AreThereTwoCards()) first.TransferBackupCard(second);
-        else if (second.AreThereTwoCards()) second.TransferBackupCard(first);
-    }
-    #endregion
-
-    #region CharacterSkillBased
-    public void AddCardIntoQueue(Alignment align)
-    {
-        temporaryStatuses.RequestCard(align);
-    }
-
-    public void SetJudgement(Alignment align)
-    {
-        temporaryStatuses.SetJudgement(align);
-        if (temporaryStatuses.Revolution == Alignment.None) return;
-        foreach (Field field in fields) // not tested
+        public void AttackNewStand(FieldBehaviour targetField)
         {
-            if (!field.IsOccupied()) continue;
-            if (!field.IsAligned(temporaryStatuses.Revolution)) continue;
-            if (field.OccupantCard.GetRole() != field.OccupantCard.Character.Role) field.OccupantCard.AdvanceStrength(1);
+            int targetPower = targetField.OccupantCard.CardStatus.Power;
+            foreach (FieldBehaviour field in fields)
+            {
+                if (field.IsAligned(Alignment.None)) continue;
+                if (field.IsAligned(turn.CurrentAlignment)) continue;
+                if (field.OccupantCard.CardStatus.Power > targetPower) field.OccupantCard.TryToAttackTarget(targetField);
+            }
         }
-    }
+        #endregion
 
-    public void RemoveJudgement()
-    {
-        if (temporaryStatuses.Revolution != Alignment.None)
-            foreach (Field field in fields) // not tested
+        public void AdjustNewTurn() // Can be unstable due to unclear priorities.
+        {
+            foreach (FieldBehaviour field in fields)
+            {
+                if (field.IsAligned(Alignment.None)) continue;
+                CardSpriteBehaviour card = field.OccupantCard;
+                if (field.IsAligned(turn.CurrentAlignment))
+                {
+                    card.ResetAttack();
+                    card.RegenerateDexterity();
+                }
+                card.ProgressTemporaryStats();
+                if (!card.CanUseSkill()) continue;
+                card.Character.SkillOnNewTurn(field.OccupantCard);
+            }
+            temporaryStatuses.AdjustNewTurn(turn.CurrentAlignment);
+            UpdateCardStates();
+        }
+
+        #region StateControl
+        public void UpdateCardStates()
+        {
+            if (!Turn.IsItMoveTime()) return;
+            foreach (FieldBehaviour field in fields)
+            {
+                if (field.IsOpposed(turn.CurrentAlignment) && field.OccupantCard.CanBeTelecinetic()) field.OccupantCard.SetTelecinetic();
+                if (!field.IsAligned(turn.CurrentAlignment)) continue;
+                field.OccupantCard.SetActive();
+            }
+        }
+
+        public void MakeAllStatesIdle(FieldBehaviour exceptionField = null)
+        {
+            foreach (FieldBehaviour field in fields)
+            {
+                if (!field.IsOccupied()) continue;
+                if (field == exceptionField) continue;
+                //if (field.IsAligned(turn.CurrentAlignment))
+                field.OccupantCard.SetIdle();
+            }
+        }
+        #endregion
+
+        #region FieldRead
+        public FieldBehaviour GetField(int x, int y)
+        {
+            foreach (FieldBehaviour field in fields)
+            {
+                if (field.GetX() != x) continue;
+                if (field.GetY() != y) continue;
+                //Debug.Log("Got x=" + x + "; y=" + y);
+                return field;
+            }
+            //Debug.Log("Got x=" + x + "; y=" + y + "as null!");
+            return null;
+        }
+
+        public int[] GetRelativeCoordinates(int x, int y, float angle = 0)
+        {
+            int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
+            int cosinus = (int)Math.Round(Math.Cos(angle / 180 * Math.PI));
+            int[] relCoord = new int[2];
+            relCoord[0] = cosinus * x + sinus * y;
+            relCoord[1] = cosinus * y - sinus * x;
+            return relCoord;
+        }
+
+        public FieldBehaviour GetRelativeField(int x, int y, float angle = 0)
+        {
+            int[] relCoord = GetRelativeCoordinates(x, y, angle);
+            return GetField(relCoord[0], relCoord[1]);
+        }
+
+        public List<FieldBehaviour> AlignedFields(Alignment alignment, bool countBackup = false)
+        {
+            List<FieldBehaviour> alignedFields = new List<FieldBehaviour>();
+            foreach (FieldBehaviour field in fields)
+            {
+                if (!field.IsAligned(alignment)) continue;
+                alignedFields.Add(field);
+                if (countBackup && field.AreThereTwoCards()) alignedFields.Add(field);
+            }
+            return alignedFields;
+        }
+        #endregion
+
+        #region CardMove
+        public void SwapCards(FieldBehaviour first, FieldBehaviour second)
+        {
+            CardSpriteBehaviour tempCard = first.OccupantCard;
+            Alignment tempAlign = first.Align;
+            SwapBackupCards(first, second);
+            first.PlaceCard(second.OccupantCard, second.Align);
+            //first.ConvertField(second.Align);
+            second.PlaceCard(tempCard, tempAlign);
+            //second.ConvertField(tempAlign);
+        }
+
+        private void SwapBackupCards(FieldBehaviour first, FieldBehaviour second)
+        {
+            if (first.AreThereTwoCards()) first.TransferBackupCard(second);
+            else if (second.AreThereTwoCards()) second.TransferBackupCard(first);
+        }
+        #endregion
+
+        #region CharacterSkillBased
+        public void AddCardIntoQueue(Alignment align)
+        {
+            temporaryStatuses.RequestCard(align);
+        }
+
+        public void SetJudgement(Alignment align)
+        {
+            temporaryStatuses.SetJudgement(align);
+            if (temporaryStatuses.Revolution == Alignment.None) return;
+            foreach (FieldBehaviour field in fields) // not tested
             {
                 if (!field.IsOccupied()) continue;
                 if (!field.IsAligned(temporaryStatuses.Revolution)) continue;
-                if (field.OccupantCard.GetRole() != field.OccupantCard.Character.Role) field.OccupantCard.AdvanceStrength(-1);
+                if (field.OccupantCard.GetRole() != field.OccupantCard.Character.Role) field.OccupantCard.AdvanceStrength(1);
             }
-        temporaryStatuses.RemoveJudgement();
-    }
-
-    public void SetRevolution(Alignment align)
-    {
-        temporaryStatuses.SetRevolution(align);
-        //CalmJudgement();
-    }
-
-    /*private void CalmJudgement()
-    {
-        if (temporaryStatuses.Revolution == Alignment.None) throw new Exception("There's no revolution to adjust judgement!");
-        if (!temporaryStatuses.IsJudgement) return;
-        if (IsJudgementWithRevolution()) return;
-        temporaryStatuses.CalmJudgement();
-    }*/
-
-    private bool IsJudgementWithRevolution()
-    {
-        foreach (Field field in fields) // not tested
-        {
-            if (!field.IsOccupied()) continue;
-            if (field.OccupantCard.Character.Name != "sedzia bertt") continue;
-            if (field.IsAligned(temporaryStatuses.Revolution)) return true;
-            if (field.IsOpposed(temporaryStatuses.Revolution)) return false;
         }
-        throw new Exception("Card sedzia bertt not found!");
-    }
 
-    public void RemoveRevolution()
-    {
-        temporaryStatuses.RemoveRevolution();
-    }
-
-    public void SetTelekinesis(Alignment align, int dexterity)
-    {
-        temporaryStatuses.SetTelekinesis(align);
-        temporaryStatuses.SetTelekinesisDexterity(dexterity);
-    }
-
-    public void RemoveTelekinesis()
-    {
-        temporaryStatuses.RemoveTelekinesis();
-    }
-
-    public bool IsTelekineticMovement()
-    {
-        return turn.CurrentAlignment == temporaryStatuses.Telekinesis;
-    }
-
-    public void InitiateResurrection()
-    {
-        turn.ExecuteResurrection();
-    }
-
-    public void SetTargetableCards(Alignment align)
-    {
-        foreach (Field field in AlignedFields(align)) field.OccupantCard.SetTargetable();
-    }
-
-    public void ApplyPrincessBuff(CardSpriteBehaviour card)
-    {
-        card.AdvanceStrength(2);
-        card.AdvanceHealth(1);
-    }
-
-    public void ShowJudgement(Alignment align)
-    {
-        foreach (Field field in fields)
+        public void RemoveJudgement()
         {
-            if (!field.IsAligned(align)) continue;
-            field.OccupantCard.AdvanceTempStrength(1);
+            if (temporaryStatuses.Revolution != Alignment.None)
+                foreach (FieldBehaviour field in fields) // not tested
+                {
+                    if (!field.IsOccupied()) continue;
+                    if (!field.IsAligned(temporaryStatuses.Revolution)) continue;
+                    if (field.OccupantCard.GetRole() != field.OccupantCard.Character.Role) field.OccupantCard.AdvanceStrength(-1);
+                }
+            temporaryStatuses.RemoveJudgement();
         }
-    }
 
-    public void SetBackupCard(Field field)
-    {
-        //backupCard.transform.SetParent(field.transform, false);
-        field.PlaceBackupCard(backupCard);
-    }
-
-    public List<Character> AllInsideCharacters()
-    {
-        List<Character> list = new List<Character>();
-        foreach (Field field in fields)
+        public void SetRevolution(Alignment align)
         {
-            if (!field.IsOccupied()) continue;
-            list.Add(field.OccupantCard.Character);
+            temporaryStatuses.SetRevolution(align);
+            //CalmJudgement();
         }
-        //Debug.Log("AllInsideCharacters count: " + list.Count);
-        return list;
-    }
-    #endregion
 
-    #region WinConditionCheck
-    private int HighestAmountOfType(Alignment alignment)
-    {
-        int result = AmountOfType(alignment, Role.Offensive);
-        if (result < AmountOfType(alignment, Role.Support)) result = AmountOfType(alignment, Role.Support);
-        if (result < AmountOfType(alignment, Role.Agile)) result = AmountOfType(alignment, Role.Agile);
-        if (result < AmountOfType(alignment, Role.Special)) result = AmountOfType(alignment, Role.Special);
-        return result;
-    }
-
-    public Alignment HigherByAmountOfType()
-    {
-        if (HighestAmountOfType(Alignment.Player) > HighestAmountOfType(Alignment.Opponent)) return Alignment.Player;
-        if (HighestAmountOfType(Alignment.Player) < HighestAmountOfType(Alignment.Opponent)) return Alignment.Opponent;
-        return Alignment.None;
-    }
-
-    private int AmountOfType(Alignment alignment, Role role)
-    {
-        int result = 0;
-        foreach (Field field in AlignedFields(alignment))
+        /*private void CalmJudgement()
         {
-            if (field.OccupantCard.Character.Role == role) result++;
-            if (role == Role.Offensive && field.AreThereTwoCards()) result++;
-        }
-        return result;
-    }
-    #endregion
+            if (temporaryStatuses.Revolution == Alignment.None) throw new Exception("There's no revolution to adjust judgement!");
+            if (!temporaryStatuses.IsJudgement) return;
+            if (IsJudgementWithRevolution()) return;
+            temporaryStatuses.CalmJudgement();
+        }*/
 
-    #region AutomaticOpponentHelper
-    public int HeatLevel(Field field, Alignment enemy)
-    {
-        int heat = 0;
-        foreach (Field enemyField in AlignedFields(enemy))
+        private bool IsJudgementWithRevolution()
         {
-            CardSpriteBehaviour enemyCard = enemyField.OccupantCard;
-            if (enemyCard.CanAttackField(field)) heat += enemyCard.GetStrength();
-        }
-        return heat;
-    }
-    #endregion
-
-    #region Debug
-    public void DebugForceRemoveCardFromField(CardSpriteBehaviour card)
-    {
-        if (!Debug.isDebugBuild) return;
-        if (card == null) return;
-        foreach (Field field in fields)
-        {
-            if (!field.IsOccupied()) continue;
-            if (field.OccupantCard == card)
+            foreach (FieldBehaviour field in fields) // not tested
             {
-                field.OccupantCard.DebugForceDeactivateCard();
-                return;
+                if (!field.IsOccupied()) continue;
+                if (field.OccupantCard.Character.Name != "sedzia bertt") continue;
+                if (field.IsAligned(temporaryStatuses.Revolution)) return true;
+                if (field.IsOpposed(temporaryStatuses.Revolution)) return false;
+            }
+            throw new Exception("Card sedzia bertt not found!");
+        }
+
+        public void RemoveRevolution()
+        {
+            temporaryStatuses.RemoveRevolution();
+        }
+
+        public void SetTelekinesis(Alignment align, int dexterity)
+        {
+            temporaryStatuses.SetTelekinesis(align);
+            temporaryStatuses.SetTelekinesisDexterity(dexterity);
+        }
+
+        public void RemoveTelekinesis()
+        {
+            temporaryStatuses.RemoveTelekinesis();
+        }
+
+        public bool IsTelekineticMovement()
+        {
+            return turn.CurrentAlignment == temporaryStatuses.Telekinesis;
+        }
+
+        public void InitiateResurrection()
+        {
+            turn.ExecuteResurrection();
+        }
+
+        public void SetTargetableCards(Alignment align)
+        {
+            foreach (FieldBehaviour field in AlignedFields(align)) field.OccupantCard.SetTargetable();
+        }
+
+        public void ApplyPrincessBuff(CardSpriteBehaviour card)
+        {
+            card.AdvanceStrength(2);
+            card.AdvanceHealth(1);
+        }
+
+        public void ShowJudgement(Alignment align)
+        {
+            foreach (FieldBehaviour field in fields)
+            {
+                if (!field.IsAligned(align)) continue;
+                field.OccupantCard.AdvanceTempStrength(1);
             }
         }
+
+        public void SetBackupCard(FieldBehaviour field)
+        {
+            //backupCard.transform.SetParent(field.transform, false);
+            field.PlaceBackupCard(backupCard);
+        }
+
+        public List<Character> AllInsideCharacters()
+        {
+            List<Character> list = new List<Character>();
+            foreach (FieldBehaviour field in fields)
+            {
+                if (!field.IsOccupied()) continue;
+                list.Add(field.OccupantCard.Character);
+            }
+            //Debug.Log("AllInsideCharacters count: " + list.Count);
+            return list;
+        }
+        #endregion
+
+        #region WinConditionCheck
+        private int HighestAmountOfType(Alignment alignment)
+        {
+            int result = AmountOfType(alignment, Role.Offensive);
+            if (result < AmountOfType(alignment, Role.Support)) result = AmountOfType(alignment, Role.Support);
+            if (result < AmountOfType(alignment, Role.Agile)) result = AmountOfType(alignment, Role.Agile);
+            if (result < AmountOfType(alignment, Role.Special)) result = AmountOfType(alignment, Role.Special);
+            return result;
+        }
+
+        public Alignment HigherByAmountOfType()
+        {
+            if (HighestAmountOfType(Alignment.Player) > HighestAmountOfType(Alignment.Opponent)) return Alignment.Player;
+            if (HighestAmountOfType(Alignment.Player) < HighestAmountOfType(Alignment.Opponent)) return Alignment.Opponent;
+            return Alignment.None;
+        }
+
+        private int AmountOfType(Alignment alignment, Role role)
+        {
+            int result = 0;
+            foreach (FieldBehaviour field in AlignedFields(alignment))
+            {
+                if (field.OccupantCard.Character.Role == role) result++;
+                if (role == Role.Offensive && field.AreThereTwoCards()) result++;
+            }
+            return result;
+        }
+        #endregion
+
+        #region AutomaticOpponentHelper
+        public int HeatLevel(FieldBehaviour field, Alignment enemy)
+        {
+            int heat = 0;
+            foreach (FieldBehaviour enemyField in AlignedFields(enemy))
+            {
+                CardSpriteBehaviour enemyCard = enemyField.OccupantCard;
+                if (enemyCard.CanAttackField(field)) heat += enemyCard.GetStrength();
+            }
+            return heat;
+        }
+        #endregion
+
+        #region Debug
+        public void DebugForceRemoveCardFromField(CardSpriteBehaviour card)
+        {
+            if (!Debug.isDebugBuild) return;
+            if (card == null) return;
+            foreach (FieldBehaviour field in fields)
+            {
+                if (!field.IsOccupied()) continue;
+                if (field.OccupantCard == card)
+                {
+                    field.OccupantCard.DebugForceDeactivateCard();
+                    return;
+                }
+            }
+        }
+        #endregion
     }
-    #endregion
 }
