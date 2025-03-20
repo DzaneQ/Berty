@@ -82,43 +82,43 @@ public abstract class Character
         return true;
     }
 
-    public virtual void SkillOnSuccessfulAttack(CardSprite cardSprite) { }
+    public virtual void SkillOnSuccessfulAttack(CardSpriteBehaviour cardSprite) { }
 
-    public virtual void SkillOnNewCard(CardSprite cardSprite) { }
+    public virtual void SkillOnNewCard(CardSpriteBehaviour cardSprite) { }
 
-    public virtual bool SkillSpecialAttack(CardSprite cardSprite) => false;
+    public virtual bool SkillSpecialAttack(CardSpriteBehaviour cardSprite) => false;
 
-    public virtual void SkillOnNewTurn(CardSprite cardSprite) { }
+    public virtual void SkillOnNewTurn(CardSpriteBehaviour cardSprite) { }
 
-    public virtual bool CanAffectStrength(CardSprite cardSprite, CardSprite spellSource) => true;
+    public virtual bool CanAffectStrength(CardSpriteBehaviour cardSprite, CardSpriteBehaviour spellSource) => true;
 
-    public virtual void SkillAdjustStrengthChange(int value, CardSprite cardSprite) { }
+    public virtual void SkillAdjustStrengthChange(int value, CardSpriteBehaviour cardSprite) { }
 
-    public virtual bool CanAffectPower(CardSprite cardSprite, CardSprite spellSource) => true;
+    public virtual bool CanAffectPower(CardSpriteBehaviour cardSprite, CardSpriteBehaviour spellSource) => true;
 
-    public virtual void SkillAdjustPowerChange(int value, CardSprite cardSprite, CardSprite spellSource) { }
+    public virtual void SkillAdjustPowerChange(int value, CardSpriteBehaviour cardSprite, CardSpriteBehaviour spellSource) { }
 
-    public virtual void SkillAdjustDexterityChange(int value, CardSprite cardSprite) { }
+    public virtual void SkillAdjustDexterityChange(int value, CardSpriteBehaviour cardSprite) { }
 
-    public virtual void SkillAdjustHealthChange(int value, CardSprite cardSprite) { }
+    public virtual void SkillAdjustHealthChange(int value, CardSpriteBehaviour cardSprite) { }
 
-    public virtual void SkillOnAttack(CardSprite cardSprite) { }
+    public virtual void SkillOnAttack(CardSpriteBehaviour cardSprite) { }
 
-    public virtual void SkillOnMove(CardSprite cardSprite) { }
+    public virtual void SkillOnMove(CardSpriteBehaviour cardSprite) { }
 
-    public virtual void SkillOnOtherCardDeath(CardSprite cardSprite, CardSprite source) { }
+    public virtual void SkillOnOtherCardDeath(CardSpriteBehaviour cardSprite, CardSpriteBehaviour source) { }
 
-    public virtual int SkillDefenceModifier(int damage, CardSprite attacker) => damage;
+    public virtual int SkillDefenceModifier(int damage, CardSpriteBehaviour attacker) => damage;
 
-    public virtual void SkillOnNeighbor(CardSprite cardSprite, CardSprite target) { }
+    public virtual void SkillOnNeighbor(CardSpriteBehaviour cardSprite, CardSpriteBehaviour target) { }
 
-    public virtual int SkillAttackModifier(int damage, CardSprite target) => damage;
+    public virtual int SkillAttackModifier(int damage, CardSpriteBehaviour target) => damage;
 
-    public virtual void SkillOnDeath(CardSprite cardSprite) { }
+    public virtual void SkillOnDeath(CardSpriteBehaviour cardSprite) { }
 
-    public virtual void SkillCardClick(CardSprite cardSprite) { }
+    public virtual void SkillCardClick(CardSpriteBehaviour cardSprite) { }
     
-    public virtual void SkillSideClick(CardSprite cardSprite) { }
+    public virtual void SkillSideClick(CardSpriteBehaviour cardSprite) { }
 
     public virtual bool GlobalSkillResistance() => false;
 }
