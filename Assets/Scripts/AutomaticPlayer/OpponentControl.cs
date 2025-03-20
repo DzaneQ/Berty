@@ -1,229 +1,239 @@
+using Berty.CardSprite;
+using Berty.Debugging;
+using Berty.Enums;
+using Berty.Field;
+using Berty.Field.Grid;
+using Berty.Gameplay;
+using Berty.UI.Card;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OpponentControl : MonoBehaviour
+namespace Berty.AutomaticPlayer
 {
-    const int timeDelay = 2;
-
-    private FieldGrid fg;
-    private CardManager cm;
-    private Turn turn;
-    private System.Random rng = new System.Random();
-    private DevTools dt;
-
-    [SerializeField] private GameObject opponentTable;
-
-    private void Awake()
+    public class OpponentControl : MonoBehaviour
     {
-        turn = GetComponent<Turn>();
-        cm = GetComponent<CardManager>();
-    }
+        const int timeDelay = 2;
 
-    private void Start()
-    {
-        fg = GameObject.Find("FieldBoard").GetComponent<FieldGrid>();
-    }
+        private FieldGrid fg;
+        private CardManager cm;
+        private Turn turn;
+        private System.Random rng = new System.Random();
+        private DevTools dt;
 
-    public void PlayTurn()
-    {
-        StartCoroutine(MakeMove(timeDelay));
-    }
+        [SerializeField] private GameObject opponentTable;
 
-    public void ExecutePrincessTurn()
-    {
-        //CardSpriteBehaviour targetCard = BestTargetCard();
-        //if (targetCard == null) throw new Exception("No automatic opponent cards to execute special turn.");
-        fg.ApplyPrincessBuff(BestTargetCard());
-    }
-
-    public void ExecuteResurrection()
-    {
-        cm.ReviveCard(cm.FirstDeadCardForOpponent());
-    }
-
-    private IEnumerator MakeMove(int time)
-    {
-        bool nextMove = true;
-        while (nextMove)
+        private void Awake()
         {
-            yield return new WaitForSeconds(time);
-            turn.UnselectField();
-            if (cm.EnabledCards.Count == 0) break;
-            TryToPlayCard(out nextMove);
-            if (!nextMove) TryToAttack(out nextMove);
-            if (!turn.IsItMoveTime()) break;
+            turn = GetComponent<Turn>();
+            cm = GetComponent<CardManager>();
         }
-        yield return new WaitForSeconds(0.5f);
-        turn.HandleTheButtonClick();
-    }
 
-    private void TryToAttack(out bool isSuccessful)
-    {
-        //Debug.Log("Attack attempt!");
-        CardSpriteBehaviour attackingCard = BestAttackingCard();
-        if (attackingCard != null)
+        private void Start()
         {
-            Debug.Log("Attack!");
-            attackingCard.PrepareToAttack();
-            Pay(attackingCard, 6 - attackingCard.CardStatus.Dexterity);
-            isSuccessful = true;
-            turn.SelectField(attackingCard.OccupiedField);
+            fg = GameObject.Find("FieldBoard").GetComponent<FieldGrid>();
         }
-        else isSuccessful = false;
-    }
 
-    private CardSpriteBehaviour BestAttackingCard()
-    {
-        CardSpriteBehaviour bestCard = null;
-        int highestEfficiency = 0;
-        foreach (Field field in fg.AlignedFields(Alignment.Opponent))
+        public void PlayTurn()
         {
-            CardSpriteBehaviour card = field.OccupantCard;
-            if (!card.CanCharacterAttack()) continue;
-            if (cm.EnabledCards.Count < 6 - card.CardStatus.Dexterity) continue;
-            int efficiency = Efficiency(card, card.GetStrength());
-            if (efficiency <= highestEfficiency) continue;
-            highestEfficiency = efficiency;
-            bestCard = card;
+            StartCoroutine(MakeMove(timeDelay));
         }
-        return bestCard;
-    }
 
-    private CardSpriteBehaviour BestTargetCard()
-    {
-        CardSpriteBehaviour bestCard = null;
-        foreach (Field field in fg.AlignedFields(Alignment.Opponent))
+        public void ExecutePrincessTurn()
         {
-            CardSpriteBehaviour card = field.OccupantCard;
-            if (bestCard != null)
+            //CardSpriteBehaviour targetCard = BestTargetCard();
+            //if (targetCard == null) throw new Exception("No automatic opponent cards to execute special turn.");
+            fg.ApplyPrincessBuff(BestTargetCard());
+        }
+
+        public void ExecuteResurrection()
+        {
+            cm.ReviveCard(cm.FirstDeadCardForOpponent());
+        }
+
+        private IEnumerator MakeMove(int time)
+        {
+            bool nextMove = true;
+            while (nextMove)
             {
-                if (card.CardStatus.Strength > 4 && bestCard.CardStatus.Strength < 6) continue;
-                if (card.CardStatus.Strength < bestCard.CardStatus.Strength) continue;
-                if (card.CardStatus.Health == 6 && bestCard.CardStatus.Health < 6) continue;
+                yield return new WaitForSeconds(time);
+                turn.UnselectField();
+                if (cm.EnabledCards.Count == 0) break;
+                TryToPlayCard(out nextMove);
+                if (!nextMove) TryToAttack(out nextMove);
+                if (!turn.IsItMoveTime()) break;
             }
-            bestCard = card;
+            yield return new WaitForSeconds(0.5f);
+            turn.HandleTheButtonClick();
         }
-        if (bestCard == null) throw new Exception("No automatic opponent cards to execute special turn.");
-        return bestCard;
-    }
 
-    private void TryToPlayCard(out bool isSuccessful)
-    {
-        CardImage selectedCard = cm.EnabledCards[0];
-        int price = selectedCard.Character.Power;
-        if (price < cm.EnabledCards.Count && GetSafestFields().Count > 0)
+        private void TryToAttack(out bool isSuccessful)
         {
-            PlayCard(selectedCard, price);
-            isSuccessful = true;
-        }
-        else isSuccessful = false;
-    }
-
-    private void PlayCard(CardImage card, int price)
-    {
-        CardSpriteBehaviour cardSprite = PlaceCard(card);
-        //CardSpriteBehaviour cardSprite = safeFields[index].OccupantCard;
-        RotateCard(cardSprite);
-        Pay(cardSprite, price);
-        turn.SelectField(cardSprite.OccupiedField);
-    }
-
-    private CardSpriteBehaviour PlaceCard(CardImage card)
-    {
-        card.ChangeSelection(true);
-        if (dt != null)
-        {
-            Field field = dt.OpponentPriorityField();
-            if (field != null)
+            //Debug.Log("Attack attempt!");
+            CardSpriteBehaviour attackingCard = BestAttackingCard();
+            if (attackingCard != null)
             {
-                Debug.LogWarning("Executing priority card!");
-                field.PlayCard();
-                return field.OccupantCard;
+                Debug.Log("Attack!");
+                attackingCard.PrepareToAttack();
+                Pay(attackingCard, 6 - attackingCard.CardStatus.Dexterity);
+                isSuccessful = true;
+                turn.SelectField(attackingCard.OccupiedField);
             }
+            else isSuccessful = false;
         }
-        List<Field> safeFields = GetSafestFields();
-        int index = rng.Next(safeFields.Count);
-        //Debug.Log("Rolled field index: " + index);
-        safeFields[index].PlayCard();
-        return safeFields[index].OccupantCard;
-    }
 
-    private void RotateCard(CardSpriteBehaviour card)
-    {
-        List<int> bestRotation = GetBestRotation(card);
-        int index = rng.Next(bestRotation.Count);
-        card.RotateCard(bestRotation[index], true);
-    }
+        private CardSpriteBehaviour BestAttackingCard()
+        {
+            CardSpriteBehaviour bestCard = null;
+            int highestEfficiency = 0;
+            foreach (FieldBehaviour field in fg.AlignedFields(Alignment.Opponent))
+            {
+                CardSpriteBehaviour card = field.OccupantCard;
+                if (!card.CanCharacterAttack()) continue;
+                if (cm.EnabledCards.Count < 6 - card.CardStatus.Dexterity) continue;
+                int efficiency = Efficiency(card, card.GetStrength());
+                if (efficiency <= highestEfficiency) continue;
+                highestEfficiency = efficiency;
+                bestCard = card;
+            }
+            return bestCard;
+        }
 
-    private void Pay(CardSpriteBehaviour card, int price)
-    {
-        for (int i = 0; i < price; i++)
+        private CardSpriteBehaviour BestTargetCard()
         {
-            //Debug.Log("Paying card no. " + i);
-            cm.EnabledCards[i].ChangeSelection(true);
+            CardSpriteBehaviour bestCard = null;
+            foreach (FieldBehaviour field in fg.AlignedFields(Alignment.Opponent))
+            {
+                CardSpriteBehaviour card = field.OccupantCard;
+                if (bestCard != null)
+                {
+                    if (card.CardStatus.Strength > 4 && bestCard.CardStatus.Strength < 6) continue;
+                    if (card.CardStatus.Strength < bestCard.CardStatus.Strength) continue;
+                    if (card.CardStatus.Health == 6 && bestCard.CardStatus.Health < 6) continue;
+                }
+                bestCard = card;
+            }
+            if (bestCard == null) throw new Exception("No automatic opponent cards to execute special turn.");
+            return bestCard;
         }
-        card.ConfirmPayment(false);
-    }
 
-    private List<Field> GetSafestFields()
-    {
-        List<Field> freeFields = fg.AlignedFields(Alignment.None);
-        List<Field> safeFields = new List<Field>();
-        for (int i = 0; i < 6; i++)
+        private void TryToPlayCard(out bool isSuccessful)
         {
-            foreach (Field field in freeFields) if (fg.HeatLevel(field, Alignment.Player) <= i) safeFields.Add(field);
-            if (safeFields.Count > 0) break;
+            CardImage selectedCard = cm.EnabledCards[0];
+            int price = selectedCard.Character.Power;
+            if (price < cm.EnabledCards.Count && GetSafestFields().Count > 0)
+            {
+                PlayCard(selectedCard, price);
+                isSuccessful = true;
+            }
+            else isSuccessful = false;
         }
-        return safeFields;
-    }
 
-    private List<int> GetBestRotation(CardSpriteBehaviour card)
-    {
-        int[] efficiency = new int[4];
-        int maxEfficiency = -16;
-        List<int> bestRotation = new List<int>();
-        for (int i = 0; i < 4; i++)
+        private void PlayCard(CardImage card, int price)
         {
-            //Debug.Log("Checking rotation: " + (i * 90));
-            efficiency[i] = Efficiency(card, 2, 1);
-            if (maxEfficiency < efficiency[i]) maxEfficiency = efficiency[i];
-            card.RotateCard(90, true);
+            CardSpriteBehaviour cardSprite = PlaceCard(card);
+            //CardSpriteBehaviour cardSprite = safeFields[index].OccupantCard;
+            RotateCard(cardSprite);
+            Pay(cardSprite, price);
+            turn.SelectField(cardSprite.OccupiedField);
         }
-        //Debug.Log("Max efficiency: " + maxEfficiency);
-        for (int i = 0; i < 4; i++)
-        {
-            //Debug.Log("Rotation: " + (i * 90) + " has efficiency: " + efficiency[i]);
-            if (efficiency[i] == maxEfficiency) bestRotation.Add(i * 90);
-        }
-        return bestRotation;
-    }
 
-    private int Efficiency(CardSpriteBehaviour card, int alignedWeight = 1, int neutralWeight = 0)
-    {
-        int efficiency = 0;
-        foreach (Field field in fg.AlignedFields(Alignment.None))
+        private CardSpriteBehaviour PlaceCard(CardImage card)
         {
-            if (card.CanAttackField(field)) efficiency += neutralWeight;
-            //if (card.CanAttack(field)) Debug.Log("Adding " + neutralWeight + " cause neutral: " + field.GetX() + "," + field.GetY());
+            card.ChangeSelection(true);
+            if (dt != null)
+            {
+                FieldBehaviour field = dt.OpponentPriorityField();
+                if (field != null)
+                {
+                    Debug.LogWarning("Executing priority card!");
+                    field.PlayCard();
+                    return field.OccupantCard;
+                }
+            }
+            List<FieldBehaviour> safeFields = GetSafestFields();
+            int index = rng.Next(safeFields.Count);
+            //Debug.Log("Rolled field index: " + index);
+            safeFields[index].PlayCard();
+            return safeFields[index].OccupantCard;
         }
-        foreach (Field field in fg.AlignedFields(Alignment.Player))
-        {
-            if (card.CanAttackField(field)) efficiency += alignedWeight;
-            //if (card.CanAttack(field)) Debug.Log("Adding " + alignedWeight + " cause not ally: " + field.GetX() + "," + field.GetY());
-        }
-        foreach (Field field in fg.AlignedFields(Alignment.Opponent))
-        {
-            if (card.CanAttackField(field)) efficiency -= alignedWeight;
-            //if (card.CanAttack(field)) Debug.Log("Substracting " + alignedWeight + " cause ally: " + field.GetX() + "," + field.GetY());
-        }
-        return efficiency;
-    }
 
-    public void DebugInit(DevTools dt)
-    {
-        if (!Debug.isDebugBuild) return;
-        this.dt = dt;
+        private void RotateCard(CardSpriteBehaviour card)
+        {
+            List<int> bestRotation = GetBestRotation(card);
+            int index = rng.Next(bestRotation.Count);
+            card.RotateCard(bestRotation[index], true);
+        }
+
+        private void Pay(CardSpriteBehaviour card, int price)
+        {
+            for (int i = 0; i < price; i++)
+            {
+                //Debug.Log("Paying card no. " + i);
+                cm.EnabledCards[i].ChangeSelection(true);
+            }
+            card.ConfirmPayment(false);
+        }
+
+        private List<FieldBehaviour> GetSafestFields()
+        {
+            List<FieldBehaviour> freeFields = fg.AlignedFields(Alignment.None);
+            List<FieldBehaviour> safeFields = new List<FieldBehaviour>();
+            for (int i = 0; i < 6; i++)
+            {
+                foreach (FieldBehaviour field in freeFields) if (fg.HeatLevel(field, Alignment.Player) <= i) safeFields.Add(field);
+                if (safeFields.Count > 0) break;
+            }
+            return safeFields;
+        }
+
+        private List<int> GetBestRotation(CardSpriteBehaviour card)
+        {
+            int[] efficiency = new int[4];
+            int maxEfficiency = -16;
+            List<int> bestRotation = new List<int>();
+            for (int i = 0; i < 4; i++)
+            {
+                //Debug.Log("Checking rotation: " + (i * 90));
+                efficiency[i] = Efficiency(card, 2, 1);
+                if (maxEfficiency < efficiency[i]) maxEfficiency = efficiency[i];
+                card.RotateCard(90, true);
+            }
+            //Debug.Log("Max efficiency: " + maxEfficiency);
+            for (int i = 0; i < 4; i++)
+            {
+                //Debug.Log("Rotation: " + (i * 90) + " has efficiency: " + efficiency[i]);
+                if (efficiency[i] == maxEfficiency) bestRotation.Add(i * 90);
+            }
+            return bestRotation;
+        }
+
+        private int Efficiency(CardSpriteBehaviour card, int alignedWeight = 1, int neutralWeight = 0)
+        {
+            int efficiency = 0;
+            foreach (FieldBehaviour field in fg.AlignedFields(Alignment.None))
+            {
+                if (card.CanAttackField(field)) efficiency += neutralWeight;
+                //if (card.CanAttack(field)) Debug.Log("Adding " + neutralWeight + " cause neutral: " + field.GetX() + "," + field.GetY());
+            }
+            foreach (FieldBehaviour field in fg.AlignedFields(Alignment.Player))
+            {
+                if (card.CanAttackField(field)) efficiency += alignedWeight;
+                //if (card.CanAttack(field)) Debug.Log("Adding " + alignedWeight + " cause not ally: " + field.GetX() + "," + field.GetY());
+            }
+            foreach (FieldBehaviour field in fg.AlignedFields(Alignment.Opponent))
+            {
+                if (card.CanAttackField(field)) efficiency -= alignedWeight;
+                //if (card.CanAttack(field)) Debug.Log("Substracting " + alignedWeight + " cause ally: " + field.GetX() + "," + field.GetY());
+            }
+            return efficiency;
+        }
+
+        public void DebugInit(DevTools dt)
+        {
+            if (!Debug.isDebugBuild) return;
+            this.dt = dt;
+        }
     }
 }

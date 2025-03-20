@@ -2,23 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-internal class PricingSystem
+namespace Berty.Gameplay
 {
-    private CardManager cardManager;
-    private int cardPrice;
-
-    public PricingSystem(CardManager cm)
+    internal class PricingSystem
     {
-        cardManager = cm;
-    }
+        private CardManager cardManager;
+        private int cardPrice;
 
-    public void DemandPayment(int price)
-    {
-        cardPrice = price;
-    }
+        public PricingSystem(CardManager cm)
+        {
+            cardManager = cm;
+        }
 
-    public bool CheckOffer()
-    {
-        return cardManager.SelectedCards().Count == cardPrice;
+        public void DemandPayment(int price)
+        {
+            cardPrice = price;
+        }
+
+        public bool CheckOffer()
+        {
+            return cardManager.SelectedCards().Count == cardPrice;
+        }
     }
 }

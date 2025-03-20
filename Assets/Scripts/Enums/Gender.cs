@@ -1,6 +1,9 @@
-﻿public enum Gender
+﻿namespace Berty.Enums
 {
-    Male,
-    Female,
-    Kid
+    public enum Gender
+    {
+        Male,
+        Female,
+        Kid
+    }
 }

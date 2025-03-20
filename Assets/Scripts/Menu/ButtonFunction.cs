@@ -3,28 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ButtonFunction : MonoBehaviour, IPointerEnterHandler
+namespace Berty.Menu
 {
-    private AudioSource src;
-    [SerializeField] private AudioClip hoverSound;
-    [SerializeField] private AudioClip clickSound;
-
-    public AudioClip ClickSound => clickSound;
-
-    void Start()
+    public class ButtonFunction : MonoBehaviour, IPointerEnterHandler
     {
-        src = transform.parent.GetComponent<AudioSource>();
+        private AudioSource src;
+        [SerializeField] private AudioClip hoverSound;
+        [SerializeField] private AudioClip clickSound;
+
+        public AudioClip ClickSound => clickSound;
+
+        void Start()
+        {
+            src = transform.parent.GetComponent<AudioSource>();
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            src.clip = hoverSound;
+            src.Play();
+        }
+
+        /*public void OnPointerClick(PointerEventData eventData)
+        {
+            src.clip = clickSound;
+            src.Play();
+        }*/
     }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        src.clip = hoverSound;
-        src.Play();
-    }
-
-    /*public void OnPointerClick(PointerEventData eventData)
-    {
-        src.clip = clickSound;
-        src.Play();
-    }*/
 }
