@@ -3,7 +3,7 @@ using Berty.Enums;
 
 namespace Berty.Characters.Data
 {
-    public class SamurajBert : Character
+    public class SamurajBert : CharacterConfig
     {
         private bool activeSpell = true;
         public SamurajBert()

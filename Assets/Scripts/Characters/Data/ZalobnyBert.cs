@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Berty.Characters.Data
 {
-    public class ZalobnyBert : Character
+    public class ZalobnyBert : CharacterConfig
     {
         public ZalobnyBert()
         {

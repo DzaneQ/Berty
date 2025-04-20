@@ -25,7 +25,7 @@ namespace Berty.Gameplay
         public void InitializeAllCharacterCards(GameObject stack, out List<CardImage> cardCollection)
         {
             CharacterData data = new CharacterData();
-            List<Character> characters = data.LoadCharacterData();
+            List<CharacterConfig> characters = data.LoadCharacterData();
             cardCollection = new List<CardImage>();
             for (int i = 0; i < characters.Count; i++)
             {

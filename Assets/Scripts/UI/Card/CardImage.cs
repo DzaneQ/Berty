@@ -15,11 +15,11 @@ namespace Berty.UI.Card
         private SelectStatus select;
         private CardManager cardManager;
         private Image imageRenderer;
-        private Character character;
+        private CharacterConfig character;
         private Transform returnTable;
 
         private Turn Turn => cardManager.Turn;
-        public Character Character
+        public CharacterConfig Character
         {
             get => character;
             private set
@@ -40,7 +40,7 @@ namespace Berty.UI.Card
             select = new UnselectedCard(GetComponent<RectTransform>(), GetComponent<AnimatingCardImage>());
         }
 
-        public void AssignCharacter(Character newCharacter)
+        public void AssignCharacter(CharacterConfig newCharacter)
         {
             Character = newCharacter;
         }
@@ -55,22 +55,7 @@ namespace Berty.UI.Card
             return select.IsCardSelected;
         }
 
-        public void CardClick()
-        {
-            if (!Input.GetMouseButtonDown(0)) return;
-            if (transform.parent.name.Contains("Dead")) ReviveCard();
-            else ChangeSelection();
-        }
 
-        public void CardFocusOn()
-        {
-            cardManager.ShowLookupCard(imageRenderer.sprite);
-        }
-
-        public void CardFocusOff()
-        {
-            cardManager.HideLookupCard();
-        }
 
         public void ChangeSelection(bool ignoreAnimation = false)
         {

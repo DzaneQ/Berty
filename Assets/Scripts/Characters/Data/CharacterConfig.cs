@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Berty.Characters.Data
 {
-    public abstract class Character
+    public abstract class CharacterConfig
     {
         protected string name;
         protected Gender gender;

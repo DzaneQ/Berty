@@ -3,7 +3,7 @@ using Berty.Enums;
 
 namespace Berty.Characters.Data
 {
-    public class BigMadB : Character
+    public class BigMadB : CharacterConfig
     {
         public BigMadB()
         {
@@ -23,12 +23,12 @@ namespace Berty.Characters.Data
 
         public override void SkillOnNewCard(CardSpriteBehaviour card)
         {
-            foreach (Character character in card.CardManager.AllOutsideCharacters())
+            foreach (CharacterConfig character in card.CardManager.AllOutsideCharacters())
             {
                 if (character.Role != Role.Support) continue;
                 card.AddResistance(character);
             }
-            foreach (Character character in card.Grid.AllInsideCharacters())
+            foreach (CharacterConfig character in card.Grid.AllInsideCharacters())
             {
                 if (character.Role != Role.Support) continue;
                 card.AddResistance(character);

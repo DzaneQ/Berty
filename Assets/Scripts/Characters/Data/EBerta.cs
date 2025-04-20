@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Berty.Characters.Data
 {
-    public class EBerta : Character
+    public class EBerta : CharacterConfig
     {
         public EBerta()
         {

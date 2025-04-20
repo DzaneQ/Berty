@@ -3,7 +3,7 @@ using Berty.Enums;
 
 namespace Berty.Characters.Data
 {
-    public class StaryBert : Character
+    public class StaryBert : CharacterConfig
     {
         public StaryBert()
         {

@@ -4,7 +4,7 @@ using Berty.Field;
 
 namespace Berty.Characters.Data
 {
-    public class BertPogromca : Character
+    public class BertPogromca : CharacterConfig
     {
         public BertPogromca()
         {
@@ -26,12 +26,12 @@ namespace Berty.Characters.Data
 
         public override void SkillOnNewCard(CardSpriteBehaviour card)
         {
-            foreach (Character character in card.CardManager.AllOutsideCharacters())
+            foreach (CharacterConfig character in card.CardManager.AllOutsideCharacters())
             {
                 if (character.Role != Role.Special) continue;
                 card.AddResistance(character);
             }
-            foreach (Character character in card.Grid.AllInsideCharacters())
+            foreach (CharacterConfig character in card.Grid.AllInsideCharacters())
             {
                 if (character.Role != Role.Special) continue;
                 card.AddResistance(character);

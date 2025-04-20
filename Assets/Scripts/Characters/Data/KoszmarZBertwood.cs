@@ -4,7 +4,7 @@ using Berty.Field;
 
 namespace Berty.Characters.Data
 {
-    public class KoszmarZBertwood : Character
+    public class KoszmarZBertwood : CharacterConfig
     {
         private bool attackPause;
 

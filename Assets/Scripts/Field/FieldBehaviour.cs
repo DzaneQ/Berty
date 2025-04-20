@@ -15,14 +15,14 @@ namespace Berty.Field
         private CardSpriteBehaviour backupCard;
         private MeshRenderer mr;
         //private Outline outline;
-        private readonly int[] coordinates = new int[2];
-        Alignment align;
+        private readonly int[] coordinates = new int[2]; // TODO: Entity property - remove
+        Alignment align; // TODO: Entity property - remove
         private bool underAttack = false;
 
         public FieldGrid Grid => fg;
-        public CardSpriteBehaviour OccupantCard => occupantCard;
+        public CardSpriteBehaviour OccupantCard => occupantCard; // TODO: Entity property?
         //public CardSprite BackupCard => backupCard;
-        public Alignment Align => align;
+        public Alignment Align => align; // TODO: Entity property - remove
         //public Outline FieldOutline => outline;
 
         private void Awake()
@@ -55,11 +55,6 @@ namespace Berty.Field
             //if (collision.gameObject == occupantCard.gameObject) UpdateMeshMaterial();
             //else throw new Exception($"Field colliding not with card {collision.gameObject}"); 
             if (collision.gameObject != occupantCard.gameObject) throw new Exception($"Field colliding not with card {collision.gameObject}");
-        }
-
-        private void OnMouseOver()
-        {
-            occupantCard.OnMouseOver();
         }
 
         private void UpdateMeshMaterial()

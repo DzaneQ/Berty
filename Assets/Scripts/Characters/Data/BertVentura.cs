@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Berty.Characters.Data
 {
-    public class BertVentura : Character
+    public class BertVentura : CharacterConfig
     {
         int opponentNeighborCount;
 
