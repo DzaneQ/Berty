@@ -184,7 +184,7 @@ namespace Berty.CardSprite.Animation
             sound.TakeSound(transform);
         }
 
-        public void AttackingSound(Character character)
+        public void AttackingSound(CharacterConfig character)
         {
             if (sound == null) return;
             sound.AttackSound(soundSrc, character.AttackSound);

@@ -4,7 +4,7 @@ using Berty.Field;
 
 namespace Berty.Characters.Data
 {
-    public class CheBert : Character
+    public class CheBert : CharacterConfig
     {
         public CheBert()
         {

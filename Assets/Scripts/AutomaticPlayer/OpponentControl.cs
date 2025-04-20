@@ -65,7 +65,7 @@ namespace Berty.AutomaticPlayer
                 if (!turn.IsItMoveTime()) break;
             }
             yield return new WaitForSeconds(0.5f);
-            turn.HandleTheButtonClick();
+            turn.EndTurn();
         }
 
         private void TryToAttack(out bool isSuccessful)

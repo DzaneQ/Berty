@@ -3,7 +3,7 @@ using Berty.Enums;
 
 namespace Berty.Characters.Data
 {
-    public class BertWho : Character
+    public class BertWho : CharacterConfig
     {
         //int turnCounter = 0;
 

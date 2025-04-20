@@ -6,8 +6,8 @@ namespace Berty.Characters.DataLoader
 {
     public class CharacterData
     {
-        Character character;
-        private void LoadCharacter(List<Character> list, string name)
+        CharacterConfig character;
+        private void LoadCharacter(List<CharacterConfig> list, string name)
         {
             switch (name)
             {
@@ -142,9 +142,9 @@ namespace Berty.Characters.DataLoader
             }
         }
 
-        public List<Character> LoadCharacterData()
+        public List<CharacterConfig> LoadCharacterData()
         {
-            List<Character> list = new List<Character>();
+            List<CharacterConfig> list = new List<CharacterConfig>();
             LoadCharacter(list, "astronauta bert");
             LoadCharacter(list, "bert wick");
             LoadCharacter(list, "bert pogromca");

@@ -20,19 +20,19 @@ namespace Berty.CardSprite
 {
     public class CardSpriteBehaviour : MonoBehaviour
     {
-        private FieldBehaviour occupiedField;
+        private FieldBehaviour occupiedField; 
         private CardManager cardManager;
         private CardButton[] cardButton;
         private CardBar[] cardBar;
         //private Transform[] bars;
         private CardImage imageReference;
-        private int[] relCoord = new int[2];
+        private int[] relCoord = new int[2]; // TODO: Entity property - remove
         private Rigidbody cardRB;
         private SpriteRenderer spriteRenderer;
-        private Character character;
+        private CharacterConfig character; // TODO: Entity property - remove
         private CardState state;
-        private CharacterStat cardStatus;
-        private List<Character> resistChar;
+        private CharacterStat cardStatus; // TODO: Entity property - remove
+        private List<CharacterConfig> resistChar; // TODO: Entity property - remove
         private AnimatingCardSprite animating;
         //private bool animatingProcess = false;
 
@@ -43,7 +43,8 @@ namespace Berty.CardSprite
         public CardState ResultState => state;
         public CharacterStat CardStatus => cardStatus;
         public AnimatingCardSprite Animate => animating;
-        public Character Character
+        public CardState State => state;
+        public CharacterConfig Character
         {
             get => character;
             private set
@@ -98,26 +99,6 @@ namespace Berty.CardSprite
             {
                 occupiedField.AttachCards();
             }
-        }
-
-        public void OnMouseOver()
-        {
-            //Debug.Log("OnMouseOver event trigger on: " + name);
-            if (IsLeftClicked()) state.HandleClick();
-            else if (IsRightClicked()) state.HandleSideClick();
-        }
-
-        private bool IsLeftClicked()
-        {
-            //Debug.Log($"Card {name} was left clicked. Is it locked? {IsLocked()}");
-            if (!IsLocked() && !IsAnimating() && Input.GetMouseButtonDown(0)) return true;
-            else return false;
-        }
-
-        private bool IsRightClicked()
-        {
-            if (!IsLocked() && !IsAnimating() && Input.GetMouseButtonDown(1)) return true;
-            else return false;
         }
 
         public void ShowLookupCard(bool ignoreLock) => cardManager.ShowLookupCard(spriteRenderer.sprite, ignoreLock);
@@ -185,7 +166,7 @@ namespace Berty.CardSprite
 
         private void ClearCardResistance()
         {
-            resistChar = new List<Character>();
+            resistChar = new List<CharacterConfig>();
         }
 
         public void ConfirmNewCard()
@@ -505,7 +486,7 @@ namespace Berty.CardSprite
             for (int i = 0; i < cardBar.Length; i++) StartCoroutine(UpdateBar(i, animate, true));
         }
 
-        private IEnumerator UpdateBar(int index, bool animate, bool waitUntilFinished = false)
+        public IEnumerator UpdateBar(int index, bool animate, bool waitUntilFinished = false)
         {
             if (!gameObject.activeSelf) animate = false;
             if (!animate) StartCoroutine(cardBar[index].UpdateBar(null));
@@ -818,7 +799,7 @@ namespace Berty.CardSprite
             //Debug.Log($"Set idle for card on field: {occupiedField.GetX()}, {occupiedField.GetY()}");
             state = state.SetIdle;
         }
-        public void AddResistance(Character character)
+        public void AddResistance(CharacterConfig character)
         {
             //Debug.Log($"Adding resistance of {character} to card: {name}");
             if (character == null) throw new Exception("Trying to resist null.");

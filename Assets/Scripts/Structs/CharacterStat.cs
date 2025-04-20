@@ -26,7 +26,7 @@ namespace Berty.Structs
         public int[] CurrentTempStatBonus { get => currentTempStatBonus; set => currentTempStatBonus = value; }
         public int[] NextTempStatBonus { get => nextTempStatBonus; set => nextTempStatBonus = value; }
 
-        public CharacterStat(Character character)
+        public CharacterStat(CharacterConfig character)
         {
             //strength = character.Strength;
             //power = character.Power;

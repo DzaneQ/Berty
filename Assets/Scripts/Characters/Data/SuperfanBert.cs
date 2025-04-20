@@ -4,7 +4,7 @@ using System;
 
 namespace Berty.Characters.Data
 {
-    public class SuperfanBert : Character
+    public class SuperfanBert : CharacterConfig
     {
         public SuperfanBert()
         {

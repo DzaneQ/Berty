@@ -5,7 +5,7 @@ using Berty.UI.Card;
 
 namespace Berty.Characters.Data
 {
-    public class KrolPopuBert : Character
+    public class KrolPopuBert : CharacterConfig
     {
         public KrolPopuBert()
         {
@@ -45,7 +45,7 @@ namespace Berty.Characters.Data
             if (card.CanUseSkill()) card.Character.SkillOnNewCard(card);
         }
 
-        private bool IsEnemyCard(Character character, CardSpriteBehaviour card)
+        private bool IsEnemyCard(CharacterConfig character, CardSpriteBehaviour card)
         {
             if (card.Grid.Turn.CurrentAlignment == card.OccupiedField.Align)
                 return card.CardManager.DisabledCards.FindIndex(x => x.Character.GetType() == character.GetType()) >= 0;

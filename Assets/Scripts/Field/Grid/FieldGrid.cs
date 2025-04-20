@@ -310,9 +310,9 @@ namespace Berty.Field.Grid
             field.PlaceBackupCard(backupCard);
         }
 
-        public List<Character> AllInsideCharacters()
+        public List<CharacterConfig> AllInsideCharacters()
         {
-            List<Character> list = new List<Character>();
+            List<CharacterConfig> list = new List<CharacterConfig>();
             foreach (FieldBehaviour field in fields)
             {
                 if (!field.IsOccupied()) continue;

@@ -251,9 +251,9 @@ namespace Berty.Gameplay
             pileCard.SetActive(true);
         }
 
-        public List<Character> AllOutsideCharacters()
+        public List<CharacterConfig> AllOutsideCharacters()
         {
-            List<Character> list = new List<Character>();
+            List<CharacterConfig> list = new List<CharacterConfig>();
             foreach (CardImage image in enabledCards) list.Add(image.Character);
             foreach (CardImage image in disabledCards) list.Add(image.Character);
             foreach (CardImage image in pileCards) list.Add(image.Character);
@@ -275,7 +275,7 @@ namespace Berty.Gameplay
             return list;
         }
 
-        public void RemoveCharacter(Character character)
+        public void RemoveCharacter(CharacterConfig character)
         {
             int index = disabledCards.FindIndex(x => x.Character.GetType() == character.GetType());
             if (index >= 0)

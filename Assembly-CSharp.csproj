@@ -55,7 +55,7 @@
     <UnityVersion>2022.3.29f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="D:\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="D:\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.29f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.29f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
@@ -82,7 +82,9 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\BertkaSerferka.cs" />
+    <Compile Include="Assets\Scripts\Characters\Data\CharacterConfig.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\ZalobnyBert.cs" />
+    <Compile Include="Assets\Scripts\Inputs\BoardCardInput.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\Scripts\Debugging\DevTools.cs" />
     <Compile Include="Assets\Scripts\Audio\SoundSystem.cs" />
@@ -110,13 +112,15 @@
     <Compile Include="Assets\Scripts\Characters\Data\RycerzBerti.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\RoninBert.cs" />
+    <Compile Include="Assets\Scripts\CardSprite\CardStats.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\Scripts\Field\Grid\GlobalStatus.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\KrzyzowiecBert.cs" />
     <Compile Include="Assets\Scripts\Field\Grid\GridInitialization.cs" />
     <Compile Include="Assets\Scripts\CardSprite\State\NewCardState.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Animation\AnimatingCardImage.cs" />
-    <Compile Include="Assets\Scripts\Characters\Data\Character.cs" />
+    <Compile Include="Assets\Scripts\Enums\Stat.cs" />
+    <Compile Include="Assets\Scripts\Utility\ManagerSingleton.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\KonstablBert.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
@@ -132,21 +136,25 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\Scripts\CardSprite\CardSpriteBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Entities\BoardField.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\GotkaBerta.cs" />
+    <Compile Include="Assets\Scripts\Inputs\FieldInput.cs" />
     <Compile Include="Assets\Scripts\AutomaticPlayer\OpponentControl.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\SamurajBert.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\KuglarzBert.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\BertWick.cs" />
+    <Compile Include="Assets\Scripts\Entities\BoardCard.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\SedziaBertt.cs" />
     <Compile Include="Assets\Scripts\Gameplay\PricingSystem.cs" />
+    <Compile Include="Assets\Scripts\Inputs\ButtonInput.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\Scripts\CardSprite\Bar\CardBar.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
-    <Compile Include="Assets\Scripts\Enums\Role.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\BigMadB.cs" />
+    <Compile Include="Assets\Scripts\Enums\Role.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\KowbojBert.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\KoszmarZBertwood.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\SelectStatus.cs" />
@@ -154,6 +162,7 @@
     <Compile Include="Assets\Scripts\Structs\CharacterStat.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\ShaolinBert.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\BertaSJW.cs" />
+    <Compile Include="Assets\Scripts\Inputs\HandCardInput.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\Scripts\UI\Card\CardImage.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\BertaTrojanska.cs" />
@@ -177,6 +186,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\Zombert.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
+    <Compile Include="Assets\Scripts\Enums\Direction.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\BertZawodowiec.cs" />
     <Compile Include="Assets\Scripts\Characters\Data\BertWho.cs" />

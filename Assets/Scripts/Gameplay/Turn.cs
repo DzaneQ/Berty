@@ -28,7 +28,6 @@ namespace Berty.Gameplay
         private PricingSystem ps;
         private OpponentControl oc;
         private CameraMechanics ct;
-        private SoundSystem ss;
         private Step currentStep;
         private Alignment currentAlign;
         private bool interactableDisabled = false;
@@ -67,12 +66,12 @@ namespace Berty.Gameplay
         }
 
         public bool InteractableDisabled => interactableDisabled;
-        public SoundSystem SS => ss;
+        public FieldGrid FG => fg;
         public CardManager CM => cm;
-        private string TheButtonText
+        public string TheButtonText
         {
             get => theButtonText.text;
-            set => theButtonText.text = value;
+            private set => theButtonText.text = value;
         }
 
         #region Setup
@@ -84,7 +83,6 @@ namespace Berty.Gameplay
             if (tempOC != null && tempOC.enabled) oc = tempOC;
             fg = FindAnyObjectByType<FieldGrid>();
             ct = FindAnyObjectByType<CameraMechanics>();
-            ss = GetComponent<SoundSystem>();
         }
 
         private void Start()
@@ -106,23 +104,7 @@ namespace Berty.Gameplay
         #endregion
 
         #region TurnsAndSteps
-        public void HandleTheButtonClick()
-        {
-            ss.ButtonClickSound();
-            switch (TheButtonText)
-            {
-                case "Koniec tury":
-                    EndTurn();
-                    break;
-                case "Cofnij":
-                    fg.CancelCard();
-                    break;
-                default:
-                    throw new Exception("Unknown ending button!");
-            }
-        }
-
-        private void EndTurn()
+        public void EndTurn()
         {
             if (CheckWinConditions()) return;
             cm.DeselectCards();

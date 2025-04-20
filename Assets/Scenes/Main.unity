@@ -2172,6 +2172,7 @@ GameObject:
   - component: {fileID: 1498936187}
   - component: {fileID: 1498936186}
   - component: {fileID: 1498936185}
+  - component: {fileID: 1498936188}
   m_Layer: 5
   m_Name: EndTurnButton
   m_TagString: Untagged
@@ -2242,19 +2243,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1498936186}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1414117064}
-        m_TargetAssemblyTypeName: Turn, Assembly-CSharp
-        m_MethodName: HandleTheButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1498936186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2293,6 +2282,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1498936183}
   m_CullTransparentMesh: 1
+--- !u!114 &1498936188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1498936183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c10065308fdfb45a48d9d1d1b0ce32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1503324222
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2791,6 +2792,14 @@ PrefabInstance:
     - target: {fileID: 8904218203518667204, guid: 57eaf54574b5e934b9342b8e3da9cf6a, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904218203518667204, guid: 57eaf54574b5e934b9342b8e3da9cf6a, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904218203518667204, guid: 57eaf54574b5e934b9342b8e3da9cf6a, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7925525879843103101, guid: 57eaf54574b5e934b9342b8e3da9cf6a, type: 3}

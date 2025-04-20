@@ -3,7 +3,7 @@ using Berty.Enums;
 
 namespace Berty.Characters.Data
 {
-    public class TrenerPokebertow : Character
+    public class TrenerPokebertow : CharacterConfig
     {
         public TrenerPokebertow()
         {
