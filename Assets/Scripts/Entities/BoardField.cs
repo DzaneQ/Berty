@@ -1,3 +1,4 @@
+using Berty.Characters.Data;
 using Berty.Enums;
 using System;
 using System.Collections;
@@ -9,9 +10,9 @@ namespace Berty.Entities
     public class BoardField
     {
         private BoardCard _occupantCard;
-        public BoardCard OccupantCard 
-        { 
-            get => _occupantCard; 
+        public BoardCard OccupantCard
+        {
+            get => _occupantCard;
             private set
             {
                 _occupantCard = value;
@@ -22,11 +23,26 @@ namespace Berty.Entities
         }
         public BoardCard BackupCard { get; private set; }
         public Alignment Align { get; private set; }
-        public Vector2Int Coordinates { get; private set; }
+        public Vector2Int Coordinates { get; }
 
-        public void SetCoordinates(int x, int y)
+        public BoardField(int x, int y)
         {
             Coordinates = new Vector2Int(x, y);
+            Align = Alignment.None;
+        }
+
+        public void AddCard(CharacterConfig characterConfig)
+        {
+            if (OccupantCard == null)
+            {
+                OccupantCard = new BoardCard(characterConfig);
+            }
+            else
+            {
+                if (BackupCard != null) throw new InvalidOperationException($"Field named {GetName()} is full!");
+                BackupCard = OccupantCard;
+                OccupantCard = new BoardCard(characterConfig);
+            }
         }
 
         public void PlaceCard(BoardCard card, Alignment newAlign)

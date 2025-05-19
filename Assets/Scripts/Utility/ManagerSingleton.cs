@@ -8,38 +8,38 @@ namespace Berty.Utility
 
     public class ManagerSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        protected static T instance { get; private set; }
+        private static T _instance;
 
         public static T Instance
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
                     T[] objects = FindObjectsOfType<T>();
                     if (objects.Length == 0)
                     {
                         GameObject managerObject = GameObject.Find("ManagerSystem");
-                        if (managerObject == null) instance = new GameObject("ManagerSystem").AddComponent<T>();
-                        instance = managerObject.GetComponent<T>();
-                        if (instance == null) managerObject.AddComponent<T>();
+                        if (managerObject == null) _instance = new GameObject("ManagerSystem").AddComponent<T>();
+                        _instance = managerObject.GetComponent<T>();
+                        if (_instance == null) managerObject.AddComponent<T>();
                     }
                     if (objects.Length > 1) throw new Exception($"Too many singletons of type {typeof(T).Name}");
                 }
-                return instance;
+                return _instance;
             }
             private set
             {
-                instance = value;
+                _instance = value;
             }
         }
 
-        void Awake()
+        protected virtual void Awake()
         {
-            InitializeSingleton();
+            throw new InvalidOperationException("Single shouldn't be called from its base.");
         }
 
-        private void InitializeSingleton()
+        protected void InitializeSingleton()
         {
             Instance = this as T;
         }
