@@ -43,26 +43,25 @@ namespace Berty.Entities
             }
         }
 
-
-        public void ActivateCard(CharacterConfig character, BoardField field, Direction direction)
-        {
-            LoadCharacterFromConfig(character);
-            PlaceCard(field, direction);
-        }
-
-        public void DeactivateCard()
-        {
-            OccupiedField.RemoveCard();
-            OccupiedField = null;
-        }
-
-        private void LoadCharacterFromConfig(CharacterConfig character)
+        public BoardCard(CharacterConfig character)
         {
             CharacterConfig = character;
             Stats = new CardStats(character);
             HasAttacked = false;
             IsTired = false;
             resistance = new List<CharacterConfig>();
+        }
+
+        //public void ActivateCard(CharacterConfig character, BoardField field, Direction direction)
+        //{
+        //    LoadCharacterFromConfig(character);
+        //    PlaceCard(field, direction);
+        //}
+
+        public void DeactivateCard()
+        {
+            OccupiedField.RemoveCard();
+            OccupiedField = null;
         }
 
         public void PlaceCard(BoardField field, Direction direction)
