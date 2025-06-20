@@ -1,4 +1,4 @@
-using Berty.Characters.Data;
+using Berty.BoardCards.ConfigData;
 
 namespace Berty.Structs
 {

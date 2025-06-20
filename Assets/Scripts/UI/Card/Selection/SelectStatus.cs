@@ -23,7 +23,7 @@ namespace Berty.UI.Card.Selection
         //public virtual Transform ReturnCard() => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
         //public virtual SelectStatus KillCard() => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
         public virtual SelectStatus UnselectAutomatically() => throw new InvalidOperationException("Card " + cardTransform.gameObject.name + " is faulty!");
-        protected bool IsAnimating()
+        public bool IsAnimating()
         {
             if (animating == null) return false;
             return animating.CoroutineCount > 0;

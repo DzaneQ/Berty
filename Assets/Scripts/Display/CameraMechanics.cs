@@ -1,6 +1,6 @@
-using Berty.CardSprite;
-using Berty.Field;
-using Berty.Field.Grid;
+using Berty.BoardCards;
+using Berty.Grid.Field;
+using Berty.Grid;
 using Berty.Gameplay;
 using UnityEngine;
 
@@ -12,13 +12,13 @@ namespace Berty.Display
         float rotManSpeed = 90f;
         float rotAutoMultiplier = 0.25f;
 
-        private FieldBehaviour[] fields;
+        private OutdatedFieldBehaviour[] fields;
         private CardSpriteBehaviour selectedCard;
         Camera cam;
         private Turn turn;
 
-        private FieldBehaviour targetField;
-        private FieldBehaviour lastTarget;
+        private OutdatedFieldBehaviour targetField;
+        private OutdatedFieldBehaviour lastTarget;
 
         private Color attackColor = new Color(1f, 0.55f, 0f, 1f);
         private Color blockColor = new Color(0f, 0.35f, 0.8f, 1f);
@@ -32,7 +32,7 @@ namespace Berty.Display
         private void Awake()
         {
             cam = GetComponent<Camera>();
-            AssignFields();
+            //AssignFields();
         }
 
         private void Start()
@@ -43,16 +43,16 @@ namespace Berty.Display
         void Update()
         {
             HandleCameraTransform();
-            HandleCardSpriteFocus();
+            //HandleCardSpriteFocus();
         }
 
         private void AssignFields()
         {
             FieldGrid fg = (FieldGrid)FindFirstObjectByType(typeof(FieldGrid));
             turn = fg.Turn;
-            fields = new FieldBehaviour[9];
+            fields = new OutdatedFieldBehaviour[9];
             if (fields.Length != fg.transform.childCount) Debug.LogError("Number of fields is not equal to number of child count!");
-            for (int index = 0; index < fields.Length; index++) fields[index] = fg.transform.GetChild(index).GetComponent<FieldBehaviour>();
+            for (int index = 0; index < fields.Length; index++) fields[index] = fg.transform.GetChild(index).GetComponent<OutdatedFieldBehaviour>();
         }
 
         private void AdjustHighlightSaturation(float saturation)
@@ -134,7 +134,7 @@ namespace Berty.Display
             }
         }
 
-        public void SetTargets(FieldBehaviour sourceField)
+        public void SetTargets(OutdatedFieldBehaviour sourceField)
         {
             if (sourceField.OccupantCard == selectedCard) return;
             if (selectedCard != null) ClearTarget();
@@ -144,7 +144,7 @@ namespace Berty.Display
             bool riposte = false;
             foreach (int[] distance in selectedCard.Character.AttackRange)
             {
-                FieldBehaviour targetField = selectedCard.GetTargetField(distance);
+                OutdatedFieldBehaviour targetField = selectedCard.GetTargetField(distance);
                 if (targetField == null) continue;
                 bool block = false;
                 if (targetField.IsOccupied())
@@ -159,7 +159,7 @@ namespace Berty.Display
             if (riposte) HighlightTarget(sourceField);
         }
 
-        private void HighlightTarget(FieldBehaviour target, bool blockState = false)
+        private void HighlightTarget(OutdatedFieldBehaviour target, bool blockState = false)
         {
             target.HighlightField(blockState ? highlightBlockColor : highlightAttackColor);
         }
@@ -167,7 +167,7 @@ namespace Berty.Display
         public void ClearTarget()
         {
             if (selectedCard == null) return;
-            foreach (FieldBehaviour field in fields)
+            foreach (OutdatedFieldBehaviour field in fields)
             {
                 //field.FieldOutline.enabled = false;
                 field.UnhighlightField();
@@ -190,7 +190,7 @@ namespace Berty.Display
             return false;
         }
 
-        private bool IsFieldTargeted(FieldBehaviour field, Transform targetTransform)
+        private bool IsFieldTargeted(OutdatedFieldBehaviour field, Transform targetTransform)
         {
             if (field.transform == targetTransform) return true;
             if (field.OccupantCard.transform == targetTransform) return true;

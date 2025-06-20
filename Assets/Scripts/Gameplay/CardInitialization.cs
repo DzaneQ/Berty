@@ -1,5 +1,5 @@
-using Berty.Characters.Data;
-using Berty.Characters.DataLoader;
+using Berty.BoardCards.ConfigData;
+using Berty.Characters.Init;
 using Berty.Display;
 using Berty.UI.Card;
 using System.Collections;
@@ -22,15 +22,15 @@ namespace Berty.Gameplay
             for (int i = 0; i < amount; i++) Instantiate(cardBlankPrefab, pile.transform);
         }
 
-        public void InitializeAllCharacterCards(GameObject stack, out List<CardImage> cardCollection)
+        public void InitializeAllCharacterCards(GameObject stack, out List<HandCardBehaviour> cardCollection)
         {
             CharacterData data = new CharacterData();
             List<CharacterConfig> characters = data.LoadCharacterData();
-            cardCollection = new List<CardImage>();
+            cardCollection = new List<HandCardBehaviour>();
             for (int i = 0; i < characters.Count; i++)
             {
                 GameObject cardImage = Instantiate(cardImagePrefab, stack.transform);
-                cardCollection.Add(cardImage.GetComponent<CardImage>());
+                cardCollection.Add(cardImage.GetComponent<HandCardBehaviour>());
                 cardCollection[i].AssignCharacter(characters[i]);
                 cardImage.name = cardCollection[i].Character.Name;
             }
