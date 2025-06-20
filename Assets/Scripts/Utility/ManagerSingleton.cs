@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Berty.Utility
 {
 
-    public class ManagerSingleton<T> : MonoBehaviour where T : MonoBehaviour
+    public abstract class ManagerSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T _instance;
 
@@ -20,9 +20,9 @@ namespace Berty.Utility
                     if (objects.Length == 0)
                     {
                         GameObject managerObject = GameObject.Find("ManagerSystem");
-                        if (managerObject == null) _instance = new GameObject("ManagerSystem").AddComponent<T>();
-                        _instance = managerObject.GetComponent<T>();
-                        if (_instance == null) managerObject.AddComponent<T>();
+                        if (managerObject == null) managerObject = new GameObject("ManagerSystem");
+                        if (_instance == null) _instance = managerObject.AddComponent<T>();
+                        else _instance = managerObject.GetComponent<T>();
                     }
                     if (objects.Length > 1) throw new Exception($"Too many singletons of type {typeof(T).Name}");
                 }
@@ -36,7 +36,7 @@ namespace Berty.Utility
 
         protected virtual void Awake()
         {
-            throw new InvalidOperationException("Single shouldn't be called from its base.");
+            InitializeSingleton();
         }
 
         protected void InitializeSingleton()

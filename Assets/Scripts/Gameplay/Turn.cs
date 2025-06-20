@@ -7,10 +7,10 @@ using UnityEngine.SceneManagement;
 using Berty.Display;
 using Berty.Audio;
 using Berty.AutomaticPlayer;
-using Berty.CardSprite;
+using Berty.BoardCards;
 using Berty.Enums;
-using Berty.Field;
-using Berty.Field.Grid;
+using Berty.Grid.Field;
+using Berty.Grid;
 
 namespace Berty.Gameplay
 {
@@ -24,8 +24,8 @@ namespace Berty.Gameplay
         private Text theButtonText;
         private Text endingMessage;
         private FieldGrid fg;
-        private CardManager cm;
-        private PricingSystem ps;
+        private OutdatedCardManager cm;
+        private OutdatedPricingSystem ps;
         private OpponentControl oc;
         private CameraMechanics ct;
         private Step currentStep;
@@ -67,7 +67,7 @@ namespace Berty.Gameplay
 
         public bool InteractableDisabled => interactableDisabled;
         public FieldGrid FG => fg;
-        public CardManager CM => cm;
+        public OutdatedCardManager CM => cm;
         public string TheButtonText
         {
             get => theButtonText.text;
@@ -78,7 +78,7 @@ namespace Berty.Gameplay
         private void Awake()
         {
             if (Debug.isDebugBuild) Application.targetFrameRate = 10;
-            cm = GetComponent<CardManager>();
+            cm = GetComponent<OutdatedCardManager>();
             OpponentControl tempOC = GetComponent<OpponentControl>();
             if (tempOC != null && tempOC.enabled) oc = tempOC;
             fg = FindAnyObjectByType<FieldGrid>();
@@ -89,7 +89,7 @@ namespace Berty.Gameplay
         {
             endingMessage = GameOverText.transform.GetChild(0).GetComponent<Text>();
             theButtonText = TheButton.transform.GetChild(0).GetComponent<Text>();
-            ps = new PricingSystem(cm);
+            ps = new OutdatedPricingSystem(cm);
             SetStartingParameters();
             //DebugInit();
             //Debug.Log(SystemInfo.processorType);
@@ -239,7 +239,7 @@ namespace Berty.Gameplay
             if (CurrentAlignment == Alignment.Opponent && oc != null) oc.PlayTurn();
         }
 
-        public void SelectField(FieldBehaviour target)
+        public void SelectField(OutdatedFieldBehaviour target)
         {
             target.OccupantCard.ShowLookupCard(true);
             ct.SetTargets(target);

@@ -1,8 +1,8 @@
-using Berty.CardSprite;
+using Berty.BoardCards;
 using Berty.Debugging;
 using Berty.Enums;
-using Berty.Field;
-using Berty.Field.Grid;
+using Berty.Grid.Field;
+using Berty.Grid;
 using Berty.Gameplay;
 using Berty.UI.Card;
 using System;
@@ -17,7 +17,7 @@ namespace Berty.AutomaticPlayer
         const int timeDelay = 2;
 
         private FieldGrid fg;
-        private CardManager cm;
+        private OutdatedCardManager cm;
         private Turn turn;
         private System.Random rng = new System.Random();
         private DevTools dt;
@@ -27,7 +27,7 @@ namespace Berty.AutomaticPlayer
         private void Awake()
         {
             turn = GetComponent<Turn>();
-            cm = GetComponent<CardManager>();
+            cm = GetComponent<OutdatedCardManager>();
         }
 
         private void Start()
@@ -87,7 +87,7 @@ namespace Berty.AutomaticPlayer
         {
             CardSpriteBehaviour bestCard = null;
             int highestEfficiency = 0;
-            foreach (FieldBehaviour field in fg.AlignedFields(Alignment.Opponent))
+            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(Alignment.Opponent))
             {
                 CardSpriteBehaviour card = field.OccupantCard;
                 if (!card.CanCharacterAttack()) continue;
@@ -103,7 +103,7 @@ namespace Berty.AutomaticPlayer
         private CardSpriteBehaviour BestTargetCard()
         {
             CardSpriteBehaviour bestCard = null;
-            foreach (FieldBehaviour field in fg.AlignedFields(Alignment.Opponent))
+            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(Alignment.Opponent))
             {
                 CardSpriteBehaviour card = field.OccupantCard;
                 if (bestCard != null)
@@ -120,7 +120,7 @@ namespace Berty.AutomaticPlayer
 
         private void TryToPlayCard(out bool isSuccessful)
         {
-            CardImage selectedCard = cm.EnabledCards[0];
+            HandCardBehaviour selectedCard = cm.EnabledCards[0];
             int price = selectedCard.Character.Power;
             if (price < cm.EnabledCards.Count && GetSafestFields().Count > 0)
             {
@@ -130,7 +130,7 @@ namespace Berty.AutomaticPlayer
             else isSuccessful = false;
         }
 
-        private void PlayCard(CardImage card, int price)
+        private void PlayCard(HandCardBehaviour card, int price)
         {
             CardSpriteBehaviour cardSprite = PlaceCard(card);
             //CardSpriteBehaviour cardSprite = safeFields[index].OccupantCard;
@@ -139,12 +139,12 @@ namespace Berty.AutomaticPlayer
             turn.SelectField(cardSprite.OccupiedField);
         }
 
-        private CardSpriteBehaviour PlaceCard(CardImage card)
+        private CardSpriteBehaviour PlaceCard(HandCardBehaviour card)
         {
             card.ChangeSelection(true);
             if (dt != null)
             {
-                FieldBehaviour field = dt.OpponentPriorityField();
+                OutdatedFieldBehaviour field = dt.OpponentPriorityField();
                 if (field != null)
                 {
                     Debug.LogWarning("Executing priority card!");
@@ -152,7 +152,7 @@ namespace Berty.AutomaticPlayer
                     return field.OccupantCard;
                 }
             }
-            List<FieldBehaviour> safeFields = GetSafestFields();
+            List<OutdatedFieldBehaviour> safeFields = GetSafestFields();
             int index = rng.Next(safeFields.Count);
             //Debug.Log("Rolled field index: " + index);
             safeFields[index].PlayCard();
@@ -176,13 +176,13 @@ namespace Berty.AutomaticPlayer
             card.ConfirmPayment(false);
         }
 
-        private List<FieldBehaviour> GetSafestFields()
+        private List<OutdatedFieldBehaviour> GetSafestFields()
         {
-            List<FieldBehaviour> freeFields = fg.AlignedFields(Alignment.None);
-            List<FieldBehaviour> safeFields = new List<FieldBehaviour>();
+            List<OutdatedFieldBehaviour> freeFields = fg.AlignedFields(Alignment.None);
+            List<OutdatedFieldBehaviour> safeFields = new List<OutdatedFieldBehaviour>();
             for (int i = 0; i < 6; i++)
             {
-                foreach (FieldBehaviour field in freeFields) if (fg.HeatLevel(field, Alignment.Player) <= i) safeFields.Add(field);
+                foreach (OutdatedFieldBehaviour field in freeFields) if (fg.HeatLevel(field, Alignment.Player) <= i) safeFields.Add(field);
                 if (safeFields.Count > 0) break;
             }
             return safeFields;
@@ -212,17 +212,17 @@ namespace Berty.AutomaticPlayer
         private int Efficiency(CardSpriteBehaviour card, int alignedWeight = 1, int neutralWeight = 0)
         {
             int efficiency = 0;
-            foreach (FieldBehaviour field in fg.AlignedFields(Alignment.None))
+            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(Alignment.None))
             {
                 if (card.CanAttackField(field)) efficiency += neutralWeight;
                 //if (card.CanAttack(field)) Debug.Log("Adding " + neutralWeight + " cause neutral: " + field.GetX() + "," + field.GetY());
             }
-            foreach (FieldBehaviour field in fg.AlignedFields(Alignment.Player))
+            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(Alignment.Player))
             {
                 if (card.CanAttackField(field)) efficiency += alignedWeight;
                 //if (card.CanAttack(field)) Debug.Log("Adding " + alignedWeight + " cause not ally: " + field.GetX() + "," + field.GetY());
             }
-            foreach (FieldBehaviour field in fg.AlignedFields(Alignment.Opponent))
+            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(Alignment.Opponent))
             {
                 if (card.CanAttackField(field)) efficiency -= alignedWeight;
                 //if (card.CanAttack(field)) Debug.Log("Substracting " + alignedWeight + " cause ally: " + field.GetX() + "," + field.GetY());

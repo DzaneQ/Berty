@@ -1,8 +1,8 @@
 using Berty.AutomaticPlayer;
-using Berty.CardSprite;
+using Berty.BoardCards;
 using Berty.Enums;
-using Berty.Field;
-using Berty.Field.Grid;
+using Berty.Grid.Field;
+using Berty.Grid;
 using Berty.Gameplay;
 using Berty.UI.Card;
 using System.Collections;
@@ -14,7 +14,7 @@ namespace Berty.Debugging
     public class DevTools : MonoBehaviour
     {
         private Turn turn;
-        private CardManager cm;
+        private OutdatedCardManager cm;
         private FieldGrid fg;
         private Transform collection;
 
@@ -30,7 +30,7 @@ namespace Berty.Debugging
             {
                 GameObject sys = GameObject.Find("/EventSystem");
                 turn = sys.GetComponent<Turn>();
-                cm = sys.GetComponent<CardManager>();
+                cm = sys.GetComponent<OutdatedCardManager>();
                 fg = GameObject.Find("/GameBoard/FieldBoard").GetComponent<FieldGrid>();
                 sys.GetComponent<OpponentControl>().DebugInit(this);
                 collection = GameObject.Find("/CardImageCollection").transform;
@@ -54,9 +54,9 @@ namespace Berty.Debugging
                 return;
             }
             if (targetCard == null || targetParent == null) return;
-            CardImage image = targetCard.GetComponent<CardImage>();
+            HandCardBehaviour image = targetCard.GetComponent<HandCardBehaviour>();
             CardSpriteBehaviour sprite = targetCard.GetComponent<CardSpriteBehaviour>();
-            FieldBehaviour field = targetParent.GetComponent<FieldBehaviour>();
+            OutdatedFieldBehaviour field = targetParent.GetComponent<OutdatedFieldBehaviour>();
             cm.DebugForceRemoveCardFromLists(image);
             if (image == null) image = sprite.DebugGetReference();
             fg.DebugForceRemoveCardFromField(sprite);
@@ -103,10 +103,10 @@ namespace Berty.Debugging
             }
         }
 
-        public FieldBehaviour OpponentPriorityField()
+        public OutdatedFieldBehaviour OpponentPriorityField()
         {
             if (targetParent == null) return null;
-            FieldBehaviour field = targetParent.GetComponent<FieldBehaviour>();
+            OutdatedFieldBehaviour field = targetParent.GetComponent<OutdatedFieldBehaviour>();
             if (field == null || field.IsOccupied()) return null;
             return field;
         }
