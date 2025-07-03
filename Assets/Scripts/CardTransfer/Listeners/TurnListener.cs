@@ -2,6 +2,7 @@ using Berty.CardTransfer.Managers;
 using Berty.Gameplay.ConfigData;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.UI.Card.Managers;
 using UnityEngine;
 
 namespace Berty.CardTransfer.Listeners
@@ -28,9 +29,9 @@ namespace Berty.CardTransfer.Listeners
 
         private void HandleNewTurn()
         {
-            CardManager.Instance.SelectionSystem.ClearSelection();
+            HandCardSelectManager.Instance.SelectionSystem.ClearSelection();
             int totalCardCount = game.GameConfig.TableCapacity;
-            CardManager.Instance.PullCardsTo(totalCardCount);
+            PileToHandManager.Instance.PullCardsTo(totalCardCount);
         }
     }
 }

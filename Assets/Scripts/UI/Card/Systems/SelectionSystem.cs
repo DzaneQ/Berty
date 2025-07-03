@@ -3,42 +3,62 @@ using Berty.CardTransfer.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 namespace Berty.UI.Card.Systems
 {
     public class SelectionSystem
     {
-        private List<CharacterConfig> selectedCards = new List<CharacterConfig>();
-        private int? cardPrice;
+        public List<CharacterConfig> SelectedCards { get; }
+        public int? cardPrice;
+        private CharacterConfig cardOnHold;
+
+        public SelectionSystem()
+        {
+            SelectedCards = new List<CharacterConfig>();
+        }
 
         public void SelectCard(CharacterConfig card)
         {
-            if (!selectedCards.Contains(card)) selectedCards.Add(card);
+            if (!SelectedCards.Contains(card)) SelectedCards.Add(card);
         }
 
         public void UnselectCard(CharacterConfig card)
         {
-            selectedCards.Remove(card);
+            SelectedCards.Remove(card);
         }
 
         public void ClearSelection()
         {
-            selectedCards.Clear();
+            SelectedCards.Clear();
         }
 
         public int GetSelectedCardsCount()
         {
-            return selectedCards.Count;
+            return SelectedCards.Count;
+        }
+
+        public CharacterConfig GetSelectedCardOrThrow()
+        {
+            if (GetSelectedCardsCount() != 1) throw new InvalidOperationException($"Trying to call the only selected card when the count is: {GetSelectedCardsCount()}");
+            return SelectedCards[0];
         }
 
         public bool IsSelected(CharacterConfig card)
         {
-            return selectedCards.Contains(card);
+            return SelectedCards.Contains(card);
+        }
+
+        public CharacterConfig GetTheOnlySelectedCardOrNull()
+        {
+            if (GetSelectedCardsCount() != 1) return null;
+            return SelectedCards[0];
         }
 
         public void DemandPayment(int demandedPrice)
         {
+            if (IsItPaymentTime()) throw new Exception("Demanding payment when there's already demanded payment.");
             cardPrice = demandedPrice;
         }
 
@@ -52,9 +72,31 @@ namespace Berty.UI.Card.Systems
             cardPrice = null;
         }
 
+        public bool CheckOffer()
+        {
+            return IsItPaymentTime() && GetSelectedCardsCount() == cardPrice;
+        }
+
         public bool CanSelectCard()
         {
             return GetSelectedCardsCount() < (cardPrice ?? 1);
+        }
+
+        public CharacterConfig GetCardOnHoldOrThrow()
+        {
+            if (cardOnHold == null) throw new ArgumentNullException("Card on hold cannot be null!");
+            return cardOnHold;
+        }
+
+        public void PutSelectedCardOnHold()
+        {
+            cardOnHold = GetSelectedCardOrThrow();
+            ClearSelection();
+        }
+
+        public void ClearCardOnHold()
+        {
+            cardOnHold = null;
         }
     }
 }

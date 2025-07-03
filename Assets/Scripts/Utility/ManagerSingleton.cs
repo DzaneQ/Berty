@@ -8,29 +8,29 @@ namespace Berty.Utility
 
     public abstract class ManagerSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        private static T _instance;
+        private static T s_instance;
 
         public static T Instance
         {
             get
             {
-                if (_instance == null)
+                if (s_instance == null)
                 {
                     T[] objects = FindObjectsOfType<T>();
                     if (objects.Length == 0)
                     {
                         GameObject managerObject = GameObject.Find("ManagerSystem");
                         if (managerObject == null) managerObject = new GameObject("ManagerSystem");
-                        if (_instance == null) _instance = managerObject.AddComponent<T>();
-                        else _instance = managerObject.GetComponent<T>();
+                        if (s_instance == null) s_instance = managerObject.AddComponent<T>();
+                        else s_instance = managerObject.GetComponent<T>();
                     }
                     if (objects.Length > 1) throw new Exception($"Too many singletons of type {typeof(T).Name}");
                 }
-                return _instance;
+                return s_instance;
             }
             private set
             {
-                _instance = value;
+                s_instance = value;
             }
         }
 

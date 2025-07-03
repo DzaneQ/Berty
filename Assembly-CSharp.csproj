@@ -60,6 +60,7 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.29f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\CardTransfer\Managers\PileToHandManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Scripts\Utility\RotationLocker.cs" />
     <Compile Include="Assets\Scripts\Gameplay\ConfigData\GameConfig.cs" />
@@ -80,10 +81,12 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaTrojanska.cs" />
     <Compile Include="Assets\Scripts\Menu\ButtonFunction.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertkaSerferka.cs" />
+    <Compile Include="Assets\Scripts\CardTransfer\Managers\HandToPileManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\CharacterConfig.cs" />
     <Compile Include="Assets\Scripts\Gameplay\OutdatedCardManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\CardButton.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaGejsza.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\HandCardSelectManager.cs" />
     <Compile Include="Assets\Scripts\Display\CameraMechanics.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Listeners\HandCardInput.cs" />
@@ -95,7 +98,6 @@
     <Compile Include="Assets\Scripts\BoardCards\State\ActiveState.cs" />
     <Compile Include="Assets\Scripts\Debugging\DevTools.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Entities\Game.cs" />
-    <Compile Include="Assets\Scripts\CardTransfer\Managers\CardManager.cs" />
     <Compile Include="Assets\Scripts\Audio\SoundSystem.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\PrymusBert.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
@@ -193,11 +195,13 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertkaIdolka.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KoszmarZBertwood.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\BackupCard.cs" />
+    <Compile Include="Assets\Scripts\CardTransfer\Managers\HandToFieldManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\SedziaBertt.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\IdleState.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Init\HandCardInitialization.cs" />
+    <Compile Include="Assets\Scripts\Grid\Field\Behaviour\FieldBehaviour.cs" />
     <Compile Include="Assets\Scripts\Gameplay\CardInitialization.cs" />
     <Compile Include="Assets\Scripts\Grid\GlobalStatus.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\NewCardState.cs" />
@@ -206,6 +210,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\GotkaBerta.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardBehaviour.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\Scripts\Enums\Direction.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\TrenerPokebertow.cs" />

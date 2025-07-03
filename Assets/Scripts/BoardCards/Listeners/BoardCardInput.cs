@@ -1,4 +1,5 @@
 using Berty.BoardCards;
+using Berty.BoardCards.Behvaiours;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,18 +8,18 @@ namespace Berty.BoardCards.Listeners
 {
     public class BoardCardInput : MonoBehaviour
     {
-        private CardSpriteBehaviour behaviour;
+        private BoardCardBehaviour behaviour;
 
         void Awake()
         {
-            behaviour = GetComponent<CardSpriteBehaviour>();
+            behaviour = GetComponent<BoardCardBehaviour>();
         }
 
         void Start()
         {
             // Enabling toggle from the inspector.
         }
-        public void OnMouseOver()
+        /*public void OnMouseOver()
         {
             //Debug.Log("OnMouseOver event trigger on: " + name);
             if (IsLeftClicked()) behaviour.State.HandleClick();
@@ -36,6 +37,6 @@ namespace Berty.BoardCards.Listeners
         {
             if (!behaviour.IsLocked() && !behaviour.IsAnimating() && Input.GetMouseButtonDown(1)) return true;
             else return false;
-        }
+        }*/
     }
 }

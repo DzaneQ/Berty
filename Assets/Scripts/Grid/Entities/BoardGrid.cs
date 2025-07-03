@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Berty.Entities
+namespace Berty.Grid.Entities
 {
     public class BoardGrid
     {

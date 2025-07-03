@@ -1,6 +1,6 @@
 using Berty.BoardCards.ConfigData;
 using Berty.CardTransfer.Entities;
-using Berty.Entities;
+using Berty.Grid.Entities;
 using Berty.Enums;
 using Berty.Gameplay.ConfigData;
 using System;
