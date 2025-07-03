@@ -1,6 +1,6 @@
 using Berty.BoardCards.ConfigData;
 using Berty.CardTransfer.Entities;
-using Berty.Entities;
+using Berty.Grid.Entities;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Collection;
@@ -33,22 +33,55 @@ namespace Berty.UI.Card.Managers
             cardPile = CoreManager.Instance.Game.CardPile;
         }
 
-        public void UpdateCardObjects()
+        public void AddCardObjects()
         {
-            if (playerTable.activeSelf) UpdateCardObjectsForTable(Alignment.Player);
-            if (opponentTable.activeSelf) UpdateCardObjectsForTable(Alignment.Opponent);
+            if (playerTable.activeSelf) AddCardObjectsForTable(Alignment.Player);
+            if (opponentTable.activeSelf) AddCardObjectsForTable(Alignment.Opponent);
         }
 
-        private void UpdateCardObjectsForTable(Alignment alignment)
+        public void RemoveCardObjects()
+        {
+            if (playerTable.activeSelf) RemoveCardObjectsForTable(Alignment.Player);
+            if (opponentTable.activeSelf) RemoveCardObjectsForTable(Alignment.Opponent);
+        }
+
+        public Sprite GetSpriteFromHandCardObject(CharacterConfig characterConfig)
+        {
+            return behaviourCollection.GetBehaviourFromCharacterConfig(characterConfig).Sprite;
+        }
+
+        private void AddCardObjectsForTable(Alignment alignment)
         {
             Transform table = GetTableObjectFromAlignment(alignment).transform;
-            List<CharacterConfig> cards = cardPile.GetCardsFromAlign(alignment);
-            //List<string> cardNames = cards.Select(characterConfig => characterConfig.Name).ToList();
-            for (int i = 0; i < cards.Count; i++)
+            List<CharacterConfig> ownedCards = cardPile.GetCardsFromAlign(alignment);
+            AddCardObjectsFromPileData(table, ownedCards);
+        }
+
+        private void RemoveCardObjectsForTable(Alignment alignment)
+        {
+            Transform table = GetTableObjectFromAlignment(alignment).transform;
+            List<CharacterConfig> ownedCards = cardPile.GetCardsFromAlign(alignment);
+            RemoveCardObjectsFromTable(table, ownedCards);
+        }
+
+        private void AddCardObjectsFromPileData(Transform table, List<CharacterConfig> pileData)
+        {
+            for (int i = 0; i < pileData.Count; i++)
             {
-                Transform card = behaviourCollection.GetBehaviourFromCharacterConfig(cards[i]).transform;
+                Transform card = behaviourCollection.GetBehaviourFromCharacterConfig(pileData[i]).transform;
                 if (card.parent == table) continue;
                 card.SetParent(table);
+            }
+        }
+
+        private void RemoveCardObjectsFromTable(Transform table, List<CharacterConfig> pileData)
+        {
+            List<Transform> ownedCardTransforms = behaviourCollection.GetTransformListFromCharacterConfigs(pileData);
+            for (int i = 0; i < table.childCount; i++)
+            {
+                Transform card = table.GetChild(i);
+                if (ownedCardTransforms.Contains(card)) continue;
+                card.SetParent(behaviourCollection.transform);
             }
         }
 

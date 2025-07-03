@@ -14,7 +14,7 @@ namespace Berty.BoardCards.Entities
         private BoardField _occupiedField;
         private Direction _direction;
         private List<CharacterConfig> resistance;
-        public CharacterConfig CharacterConfig { get; private set; }
+        public CharacterConfig CharacterConfig { get; }
         public BoardField OccupiedField {
             get => _occupiedField;
             private set
@@ -31,7 +31,7 @@ namespace Berty.BoardCards.Entities
                 _direction = value;
             } 
         }
-        public CardStats Stats { get; private set; }
+        public CardStats Stats { get; }
         public bool HasAttacked { get; private set; }
         public bool IsTired { get; private set; }
         public Alignment Align { get => OccupiedField.Align;  }

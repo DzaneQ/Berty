@@ -1,37 +1,29 @@
+using Berty.BoardCards.ConfigData;
 using Berty.CardTransfer.Entities;
-using Berty.Entities;
+using Berty.Grid.Entities;
 using Berty.Enums;
-using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.UI.Card;
-using Berty.UI.Card.Managers;
+using Berty.UI.Card.Collection;
 using Berty.UI.Card.Systems;
+using Berty.UI.Managers;
 using Berty.Utility;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
-namespace Berty.CardTransfer.Managers
+namespace Berty.UI.Card.Managers
 {
-    public class CardManager : ManagerSingleton<CardManager>
+    public class HandCardSelectManager : UIObjectManager<HandCardSelectManager>
     {
-        private Game game { get; set; }
-        private CardPile cardPile => game.CardPile;
         public SelectionSystem SelectionSystem { get; private set; }
 
         protected override void Awake()
         {
-            InitializeSingleton();
-            game = CoreManager.Instance.Game;
+            base.Awake();
             SelectionSystem = new SelectionSystem();
-        }
-
-        public void PullCardsTo(int capacity)
-        {
-            Alignment align = game.CurrentAlignment;
-
-            if (cardPile.PullCardsTo(capacity, align)) HandCardObjectManager.Instance.UpdateCardObjects();
-            else TurnManager.Instance.EndTheGame();
         }
 
         public void ChangeSelection(HandCardBehaviour card)

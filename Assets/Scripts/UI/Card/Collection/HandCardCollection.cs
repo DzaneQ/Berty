@@ -3,6 +3,7 @@ using Berty.CardTransfer.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Berty.UI.Card.Collection
@@ -20,6 +21,11 @@ namespace Berty.UI.Card.Collection
         public HandCardBehaviour GetBehaviourFromCharacterConfig(CharacterConfig characterConfig)
         {
             return handCardBehaviourCollection.Find((HandCardBehaviour behaviour) => behaviour.Character == characterConfig);
+        }
+
+        public List<Transform> GetTransformListFromCharacterConfigs(List<CharacterConfig> characterConfigs)
+        {
+            return handCardBehaviourCollection.FindAll((HandCardBehaviour behaviour) => characterConfigs.Contains(behaviour.Character)).ConvertAll(x => x.transform);
         }
     }
 }

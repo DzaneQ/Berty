@@ -2,6 +2,7 @@ using Berty.CardTransfer.Managers;
 using Berty.Display.Managers;
 using Berty.Gameplay;
 using Berty.UI.Card;
+using Berty.UI.Card.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,7 +37,7 @@ namespace Berty.UI.Card.Listeners
         private void HandleLeftClick()
         {
             if (transform.parent.name.Contains("Dead")) behaviour.ReviveCard();
-            else CardManager.Instance.ChangeSelection(behaviour);
+            else HandCardSelectManager.Instance.ChangeSelection(behaviour);
         }
     }
 }

@@ -87,7 +87,7 @@ namespace Berty.CardTransfer.Entities
             };
         }
 
-        private void DiscardCards(List<CharacterConfig> cardsToDiscard, Alignment align)
+        public void DiscardCards(List<CharacterConfig> cardsToDiscard, Alignment align)
         {
             List<CharacterConfig> table = GetCardsFromAlign(align);
             int initialTableCount = table.Count;
@@ -106,7 +106,7 @@ namespace Berty.CardTransfer.Entities
             deadCards.Remove(card);
         }
 
-        private void LeaveCard(CharacterConfig card, Alignment align)
+        public void LeaveCard(CharacterConfig card, Alignment align)
         {
             List<CharacterConfig> table = GetCardsFromAlign(align);
             if (!table.Contains(card)) throw new Exception($"Attempting to get {card.Name} from wrong table");

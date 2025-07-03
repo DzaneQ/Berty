@@ -1,5 +1,5 @@
 using Berty.BoardCards.ConfigData;
-using Berty.Entities;
+using Berty.Grid.Entities;
 using Berty.Enums;
 using System;
 using System.Collections;

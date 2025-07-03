@@ -1,4 +1,4 @@
-using Berty.Entities;
+using Berty.Grid.Entities;
 using Berty.Enums;
 using Berty.Utility;
 using System;
