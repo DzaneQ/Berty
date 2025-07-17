@@ -12,7 +12,7 @@ namespace Berty.BoardCards.Entities
     {
         private Vector2Int? _cached_relativeCoordinates;
         private BoardField _occupiedField;
-        private Direction _direction;
+        private DirectionEnum _direction;
         private List<CharacterConfig> resistance;
         public CharacterConfig CharacterConfig { get; }
         public BoardField OccupiedField {
@@ -23,7 +23,7 @@ namespace Berty.BoardCards.Entities
                 _occupiedField = value;
             }
         }
-        public Direction Direction { 
+        public DirectionEnum Direction { 
             get => _direction; 
             private set
             {
@@ -34,7 +34,7 @@ namespace Berty.BoardCards.Entities
         public CardStats Stats { get; }
         public bool HasAttacked { get; private set; }
         public bool IsTired { get; private set; }
-        public Alignment Align { get => OccupiedField.Align;  }
+        public AlignmentEnum Align { get => OccupiedField.Align;  }
         public Vector2Int RelativeCoordinates { 
             get
             {
@@ -64,7 +64,7 @@ namespace Berty.BoardCards.Entities
             OccupiedField = null;
         }
 
-        public void PlaceCard(BoardField field, Direction direction)
+        public void PlaceCard(BoardField field, DirectionEnum direction)
         {
             SetField(field);
             SetDirection(direction);
@@ -86,12 +86,17 @@ namespace Berty.BoardCards.Entities
             HasAttacked = true;
         }
 
+        public int GetAngle()
+        {
+            return (int)Direction;
+        }
+
         private void SetField(BoardField field)
         {
             OccupiedField = field;
         }
 
-        private void SetDirection(Direction direction)
+        private void SetDirection(DirectionEnum direction)
         {
             Direction = direction;
         }

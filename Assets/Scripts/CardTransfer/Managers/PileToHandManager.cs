@@ -26,7 +26,7 @@ namespace Berty.CardTransfer.Managers
 
         public void PullCardsTo(int capacity)
         {
-            Alignment align = game.CurrentAlignment;
+            AlignmentEnum align = game.CurrentAlignment;
 
             if (cardPile.PullCardsTo(capacity, align)) HandCardObjectManager.Instance.AddCardObjects();
             else TurnManager.Instance.EndTheGame();

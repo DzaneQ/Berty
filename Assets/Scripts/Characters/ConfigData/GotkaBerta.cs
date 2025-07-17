@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public GotkaBerta()
         {
             AddName("gotka berta");
-            AddProperties(Gender.Female, Role.Support);
+            AddProperties(GenderEnum.Female, RoleEnum.Support);
             AddStats(1, 4, 5, 4);
             AddRange(0, 1, attackRange);
             AddRange(0, 1, riposteRange);

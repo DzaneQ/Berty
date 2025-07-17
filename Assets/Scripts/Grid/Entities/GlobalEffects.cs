@@ -8,22 +8,22 @@ namespace Berty.Grid.Entities
 {
     public class GlobalEffects
     {
-        private List<Alignment> takeNextTurn;
-        private Alignment judgementState;
-        private Alignment judgementAwaiting;
-        private Alignment judgementRevenge;
-        private Alignment revolution;
-        private Alignment telekinesis;
+        private List<AlignmentEnum> takeNextTurn;
+        private AlignmentEnum judgementState;
+        private AlignmentEnum judgementAwaiting;
+        private AlignmentEnum judgementRevenge;
+        private AlignmentEnum revolution;
+        private AlignmentEnum telekinesis;
         private int telekinesisDex;
 
         public GlobalEffects()
         {
-            takeNextTurn = new List<Alignment>();
-            judgementState = Alignment.None;
-            judgementAwaiting = Alignment.None;
-            judgementRevenge = Alignment.None;
-            revolution = Alignment.None;
-            telekinesis = Alignment.None;
+            takeNextTurn = new List<AlignmentEnum>();
+            judgementState = AlignmentEnum.None;
+            judgementAwaiting = AlignmentEnum.None;
+            judgementRevenge = AlignmentEnum.None;
+            revolution = AlignmentEnum.None;
+            telekinesis = AlignmentEnum.None;
         }
     }
 }

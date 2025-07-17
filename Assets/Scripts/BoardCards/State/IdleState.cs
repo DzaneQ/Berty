@@ -1,18 +1,19 @@
+using Berty.BoardCards.Behaviours;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.BoardCards.State
 {
-    internal class IdleState : CardState
+    /*internal class IdleState : CardState
     {
-        public IdleState(CardSpriteBehaviour sprite) : base(sprite)
+        public IdleState(BoardCardBehaviour sprite) : base(sprite)
         {
             //Debug.Log("Setting idle state for " + card.name + " on field " + card.OccupiedField.name);
             card.DisableButtons();
         }
 
-        public override CardState DeactivateCard() => new InactiveState(card);
+        //public override CardState DeactivateCard() => new InactiveState(card);
 
         public override void HandleClick() { }
 
@@ -51,5 +52,5 @@ namespace Berty.BoardCards.State
             if (card.HasLostWill()) return true;
             return false;
         }
-    }
+    }*/
 }

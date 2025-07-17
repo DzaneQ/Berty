@@ -9,7 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Berty.Init
+namespace Berty.Gameplay.Init
 {
     public class SceneInit : MonoBehaviour
     {

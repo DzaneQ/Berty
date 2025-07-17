@@ -1,74 +1,38 @@
+using Berty.BoardCards.Behaviours;
+using Berty.Enums;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.BoardCards.Button
 {
-    public class CardButton : MonoBehaviour
+    abstract public class CardButton : MonoBehaviour
     {
 
-        private CardSpriteBehaviour card;
+        protected BoardCardMovableObject cardNavigation;
         private Renderer rend;
         private Collider coll;
         [SerializeField] private Material dexterityMaterial;
         private Material neutralMaterial;
+        private bool isActivated;
 
         private void Awake()
         {
-            card = GetComponentInParent<CardSpriteBehaviour>();
+            cardNavigation = GetComponentInParent<BoardCardMovableObject>();
             rend = GetComponent<Renderer>();
             coll = GetComponent<Collider>();
             neutralMaterial = rend.material;
-        }
-
-        private void OnMouseDown()
-        {
-            //Debug.Log("OnMouseDown called: " + name);
-            switch (name)
-            {
-                case "RotateRight":
-                    card.RotateCard(90);
-                    break;
-
-                case "RotateLeft":
-                    card.RotateCard(-90);
-                    break;
-
-                case "MoveUp":
-                    card.MoveCard(0);
-                    break;
-
-                case "MoveRight":
-                    card.MoveCard(90);
-                    break;
-
-                case "MoveDown":
-                    card.MoveCard(180);
-                    break;
-
-                case "MoveLeft":
-                    card.MoveCard(270);
-                    break;
-
-                case "Return":
-                    //card.CancelDecision();
-                    //break;
-                    throw new System.Exception("The return button shouldn't be there!");
-
-                default: break;
-            }
+            isActivated = false;
         }
 
         public void EnableButton()
         {
             //Debug.Log("Enable attempt: " + name + " on card: " + card.name);
-            if (card.IsLocked()) return;
-            if (name == "Return")
-            {
-                card.Grid.Turn.ShowCancelButton();
-                return;
-            }
-            if (card != card.Grid.Turn.GetFocusedCard()) return;
+            //if (card.IsLocked()) return;
+            if (!isActivated) return;
+            if (!cardNavigation.IsInteractableEnabled()) return;
+            if (!CanNavigate()) return;
+            //if (card != card.Grid.Turn.GetFocusedCard()) return;
             //Debug.Log("Enable: " + name + " on card: " + card.name);
             rend.enabled = true;
             coll.enabled = true;
@@ -81,17 +45,40 @@ namespace Berty.BoardCards.Button
             coll.enabled = false;
         }
 
-        public void ChangeButtonToDexterity()
+        public void ActivateDexterityButton()
+        {
+            ChangeButtonToDexterity();
+            isActivated = true;
+        }
+
+        public void ActivateNeutralButton()
+        {
+            ChangeButtonToNeutral();
+            isActivated = true;
+        }
+
+        public void DeactivateButton()
+        {
+            isActivated = false;
+            DisableButton();
+        }
+
+        private void ChangeButtonToDexterity()
         {
             //Debug.Log("Changed to dexterity: " + name);
             rend.material = dexterityMaterial;
         }
 
-        public void ChangeButtonToNeutral()
+        private void ChangeButtonToNeutral()
         {
             //Debug.Log("Changed to neutral: " + name);
             rend.material = neutralMaterial;
         }
 
+        abstract protected bool CanNavigate();
+
+        public virtual bool IsMoveButton() => false;
+
+        abstract public NavigationEnum GetName();
     }
 }

@@ -9,7 +9,7 @@ namespace Berty.BoardCards.ConfigData
         public CheBert()
         {
             AddName("che bert");
-            AddProperties(Gender.Male, Role.Special);
+            AddProperties(GenderEnum.Male, RoleEnum.Special);
             AddStats(1, 3, 5, 3);
             AddRange(0, 1, attackRange);
             AddRange(0, 1, riposteRange);
@@ -27,24 +27,24 @@ namespace Berty.BoardCards.ConfigData
             foreach (OutdatedFieldBehaviour field in card.Grid.Fields)
             {
                 if (!field.IsAligned(card.OccupiedField.Align)) continue;
-                if (field.OccupantCard.GetRole() == Role.Special) field.OccupantCard.AdvanceStrength(1);
+                if (field.OccupantCard.GetRole() == RoleEnum.Special) field.OccupantCard.AdvanceStrength(1);
             }
         }
 
         public override void SkillAdjustPowerChange(int value, CardSpriteBehaviour card, CardSpriteBehaviour spellSource)
         {
             if (card.CardStatus.Power > 0) return; // Not tested.
-            Alignment newAlign = Alignment.Player;
-            if (card.OccupiedField.IsAligned(Alignment.Player)) newAlign = Alignment.Opponent;
+            AlignmentEnum newAlign = AlignmentEnum.Player;
+            if (card.OccupiedField.IsAligned(AlignmentEnum.Player)) newAlign = AlignmentEnum.Opponent;
             card.Grid.SetRevolution(newAlign);
             foreach (OutdatedFieldBehaviour field in card.Grid.Fields)
             {
                 if (!field.IsOccupied()) continue;
-                if (field.OccupantCard.GetRole() != Role.Special) continue;
+                if (field.OccupantCard.GetRole() != RoleEnum.Special) continue;
                 if (field.OccupantCard == card) continue;
                 if (field.IsAligned(newAlign)) field.OccupantCard.AdvanceStrength(1);
                 else field.OccupantCard.AdvanceStrength(-1);
-                if (field.IsAligned(Alignment.None)) throw new System.Exception("No alignment for non-occupied field.");
+                if (field.IsAligned(AlignmentEnum.None)) throw new System.Exception("No alignment for non-occupied field.");
             }
         }
 
@@ -54,7 +54,7 @@ namespace Berty.BoardCards.ConfigData
             {
                 if (!field.IsAligned(card.Grid.CurrentStatus.Revolution)) continue;
                 if (field.OccupantCard == card) continue;
-                if (field.OccupantCard.GetRole() == Role.Special) field.OccupantCard.AdvanceStrength(-1);
+                if (field.OccupantCard.GetRole() == RoleEnum.Special) field.OccupantCard.AdvanceStrength(-1);
             }
             card.Grid.RemoveRevolution();
         }

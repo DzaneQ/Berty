@@ -10,7 +10,7 @@ namespace Berty.BoardCards.ConfigData
         public BertWho()
         {
             AddName("bert who");
-            AddProperties(Gender.Male, Role.Support);
+            AddProperties(GenderEnum.Male, RoleEnum.Support);
             AddStats(1, 3, 5, 4);
             AddRange(0, 1, attackRange);
             //AddRange(1, 1, riposteRange);
@@ -24,10 +24,10 @@ namespace Berty.BoardCards.ConfigData
 
         public override void SkillOnNewCard(CardSpriteBehaviour card)
         {
-            card.Grid.AddCardIntoQueue(Alignment.Player);
-            card.Grid.AddCardIntoQueue(Alignment.Player);
-            card.Grid.AddCardIntoQueue(Alignment.Opponent);
-            card.Grid.AddCardIntoQueue(Alignment.Opponent);
+            card.Grid.AddCardIntoQueue(AlignmentEnum.Player);
+            card.Grid.AddCardIntoQueue(AlignmentEnum.Player);
+            card.Grid.AddCardIntoQueue(AlignmentEnum.Opponent);
+            card.Grid.AddCardIntoQueue(AlignmentEnum.Opponent);
             foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards()) SkillOnNeighbor(card, adjCard);
         }
 

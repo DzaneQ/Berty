@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public Tankbert()
         {
             AddName("tankbert");
-            AddProperties(Gender.Male, Role.Offensive);
+            AddProperties(GenderEnum.Male, RoleEnum.Offensive);
             AddStats(5, 5, 2, 5);
             AddRange(0, 1, attackRange);
             AddRange(0, 2, attackRange);

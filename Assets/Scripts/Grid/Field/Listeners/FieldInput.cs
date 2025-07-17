@@ -1,6 +1,9 @@
 using Berty.CardTransfer.Managers;
+using Berty.Enums;
+using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
 using Berty.UI.Card.Managers;
+using Berty.UI.Card.Systems;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,10 +13,12 @@ namespace Berty.Grid.Field.Listeners
     public class FieldInput : MonoBehaviour
     {
         private FieldBehaviour behaviour;
+        private SelectionAndPaymentSystem selectionSystem;
 
         void Awake()
         {
             behaviour = GetComponent<FieldBehaviour>();
+            selectionSystem = CoreManager.Instance.SelectionAndPaymentSystem;
         }
 
         void Start()
@@ -41,17 +46,17 @@ namespace Berty.Grid.Field.Listeners
 
         private bool PuttingIntent()
         {
-            return HandCardSelectManager.Instance.SelectionSystem.GetTheOnlySelectedCardOrNull() != null;
+            return selectionSystem.GetTheOnlySelectedCardOrNull() != null;
         }
 
         private bool AttackingIntent()
         {
-            return HandCardSelectManager.Instance.SelectionSystem.GetSelectedCardsCount() == 0;
+            return selectionSystem.GetSelectedCardsCount() == 0;
         }
 
         private bool IsItPaymentTime()
         { 
-            return HandCardSelectManager.Instance.SelectionSystem.IsItPaymentTime();
+            return selectionSystem.IsItPaymentTime();
         }
 
         private void ConfirmPayment()
@@ -63,7 +68,7 @@ namespace Berty.Grid.Field.Listeners
         {
             HandToFieldManager.Instance.RemoveSelectedCardFromHand();
             HandToFieldManager.Instance.SetCardOnHoldOnField(behaviour);
-            HandCardSelectManager.Instance.SelectionSystem.DemandPayment(behaviour.BoardField.OccupantCard.Stats.Power);
+            PaymentManager.Instance.CallPayment(behaviour.BoardField.OccupantCard.Stats.Power);
         }
 
         private void PrepareAnAttack()

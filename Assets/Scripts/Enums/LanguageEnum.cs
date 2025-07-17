@@ -1,6 +1,6 @@
 namespace Berty.Enums
 {
-    public enum Language
+    public enum LanguageEnum
     {
         Polish,
         English,

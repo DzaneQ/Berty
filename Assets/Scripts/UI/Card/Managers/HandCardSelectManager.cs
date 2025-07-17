@@ -18,32 +18,37 @@ namespace Berty.UI.Card.Managers
 {
     public class HandCardSelectManager : UIObjectManager<HandCardSelectManager>
     {
-        public SelectionSystem SelectionSystem { get; private set; }
+        private SelectionAndPaymentSystem selectionSystem;
 
         protected override void Awake()
         {
             base.Awake();
-            SelectionSystem = new SelectionSystem();
+            selectionSystem = CoreManager.Instance.SelectionAndPaymentSystem;
         }
 
         public void ChangeSelection(HandCardBehaviour card)
         {
-            if (SelectionSystem.IsSelected(card.Character))
+            if (selectionSystem.IsSelected(card.Character))
             {
                 UnselectCard(card);
             }
-            else if (SelectionSystem.CanSelectCard())
+            else if (selectionSystem.CanSelectCard())
             {
-                SelectionSystem.SelectCard(card.Character);
+                selectionSystem.SelectCard(card.Character);
                 card.ShowObjectAsSelected();
             }
         }
 
         public void UnselectCard(HandCardBehaviour card)
         {
-            if (!SelectionSystem.IsSelected(card.Character)) return;
-            SelectionSystem.UnselectCard(card.Character);
+            if (!selectionSystem.IsSelected(card.Character)) return;
+            selectionSystem.UnselectCard(card.Character);
             card.ShowObjectAsUnselected();
+        }
+
+        public void ClearSelection()
+        {
+            selectionSystem.ClearSelection();
         }
     }
 }

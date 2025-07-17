@@ -20,7 +20,7 @@ namespace Berty.Debugging
 
         [SerializeField] private GameObject targetCard;
         [SerializeField] private GameObject targetParent;
-        [SerializeField] private Alignment targetAlignment;
+        [SerializeField] private AlignmentEnum targetAlignment;
         [SerializeField] private int rightAngleCount;
 
         void Start()
@@ -64,12 +64,12 @@ namespace Berty.Debugging
             {
                 case "PlayerSide":
                     image.transform.SetParent(targetParent.transform, false);
-                    if (turn.CurrentAlignment == Alignment.Player) cm.DebugAssignCardToList(image, cm.EnabledCards);
+                    if (turn.CurrentAlignment == AlignmentEnum.Player) cm.DebugAssignCardToList(image, cm.EnabledCards);
                     else cm.DebugAssignCardToList(image, cm.DisabledCards);
                     break;
                 case "OpponentSide":
                     image.transform.SetParent(targetParent.transform, false);
-                    if (turn.CurrentAlignment == Alignment.Player) cm.DebugAssignCardToList(image, cm.DisabledCards);
+                    if (turn.CurrentAlignment == AlignmentEnum.Player) cm.DebugAssignCardToList(image, cm.DisabledCards);
                     else cm.DebugAssignCardToList(image, cm.EnabledCards);
                     break;
                 case "DrawPile":
@@ -84,7 +84,7 @@ namespace Berty.Debugging
                     cm.KillCard(image);
                     break;
                 default:
-                    if (field != null && targetAlignment == Alignment.None)
+                    if (field != null && targetAlignment == AlignmentEnum.None)
                     {
                         Debug.LogError("targetAlignment not set!");
                         break;

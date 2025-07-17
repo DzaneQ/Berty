@@ -28,11 +28,11 @@ namespace Berty.Gameplay
         private OutdatedPricingSystem ps;
         private OpponentControl oc;
         private CameraMechanics ct;
-        private Step currentStep;
-        private Alignment currentAlign;
+        private StepEnum currentStep;
+        private AlignmentEnum currentAlign;
         private bool interactableDisabled = false;
 
-        private Step CurrentStep
+        private StepEnum CurrentStep
         {
             get => currentStep;
             set
@@ -41,18 +41,18 @@ namespace Berty.Gameplay
                 AdjustStep();
             }
         }
-        public Alignment CurrentAlignment
+        public AlignmentEnum CurrentAlignment
         {
             get => currentAlign;
             private set
             {
-                if (value == Alignment.None) return;
+                if (value == AlignmentEnum.None) return;
                 if (value == currentAlign) throw new Exception("Switching to the same alignment.");
                 fg.MakeAllStatesIdle();
                 currentAlign = value;
                 cm.SwitchTable(value);
-                if (value == Alignment.Player) EnableInteractions();
-                if (value == Alignment.Opponent && oc != null) DisableInteractions();
+                if (value == AlignmentEnum.Player) EnableInteractions();
+                if (value == AlignmentEnum.Opponent && oc != null) DisableInteractions();
                 if (!cm.PullCards(value))
                 {
                     CheckWinConditions(true);
@@ -98,8 +98,8 @@ namespace Berty.Gameplay
 
         private void SetStartingParameters()
         {
-            currentStep = Step.Move;
-            CurrentAlignment = Alignment.Player;
+            currentStep = StepEnum.Move;
+            CurrentAlignment = AlignmentEnum.Player;
         }
         #endregion
 
@@ -113,30 +113,30 @@ namespace Berty.Gameplay
 
         public bool IsItMoveTime()
         {
-            return CurrentStep == Step.Move;
+            return CurrentStep == StepEnum.Move;
         }
 
         public bool IsItPaymentTime()
         {
-            return CurrentStep == Step.Payment;
+            return CurrentStep == StepEnum.Payment;
         }
 
         public bool IsItSpecialTime()
         {
-            return CurrentStep == Step.Special;
+            return CurrentStep == StepEnum.Special;
         }
 
         public void SetMoveTime()
         {
             //Debug.Log("Setting move step.");
             if (IsItMoveTime()) throw new Exception("Trying to change move step into self.");
-            CurrentStep = Step.Move;
+            CurrentStep = StepEnum.Move;
         }
 
         public void SetPayment(int price)
         {
             if (IsItPaymentTime()) throw new Exception("Trying to set while in the payment step.");
-            CurrentStep = Step.Payment;
+            CurrentStep = StepEnum.Payment;
             ps.DemandPayment(price);
         }
 
@@ -151,7 +151,7 @@ namespace Berty.Gameplay
 
         private void SwitchAlign()
         {
-            CurrentAlignment = CurrentAlignment == Alignment.Player ? Alignment.Opponent : Alignment.Player;
+            CurrentAlignment = CurrentAlignment == AlignmentEnum.Player ? AlignmentEnum.Opponent : AlignmentEnum.Player;
         }
 
         private void ShowEndTurnButton(bool value = true)
@@ -179,21 +179,21 @@ namespace Berty.Gameplay
         #endregion
 
         #region CharacterSkillBased
-        public void ExecutePrincessTurn(Alignment decidingAlign)
+        public void ExecutePrincessTurn(AlignmentEnum decidingAlign)
         {
             Debug.Log("Executing special turn for alignment: " + decidingAlign);
-            if (decidingAlign == Alignment.None) throw new Exception("Special turn for no alignment.");
+            if (decidingAlign == AlignmentEnum.None) throw new Exception("Special turn for no alignment.");
             StartCoroutine(WaitForPrincessTurn(decidingAlign));
         }
 
-        private IEnumerator WaitForPrincessTurn(Alignment decidingAlign)
+        private IEnumerator WaitForPrincessTurn(AlignmentEnum decidingAlign)
         {
             DisableInteractions();
             yield return new WaitForSeconds(0.2f);
-            if (decidingAlign == Alignment.Opponent && oc != null) oc.ExecutePrincessTurn();
+            if (decidingAlign == AlignmentEnum.Opponent && oc != null) oc.ExecutePrincessTurn();
             else
             {
-                CurrentStep = Step.Special;
+                CurrentStep = StepEnum.Special;
                 EnableInteractions();
                 fg.SetTargetableCards(decidingAlign);
             }
@@ -210,10 +210,10 @@ namespace Berty.Gameplay
         {
             DisableInteractions();
             yield return new WaitForSeconds(0.2f);
-            if (currentAlign == Alignment.Opponent && oc != null) oc.ExecuteResurrection();
+            if (currentAlign == AlignmentEnum.Opponent && oc != null) oc.ExecuteResurrection();
             else
             {
-                CurrentStep = Step.Special;
+                CurrentStep = StepEnum.Special;
                 EnableInteractions();
                 cm.DisplayDeadCards();
             }
@@ -236,7 +236,7 @@ namespace Berty.Gameplay
 
         public void ExecuteAutomaticOpponentTurn()
         {
-            if (CurrentAlignment == Alignment.Opponent && oc != null) oc.PlayTurn();
+            if (CurrentAlignment == AlignmentEnum.Opponent && oc != null) oc.PlayTurn();
         }
 
         public void SelectField(OutdatedFieldBehaviour target)
@@ -255,16 +255,16 @@ namespace Berty.Gameplay
         #region GameOver
         private bool CheckWinConditions(bool forceEnd = false)
         {
-            if (fg.AlignedFields(Alignment.Player, true).Count >= cardsToWin)
+            if (fg.AlignedFields(AlignmentEnum.Player, true).Count >= cardsToWin)
             {
-                Debug.Log("Player got " + fg.AlignedFields(Alignment.Player).Count + " cards!");
-                EndTheGame(Alignment.Player);
+                Debug.Log("Player got " + fg.AlignedFields(AlignmentEnum.Player).Count + " cards!");
+                EndTheGame(AlignmentEnum.Player);
                 return true;
             }
-            if (fg.AlignedFields(Alignment.Opponent, true).Count >= cardsToWin)
+            if (fg.AlignedFields(AlignmentEnum.Opponent, true).Count >= cardsToWin)
             {
-                Debug.Log("Opponent got " + fg.AlignedFields(Alignment.Opponent).Count + " cards!");
-                EndTheGame(Alignment.Opponent);
+                Debug.Log("Opponent got " + fg.AlignedFields(AlignmentEnum.Opponent).Count + " cards!");
+                EndTheGame(AlignmentEnum.Opponent);
                 return true;
             }
             if (forceEnd)
@@ -276,10 +276,10 @@ namespace Berty.Gameplay
             return false;
         }
 
-        private void EndTheGame(Alignment winner)
+        private void EndTheGame(AlignmentEnum winner)
         {
-            if (winner == Alignment.Player) endingMessage.text = "Wygrana!";
-            if (winner == Alignment.Opponent) endingMessage.text = "Przegrana!";
+            if (winner == AlignmentEnum.Player) endingMessage.text = "Wygrana!";
+            if (winner == AlignmentEnum.Opponent) endingMessage.text = "Przegrana!";
             DisableInteractions();
             GameOverText.SetActive(true);
         }

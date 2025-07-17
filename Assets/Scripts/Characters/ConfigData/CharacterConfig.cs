@@ -10,8 +10,8 @@ namespace Berty.BoardCards.ConfigData
     public abstract class CharacterConfig
     {
         protected string name;
-        protected Gender gender;
-        protected Role role;
+        protected GenderEnum gender;
+        protected RoleEnum role;
         protected int strength;
         protected int power;
         protected int dexterity;
@@ -21,8 +21,8 @@ namespace Berty.BoardCards.ConfigData
         protected List<int[]> attackRange = new List<int[]>();
         protected AudioClip attackSound;
         public string Name { get => name; }
-        public Gender Gender { get => gender; }
-        public Role Role { get => role; }
+        public GenderEnum Gender { get => gender; }
+        public RoleEnum Role { get => role; }
         public int Strength { get => strength; }
         public int Power { get => power; }
         public int Dexterity { get => dexterity; }
@@ -59,7 +59,7 @@ namespace Berty.BoardCards.ConfigData
             dexterity = dex;
             health = hp;
         }
-        protected void AddProperties(Gender gndr, Role rl)
+        protected void AddProperties(GenderEnum gndr, RoleEnum rl)
         {
             gender = gndr;
             role = rl;

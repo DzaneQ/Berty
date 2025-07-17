@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public TrenerPokebertow()
         {
             AddName("trener pokebertow");
-            AddProperties(Gender.Kid, Role.Offensive);
+            AddProperties(GenderEnum.Kid, RoleEnum.Offensive);
             AddStats(1, 2, 5, 2);
             AddRange(0, 1, attackRange);
             //AddRange(1, 1, riposteRange);

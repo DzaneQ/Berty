@@ -1,12 +1,13 @@
+using Berty.BoardCards.Behaviours;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.BoardCards.State
 {
-    internal class ActiveState : CardState
+    /*internal class ActiveState : CardState
     {
-        public ActiveState(CardSpriteBehaviour sprite) : base(sprite)
+        public ActiveState(BoardCardBehaviour sprite) : base(sprite)
         {
             //Debug.Log("Setting active state for " + card.name + " on field " + card.OccupiedField.name);
             card.PrepareDexterityButtons();
@@ -50,5 +51,5 @@ namespace Berty.BoardCards.State
             //card.ShowDexterityButtons();
             card.ShowButtons(true, true);
         }
-    }
+    }*/
 }

@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public BertZawodowiec()
         {
             AddName("bert zawodowiec");
-            AddProperties(Gender.Male, Role.Agile);
+            AddProperties(GenderEnum.Male, RoleEnum.Agile);
             AddStats(2, 4, 3, 4);
             AddRange(1, 1, attackRange);
             AddRange(2, 2, attackRange);

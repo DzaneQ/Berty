@@ -12,34 +12,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using Berty.BoardCards.ConfigData;
 using Berty.Grid.Field.Behaviour;
+using Berty.BoardCards.State;
 
 namespace Berty.CardTransfer.Managers
 {
     public class HandToFieldManager : ManagerSingleton<HandToFieldManager>
     {
-        private Game game { get; set; }
-        private CardPile cardPile => game.CardPile;
+        private Game Game { get; set; }
+        private SelectionAndPaymentSystem SelectionSystem { get; set; }
+        private CardPile CardPile => Game.CardPile;
         private GameObject boardCardPrefab;
 
         protected override void Awake()
         {
             InitializeSingleton();
-            game = CoreManager.Instance.Game;
+            Game = CoreManager.Instance.Game;
+            SelectionSystem = CoreManager.Instance.SelectionAndPaymentSystem;
             boardCardPrefab = Resources.Load<GameObject>("Prefabs/CardSquare");
         }
 
         public void RemoveSelectedCardFromHand()
         {
-            CharacterConfig selectedCard = HandCardSelectManager.Instance.SelectionSystem.GetSelectedCardOrThrow();
-            HandCardSelectManager.Instance.SelectionSystem.PutSelectedCardOnHold();
-            cardPile.LeaveCard(selectedCard, game.CurrentAlignment);
+            CharacterConfig selectedCard = SelectionSystem.GetSelectedCardOrThrow();
+            SelectionSystem.PutSelectedCardOnHold();
+            CardPile.LeaveCard(selectedCard, Game.CurrentAlignment);
             HandCardObjectManager.Instance.RemoveCardObjects();
         }
 
         public void SetCardOnHoldOnField(FieldBehaviour field)
         {
-            field.BoardField.AddCard(HandCardSelectManager.Instance.SelectionSystem.GetCardOnHoldOrThrow());
+            field.BoardField.AddCard(SelectionSystem.GetCardOnHoldOrThrow(), Game.CurrentAlignment);
             Instantiate(boardCardPrefab, field.transform);
+            field.ColorizeField();
         }
     }
 }

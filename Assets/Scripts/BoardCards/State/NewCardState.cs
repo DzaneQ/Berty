@@ -1,13 +1,14 @@
 using Berty.BoardCards.Animation;
+using Berty.BoardCards.Behaviours;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.BoardCards.State
 {
-    internal class NewCardState : CardState
+    /*internal class NewCardState : CardState
     {
-        public NewCardState(CardSpriteBehaviour sprite) : base(sprite)
+        public NewCardState(BoardCardBehaviour sprite) : base(sprite)
         {
             //Debug.Log("Setting new card state for " + card.name + " on field " + card.OccupiedField.name);
             card.ActivateNewCard();
@@ -54,5 +55,5 @@ namespace Berty.BoardCards.State
             if (!card.OccupiedField.AreThereTwoCards()) card.ShowButtons(false, true, true);
             else card.EnableCancelNeutralButton(1);
         }
-    }
+    }*/
 }

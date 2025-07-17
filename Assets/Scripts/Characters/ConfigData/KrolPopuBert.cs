@@ -11,7 +11,7 @@ namespace Berty.BoardCards.ConfigData
         public KrolPopuBert()
         {
             AddName("krol popu bert");
-            AddProperties(Gender.Male, Role.Special);
+            AddProperties(GenderEnum.Male, RoleEnum.Special);
             AddStats(1, 3, 5, 2);
             AddRange(0, 1, attackRange);
             AddRange(1, 2, attackRange);
@@ -32,7 +32,7 @@ namespace Berty.BoardCards.ConfigData
             HandCardBehaviour kid = null;
             foreach (HandCardBehaviour image in card.CardManager.AllOutsideCards())
             {
-                if (image.Character.Gender != Gender.Kid) continue;
+                if (image.Character.Gender != GenderEnum.Kid) continue;
                 if (IsEnemyCard(image.Character, card)) continue;
                 kid = image;
                 break;

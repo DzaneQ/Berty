@@ -12,10 +12,18 @@ namespace Berty.Gameplay.Managers
     public class EventManager : ManagerSingleton<EventManager>
     {
         public event Action OnNewTurn;
+        public event Action OnPaymentStart;
+        public event Action OnPaymentConfirm;
+        public event Action OnPaymentCancel;
 
         public void RaiseOnNewTurn()
         {
             OnNewTurn?.Invoke();
+        }
+
+        public void RaiseOnPaymentStart()
+        {
+            OnPaymentStart?.Invoke();
         }
     }
 }

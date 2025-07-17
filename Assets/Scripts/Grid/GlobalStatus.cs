@@ -10,32 +10,32 @@ namespace Berty.Grid
     public class GlobalStatus // TODO: Adjust switching sides. Maybe put characters here.
     {
         private FieldGrid grid;
-        private List<Alignment> TakeNextTurn;
-        private Alignment judgementState;
-        private Alignment judgementAwaiting;
-        private Alignment judgementRevenge;
-        private Alignment revolution;
-        private Alignment telekinesis;
+        private List<AlignmentEnum> TakeNextTurn;
+        private AlignmentEnum judgementState;
+        private AlignmentEnum judgementAwaiting;
+        private AlignmentEnum judgementRevenge;
+        private AlignmentEnum revolution;
+        private AlignmentEnum telekinesis;
         private int telekinesisDex;
 
-        public bool IsJudgement => judgementState != Alignment.None;
-        public Alignment JudgementRevenge => judgementRevenge;
-        public Alignment Revolution => revolution;
-        public Alignment Telekinesis => telekinesis;
+        public bool IsJudgement => judgementState != AlignmentEnum.None;
+        public AlignmentEnum JudgementRevenge => judgementRevenge;
+        public AlignmentEnum Revolution => revolution;
+        public AlignmentEnum Telekinesis => telekinesis;
         public int TelekinesisDex => telekinesisDex;
         public GlobalStatus(FieldGrid newGrid)
         {
             grid = newGrid;
-            TakeNextTurn = new List<Alignment>();
-            judgementState = Alignment.None;
-            judgementAwaiting = Alignment.None;
-            judgementRevenge = Alignment.None;
-            revolution = Alignment.None;
-            telekinesis = Alignment.None;
+            TakeNextTurn = new List<AlignmentEnum>();
+            judgementState = AlignmentEnum.None;
+            judgementAwaiting = AlignmentEnum.None;
+            judgementRevenge = AlignmentEnum.None;
+            revolution = AlignmentEnum.None;
+            telekinesis = AlignmentEnum.None;
             telekinesisDex = 0;
         }
 
-        public void AdjustNewTurn(Alignment currentAlign)
+        public void AdjustNewTurn(AlignmentEnum currentAlign)
         {
             TakeQueuedCards();
             ProgressJudgementRevenge(currentAlign);
@@ -43,7 +43,7 @@ namespace Berty.Grid
 
         private void TakeQueuedCards()
         {
-            Alignment currentTurn = grid.Turn.CurrentAlignment;
+            AlignmentEnum currentTurn = grid.Turn.CurrentAlignment;
             for (int i = TakeNextTurn.Where(x => x == currentTurn).Count(); i > 0; i--)
             {
                 grid.Turn.CM.PullCard(currentTurn);
@@ -51,32 +51,32 @@ namespace Berty.Grid
             }
         }
 
-        internal void RequestCard(Alignment align)
+        internal void RequestCard(AlignmentEnum align)
         {
             TakeNextTurn.Add(align);
         }
 
-        internal void SetJudgement(Alignment align)
+        internal void SetJudgement(AlignmentEnum align)
         {
-            if (Revolution != Alignment.None && Revolution != align) return;
+            if (Revolution != AlignmentEnum.None && Revolution != align) return;
             judgementState = align;
         }
 
         internal void RemoveJudgement()
         {
             judgementAwaiting = judgementState;
-            judgementState = Alignment.None;
+            judgementState = AlignmentEnum.None;
         }
 
         private void CalmJudgement()
         {
-            if (Revolution == Alignment.None) throw new Exception("There's no revolution to adjust judgement!");
+            if (Revolution == AlignmentEnum.None) throw new Exception("There's no revolution to adjust judgement!");
             if (!IsJudgement) return;
             if (judgementState == Revolution) return;
-            judgementState = Alignment.None;
+            judgementState = AlignmentEnum.None;
         }
 
-        internal void SetRevolution(Alignment align)
+        internal void SetRevolution(AlignmentEnum align)
         {
             revolution = align;
             CalmJudgement();
@@ -84,10 +84,10 @@ namespace Berty.Grid
 
         internal void RemoveRevolution()
         {
-            revolution = Alignment.None;
+            revolution = AlignmentEnum.None;
         }
 
-        internal void SetTelekinesis(Alignment align)
+        internal void SetTelekinesis(AlignmentEnum align)
         {
             telekinesis = align;
         }
@@ -99,20 +99,20 @@ namespace Berty.Grid
 
         internal void RemoveTelekinesis()
         {
-            telekinesis = Alignment.None;
+            telekinesis = AlignmentEnum.None;
             telekinesisDex = 0;
         }
 
-        private void ProgressJudgementRevenge(Alignment currentAlign)
+        private void ProgressJudgementRevenge(AlignmentEnum currentAlign)
         {
             if (judgementAwaiting == currentAlign)
             {
                 judgementRevenge = judgementAwaiting;
-                judgementAwaiting = Alignment.None;
+                judgementAwaiting = AlignmentEnum.None;
             }
-            else if (judgementRevenge == Alignment.None) return;
+            else if (judgementRevenge == AlignmentEnum.None) return;
             if (judgementRevenge == currentAlign) grid.ShowJudgement(currentAlign);
-            else judgementRevenge = Alignment.None;
+            else judgementRevenge = AlignmentEnum.None;
         }
     }
 }

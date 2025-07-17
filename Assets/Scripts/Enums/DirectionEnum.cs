@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace Berty.Enums
 {
-    public enum Direction
+    public enum DirectionEnum
     {
-        North = 0,
-        West = 90,
-        South = 180,
-        East = 270
+        Up = 0,
+        Right = 90,
+        Down = 180,
+        Left = 270
     }
 }

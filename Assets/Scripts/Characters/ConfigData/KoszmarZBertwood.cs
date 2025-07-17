@@ -11,7 +11,7 @@ namespace Berty.BoardCards.ConfigData
         public KoszmarZBertwood()
         {
             AddName("koszmar z bertwood");
-            AddProperties(Gender.Kid, Role.Special);
+            AddProperties(GenderEnum.Kid, RoleEnum.Special);
             AddStats(3, 5, 3, 5);
             AddRange(0, 1, attackRange);
             AddRange(1, 0, attackRange);

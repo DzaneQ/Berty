@@ -11,7 +11,7 @@ namespace Berty.BoardCards.ConfigData
         public BertVentura()
         {
             AddName("bert ventura");
-            AddProperties(Gender.Male, Role.Offensive);
+            AddProperties(GenderEnum.Male, RoleEnum.Offensive);
             AddStats(0, 2, 4, 5);
             AddRange(0, 1, attackRange);
             AddRange(1, 0, attackRange);

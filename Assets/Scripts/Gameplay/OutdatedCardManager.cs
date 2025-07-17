@@ -49,17 +49,17 @@ namespace Berty.Gameplay
         }
 
         #region PullingCard
-        public bool PullCards(Alignment align)
+        public bool PullCards(AlignmentEnum align)
         {
-            Transform table = align == Alignment.Player ? playerTable.transform : opponentTable.transform;
+            Transform table = align == AlignmentEnum.Player ? playerTable.transform : opponentTable.transform;
             int cardsToPull = tableCapacity - enabledCards.Count;
             for (int i = cardsToPull; i > 0; i--) if (!PullCard(table)) return false;
             return true;
         }
 
-        public bool PullCard(Alignment align)
+        public bool PullCard(AlignmentEnum align)
         {
-            Transform table = align == Alignment.Player ? playerTable.transform : opponentTable.transform;
+            Transform table = align == AlignmentEnum.Player ? playerTable.transform : opponentTable.transform;
             return PullCard(table);
         }
 
@@ -184,17 +184,17 @@ namespace Berty.Gameplay
             enabledCards.Add(card);
         }
 
-        public void SwitchTable(Alignment alignment)
+        public void SwitchTable(AlignmentEnum alignment)
         {
             //Debug.Log("Switching table!");
             ShowTable(alignment);
             SwapTable();
         }
 
-        private void ShowTable(Alignment alignment)
+        private void ShowTable(AlignmentEnum alignment)
         {
-            playerTable.SetActive(alignment == Alignment.Player);
-            opponentTable.SetActive(alignment == Alignment.Opponent);
+            playerTable.SetActive(alignment == AlignmentEnum.Player);
+            opponentTable.SetActive(alignment == AlignmentEnum.Opponent);
         }
 
         private void SwapTable()
@@ -347,7 +347,7 @@ namespace Berty.Gameplay
         public void ReviveCard(HandCardBehaviour card)
         {
             deadCards.Remove(card);
-            if (Turn.CurrentAlignment == Alignment.Player) AddToTable(card, playerTable.transform);
+            if (Turn.CurrentAlignment == AlignmentEnum.Player) AddToTable(card, playerTable.transform);
             else AddToTable(card, opponentTable.transform);
             deadScreen.SetActive(false);
         }

@@ -34,7 +34,7 @@ namespace Berty.CardTransfer.Entities
             OpponentCards = new List<CharacterConfig>();
         }
 
-        public bool PullCardsTo(int tableCapacity, Alignment align)
+        public bool PullCardsTo(int tableCapacity, AlignmentEnum align)
         {
             List<CharacterConfig> table = GetCardsFromAlign(align);
             int cardsToPull = tableCapacity - table.Count;
@@ -53,7 +53,7 @@ namespace Berty.CardTransfer.Entities
             return true;
         }
 
-        private bool PullCard(Alignment align)
+        private bool PullCard(AlignmentEnum align)
         {
             List<CharacterConfig> table = GetCardsFromAlign(align);
             return PullCard(table);
@@ -77,17 +77,17 @@ namespace Berty.CardTransfer.Entities
             return false;
         }
 
-        public List<CharacterConfig> GetCardsFromAlign(Alignment align)
+        public List<CharacterConfig> GetCardsFromAlign(AlignmentEnum align)
         {
             return align switch
             {
-                Alignment.Player => PlayerCards,
-                Alignment.Opponent => OpponentCards,
+                AlignmentEnum.Player => PlayerCards,
+                AlignmentEnum.Opponent => OpponentCards,
                 _ => throw new ArgumentException("Attempting to get cards from invalid align."),
             };
         }
 
-        public void DiscardCards(List<CharacterConfig> cardsToDiscard, Alignment align)
+        public void DiscardCards(List<CharacterConfig> cardsToDiscard, AlignmentEnum align)
         {
             List<CharacterConfig> table = GetCardsFromAlign(align);
             int initialTableCount = table.Count;
@@ -106,7 +106,7 @@ namespace Berty.CardTransfer.Entities
             deadCards.Remove(card);
         }
 
-        public void LeaveCard(CharacterConfig card, Alignment align)
+        public void LeaveCard(CharacterConfig card, AlignmentEnum align)
         {
             List<CharacterConfig> table = GetCardsFromAlign(align);
             if (!table.Contains(card)) throw new Exception($"Attempting to get {card.Name} from wrong table");

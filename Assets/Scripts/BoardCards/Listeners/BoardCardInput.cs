@@ -1,5 +1,6 @@
 using Berty.BoardCards;
-using Berty.BoardCards.Behvaiours;
+using Berty.BoardCards.Behaviours;
+using Berty.BoardCards.Button;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,17 +9,28 @@ namespace Berty.BoardCards.Listeners
 {
     public class BoardCardInput : MonoBehaviour
     {
-        private BoardCardBehaviour behaviour;
+        private BoardCardCore behaviour;
 
         void Awake()
         {
-            behaviour = GetComponent<BoardCardBehaviour>();
+            behaviour = GetComponent<BoardCardCore>();
         }
 
         void Start()
         {
             // Enabling toggle from the inspector.
         }
+
+        void OnEnable()
+        {
+            EnableButtons();
+        }
+
+        void OnDisable()
+        {
+            DisableButtons();
+        }
+
         /*public void OnMouseOver()
         {
             //Debug.Log("OnMouseOver event trigger on: " + name);
@@ -38,5 +50,15 @@ namespace Berty.BoardCards.Listeners
             if (!behaviour.IsLocked() && !behaviour.IsAnimating() && Input.GetMouseButtonDown(1)) return true;
             else return false;
         }*/
+
+        private void DisableButtons()
+        {
+            foreach (CardButton button in behaviour.CardNavigation.Buttons) button.DisableButton();
+        }
+
+        private void EnableButtons()
+        {
+            foreach (CardButton button in behaviour.CardNavigation.Buttons) button.EnableButton();
+        }
     }
 }

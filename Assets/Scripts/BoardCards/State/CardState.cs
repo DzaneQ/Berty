@@ -1,4 +1,5 @@
 using Berty.BoardCards.Animation;
+using Berty.BoardCards.Behaviours;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,10 +9,11 @@ namespace Berty.BoardCards.State
 {
     public abstract class CardState
     {
-        protected CardSpriteBehaviour card;
-        protected CardState(CardSpriteBehaviour sprite)
+        protected BoardCardCore card;
+        protected CardState(BoardCardCore behaviour)
         {
-            card = sprite;
+            card = behaviour;
+            EnableButtons();
             //if (card.OccupiedField == null) Debug.Log($"Setting state {GetType()} for {card.name}");
             //else Debug.Log($"Setting state {GetType()} for {card.name} on {card.OccupiedField.name}");
         }
