@@ -35,14 +35,14 @@ namespace Berty.UI.Card.Managers
 
         public void AddCardObjects()
         {
-            if (playerTable.activeSelf) AddCardObjectsForTable(Alignment.Player);
-            if (opponentTable.activeSelf) AddCardObjectsForTable(Alignment.Opponent);
+            if (playerTable.activeSelf) AddCardObjectsForTable(AlignmentEnum.Player);
+            if (opponentTable.activeSelf) AddCardObjectsForTable(AlignmentEnum.Opponent);
         }
 
         public void RemoveCardObjects()
         {
-            if (playerTable.activeSelf) RemoveCardObjectsForTable(Alignment.Player);
-            if (opponentTable.activeSelf) RemoveCardObjectsForTable(Alignment.Opponent);
+            if (playerTable.activeSelf) RemoveCardObjectsForTable(AlignmentEnum.Player);
+            if (opponentTable.activeSelf) RemoveCardObjectsForTable(AlignmentEnum.Opponent);
         }
 
         public Sprite GetSpriteFromHandCardObject(CharacterConfig characterConfig)
@@ -50,14 +50,14 @@ namespace Berty.UI.Card.Managers
             return behaviourCollection.GetBehaviourFromCharacterConfig(characterConfig).Sprite;
         }
 
-        private void AddCardObjectsForTable(Alignment alignment)
+        private void AddCardObjectsForTable(AlignmentEnum alignment)
         {
             Transform table = GetTableObjectFromAlignment(alignment).transform;
             List<CharacterConfig> ownedCards = cardPile.GetCardsFromAlign(alignment);
             AddCardObjectsFromPileData(table, ownedCards);
         }
 
-        private void RemoveCardObjectsForTable(Alignment alignment)
+        private void RemoveCardObjectsForTable(AlignmentEnum alignment)
         {
             Transform table = GetTableObjectFromAlignment(alignment).transform;
             List<CharacterConfig> ownedCards = cardPile.GetCardsFromAlign(alignment);
@@ -85,12 +85,12 @@ namespace Berty.UI.Card.Managers
             }
         }
 
-        private GameObject GetTableObjectFromAlignment(Alignment alignment)
+        private GameObject GetTableObjectFromAlignment(AlignmentEnum alignment)
         {
             return alignment switch
             {
-                Alignment.Player => playerTable,
-                Alignment.Opponent => opponentTable,
+                AlignmentEnum.Player => playerTable,
+                AlignmentEnum.Opponent => opponentTable,
                 _ => throw new InvalidOperationException("Invalid align to call table object.")
             };
         }

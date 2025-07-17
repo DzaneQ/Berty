@@ -9,7 +9,7 @@ namespace Berty.BoardCards.ConfigData
         public ZalobnyBert()
         {
             AddName("zalobny bert");
-            AddProperties(Gender.Male, Role.Special);
+            AddProperties(GenderEnum.Male, RoleEnum.Special);
             AddStats(0, 3, 3, 4);
             AddRange(0, 1, attackRange);
             AddRange(0, 1, riposteRange);
@@ -24,7 +24,7 @@ namespace Berty.BoardCards.ConfigData
 
         public override int SkillDefenceModifier(int damage, CardSpriteBehaviour attacker)
         {
-            if (attacker.GetRole() == Role.Offensive) return 0;
+            if (attacker.GetRole() == RoleEnum.Offensive) return 0;
             return damage;
         }
 

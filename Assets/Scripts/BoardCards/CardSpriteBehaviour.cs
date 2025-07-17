@@ -79,7 +79,7 @@ namespace Berty.BoardCards
             cardButton = transform.GetChild(0).GetComponentsInChildren<CardButton>();
             cardBar = transform.GetChild(1).GetComponentsInChildren<CardBar>();
             occupiedField = transform.GetComponentInParent<OutdatedFieldBehaviour>();
-            state = new InactiveState(this);
+            //state = new InactiveState(this);
             animating = GetComponent<AnimatingCardSprite>();
             if (animating != null) animating.AttachSound();
             InitializeRigidbody();
@@ -173,7 +173,7 @@ namespace Berty.BoardCards
         {
             if (animating != null) animating.ConfirmSound();
             ClearCardResistance();
-            if (occupiedField.IsAligned(Grid.CurrentStatus.Revolution) && GetRole() == Role.Special) AdvanceStrength(1);
+            if (occupiedField.IsAligned(Grid.CurrentStatus.Revolution) && GetRole() == RoleEnum.Special) AdvanceStrength(1);
             if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
             Grid.AttackNewStand(occupiedField);
             if (IsDead()) return;
@@ -254,7 +254,7 @@ namespace Berty.BoardCards
         {
             if (!CanCharacterAttack()) return;
             CallPayment(6 - cardStatus.Dexterity);
-            state = new AttackingState(this);
+            //state = new AttackingState(this);
         }
 
         public bool CanAttackField(OutdatedFieldBehaviour targetField)
@@ -392,8 +392,8 @@ namespace Berty.BoardCards
         {
             if (Character.GlobalSkillResistance()) return;
             if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
-            if (Grid.CurrentStatus.Revolution == Alignment.None) return;
-            if (GetRole() != Role.Special) return;
+            if (Grid.CurrentStatus.Revolution == AlignmentEnum.None) return;
+            if (GetRole() != RoleEnum.Special) return;
             if (Character.Name == "che bert") return;
             if (OccupiedField.IsAligned(Grid.CurrentStatus.Revolution)) AdvanceStrength(1);
             else AdvanceStrength(-1);
@@ -520,20 +520,20 @@ namespace Berty.BoardCards
         public void EnableCancelNeutralButton(int index)
         {
             DisableButtons();
-            cardButton[index].ChangeButtonToNeutral();
+            //cardButton[index].ChangeButtonToNeutral();
             cardButton[index].EnableButton();
         }
 
         public void PrepareNeutralRotationButtons()
         {
-            cardButton[2].ChangeButtonToNeutral();
-            cardButton[3].ChangeButtonToNeutral();
+            //cardButton[2].ChangeButtonToNeutral();
+            //cardButton[3].ChangeButtonToNeutral();
         }
 
         public void PrepareDexterityButtons()
         {
             DisableButtons();
-            for (int i = 2; i <= 7; i++) cardButton[i].ChangeButtonToDexterity();
+            //for (int i = 2; i <= 7; i++) cardButton[i].ChangeButtonToDexterity();
         }
 
         public void ShowButtons(bool canMove, bool canRotate, bool canCancel = false)
@@ -743,9 +743,9 @@ namespace Berty.BoardCards
             return animating.CoroutineCount > 0;
         }
 
-        public Role GetRole()
+        public RoleEnum GetRole()
         {
-            if (Grid.CurrentStatus.IsJudgement) return Role.Special;
+            if (Grid.CurrentStatus.IsJudgement) return RoleEnum.Special;
             return Character.Role;
         }
 
@@ -761,7 +761,7 @@ namespace Berty.BoardCards
 
         public bool CanUseSkill()
         {
-            if (OccupiedField.IsOpposed(Grid.CurrentStatus.Revolution) && GetRole() == Role.Special) return false;
+            if (OccupiedField.IsOpposed(Grid.CurrentStatus.Revolution) && GetRole() == RoleEnum.Special) return false;
             return true;
         }
         #endregion
@@ -824,7 +824,7 @@ namespace Berty.BoardCards
             if (!Debug.isDebugBuild) return;
             Debug.Log($"Force deactivating card: {name}");
             occupiedField.AdjustCardRemoval();
-            state = new InactiveState(this);
+            //state = new InactiveState(this);
         }
 
         public HandCardBehaviour DebugGetReference()
@@ -845,9 +845,9 @@ namespace Berty.BoardCards
             ClearCardResistance();
             ApplyPhysics();
             ConfirmNewCard();
-            if (occupiedField.IsAligned(Turn.CurrentAlignment)) state = new ActiveState(this);
-            else if (occupiedField.IsOpposed(Turn.CurrentAlignment)) state = new IdleState(this);
-            else Debug.LogError("Wrongly activated card!");
+            //if (occupiedField.IsAligned(Turn.CurrentAlignment)) state = new ActiveState(this);
+            //else if (occupiedField.IsOpposed(Turn.CurrentAlignment)) state = new IdleState(this);
+            //else Debug.LogError("Wrongly activated card!");
         }
         #endregion
     }

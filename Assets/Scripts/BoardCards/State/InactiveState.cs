@@ -1,3 +1,4 @@
+/*using Berty.BoardCards.Behvaiours;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ namespace Berty.BoardCards.State
 {
     internal class InactiveState : CardState
     {
-        public InactiveState(CardSpriteBehaviour sprite) : base(sprite)
+        public InactiveState(BoardCardBehaviour sprite) : base(sprite)
         {
             //if (card.OccupiedField == null) Debug.Log("Setting inactive state for " + card.name);
             //else Debug.Log("Setting inactive state for " + card.name + " on field " + card.OccupiedField.name);
@@ -35,4 +36,4 @@ namespace Berty.BoardCards.State
         //    return card.Grid.CurrentStatus.JudgementRevenge == card.Grid.Turn.CurrentAlignment;
         //}
     }
-}
+}*/

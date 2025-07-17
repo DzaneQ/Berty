@@ -1,15 +1,16 @@
 using Berty.BoardCards.Animation;
+using Berty.BoardCards.Behaviours;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.BoardCards.State
 {
-    internal class NewTransformState : CardState
+    /*internal class NewTransformState : CardState
     {
         private int displayedButtonIndex;
 
-        public NewTransformState(CardSpriteBehaviour sprite, int buttonIndex, int dexterity) : base(sprite)
+        public NewTransformState(BoardCardBehaviour sprite, int buttonIndex, int dexterity) : base(sprite)
         {
             //Debug.Log("Setting new transform state for " + card.name + " on field " + card.OccupiedField.name);
             card.CallPayment(6 - dexterity);
@@ -59,5 +60,5 @@ namespace Berty.BoardCards.State
         {
             card.EnableCancelNeutralButton(displayedButtonIndex);
         }
-    }
+    }*/
 }

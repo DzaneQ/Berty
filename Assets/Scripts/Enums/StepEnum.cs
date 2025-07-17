@@ -1,6 +1,6 @@
 ﻿namespace Berty.Enums
 {
-    public enum Step
+    public enum StepEnum
     {
         Move,
         //Selection,

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Berty.Enums
 { 
-    public enum Stat
+    public enum StatEnum
     {
         Strength = 0,
         Power = 1,

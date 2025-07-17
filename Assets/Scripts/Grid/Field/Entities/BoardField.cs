@@ -18,25 +18,26 @@ namespace Berty.Grid.Field.Entities
             {
                 _occupantCard = value;
                 if (_occupantCard != null) return;
-                Align = Alignment.None;
+                Align = AlignmentEnum.None;
                 if (BackupCard != null) throw new Exception($"BackupCard shouldn't exist without OccupantCard in {GetName()}!");
             }
         }
         public BoardCard BackupCard { get; private set; }
-        public Alignment Align { get; private set; }
+        public AlignmentEnum Align { get; private set; }
         public Vector2Int Coordinates { get; }
 
         public BoardField(int x, int y)
         {
             Coordinates = new Vector2Int(x, y);
-            Align = Alignment.None;
+            Align = AlignmentEnum.None;
         }
 
-        public void AddCard(CharacterConfig characterConfig)
+        public void AddCard(CharacterConfig characterConfig, AlignmentEnum newAlign)
         {
             if (OccupantCard == null)
             {
                 OccupantCard = new BoardCard(characterConfig);
+                Align = newAlign;
             }
             else
             {
@@ -46,7 +47,7 @@ namespace Berty.Grid.Field.Entities
             }
         }
 
-        public void PlaceCard(BoardCard card, Alignment newAlign)
+        public void PlaceCard(BoardCard card, AlignmentEnum newAlign)
         {
             OccupantCard = card;
             Align = newAlign;
@@ -75,26 +76,26 @@ namespace Berty.Grid.Field.Entities
 
         public void SwitchSides()
         {
-            if (Align == Alignment.Player) Align = Alignment.Opponent;
-            else if (Align == Alignment.Opponent) Align = Alignment.Player;
+            if (Align == AlignmentEnum.Player) Align = AlignmentEnum.Opponent;
+            else if (Align == AlignmentEnum.Opponent) Align = AlignmentEnum.Player;
             else throw new Exception($"Can't switch sides for field {GetName()}");
         }
 
-        public bool IsAligned(Alignment alignment)
+        public bool IsAligned(AlignmentEnum alignment)
         {
             return Align == alignment;
         }
 
-        public bool IsOpposed(Alignment alignment)
+        public bool IsOpposed(AlignmentEnum alignment)
         {
-            if (alignment == Alignment.None) return false;
-            if (Align == Alignment.None) return false;
+            if (alignment == AlignmentEnum.None) return false;
+            if (Align == AlignmentEnum.None) return false;
             return Align != alignment;
         }
 
         public bool IsOccupied()
         {
-            if (Align != Alignment.None) return true;
+            if (Align != AlignmentEnum.None) return true;
             return false;
         }
 

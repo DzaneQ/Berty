@@ -1,6 +1,6 @@
 ﻿namespace Berty.Enums
 {
-    public enum Role
+    public enum RoleEnum
     {
         Offensive,
         Support,

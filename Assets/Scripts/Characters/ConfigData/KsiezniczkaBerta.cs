@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public KsiezniczkaBerta()
         {
             AddName("ksiezniczka berta");
-            AddProperties(Gender.Female, Role.Support);
+            AddProperties(GenderEnum.Female, RoleEnum.Support);
             AddStats(1, 4, 4, 6);
             AddRange(1, 1, attackRange);
             AddRange(0, 1, blockRange);
@@ -25,7 +25,7 @@ namespace Berty.BoardCards.ConfigData
         {
             if (card.CardStatus.Power > 0) return;
             card.ResetPower();
-            Alignment buffTurn = card.Grid.Turn.CurrentAlignment;
+            AlignmentEnum buffTurn = card.Grid.Turn.CurrentAlignment;
             if (spellSource != null) buffTurn = spellSource.OccupiedField.Align;
             card.Grid.Turn.ExecutePrincessTurn(buffTurn);
         }

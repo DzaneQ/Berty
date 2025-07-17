@@ -1,12 +1,13 @@
+using Berty.BoardCards.Behaviours;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.BoardCards.State
 {
-    public class TargetState : CardState
+    /*public class TargetState : CardState
     {
-        public TargetState(CardSpriteBehaviour sprite) : base(sprite)
+        public TargetState(BoardCardBehaviour sprite) : base(sprite)
         {
 
         }
@@ -26,5 +27,5 @@ namespace Berty.BoardCards.State
         public override CardState SetIdle => new IdleState(card);
 
         public override void EnableButtons() { }
-    }
+    }*/
 }

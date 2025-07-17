@@ -1,12 +1,13 @@
+using Berty.BoardCards.Behaviours;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.BoardCards.State
 {
-    internal class TelecineticState : CardState
+    /*internal class TelecineticState : CardState
     {
-        public TelecineticState(CardSpriteBehaviour sprite) : base(sprite)
+        public TelecineticState(BoardCardBehaviour sprite) : base(sprite)
         {
             card.PrepareDexterityButtons();
             EnableButtons();
@@ -33,5 +34,5 @@ namespace Berty.BoardCards.State
             //card.ShowDexterityButtons(true);
             card.ShowButtons(true, false);
         }
-    }
+    }*/
 }

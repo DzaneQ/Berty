@@ -49,12 +49,12 @@ namespace Berty.Grid
         }
 
         #region SingleFieldRead
-        public Material GetMaterial(Alignment alignment, bool underAttack)
+        public Material GetMaterial(AlignmentEnum alignment, bool underAttack)
         {
             switch (alignment)
             {
-                case Alignment.Player: return player;
-                case Alignment.Opponent: return opponent;
+                case AlignmentEnum.Player: return player;
+                case AlignmentEnum.Opponent: return opponent;
                 default: return underAttack ? defaultAttacked : defaultMaterial;
             }
         }
@@ -91,7 +91,7 @@ namespace Berty.Grid
             int targetPower = targetField.OccupantCard.CardStatus.Power;
             foreach (OutdatedFieldBehaviour field in fields)
             {
-                if (field.IsAligned(Alignment.None)) continue;
+                if (field.IsAligned(AlignmentEnum.None)) continue;
                 if (field.IsAligned(turn.CurrentAlignment)) continue;
                 if (field.OccupantCard.CardStatus.Power > targetPower) field.OccupantCard.TryToAttackTarget(targetField);
             }
@@ -102,7 +102,7 @@ namespace Berty.Grid
         {
             foreach (OutdatedFieldBehaviour field in fields)
             {
-                if (field.IsAligned(Alignment.None)) continue;
+                if (field.IsAligned(AlignmentEnum.None)) continue;
                 CardSpriteBehaviour card = field.OccupantCard;
                 if (field.IsAligned(turn.CurrentAlignment))
                 {
@@ -171,7 +171,7 @@ namespace Berty.Grid
             return GetField(relCoord[0], relCoord[1]);
         }
 
-        public List<OutdatedFieldBehaviour> AlignedFields(Alignment alignment, bool countBackup = false)
+        public List<OutdatedFieldBehaviour> AlignedFields(AlignmentEnum alignment, bool countBackup = false)
         {
             List<OutdatedFieldBehaviour> alignedFields = new List<OutdatedFieldBehaviour>();
             foreach (OutdatedFieldBehaviour field in fields)
@@ -188,7 +188,7 @@ namespace Berty.Grid
         public void SwapCards(OutdatedFieldBehaviour first, OutdatedFieldBehaviour second)
         {
             CardSpriteBehaviour tempCard = first.OccupantCard;
-            Alignment tempAlign = first.Align;
+            AlignmentEnum tempAlign = first.Align;
             SwapBackupCards(first, second);
             first.PlaceCard(second.OccupantCard, second.Align);
             //first.ConvertField(second.Align);
@@ -204,15 +204,15 @@ namespace Berty.Grid
         #endregion
 
         #region CharacterSkillBased
-        public void AddCardIntoQueue(Alignment align)
+        public void AddCardIntoQueue(AlignmentEnum align)
         {
             temporaryStatuses.RequestCard(align);
         }
 
-        public void SetJudgement(Alignment align)
+        public void SetJudgement(AlignmentEnum align)
         {
             temporaryStatuses.SetJudgement(align);
-            if (temporaryStatuses.Revolution == Alignment.None) return;
+            if (temporaryStatuses.Revolution == AlignmentEnum.None) return;
             foreach (OutdatedFieldBehaviour field in fields) // not tested
             {
                 if (!field.IsOccupied()) continue;
@@ -223,7 +223,7 @@ namespace Berty.Grid
 
         public void RemoveJudgement()
         {
-            if (temporaryStatuses.Revolution != Alignment.None)
+            if (temporaryStatuses.Revolution != AlignmentEnum.None)
                 foreach (OutdatedFieldBehaviour field in fields) // not tested
                 {
                     if (!field.IsOccupied()) continue;
@@ -233,7 +233,7 @@ namespace Berty.Grid
             temporaryStatuses.RemoveJudgement();
         }
 
-        public void SetRevolution(Alignment align)
+        public void SetRevolution(AlignmentEnum align)
         {
             temporaryStatuses.SetRevolution(align);
             //CalmJudgement();
@@ -264,7 +264,7 @@ namespace Berty.Grid
             temporaryStatuses.RemoveRevolution();
         }
 
-        public void SetTelekinesis(Alignment align, int dexterity)
+        public void SetTelekinesis(AlignmentEnum align, int dexterity)
         {
             temporaryStatuses.SetTelekinesis(align);
             temporaryStatuses.SetTelekinesisDexterity(dexterity);
@@ -285,7 +285,7 @@ namespace Berty.Grid
             turn.ExecuteResurrection();
         }
 
-        public void SetTargetableCards(Alignment align)
+        public void SetTargetableCards(AlignmentEnum align)
         {
             foreach (OutdatedFieldBehaviour field in AlignedFields(align)) field.OccupantCard.SetTargetable();
         }
@@ -296,7 +296,7 @@ namespace Berty.Grid
             card.AdvanceHealth(1);
         }
 
-        public void ShowJudgement(Alignment align)
+        public void ShowJudgement(AlignmentEnum align)
         {
             foreach (OutdatedFieldBehaviour field in fields)
             {
@@ -325,36 +325,36 @@ namespace Berty.Grid
         #endregion
 
         #region WinConditionCheck
-        private int HighestAmountOfType(Alignment alignment)
+        private int HighestAmountOfType(AlignmentEnum alignment)
         {
-            int result = AmountOfType(alignment, Role.Offensive);
-            if (result < AmountOfType(alignment, Role.Support)) result = AmountOfType(alignment, Role.Support);
-            if (result < AmountOfType(alignment, Role.Agile)) result = AmountOfType(alignment, Role.Agile);
-            if (result < AmountOfType(alignment, Role.Special)) result = AmountOfType(alignment, Role.Special);
+            int result = AmountOfType(alignment, RoleEnum.Offensive);
+            if (result < AmountOfType(alignment, RoleEnum.Support)) result = AmountOfType(alignment, RoleEnum.Support);
+            if (result < AmountOfType(alignment, RoleEnum.Agile)) result = AmountOfType(alignment, RoleEnum.Agile);
+            if (result < AmountOfType(alignment, RoleEnum.Special)) result = AmountOfType(alignment, RoleEnum.Special);
             return result;
         }
 
-        public Alignment HigherByAmountOfType()
+        public AlignmentEnum HigherByAmountOfType()
         {
-            if (HighestAmountOfType(Alignment.Player) > HighestAmountOfType(Alignment.Opponent)) return Alignment.Player;
-            if (HighestAmountOfType(Alignment.Player) < HighestAmountOfType(Alignment.Opponent)) return Alignment.Opponent;
-            return Alignment.None;
+            if (HighestAmountOfType(AlignmentEnum.Player) > HighestAmountOfType(AlignmentEnum.Opponent)) return AlignmentEnum.Player;
+            if (HighestAmountOfType(AlignmentEnum.Player) < HighestAmountOfType(AlignmentEnum.Opponent)) return AlignmentEnum.Opponent;
+            return AlignmentEnum.None;
         }
 
-        private int AmountOfType(Alignment alignment, Role role)
+        private int AmountOfType(AlignmentEnum alignment, RoleEnum role)
         {
             int result = 0;
             foreach (OutdatedFieldBehaviour field in AlignedFields(alignment))
             {
                 if (field.OccupantCard.Character.Role == role) result++;
-                if (role == Role.Offensive && field.AreThereTwoCards()) result++;
+                if (role == RoleEnum.Offensive && field.AreThereTwoCards()) result++;
             }
             return result;
         }
         #endregion
 
         #region AutomaticOpponentHelper
-        public int HeatLevel(OutdatedFieldBehaviour field, Alignment enemy)
+        public int HeatLevel(OutdatedFieldBehaviour field, AlignmentEnum enemy)
         {
             int heat = 0;
             foreach (OutdatedFieldBehaviour enemyField in AlignedFields(enemy))

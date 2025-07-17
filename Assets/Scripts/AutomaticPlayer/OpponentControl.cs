@@ -87,7 +87,7 @@ namespace Berty.AutomaticPlayer
         {
             CardSpriteBehaviour bestCard = null;
             int highestEfficiency = 0;
-            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(Alignment.Opponent))
+            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(AlignmentEnum.Opponent))
             {
                 CardSpriteBehaviour card = field.OccupantCard;
                 if (!card.CanCharacterAttack()) continue;
@@ -103,7 +103,7 @@ namespace Berty.AutomaticPlayer
         private CardSpriteBehaviour BestTargetCard()
         {
             CardSpriteBehaviour bestCard = null;
-            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(Alignment.Opponent))
+            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(AlignmentEnum.Opponent))
             {
                 CardSpriteBehaviour card = field.OccupantCard;
                 if (bestCard != null)
@@ -178,11 +178,11 @@ namespace Berty.AutomaticPlayer
 
         private List<OutdatedFieldBehaviour> GetSafestFields()
         {
-            List<OutdatedFieldBehaviour> freeFields = fg.AlignedFields(Alignment.None);
+            List<OutdatedFieldBehaviour> freeFields = fg.AlignedFields(AlignmentEnum.None);
             List<OutdatedFieldBehaviour> safeFields = new List<OutdatedFieldBehaviour>();
             for (int i = 0; i < 6; i++)
             {
-                foreach (OutdatedFieldBehaviour field in freeFields) if (fg.HeatLevel(field, Alignment.Player) <= i) safeFields.Add(field);
+                foreach (OutdatedFieldBehaviour field in freeFields) if (fg.HeatLevel(field, AlignmentEnum.Player) <= i) safeFields.Add(field);
                 if (safeFields.Count > 0) break;
             }
             return safeFields;
@@ -212,17 +212,17 @@ namespace Berty.AutomaticPlayer
         private int Efficiency(CardSpriteBehaviour card, int alignedWeight = 1, int neutralWeight = 0)
         {
             int efficiency = 0;
-            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(Alignment.None))
+            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(AlignmentEnum.None))
             {
                 if (card.CanAttackField(field)) efficiency += neutralWeight;
                 //if (card.CanAttack(field)) Debug.Log("Adding " + neutralWeight + " cause neutral: " + field.GetX() + "," + field.GetY());
             }
-            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(Alignment.Player))
+            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(AlignmentEnum.Player))
             {
                 if (card.CanAttackField(field)) efficiency += alignedWeight;
                 //if (card.CanAttack(field)) Debug.Log("Adding " + alignedWeight + " cause not ally: " + field.GetX() + "," + field.GetY());
             }
-            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(Alignment.Opponent))
+            foreach (OutdatedFieldBehaviour field in fg.AlignedFields(AlignmentEnum.Opponent))
             {
                 if (card.CanAttackField(field)) efficiency -= alignedWeight;
                 //if (card.CanAttack(field)) Debug.Log("Substracting " + alignedWeight + " cause ally: " + field.GetX() + "," + field.GetY());

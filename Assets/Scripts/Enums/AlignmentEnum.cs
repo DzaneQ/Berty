@@ -1,6 +1,6 @@
 namespace Berty.Enums
 {
-    public enum Alignment
+    public enum AlignmentEnum
     {
         None,
         Player,

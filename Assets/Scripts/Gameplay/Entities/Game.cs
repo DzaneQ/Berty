@@ -12,13 +12,13 @@ namespace Berty.Gameplay.Entities
 {
     public class Game
     {
-        public Alignment CurrentAlignment { get; private set; }
+        public AlignmentEnum CurrentAlignment { get; private set; }
         public BoardGrid Grid { get; }
         public CardPile CardPile { get; }
         public GameConfig GameConfig { get; }
 
 
-        public Game(Alignment startingAlignment)
+        public Game(AlignmentEnum startingAlignment)
         {
             CurrentAlignment = startingAlignment;
             Grid = new BoardGrid();
@@ -26,12 +26,12 @@ namespace Berty.Gameplay.Entities
             GameConfig = new GameConfig();
         }
 
-        public Alignment SwitchAlignment()
+        public AlignmentEnum SwitchAlignment()
         {
             CurrentAlignment = CurrentAlignment switch
             {
-                Alignment.Player => Alignment.Opponent,
-                Alignment.Opponent => Alignment.Player,
+                AlignmentEnum.Player => AlignmentEnum.Opponent,
+                AlignmentEnum.Opponent => AlignmentEnum.Player,
                 _ => throw new Exception("Invalid alignment to switch to"),
             };
             return CurrentAlignment;

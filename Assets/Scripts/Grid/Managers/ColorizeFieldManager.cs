@@ -14,13 +14,13 @@ namespace Berty.Grid.Managers
         [SerializeField] private Material player;
         [SerializeField] private Material opponent;
 
-        public Material GetMaterialFromAlignment(Alignment align)
+        public Material GetMaterialFromAlignment(AlignmentEnum align)
         {
             return align switch
             {
-                Alignment.None => neutral,
-                Alignment.Player => player,
-                Alignment.Opponent => opponent,
+                AlignmentEnum.None => neutral,
+                AlignmentEnum.Player => player,
+                AlignmentEnum.Opponent => opponent,
                 _ => throw new Exception("Unknown alignment to get material from."),
             };
         }

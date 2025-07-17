@@ -11,60 +11,60 @@ namespace Berty.BoardCards
 {
     public class CardStats
     {
-        private Dictionary<Stat, int> baseStat;
-        private Dictionary<Stat, int> currentTempStat;
-        private Dictionary<Stat, int> nextTempStat;
+        private Dictionary<StatEnum, int> baseStat;
+        private Dictionary<StatEnum, int> currentTempStat;
+        private Dictionary<StatEnum, int> nextTempStat;
 
         public int Strength 
         { 
-            get => GetStat(baseStat[Stat.Strength] + TempStrength); 
-            set { baseStat[Stat.Strength] = GetStat(value); } 
+            get => GetStat(baseStat[StatEnum.Strength] + TempStrength); 
+            set { baseStat[StatEnum.Strength] = GetStat(value); } 
         }
         public int Power
         {
-            get => GetStat(baseStat[Stat.Power] + TempPower);
-            set { baseStat[Stat.Power] = GetStat(value); }
+            get => GetStat(baseStat[StatEnum.Power] + TempPower);
+            set { baseStat[StatEnum.Power] = GetStat(value); }
         }
         public int Dexterity
         {
-            get => GetStat(baseStat[Stat.Dexterity] + TempDexterity);
-            set { baseStat[Stat.Dexterity] = GetStat(value); }
+            get => GetStat(baseStat[StatEnum.Dexterity] + TempDexterity);
+            set { baseStat[StatEnum.Dexterity] = GetStat(value); }
         }
         public int Health
         {
-            get => GetStat(baseStat[Stat.Health] + TempHealth);
-            set { baseStat[Stat.Health] = GetStat(value); }
+            get => GetStat(baseStat[StatEnum.Health] + TempHealth);
+            set { baseStat[StatEnum.Health] = GetStat(value); }
         }
 
         public int TempStrength
         {
-            get => currentTempStat[Stat.Strength];
-            set { currentTempStat[Stat.Strength] = value; nextTempStat[Stat.Strength] = value; }
+            get => currentTempStat[StatEnum.Strength];
+            set { currentTempStat[StatEnum.Strength] = value; nextTempStat[StatEnum.Strength] = value; }
         }
         public int TempPower
         {
-            get => currentTempStat[Stat.Power];
-            set { currentTempStat[Stat.Power] = value; nextTempStat[Stat.Power] = value; }
+            get => currentTempStat[StatEnum.Power];
+            set { currentTempStat[StatEnum.Power] = value; nextTempStat[StatEnum.Power] = value; }
         }
         public int TempDexterity
         {
-            get => currentTempStat[Stat.Dexterity];
-            set { currentTempStat[Stat.Dexterity] = value; nextTempStat[Stat.Dexterity] = value; }
+            get => currentTempStat[StatEnum.Dexterity];
+            set { currentTempStat[StatEnum.Dexterity] = value; nextTempStat[StatEnum.Dexterity] = value; }
         }
         public int TempHealth
         {
-            get => currentTempStat[Stat.Health];
-            set { currentTempStat[Stat.Health] = value; nextTempStat[Stat.Health] = value; }
+            get => currentTempStat[StatEnum.Health];
+            set { currentTempStat[StatEnum.Health] = value; nextTempStat[StatEnum.Health] = value; }
         }
 
         public CardStats(CharacterConfig character)
         {
-            baseStat = new Dictionary<Stat, int>
+            baseStat = new Dictionary<StatEnum, int>
             {
-                { Stat.Strength, character.Strength },
-                { Stat.Power, character.Power },
-                { Stat.Dexterity, character.Dexterity },
-                { Stat.Health, character.Health }
+                { StatEnum.Strength, character.Strength },
+                { StatEnum.Power, character.Power },
+                { StatEnum.Dexterity, character.Dexterity },
+                { StatEnum.Health, character.Health }
             };
 
             currentTempStat = InitZeroStat();
@@ -118,7 +118,7 @@ namespace Berty.BoardCards
 
         private void ProgressTempStats()
         {
-            currentTempStat = new Dictionary<Stat, int>(nextTempStat);
+            currentTempStat = new Dictionary<StatEnum, int>(nextTempStat);
             nextTempStat = nextTempStat.ToDictionary(keyValue => keyValue.Key, keyValue => 0);
         }
 
@@ -127,14 +127,14 @@ namespace Berty.BoardCards
             return Math.Clamp(value, 0, 6);
         }
 
-        private Dictionary<Stat, int> InitZeroStat()
+        private Dictionary<StatEnum, int> InitZeroStat()
         {
-            return new Dictionary<Stat, int>
+            return new Dictionary<StatEnum, int>
             {
-                { Stat.Strength, 0 },
-                { Stat.Power, 0 },
-                { Stat.Dexterity, 0 },
-                { Stat.Health, 0 }
+                { StatEnum.Strength, 0 },
+                { StatEnum.Power, 0 },
+                { StatEnum.Dexterity, 0 },
+                { StatEnum.Health, 0 }
             };
         }
     }

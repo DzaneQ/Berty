@@ -29,7 +29,7 @@ namespace Berty.CardTransfer.Listeners
 
         private void HandleNewTurn()
         {
-            HandCardSelectManager.Instance.SelectionSystem.ClearSelection();
+            HandCardSelectManager.Instance.ClearSelection();
             int totalCardCount = game.GameConfig.TableCapacity;
             PileToHandManager.Instance.PullCardsTo(totalCardCount);
         }

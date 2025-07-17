@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public KrzyzowiecBert()
         {
             AddName("krzyzowiec bert");
-            AddProperties(Gender.Male, Role.Offensive);
+            AddProperties(GenderEnum.Male, RoleEnum.Offensive);
             AddStats(2, 3, 5, 4);
             AddRange(0, 1, attackRange);
             AddRange(0, 1, riposteRange);

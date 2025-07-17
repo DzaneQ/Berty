@@ -10,7 +10,7 @@ namespace Berty.BoardCards.ConfigData
         public KonstablBert()
         {
             AddName("konstabl bert");
-            AddProperties(Gender.Male, Role.Agile);
+            AddProperties(GenderEnum.Male, RoleEnum.Agile);
             AddStats(2, 3, 5, 3);
             AddRange(0, 2, attackRange);
             //AddRange(1, 1, riposteRange);
@@ -27,7 +27,7 @@ namespace Berty.BoardCards.ConfigData
             foreach (OutdatedFieldBehaviour field in card.Grid.Fields)
             {
                 if (!field.IsOccupied()) continue;
-                if (field.OccupantCard.GetRole() == Role.Special) field.OccupantCard.AdvanceHealth(-1);
+                if (field.OccupantCard.GetRole() == RoleEnum.Special) field.OccupantCard.AdvanceHealth(-1);
             }
         }
 
@@ -39,8 +39,8 @@ namespace Berty.BoardCards.ConfigData
                 if (targetField == null || !targetField.IsOccupied()) continue;
                 switch (targetField.OccupantCard.GetRole())
                 {
-                    case Role.Special:
-                    case Role.Support:
+                    case RoleEnum.Special:
+                    case RoleEnum.Support:
                         targetField.OccupantCard.TakeDamage(card.GetStrength() + 1, card.OccupiedField);
                         break;
                     default:

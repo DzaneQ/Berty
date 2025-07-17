@@ -16,13 +16,13 @@ namespace Berty.Grid.Field
         private MeshRenderer mr;
         //private Outline outline;
         private readonly int[] coordinates = new int[2]; // TODO: Entity property - remove
-        Alignment align; // TODO: Entity property - remove
+        AlignmentEnum align; // TODO: Entity property - remove
         private bool underAttack = false;
 
         public FieldGrid Grid => fg;
         public CardSpriteBehaviour OccupantCard => occupantCard; // TODO: Entity property?
         //public CardSprite BackupCard => backupCard;
-        public Alignment Align => align; // TODO: Entity property - remove
+        public AlignmentEnum Align => align; // TODO: Entity property - remove
         //public Outline FieldOutline => outline;
 
         private void Awake()
@@ -35,7 +35,7 @@ namespace Berty.Grid.Field
 
         private void Start()
         {
-            ConvertField(Alignment.None);
+            ConvertField(AlignmentEnum.None);
         }
 
         public void InstantiateCardSprite(GameObject prefab)
@@ -72,7 +72,7 @@ namespace Berty.Grid.Field
             return coordinates[1];
         }
 
-        public void PlaceCard(CardSpriteBehaviour card, Alignment newAlign)
+        public void PlaceCard(CardSpriteBehaviour card, AlignmentEnum newAlign)
         {
             if (!card.gameObject.activeSelf)
             {
@@ -82,7 +82,7 @@ namespace Berty.Grid.Field
             }
             else
             {
-                ConvertField(Alignment.None);
+                ConvertField(AlignmentEnum.None);
                 StartCoroutine(MoveCardCoroutine(card, newAlign));
             }
         }
@@ -100,7 +100,7 @@ namespace Berty.Grid.Field
             Debug.Log($"Rotacja karty {backupCard.name} po LoadSelectedCard: {occupantCard.transform.localEulerAngles.z}");
         }
 
-        private IEnumerator MoveCardCoroutine(CardSpriteBehaviour card, Alignment newAlign)
+        private IEnumerator MoveCardCoroutine(CardSpriteBehaviour card, AlignmentEnum newAlign)
         {
             card.DisableButtons();
             fg.Turn.DisableInteractions(false);
@@ -142,7 +142,7 @@ namespace Berty.Grid.Field
             return Grid.GetRelativeCoordinates(GetX(), GetY(), -angle);
         }
 
-        public void ConvertField(Alignment alignment)
+        public void ConvertField(AlignmentEnum alignment)
         {
             align = alignment;
             UpdateMeshMaterial();
@@ -171,7 +171,7 @@ namespace Berty.Grid.Field
 
         public void AdjustCardRemoval()
         {
-            if (!AreThereTwoCards()) ConvertField(Alignment.None);
+            if (!AreThereTwoCards()) ConvertField(AlignmentEnum.None);
             else DetachCards();
         }
 
@@ -187,28 +187,28 @@ namespace Berty.Grid.Field
             backupCard.ApplyField(this);
         }
 
-        public bool IsAligned(Alignment alignment)
+        public bool IsAligned(AlignmentEnum alignment)
         {
             return align == alignment;
         }
 
-        public bool IsOpposed(Alignment alignment)
+        public bool IsOpposed(AlignmentEnum alignment)
         {
-            if (alignment == Alignment.None) return false;
-            if (align == Alignment.None) return false;
+            if (alignment == AlignmentEnum.None) return false;
+            if (align == AlignmentEnum.None) return false;
             return align != alignment;
         }
 
         public bool IsOccupied()
         {
-            if (align != Alignment.None) return true;
+            if (align != AlignmentEnum.None) return true;
             return false;
         }
 
         public void GoToOppositeSide()
         {
-            if (align == Alignment.Player) ConvertField(Alignment.Opponent);
-            else if (align == Alignment.Opponent) ConvertField(Alignment.Player);
+            if (align == AlignmentEnum.Player) ConvertField(AlignmentEnum.Opponent);
+            else if (align == AlignmentEnum.Opponent) ConvertField(AlignmentEnum.Player);
             else throw new Exception($"Can't switch sides for field {name}");
         }
     }

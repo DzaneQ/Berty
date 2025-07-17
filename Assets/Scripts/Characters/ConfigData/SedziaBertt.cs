@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public SedziaBertt()
         {
             AddName("sedzia bertt");
-            AddProperties(Gender.Male, Role.Special);
+            AddProperties(GenderEnum.Male, RoleEnum.Special);
             AddStats(1, 4, 4, 4);
             AddRange(1, 2, attackRange);
             AddRange(1, 1, attackRange);
@@ -45,8 +45,8 @@ namespace Berty.BoardCards.ConfigData
         public override void SkillAdjustPowerChange(int value, CardSpriteBehaviour card, CardSpriteBehaviour spellSource)
         {
             if (card.CardStatus.Power > 0) return;
-            if (card.OccupiedField.Align == Alignment.Opponent) card.Grid.SetJudgement(Alignment.Player);
-            else if (card.OccupiedField.Align == Alignment.Opponent) card.Grid.SetJudgement(Alignment.Opponent);
+            if (card.OccupiedField.Align == AlignmentEnum.Opponent) card.Grid.SetJudgement(AlignmentEnum.Player);
+            else if (card.OccupiedField.Align == AlignmentEnum.Opponent) card.Grid.SetJudgement(AlignmentEnum.Opponent);
             else throw new System.Exception("Unidentified align for judgement change");
         }
     }

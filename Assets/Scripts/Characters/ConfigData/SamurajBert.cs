@@ -9,7 +9,7 @@ namespace Berty.BoardCards.ConfigData
         public SamurajBert()
         {
             AddName("samuraj bert");
-            AddProperties(Gender.Male, Role.Offensive);
+            AddProperties(GenderEnum.Male, RoleEnum.Offensive);
             AddStats(2, 3, 3, 4);
             AddRange(0, 1, attackRange);
             AddRange(1, 0, attackRange);

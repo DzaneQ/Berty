@@ -1,13 +1,14 @@
 using Berty.BoardCards.Animation;
+using Berty.BoardCards.Behaviours;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.BoardCards.State
 {
-    internal class AttackingState : CardState
+    /*internal class AttackingState : CardState
     {
-        public AttackingState(CardSpriteBehaviour sprite) : base(sprite)
+        public AttackingState(BoardCardBehaviour sprite) : base(sprite)
         {
             //Debug.Log("Setting attacking state for " + card.name + " on field " + card.OccupiedField.name);
             EnableButtons();
@@ -55,5 +56,5 @@ namespace Berty.BoardCards.State
         {
             card.EnableCancelNeutralButton(1);
         }
-    }
+    }*/
 }

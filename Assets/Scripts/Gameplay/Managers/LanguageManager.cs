@@ -33,12 +33,12 @@ namespace Berty.Gameplay.Managers
             languageDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(textAsset.text);
         }
 
-        private string GetFileNameFromLanguage(Language language)
+        private string GetFileNameFromLanguage(LanguageEnum language)
         {
             return language switch
             {
-                Language.Polish => "pl",
-                Language.English => "en",
+                LanguageEnum.Polish => "pl",
+                LanguageEnum.English => "en",
                 _ => throw new ArgumentException("Undefined language name."),
             };
         }

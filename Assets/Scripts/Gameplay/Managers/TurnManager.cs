@@ -28,8 +28,8 @@ namespace Berty.Gameplay.Managers
 
         public void EndTheGame()
         {
-            Alignment winner = game.Grid.WinningSide();
-            if (winner == Alignment.None) winner = game.CurrentAlignment;
+            AlignmentEnum winner = game.Grid.WinningSide();
+            if (winner == AlignmentEnum.None) winner = game.CurrentAlignment;
             OverlayObjectManager.Instance.DisplayGameOverScreen(winner);
         }
     }

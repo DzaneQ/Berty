@@ -1,3 +1,4 @@
+using Berty.BoardCards.Entities;
 using Berty.Enums;
 using Berty.Grid.Entities;
 using Berty.Grid.Field;
@@ -40,20 +41,38 @@ namespace Berty.Grid.Entities
             throw new ArgumentException($"Invalid coordination field: ({x}, {y})");
         }
 
-        public Vector2Int GetRelativeCoordinates(int x, int y, float angle = 0)
+        public Vector2Int GetToRelativeCoordinates(int x, int y, float angle = 0)
         {
             int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
             int cosinus = (int)Math.Round(Math.Cos(angle / 180 * Math.PI));
             return new Vector2Int(cosinus * x + sinus * y, cosinus * y - sinus * x);
         }
 
+        public Vector2Int GetFromRelativeCoordinates(int x, int y, float angle = 0)
+        {
+            return GetToRelativeCoordinates(x, y, -angle);
+        }
+
         public BoardField GetRelativeFieldOrThrow(int x, int y, float angle = 0)
         {
-            Vector2Int relCoord = GetRelativeCoordinates(x, y, angle);
+            Vector2Int relCoord = GetToRelativeCoordinates(x, y, angle);
             return GetFieldFromCoordsOrThrow(relCoord.x, relCoord.y);
         }
 
-        public List<BoardField> AlignedFields(Alignment alignment, bool countBackup = false)
+        public BoardField GetFieldFromRelativeCoordinatesOrNull(int x, int y, float angle = 0)
+        {
+            if (Math.Abs(x) > 1 || Math.Abs(y) > 1) return null;
+            Vector2Int coord = GetFromRelativeCoordinates(x, y, angle);
+            return GetFieldFromCoordsOrThrow(coord.x, coord.y);
+        }
+
+        public BoardField GetFieldDistancedFromCardOrNull(int x, int y, BoardCard card)
+        {
+            Vector2Int relCoord = card.RelativeCoordinates;
+            return GetFieldFromRelativeCoordinatesOrNull(relCoord.x + x, relCoord.y + y, card.GetAngle());
+        }
+
+        public List<BoardField> AlignedFields(AlignmentEnum alignment, bool countBackup = false)
         {
             List<BoardField> alignedFields = new List<BoardField>();
             foreach (BoardField field in Fields)
@@ -65,40 +84,40 @@ namespace Berty.Grid.Entities
             return alignedFields;
         }
 
-        private int AlignedCardCount(Alignment alignment)
+        private int AlignedCardCount(AlignmentEnum alignment)
         {
             return AlignedFields(alignment, true).Count;
         }
 
-        public Alignment WinningSide()
+        public AlignmentEnum WinningSide()
         {
-            if (AlignedCardCount(Alignment.Player) > AlignedCardCount(Alignment.Opponent)) return Alignment.Player;
-            if (AlignedCardCount(Alignment.Player) < AlignedCardCount(Alignment.Opponent)) return Alignment.Opponent;
+            if (AlignedCardCount(AlignmentEnum.Player) > AlignedCardCount(AlignmentEnum.Opponent)) return AlignmentEnum.Player;
+            if (AlignedCardCount(AlignmentEnum.Player) < AlignedCardCount(AlignmentEnum.Opponent)) return AlignmentEnum.Opponent;
             return HigherByAmountOfType();
         }
 
-        private Alignment HigherByAmountOfType()
+        private AlignmentEnum HigherByAmountOfType()
         {
-            if (HighestAmountOfType(Alignment.Player) > HighestAmountOfType(Alignment.Opponent)) return Alignment.Player;
-            if (HighestAmountOfType(Alignment.Player) < HighestAmountOfType(Alignment.Opponent)) return Alignment.Opponent;
-            return Alignment.None;
+            if (HighestAmountOfType(AlignmentEnum.Player) > HighestAmountOfType(AlignmentEnum.Opponent)) return AlignmentEnum.Player;
+            if (HighestAmountOfType(AlignmentEnum.Player) < HighestAmountOfType(AlignmentEnum.Opponent)) return AlignmentEnum.Opponent;
+            return AlignmentEnum.None;
         }
 
-        private int HighestAmountOfType(Alignment alignment)
+        private int HighestAmountOfType(AlignmentEnum alignment)
         {
-            return Mathf.Max(AmountOfType(alignment, Role.Offensive),
-                AmountOfType(alignment, Role.Support),
-                AmountOfType(alignment, Role.Agile),
-                AmountOfType(alignment, Role.Special));
+            return Mathf.Max(AmountOfType(alignment, RoleEnum.Offensive),
+                AmountOfType(alignment, RoleEnum.Support),
+                AmountOfType(alignment, RoleEnum.Agile),
+                AmountOfType(alignment, RoleEnum.Special));
         }
 
-        private int AmountOfType(Alignment alignment, Role role)
+        private int AmountOfType(AlignmentEnum alignment, RoleEnum role)
         {
             int result = 0;
             foreach (BoardField field in AlignedFields(alignment))
             {
                 if (field.OccupantCard.CharacterConfig.Role == role) result++;
-                if (role == Role.Offensive && field.AreThereTwoCards()) result++;
+                if (role == RoleEnum.Offensive && field.AreThereTwoCards()) result++;
             }
             return result;
         }

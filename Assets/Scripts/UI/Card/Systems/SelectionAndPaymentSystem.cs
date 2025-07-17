@@ -1,5 +1,6 @@
 using Berty.BoardCards.ConfigData;
 using Berty.CardTransfer.Managers;
+using Berty.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,13 +9,13 @@ using UnityEngine;
 
 namespace Berty.UI.Card.Systems
 {
-    public class SelectionSystem
+    public class SelectionAndPaymentSystem
     {
         public List<CharacterConfig> SelectedCards { get; }
         public int? cardPrice;
         private CharacterConfig cardOnHold;
 
-        public SelectionSystem()
+        public SelectionAndPaymentSystem()
         {
             SelectedCards = new List<CharacterConfig>();
         }

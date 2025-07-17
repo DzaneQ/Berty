@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public BigMadB()
         {
             AddName("big mad b");
-            AddProperties(Gender.Male, Role.Special);
+            AddProperties(GenderEnum.Male, RoleEnum.Special);
             AddStats(1, 3, 5, 4);
             AddRange(1, 0, attackRange);
             AddRange(-1, 0, attackRange);
@@ -25,12 +25,12 @@ namespace Berty.BoardCards.ConfigData
         {
             foreach (CharacterConfig character in card.CardManager.AllOutsideCharacters())
             {
-                if (character.Role != Role.Support) continue;
+                if (character.Role != RoleEnum.Support) continue;
                 card.AddResistance(character);
             }
             foreach (CharacterConfig character in card.Grid.AllInsideCharacters())
             {
-                if (character.Role != Role.Support) continue;
+                if (character.Role != RoleEnum.Support) continue;
                 card.AddResistance(character);
             }
         }
