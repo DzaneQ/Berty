@@ -1409,6 +1409,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1181834773}
+  - component: {fileID: 1181834774}
   m_Layer: 0
   m_Name: FieldBoard
   m_TagString: Untagged
@@ -1440,6 +1441,18 @@ Transform:
   - {fileID: 1066427036}
   m_Father: {fileID: 493703014}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1181834774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181834772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e107b42828a32b4418dc6beeee461f9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1331529693 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1148504419818202801, guid: 57eaf54574b5e934b9342b8e3da9cf6a, type: 3}
@@ -1695,6 +1708,7 @@ MonoBehaviour:
   playerTable: {fileID: 1577340884}
   opponentTable: {fileID: 1740268250}
   lookupCard: {fileID: 1331529693}
+  fieldBoard: {fileID: 1181834772}
 --- !u!4 &1473762351
 Transform:
   m_ObjectHideFlags: 0

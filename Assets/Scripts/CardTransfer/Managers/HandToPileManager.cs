@@ -16,20 +16,22 @@ namespace Berty.CardTransfer.Managers
 {
     public class HandToPileManager : ManagerSingleton<HandToPileManager>
     {
-        private Game game { get; set; }
-        private CardPile cardPile => game.CardPile;
+        private Game Game { get; set; }
+        private CardPile CardPile => Game.CardPile;
+        private SelectionAndPaymentSystem SelectionSystem { get; set; }
 
         protected override void Awake()
         {
             InitializeSingleton();
-            game = CoreManager.Instance.Game;
+            Game = CoreManager.Instance.Game;
+            SelectionSystem = CoreManager.Instance.SelectionAndPaymentSystem;
         }
 
         public void DiscardSelectedCardsFromHand()
         {
-            List<CharacterConfig> selectedCards = HandCardSelectManager.Instance.SelectionSystem.SelectedCards;
-            cardPile.DiscardCards(selectedCards, game.CurrentAlignment);
-            HandCardSelectManager.Instance.SelectionSystem.ClearSelection();
+            List<CharacterConfig> selectedCards = SelectionSystem.SelectedCards;
+            CardPile.DiscardCards(selectedCards, Game.CurrentAlignment);
+            SelectionSystem.ClearSelection();
             HandCardObjectManager.Instance.RemoveCardObjects();
         }
     }

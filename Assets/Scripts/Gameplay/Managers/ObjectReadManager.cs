@@ -12,10 +12,12 @@ namespace Berty.Gameplay.Managers
         [SerializeField] private GameObject playerTable;
         [SerializeField] private GameObject opponentTable;
         [SerializeField] private GameObject lookupCard;
+        [SerializeField] private GameObject fieldBoard;
 
         public GameObject HandCardObjectCollection => handCardObjectCollection;
         public GameObject PlayerTable => playerTable;
         public GameObject OpponentTable => opponentTable;
         public GameObject LookupCard => lookupCard;
+        public GameObject FieldBoard => fieldBoard;
     }
 }

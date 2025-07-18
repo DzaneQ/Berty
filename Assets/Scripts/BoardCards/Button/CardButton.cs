@@ -9,7 +9,7 @@ namespace Berty.BoardCards.Button
     abstract public class CardButton : MonoBehaviour
     {
 
-        protected BoardCardMovableObject cardNavigation;
+        protected BoardCardCore card;
         private Renderer rend;
         private Collider coll;
         [SerializeField] private Material dexterityMaterial;
@@ -18,7 +18,7 @@ namespace Berty.BoardCards.Button
 
         private void Awake()
         {
-            cardNavigation = GetComponentInParent<BoardCardMovableObject>();
+            card = GetComponentInParent<BoardCardCore>();
             rend = GetComponent<Renderer>();
             coll = GetComponent<Collider>();
             neutralMaterial = rend.material;
@@ -27,13 +27,12 @@ namespace Berty.BoardCards.Button
 
         public void EnableButton()
         {
-            //Debug.Log("Enable attempt: " + name + " on card: " + card.name);
-            //if (card.IsLocked()) return;
             if (!isActivated) return;
-            if (!cardNavigation.IsInteractableEnabled()) return;
+            Debug.Log($"Enable attempt: {name} on card: {card.name}");
+            if (!card.CardNavigation.IsInteractableEnabled()) return;
             if (!CanNavigate()) return;
             //if (card != card.Grid.Turn.GetFocusedCard()) return;
-            //Debug.Log("Enable: " + name + " on card: " + card.name);
+            Debug.Log("Enable: " + name + " on card: " + card.name);
             rend.enabled = true;
             coll.enabled = true;
         }
@@ -55,6 +54,7 @@ namespace Berty.BoardCards.Button
         {
             ChangeButtonToNeutral();
             isActivated = true;
+            EnableButton(); // TODO: Change to focus only
         }
 
         public void DeactivateButton()

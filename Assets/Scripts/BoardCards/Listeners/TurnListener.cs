@@ -1,22 +1,23 @@
+using Berty.BoardCards.Behaviours;
 using Berty.CardTransfer.Managers;
+using Berty.Enums;
 using Berty.Gameplay.ConfigData;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Managers;
 using Berty.UI.Card.Systems;
+using System;
 using UnityEngine;
 
-namespace Berty.CardTransfer.Listeners
+namespace Berty.BoardCards.Listeners
 {
     public class TurnListener : MonoBehaviour
     {
-        private Game game;
-        private SelectionAndPaymentSystem selectionSystem;
+        private BoardCardCore core;
 
         private void Awake()
         {
-            game = CoreManager.Instance.Game;
-            selectionSystem = CoreManager.Instance.SelectionAndPaymentSystem;
+            core = GetComponent<BoardCardCore>();
         }
 
         private void OnEnable()
@@ -32,9 +33,8 @@ namespace Berty.CardTransfer.Listeners
 
         private void HandleNewTurn()
         {
-            selectionSystem.ClearSelection(); // TODO: Move to another listener and correct the code so hand card objects look unselected.
-            int totalCardCount = game.GameConfig.TableCapacity;
-            PileToHandManager.Instance.PullCardsTo(totalCardCount);
+            if (core.IsForPay()) throw new Exception($"Board card {name} detected for pay when switching turns.");
+            core.SetMainState();
         }
     }
 }

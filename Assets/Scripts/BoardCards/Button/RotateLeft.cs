@@ -1,3 +1,4 @@
+using Berty.BoardCards.Managers;
 using Berty.Enums;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace Berty.BoardCards.Button
     {
         private void OnMouseDown()
         {
-            cardNavigation.RotateCardObject(-90);
+            BoardCardActionManager.Instance.RotateCard(card, GetName());
         }
 
         protected override bool CanNavigate() => true;

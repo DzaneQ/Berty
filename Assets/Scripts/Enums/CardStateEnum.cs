@@ -11,5 +11,6 @@ namespace Berty.Enums
         NewCard,
         NewTransform,
         Telekinetic,
+        Attacking,
     }
 }

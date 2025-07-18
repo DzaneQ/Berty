@@ -9,7 +9,7 @@ namespace Berty.BoardCards.Navigation
 {
     public class AnimatedRotateCard : MonoBehaviour, IRotateCard
     {
-        private BoardCardMovableObject card;
+        private BoardCardCore card;
         private float rotatingAngle;
         private int coroutineCount;
 
@@ -19,6 +19,7 @@ namespace Berty.BoardCards.Navigation
             private set
             {
                 coroutineCount = value;
+                if (coroutineCount == 0) card.HandleAnimationEnd();
                 if (coroutineCount < 0) throw new Exception($"Negative coroutine count for card {name}!");
             }
         }
@@ -31,21 +32,19 @@ namespace Berty.BoardCards.Navigation
 
         void Start()
         {
-            card = GetComponent<BoardCardMovableObject>();
+            card = GetComponent<BoardCardCore>();
         }
 
-        public void Execute(int angle)
+        public void ByAngle(int angle)
         {
             StartCoroutine(RotateCardCoroutine(angle));
         }
 
         private IEnumerator RotateCardCoroutine(int angle)
         {
-            card.DisableInteraction();
-            //HideBars();
+            card.CardNavigation.DisableInteraction();
+            card.Bars.HideBars();
             yield return StartCoroutine(RotateObject(-angle, 1f));
-            card.EnableInteraction();
-            yield return null;
         }
 
         public IEnumerator RotateObject(float angle, float durationSeconds)

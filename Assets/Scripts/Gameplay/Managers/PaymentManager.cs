@@ -27,5 +27,11 @@ namespace Berty.Gameplay.Managers
             paymentSystem.DemandPayment(price);
             EventManager.Instance.RaiseOnPaymentStart();
         }
+
+        public void CancelPayment()
+        {
+            paymentSystem.ClearSelection();
+            EventManager.Instance.RaiseOnPaymentCancel();
+        }
     }
 }

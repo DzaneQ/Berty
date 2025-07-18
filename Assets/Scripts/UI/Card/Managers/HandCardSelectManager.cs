@@ -45,10 +45,5 @@ namespace Berty.UI.Card.Managers
             selectionSystem.UnselectCard(card.Character);
             card.ShowObjectAsUnselected();
         }
-
-        public void ClearSelection()
-        {
-            selectionSystem.ClearSelection();
-        }
     }
 }

@@ -57,12 +57,14 @@ namespace Berty.Grid.Field.Entities
         {
             OccupantCard = BackupCard;
             BackupCard = null;
+            if (OccupantCard == null) Align = AlignmentEnum.None;
         }
 
         public void RemoveAllCards()
         {
             BackupCard = null;
-            OccupantCard = null;      
+            OccupantCard = null;
+            Align = AlignmentEnum.None;
         }
 
         public void PlaceBackupCard(BoardCard card)
