@@ -4,6 +4,7 @@ using Berty.BoardCards.Listeners;
 using Berty.BoardCards.Navigation;
 using Berty.BoardCards.State;
 using Berty.Enums;
+using Berty.Grid.Field.Behaviour;
 using System;
 using System.Collections;
 using System.Linq;
@@ -25,17 +26,15 @@ namespace Berty.BoardCards.Behaviours
         public BoardCard BoardCard => core.BoardCard;
         private BoardCardCore core;
         private BoardCardInput input;
+        private IMoveCard moveCard;
         private IRotateCard rotateCard;
 
         private void Awake()
         {
             core = GetComponent<BoardCardCore>();
+            moveCard = GetComponent<IMoveCard>();
             rotateCard = GetComponent<IRotateCard>();
             input = GetComponent<BoardCardInput>();
-        }
-
-        void Start()
-        {
             InitializeNavigation();
         }
 
@@ -59,7 +58,8 @@ namespace Berty.BoardCards.Behaviours
                 case CardStateEnum.NewCard:
                     ActivateRotateNeutralButtons();
                     break;
-                case CardStateEnum.NewTransform: // Note: Handled from core
+                case CardStateEnum.NewTransform:
+                    // Handled from core
                     break;
                 case CardStateEnum.Telekinetic:
                     ActivateMoveDexterityButtons();
@@ -106,15 +106,14 @@ namespace Berty.BoardCards.Behaviours
             foreach (CardButton button in Buttons) button.DeactivateButton();
         }
 
-        public void MoveCardObject(int angle)
+        public void MoveCardObject(FieldBehaviour field)
         {
-            throw new NotImplementedException();
+            moveCard.ToField(field);
         }
 
         public void RotateCardObject(int angle)
         {
-            int returnButtonIndex = (450 - angle) / 180;
-            rotateCard.Execute(angle);
+            rotateCard.ByAngle(angle);
         }
 
         public void DisableInteraction()
@@ -130,6 +129,11 @@ namespace Berty.BoardCards.Behaviours
         public bool IsInteractableEnabled()
         {
             return input.isActiveAndEnabled;
+        }
+
+        public bool IsCardAnimating()
+        {
+            return rotateCard.CoroutineCount > 0;
         }
     }
 }

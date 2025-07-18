@@ -2,6 +2,7 @@ using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
 using Berty.BoardCards.State;
 using Berty.Enums;
+using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Entities;
 using Berty.Grid.Field.Entities;
@@ -9,14 +10,17 @@ using Berty.UI.Card;
 using Berty.UI.Card.Managers;
 using System;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 namespace Berty.BoardCards.Behaviours
 {
     public class BoardCardCore : MonoBehaviour
     {
-        public CardStateEnum _cardState;
+        private Game Game;
+        private CardStateEnum _cardState;
         private SpriteRenderer characterSprite;
         private Rigidbody cardRB;
+        public BoardCardBarsObjects Bars { get; private set; }
         public BoardCardMovableObject CardNavigation { get; private set; }
 
         public BoardCard BoardCard { get; private set; }
@@ -33,7 +37,9 @@ namespace Berty.BoardCards.Behaviours
 
         private void Awake()
         {
+            Game = CoreManager.Instance.Game;
             characterSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
+            Bars = GetComponent<BoardCardBarsObjects>();
             CardNavigation = GetComponent<BoardCardMovableObject>();
             BoardCard = new BoardCard(CoreManager.Instance.SelectionAndPaymentSystem.GetCardOnHoldOrThrow());
         }
@@ -69,6 +75,14 @@ namespace Berty.BoardCards.Behaviours
             cardRB.isKinematic = !isApplied;
         }
 
+        public void SetMainState()
+        {
+            AlignmentEnum currentAlign = Game.CurrentAlignment;
+            AlignmentEnum cardAlign = BoardCard.Align;
+            if (currentAlign == cardAlign) SetActive();
+            else SetIdle();
+        }
+
         public void SetActive()
         {
             CardState = CardStateEnum.Active;
@@ -84,8 +98,24 @@ namespace Berty.BoardCards.Behaviours
             CardState = CardStateEnum.Telekinetic;
         }
 
+        public bool IsForPay()
+        {
+            if (CardState == CardStateEnum.NewCard) return true;
+            if (CardState == CardStateEnum.NewTransform) return true;
+            if (CardState == CardStateEnum.Attacking) return true;
+            return false;
+        }
+
+        public bool IsDexterityBased()
+        {
+            if (CardState == CardStateEnum.Active) return true;
+            if (CardState == CardStateEnum.Telekinetic) return true;
+            return false;
+        }
+
         public void SetNewTransformFromNavigation(NavigationEnum navigation)
         {
+            if (!IsDexterityBased()) return;
             NavigationEnum oppositeNavigation = navigation switch
             {
                 NavigationEnum.MoveUp => NavigationEnum.MoveDown,
@@ -98,6 +128,13 @@ namespace Berty.BoardCards.Behaviours
             };
             CardNavigation.ActivateNeutralButton(oppositeNavigation);
             CardState = CardStateEnum.NewTransform;
+        }
+
+        public void HandleAnimationEnd()
+        {
+            if (CardNavigation.IsCardAnimating()) return;
+            CardNavigation.EnableInteraction();
+            Bars.ShowBars();
         }
     }
 }

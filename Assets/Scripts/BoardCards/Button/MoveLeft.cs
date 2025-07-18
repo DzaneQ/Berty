@@ -1,3 +1,4 @@
+using Berty.BoardCards.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Entities;
@@ -11,12 +12,12 @@ namespace Berty.BoardCards.Button
     {
         private void OnMouseDown()
         {
-            cardNavigation.MoveCardObject((int)DirectionEnum.Left);
+            BoardCardActionManager.Instance.MoveCard(card, GetName());
         }
 
         protected override bool CanNavigate()
         {
-            BoardField targetField = CoreManager.Instance.Game.Grid.GetFieldDistancedFromCardOrNull(-1, 0, cardNavigation.BoardCard);
+            BoardField targetField = CoreManager.Instance.Game.Grid.GetFieldDistancedFromCardOrNull(-1, 0, card.BoardCard);
             if (targetField == null) return false;
             if (targetField.IsOccupied()) return false;
             return true;

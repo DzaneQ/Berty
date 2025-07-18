@@ -101,6 +101,11 @@ namespace Berty.BoardCards.Entities
             Direction = direction;
         }
 
+        public void AdvanceAngleBy(int angle)
+        {
+            Direction = (DirectionEnum)(((int)Direction + angle) % 360);
+        }
+
         // TODO: Change argument types of external methods from CardSpriteBehaviour to BoardCard
         public void AdvanceStrength(int value, BoardCard skillSource = null)
         {

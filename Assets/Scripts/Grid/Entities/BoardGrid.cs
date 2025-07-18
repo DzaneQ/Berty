@@ -72,6 +72,11 @@ namespace Berty.Grid.Entities
             return GetFieldFromRelativeCoordinatesOrNull(relCoord.x + x, relCoord.y + y, card.GetAngle());
         }
 
+        public BoardField GetFieldDistancedFromCardOrThrow(int x, int y, BoardCard card)
+        {
+            return GetFieldDistancedFromCardOrNull(x, y, card) ?? throw new Exception($"There is not field at distance ({x},{y}) away from {card.CharacterConfig.Name}");
+        }
+
         public List<BoardField> AlignedFields(AlignmentEnum alignment, bool countBackup = false)
         {
             List<BoardField> alignedFields = new List<BoardField>();

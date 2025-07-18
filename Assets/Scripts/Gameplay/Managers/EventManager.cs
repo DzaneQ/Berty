@@ -25,5 +25,15 @@ namespace Berty.Gameplay.Managers
         {
             OnPaymentStart?.Invoke();
         }
+
+        public void RaiseOnPaymentConfirm()
+        {
+            OnPaymentConfirm?.Invoke();
+        }
+
+        public void RaiseOnPaymentCancel()
+        {
+            OnPaymentCancel?.Invoke();
+        }
     }
 }

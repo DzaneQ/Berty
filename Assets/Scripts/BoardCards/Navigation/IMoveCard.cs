@@ -1,12 +1,13 @@
+using Berty.Grid.Field.Behaviour;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.BoardCards.Navigation
 {
-    interface IRotateCard
+    interface IMoveCard
     {
         int CoroutineCount { get; }
-        void ByAngle(int angle);
+        void ToField(FieldBehaviour field);
     }
 }
