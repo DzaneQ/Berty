@@ -24,5 +24,10 @@ namespace Berty.Grid.Managers
                 _ => throw new Exception("Unknown alignment to get material from."),
             };
         }
+
+        public Material GetNeutralMaterial()
+        {
+            return neutral;
+        }
     }
 }

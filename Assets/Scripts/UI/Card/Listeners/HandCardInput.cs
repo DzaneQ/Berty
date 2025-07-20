@@ -1,4 +1,4 @@
-using Berty.CardTransfer.Managers;
+using Berty.UI.Card.Managers;
 using Berty.Display.Managers;
 using Berty.Gameplay;
 using Berty.UI.Card;

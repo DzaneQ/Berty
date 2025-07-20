@@ -45,7 +45,7 @@ namespace Berty.Grid.Entities
         {
             int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
             int cosinus = (int)Math.Round(Math.Cos(angle / 180 * Math.PI));
-            return new Vector2Int(cosinus * x + sinus * y, cosinus * y - sinus * x);
+            return new Vector2Int(cosinus * x - sinus * y, cosinus * y + sinus * x);
         }
 
         public Vector2Int GetFromRelativeCoordinates(int x, int y, float angle = 0)

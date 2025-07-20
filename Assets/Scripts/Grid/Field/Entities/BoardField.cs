@@ -32,24 +32,26 @@ namespace Berty.Grid.Field.Entities
             Align = AlignmentEnum.None;
         }
 
-        public void AddCard(CharacterConfig characterConfig, AlignmentEnum newAlign)
+        public BoardCard AddCard(CharacterConfig characterConfig, AlignmentEnum newAlign)
         {
             if (OccupantCard == null)
             {
-                OccupantCard = new BoardCard(characterConfig);
+                OccupantCard = new BoardCard(characterConfig, this);
                 Align = newAlign;
             }
             else
             {
                 if (BackupCard != null) throw new InvalidOperationException($"Field named {GetName()} is full!");
                 BackupCard = OccupantCard;
-                OccupantCard = new BoardCard(characterConfig);
+                OccupantCard = new BoardCard(characterConfig, this);
             }
+            return OccupantCard;
         }
 
         public void PlaceCard(BoardCard card, AlignmentEnum newAlign)
         {
             OccupantCard = card;
+            card.SetField(this);
             Align = newAlign;
         }
 

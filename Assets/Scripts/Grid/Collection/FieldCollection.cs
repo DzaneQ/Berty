@@ -1,5 +1,5 @@
 using Berty.BoardCards.ConfigData;
-using Berty.CardTransfer.Managers;
+using Berty.UI.Card.Managers;
 using Berty.Grid.Field.Behaviour;
 using Berty.Grid.Field.Entities;
 using System;

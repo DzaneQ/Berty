@@ -1,4 +1,4 @@
-using Berty.CardTransfer.Entities;
+using Berty.UI.Card.Entities;
 using Berty.Grid.Entities;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
@@ -11,7 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Berty.CardTransfer.Managers
+namespace Berty.UI.Card.Managers
 {
     public class PileToHandManager : ManagerSingleton<PileToHandManager>
     {

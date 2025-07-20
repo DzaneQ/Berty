@@ -32,6 +32,7 @@ namespace Berty.BoardCards.Managers
             };
             card.CardNavigation.RotateCardObject(angle);
             card.BoardCard.AdvanceAngleBy(angle);
+            Debug.Log($"{card.name} has angle {card.BoardCard.Direction} with coordinates: ({card.BoardCard.RelativeCoordinates.x},{card.BoardCard.RelativeCoordinates.y})");
             if (card.CardState == CardStateEnum.NewTransform)
             {
                 PaymentManager.Instance.CancelPayment();
@@ -66,6 +67,17 @@ namespace Berty.BoardCards.Managers
             bool paidAction = card.IsDexterityBased();
             card.SetNewTransformFromNavigation(navigation);
             if (paidAction) PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity);
+        }
+
+        public void PrepareToAttack(BoardCardCore card)
+        {
+            card.SetAttacking();
+            PaymentManager.Instance.CallPayment(card.BoardCard.Stats.Dexterity);
+        }
+
+        public void ConfirmPayment(BoardCardCore card)
+        {
+            PaymentManager.Instance.ConfirmPayment();
         }
     }
 }

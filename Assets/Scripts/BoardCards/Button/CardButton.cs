@@ -48,6 +48,7 @@ namespace Berty.BoardCards.Button
         {
             ChangeButtonToDexterity();
             isActivated = true;
+            EnableButton(); // TODO: Change to focus only
         }
 
         public void ActivateNeutralButton()

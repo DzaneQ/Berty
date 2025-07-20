@@ -24,12 +24,10 @@ namespace Berty.BoardCards.Behaviours
             3 - Health
          */
         private CardBar[] CardBars { get; set; }
-        private BoardCardCore core;
 
         private void Awake()
         {
             CardBars = transform.GetChild(1).GetComponentsInChildren<CardBar>();
-            core = GetComponent<BoardCardCore>();
         }
 
         public void HideBars()
@@ -40,6 +38,12 @@ namespace Berty.BoardCards.Behaviours
         public void ShowBars()
         {
             foreach (CardBar bar in CardBars) bar.ShowBar();
+        }
+
+        public bool AreBarsAnimating()
+        {
+            foreach (CardBar bar in CardBars) if (bar.IsAnimating()) return true;
+            return false;
         }
     }
 }

@@ -5,29 +5,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Berty.BoardCards.Navigation
+namespace Berty.BoardCards.Animation
 {
     public class AnimatedRotateCard : MonoBehaviour, IRotateCard
     {
+        private const float durationSeconds = 1f;
+
         private BoardCardCore card;
         private float rotatingAngle;
-        private int coroutineCount;
+        private int _coroutineCount;
 
         public int CoroutineCount
         {
-            get => coroutineCount;
+            get => _coroutineCount;
             private set
             {
-                coroutineCount = value;
-                if (coroutineCount == 0) card.HandleAnimationEnd();
-                if (coroutineCount < 0) throw new Exception($"Negative coroutine count for card {name}!");
+                _coroutineCount = value;
+                if (_coroutineCount == 0) card.HandleAnimationEnd();
+                if (_coroutineCount < 0) throw new Exception($"Negative coroutine count for card {name}!");
             }
         }
 
         private void Awake()
         {
             rotatingAngle = 0;
-            coroutineCount = 0;
+            _coroutineCount = 0;
         }
 
         void Start()
@@ -44,10 +46,10 @@ namespace Berty.BoardCards.Navigation
         {
             card.CardNavigation.DisableInteraction();
             card.Bars.HideBars();
-            yield return StartCoroutine(RotateObject(-angle, 1f));
+            yield return StartCoroutine(RotateObject(-angle, durationSeconds));
         }
 
-        public IEnumerator RotateObject(float angle, float durationSeconds)
+        private IEnumerator RotateObject(float angle, float durationSeconds)
         {
             SetRotation(angle);
             yield return StartCoroutine(AnimateRotate(durationSeconds));

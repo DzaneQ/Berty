@@ -5,9 +5,11 @@ using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Entities;
+using Berty.Grid.Field.Behaviour;
 using Berty.Grid.Field.Entities;
 using Berty.UI.Card;
 using Berty.UI.Card.Managers;
+using Berty.UI.Card.Systems;
 using System;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
@@ -34,6 +36,7 @@ namespace Berty.BoardCards.Behaviours
                 CardNavigation.ActivateButtonsBasedOnState();
             }
         }
+        public FieldBehaviour ParentField { get; private set; }
 
         private void Awake()
         {
@@ -41,7 +44,9 @@ namespace Berty.BoardCards.Behaviours
             characterSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
             Bars = GetComponent<BoardCardBarsObjects>();
             CardNavigation = GetComponent<BoardCardMovableObject>();
-            BoardCard = new BoardCard(CoreManager.Instance.SelectionAndPaymentSystem.GetCardOnHoldOrThrow());
+            ParentField = GetComponentInParent<FieldBehaviour>();
+            SelectionAndPaymentSystem system = CoreManager.Instance.SelectionAndPaymentSystem;
+            BoardCard = ParentField.BoardField.AddCard(system.GetCardOnHoldOrThrow(), Game.CurrentAlignment);
         }
 
         private void Start()
@@ -75,6 +80,11 @@ namespace Berty.BoardCards.Behaviours
             cardRB.isKinematic = !isApplied;
         }
 
+        public void SetFieldBehaviour(FieldBehaviour fieldBehaviour)
+        {
+            ParentField = fieldBehaviour;
+        }
+
         public void SetMainState()
         {
             AlignmentEnum currentAlign = Game.CurrentAlignment;
@@ -96,6 +106,11 @@ namespace Berty.BoardCards.Behaviours
         public void SetTelecinetic()
         {
             CardState = CardStateEnum.Telekinetic;
+        }
+
+        public void SetAttacking()
+        {
+            CardState = CardStateEnum.Attacking;
         }
 
         public bool IsForPay()
@@ -133,8 +148,15 @@ namespace Berty.BoardCards.Behaviours
         public void HandleAnimationEnd()
         {
             if (CardNavigation.IsCardAnimating()) return;
-            CardNavigation.EnableInteraction();
+            if (!Bars.AreBarsAnimating()) CardNavigation.EnableInteraction();
             Bars.ShowBars();
+        }
+
+        public void RemoveCard()
+        {
+            BoardCard.DeactivateCard(); // TODO: Prove that the BoardCard entity no longer exists.
+            ParentField.ColorizeField();
+            Destroy(this);
         }
     }
 }

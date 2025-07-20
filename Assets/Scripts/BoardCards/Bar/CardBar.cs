@@ -1,4 +1,5 @@
 using Berty.BoardCards.Animation;
+using Berty.BoardCards.Behaviours;
 using Berty.Structs;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +9,11 @@ namespace Berty.BoardCards.Bar
 {
     public class CardBar : MonoBehaviour
     {
-        private CardSpriteBehaviour card;
+        const float startOutlineWidth = .165f;
+        const float unitWidth = 2.66f;
+
+        private BoardCardCore card;
+        private IBarWidth barWidth;
         private Transform barFill;
         private SpriteRenderer fillRend;
         private SpriteRenderer outlineRend;
@@ -16,12 +21,18 @@ namespace Berty.BoardCards.Bar
 
         void Awake()
         {
-            card = GetComponentInParent<CardSpriteBehaviour>();
+            card = GetComponentInParent<BoardCardCore>();
             barFill = transform.GetChild(0);
+            barWidth = barFill.GetComponent<IBarWidth>();
             fillRend = barFill.GetComponent<SpriteRenderer>();
             outlineRend = barFill.parent.GetComponent<SpriteRenderer>();
             //statValue = ReadStat();
             //Debug.Log("Max width value: " + maxWidth);
+        }
+
+        void Start()
+        {
+            UpdateBarWithoutAnimation();
         }
 
         private int ReadStat()
@@ -29,124 +40,44 @@ namespace Berty.BoardCards.Bar
             switch (name)
             {
                 case "StrengthBar":
-                    return card.CardStatus.Strength;
+                    return card.BoardCard.Stats.Strength;
 
                 case "PowerBar":
-                    return card.CardStatus.Power;
+                    return card.BoardCard.Stats.Power;
 
                 case "DexterityBar":
-                    return card.CardStatus.Dexterity;
+                    return card.BoardCard.Stats.Dexterity;
 
                 case "HealthBar":
-                    return card.CardStatus.Health;
+                    return card.BoardCard.Stats.Health;
 
                 default:
                     throw new System.Exception("Unknown stat for bar: " + name);
             }
         }
 
-        private IEnumerator MoveAndScaleBar(float widthDiff, Vector2 targetSize, AnimatingCardSprite animate)
-        {
-            Vector3 targetPosition = barFill.localPosition;
-            targetPosition.x += widthDiff / 2;
-            /*switch (name)
-            {
-                case "StrengthBar":
-                    targetPosition.x += widthDiff / 2;
-                    break;
-
-                case "PowerBar":
-                    targetPosition.y += -widthDiff / 2;
-                    break;
-
-                case "DexterityBar":
-                    targetPosition.x += -widthDiff / 2;
-                    break;
-
-                case "HealthBar":
-                    targetPosition.y += widthDiff / 2;
-                    break;
-
-                default:
-                    throw new System.Exception("Unknown stat for bar: " + name);
-            }*/
-            if (animate == null)
-            {
-                barFill.localPosition = targetPosition;
-                fillRend.size = targetSize;
-                yield return null;
-            }
-            else
-            {
-                //Debug.Log($"Animating {name} for card {barFill.parent.parent.name} with target width: {targetSize.x}");
-                NewBar properties = new(barFill, fillRend, targetPosition, targetSize);
-                card.Grid.Turn.DisableInteractions(false);
-                yield return StartCoroutine(animate.MoveAndScaleBar(properties, 1f));
-                if (!card.IsAnimating()) card.Grid.Turn.EnableInteractions();
-                yield return null;
-            }
-        }
-
-        /*private void NewStatAdjustment()
-        {
-            switch (name)
-            {
-                case "StrengthBar":
-                    card.NewStrengthAdjustment(statValue);
-                    break;
-
-                case "PowerBar":
-                    card.NewPowerAdjustment(statValue);
-                    break;
-
-                case "DexterityBar":
-                    card.NewDexterityAdjustment(statValue);
-                    break;
-
-                case "HealthBar":
-                    card.NewHealthAdjustment(statValue);
-                    break;
-
-                default:
-                    throw new System.Exception("Unknown stat for bar: " + name);
-            }
-        }*/
-
-        public IEnumerator UpdateBar(AnimatingCardSprite animation)
+        public void UpdateBar()
         {
             Vector2 barSize = fillRend.size;
             float oldWidth = barSize.x;
-            //float newWidth;
-
             int stat = ReadStat();
-            float startOutlineWidth = .165f;
-            float unitWidth = 2.66f;
-            //float maxWidth = 16.36f;
-            //if (oldWidth != startOutlineWidth + (unitWidth * statValue)) Debug.LogWarning("Old value doesn't match the width!");
-            barSize.x = startOutlineWidth + unitWidth * stat;
-            /*switch (stat)
-            {
-                case 0:
-                    barSize.x = 0;
-                    break;
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                    barSize.x = startOutlineWidth + (unitWidth * stat);
-                    break;
-                case 6:
-                    barSize.x = maxWidth;
-                    break;
-                default:
-                    throw new System.Exception("Wrong stat number: " + stat);
-            }*/
-            //Debug.Log($"Checking {name}: {stat} for card {barFill.parent.parent.name}. Changing width from {oldWidth} to {barSize.x}");
-            yield return StartCoroutine(MoveAndScaleBar(barSize.x - oldWidth, barSize, animation));
-            //NewStatAdjustment();
-            //statValue = stat;
-            //yield return null;
+            barSize.x = startOutlineWidth + (unitWidth * stat);
+            float widthDiff = barSize.x - oldWidth;
+            Vector3 targetPosition = barFill.localPosition;
+            targetPosition.x += widthDiff / 2;
+            barWidth.AdvanceToVectors(targetPosition, barSize);
+        }
+
+        public void UpdateBarWithoutAnimation()
+        {
+            Vector2 barSize = fillRend.size;
+            float oldWidth = barSize.x;
+            int stat = ReadStat();
+            barSize.x = startOutlineWidth + (unitWidth * stat);
+            float widthDiff = barSize.x - oldWidth;
+            Vector3 targetPosition = barFill.localPosition;
+            targetPosition.x += widthDiff / 2;
+            barWidth.SetVectorsWithoutAnimation(targetPosition, barSize);
         }
 
         public void HideBar()
@@ -161,6 +92,11 @@ namespace Berty.BoardCards.Bar
             //barFill.parent.gameObject.SetActive(true);
             fillRend.enabled = true;
             outlineRend.enabled = true;
+        }
+
+        public bool IsAnimating()
+        {
+            return barWidth.CoroutineCount > 0;
         }
     }
 }

@@ -1,4 +1,5 @@
 using Berty.BoardCards.ConfigData;
+using Berty.UI.Card.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Grid.Entities;
@@ -30,8 +31,17 @@ namespace Berty.Gameplay.Managers
 
         public void CancelPayment()
         {
-            paymentSystem.ClearSelection();
+            HandCardSelectManager.Instance.ClearSelection();
+            paymentSystem.SetAsNotPaymentTime();
             EventManager.Instance.RaiseOnPaymentCancel();
+        }
+
+        public void ConfirmPayment()
+        {
+            if (!paymentSystem.CheckOffer()) return;
+            HandToPileManager.Instance.DiscardSelectedCardsFromHand();
+            paymentSystem.SetAsNotPaymentTime();
+            EventManager.Instance.RaiseOnPaymentConfirm();
         }
     }
 }

@@ -18,18 +18,18 @@ namespace Berty.BoardCards.Entities
         public BoardField OccupiedField {
             get => _occupiedField;
             private set
-            {
-                _cached_relativeCoordinates = null;
+            {  
                 _occupiedField = value;
+                _cached_relativeCoordinates = null;
             }
         }
-        public DirectionEnum Direction { 
-            get => _direction; 
+        public DirectionEnum Direction {
+            get => _direction;
             private set
             {
-                _cached_relativeCoordinates = null;
                 _direction = value;
-            } 
+                _cached_relativeCoordinates = null;
+            }
         }
         public CardStats Stats { get; }
         public bool HasAttacked { get; private set; }
@@ -43,20 +43,15 @@ namespace Berty.BoardCards.Entities
             }
         }
 
-        public BoardCard(CharacterConfig character)
+        public BoardCard(CharacterConfig character, BoardField field)
         {
             CharacterConfig = character;
+            OccupiedField = field;
             Stats = new CardStats(character);
             HasAttacked = false;
             IsTired = false;
             resistance = new List<CharacterConfig>();
         }
-
-        //public void ActivateCard(CharacterConfig character, BoardField field, Direction direction)
-        //{
-        //    LoadCharacterFromConfig(character);
-        //    PlaceCard(field, direction);
-        //}
 
         public void DeactivateCard()
         {
@@ -91,7 +86,7 @@ namespace Berty.BoardCards.Entities
             return (int)Direction;
         }
 
-        private void SetField(BoardField field)
+        public void SetField(BoardField field)
         {
             OccupiedField = field;
         }
@@ -195,10 +190,10 @@ namespace Berty.BoardCards.Entities
         {
             int x = OccupiedField.Coordinates.x;
             int y = OccupiedField.Coordinates.y;
-            int angle = (int)Direction;
+            float angle = (float)Direction;
             int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
             int cosinus = (int)Math.Round(Math.Cos(angle / 180 * Math.PI));
-            return new Vector2Int(cosinus * x + sinus * y, cosinus * y - sinus * x);
+            return new Vector2Int(cosinus * x - sinus * y, cosinus * y + sinus * x);
         }
     }
 }

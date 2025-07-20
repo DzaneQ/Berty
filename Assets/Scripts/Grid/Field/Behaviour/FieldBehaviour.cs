@@ -38,11 +38,17 @@ namespace Berty.Grid.Field.Behaviour
                 _ => throw new Exception("Unknown field name to handle."),
             };
             ColorizeField();
+            //Debug.Log($"{name} got coordinates: ({BoardField.Coordinates.x}, {BoardField.Coordinates.y})");
         }
 
         public void ColorizeField()
         {
             render.material = ColorizeFieldManager.Instance.GetMaterialFromAlignment(BoardField.Align);
+        }
+
+        public void ColorizeNotOccupied()
+        {
+            render.material = ColorizeFieldManager.Instance.GetNeutralMaterial();
         }
     }
 }

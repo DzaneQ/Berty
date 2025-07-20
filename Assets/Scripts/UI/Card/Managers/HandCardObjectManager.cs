@@ -1,5 +1,5 @@
 using Berty.BoardCards.ConfigData;
-using Berty.CardTransfer.Entities;
+using Berty.UI.Card.Entities;
 using Berty.Grid.Entities;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
@@ -31,6 +31,12 @@ namespace Berty.UI.Card.Managers
             opponentTable = ObjectReadManager.Instance.OpponentTable;
             behaviourCollection = ObjectReadManager.Instance.HandCardObjectCollection.GetComponent<HandCardCollection>();
             cardPile = CoreManager.Instance.Game.CardPile;
+        }
+
+        public void SwitchTables()
+        {
+            playerTable.SetActive(!playerTable.activeSelf);
+            opponentTable.SetActive(!playerTable.activeSelf);
         }
 
         public void AddCardObjects()

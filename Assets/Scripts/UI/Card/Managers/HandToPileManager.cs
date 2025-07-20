@@ -1,4 +1,4 @@
-using Berty.CardTransfer.Entities;
+using Berty.UI.Card.Entities;
 using Berty.Grid.Entities;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Berty.BoardCards.ConfigData;
 
-namespace Berty.CardTransfer.Managers
+namespace Berty.UI.Card.Managers
 {
     public class HandToPileManager : ManagerSingleton<HandToPileManager>
     {
@@ -31,8 +31,8 @@ namespace Berty.CardTransfer.Managers
         {
             List<CharacterConfig> selectedCards = SelectionSystem.SelectedCards;
             CardPile.DiscardCards(selectedCards, Game.CurrentAlignment);
-            SelectionSystem.ClearSelection();
             HandCardObjectManager.Instance.RemoveCardObjects();
+            HandCardSelectManager.Instance.ClearSelection();
         }
     }
 }

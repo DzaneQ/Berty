@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Berty.BoardCards.Navigation
+namespace Berty.BoardCards.Animation
 {
     interface IMoveCard
     {
