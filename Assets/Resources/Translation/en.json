@@ -1,5 +1,6 @@
 {
   "win": "Victory!",
   "lose": "Defeat!",
-  "end_turn": "End turn"
+  "end_turn": "End turn",
+  "undo": "Undo"
 }

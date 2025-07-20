@@ -1,5 +1,5 @@
 using Berty.BoardCards.Behaviours;
-using Berty.CardTransfer.Managers;
+using Berty.UI.Card.Managers;
 using Berty.Enums;
 using Berty.Gameplay.ConfigData;
 using Berty.Gameplay.Entities;
@@ -49,7 +49,7 @@ namespace Berty.BoardCards.Listeners
         {
             if (core.CardState == CardStateEnum.NewCard)
             {
-                Destroy(gameObject);
+                core.RemoveCard();
                 return;
             }
             core.SetMainState();

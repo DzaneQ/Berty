@@ -1,5 +1,5 @@
 using Berty.BoardCards.ConfigData;
-using Berty.CardTransfer.Managers;
+using Berty.UI.Card.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +16,11 @@ namespace Berty.UI.Card.Collection
         {
             if (handCardBehaviourCollection != null) throw new Exception("Hand card collection is already initialized");
             handCardBehaviourCollection = collection;
+        }
+
+        public List<HandCardBehaviour> GetBehavioursFromCharacterConfigs(List<CharacterConfig> characterConfigs)
+        {
+            return handCardBehaviourCollection.FindAll((HandCardBehaviour behaviour) => characterConfigs.Contains(behaviour.Character));
         }
 
         public HandCardBehaviour GetBehaviourFromCharacterConfig(CharacterConfig characterConfig)

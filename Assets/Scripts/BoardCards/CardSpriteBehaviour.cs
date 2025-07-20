@@ -489,9 +489,9 @@ namespace Berty.BoardCards
         public IEnumerator UpdateBar(int index, bool animate, bool waitUntilFinished = false)
         {
             if (!gameObject.activeSelf) animate = false;
-            if (!animate) StartCoroutine(cardBar[index].UpdateBar(null));
-            else if (!waitUntilFinished) StartCoroutine(cardBar[index].UpdateBar(animating));
-            else yield return StartCoroutine(cardBar[index].UpdateBar(animating));
+            //if (!animate) StartCoroutine(cardBar[index].UpdateBar(null));
+            //else if (!waitUntilFinished) StartCoroutine(cardBar[index].UpdateBar(animating));
+            //else yield return StartCoroutine(cardBar[index].UpdateBar(animating));
             yield return null;
         }
 

@@ -1,24 +1,25 @@
 using Berty.Audio;
+using Berty.Enums;
 using Berty.Gameplay;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card;
+using Berty.UI.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Berty.UI.Listeners
 {
     public class ButtonInput : MonoBehaviour, IPointerUpHandler
     {
-        private Turn turn;
-        private SoundSystem soundSystem;
+        private CornerButton core;
 
-        void Start()
+        void Awake()
         {
-            turn = FindObjectOfType<Turn>();
-            soundSystem = FindObjectOfType<SoundSystem>();
+            core = GetComponent<CornerButton>();
         }
         public void OnPointerUp(PointerEventData eventData)
         {
@@ -28,18 +29,8 @@ namespace Berty.UI.Listeners
         private void HandleTheButtonClick()
         {
             Debug.Log("Left button click is being handled.");
-            soundSystem.ButtonClickSound();
-            switch (turn.TheButtonText)
-            {
-                case "Koniec tury":
-                    TurnManager.Instance.EndTurn();
-                    break;
-                case "Cofnij":
-                    turn.FG.CancelCard();
-                    break;
-                default:
-                    throw new Exception("Unknown ending button!");
-            }
+            //soundSystem.ButtonClickSound();
+            ButtonActionManager.Instance.HandleCornerButtonClick(core.ButtonType);
         }
     }
 }

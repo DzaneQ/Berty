@@ -1,6 +1,7 @@
-using Berty.Grid.Entities;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
+using Berty.Grid.Entities;
+using Berty.UI.Card.Managers;
 using Berty.UI.Managers;
 using Berty.Utility;
 using System.Collections;
@@ -23,6 +24,7 @@ namespace Berty.Gameplay.Managers
         public void EndTurn()
         {
             game.SwitchAlignment();
+            HandCardObjectManager.Instance.SwitchTables();
             EventManager.Instance.RaiseOnNewTurn();
         }
 

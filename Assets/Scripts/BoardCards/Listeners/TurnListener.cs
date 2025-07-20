@@ -1,5 +1,5 @@
 using Berty.BoardCards.Behaviours;
-using Berty.CardTransfer.Managers;
+using Berty.UI.Card.Managers;
 using Berty.Enums;
 using Berty.Gameplay.ConfigData;
 using Berty.Gameplay.Entities;

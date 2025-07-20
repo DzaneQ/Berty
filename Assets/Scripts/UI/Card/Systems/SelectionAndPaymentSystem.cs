@@ -1,5 +1,5 @@
 using Berty.BoardCards.ConfigData;
-using Berty.CardTransfer.Managers;
+using Berty.UI.Card.Managers;
 using Berty.Enums;
 using System;
 using System.Collections;
@@ -28,11 +28,6 @@ namespace Berty.UI.Card.Systems
         public void UnselectCard(CharacterConfig card)
         {
             SelectedCards.Remove(card);
-        }
-
-        public void ClearSelection()
-        {
-            SelectedCards.Clear();
         }
 
         public int GetSelectedCardsCount()
@@ -71,6 +66,7 @@ namespace Berty.UI.Card.Systems
         public void SetAsNotPaymentTime()
         {
             cardPrice = null;
+            ClearCardOnHold();
         }
 
         public bool CheckOffer()
@@ -92,7 +88,6 @@ namespace Berty.UI.Card.Systems
         public void PutSelectedCardOnHold()
         {
             cardOnHold = GetSelectedCardOrThrow();
-            ClearSelection();
         }
 
         public void ClearCardOnHold()

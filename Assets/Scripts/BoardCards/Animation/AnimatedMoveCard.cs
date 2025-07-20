@@ -8,28 +8,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Berty.BoardCards.Navigation
+namespace Berty.BoardCards.Animation
 {
     public class AnimatedMoveCard : MonoBehaviour, IMoveCard
     {
+        private const float durationSeconds = 1f;
+
         private BoardCardCore card;
         private Vector3 targetPosition;
-        private int coroutineCount;
+        private int _coroutineCount;
 
         public int CoroutineCount
         {
-            get => coroutineCount;
+            get => _coroutineCount;
             private set
             {
-                coroutineCount = value;
-                if (coroutineCount == 0) card.HandleAnimationEnd();
-                if (coroutineCount < 0) throw new Exception($"Negative coroutine count for card {name}!");
+                _coroutineCount = value;
+                if (_coroutineCount == 0) card.HandleAnimationEnd();
+                if (_coroutineCount < 0) throw new Exception($"Negative coroutine count for card {name}!");
             }
         }
 
         private void Awake()
         {
-            coroutineCount = 0;
+            _coroutineCount = 0;
         }
 
         void Start()
@@ -39,16 +41,28 @@ namespace Berty.BoardCards.Navigation
 
         public void ToField(FieldBehaviour field)
         {
-            //StartCoroutine(RotateCardCoroutine(field));
+            StartCoroutine(MoveCardCoroutine(field));
         }
 
-        public IEnumerator MoveToField(FieldBehaviour target, float duration)
+        private IEnumerator MoveCardCoroutine(FieldBehaviour target)
+        {
+            AlignmentEnum align = card.BoardCard.Align;
+            card.CardNavigation.DisableInteraction();
+            yield return MoveToField(target, durationSeconds);
+            //occupantCard = card;
+            //card.SetField(this, true);
+            target.ColorizeField();
+            //card.EnableButtons();
+            yield return null;
+        }
+
+        private IEnumerator MoveToField(FieldBehaviour target, float duration)
         {
             //Debug.Log($"Card initial coordinates: {transform.position.x}; {transform.position.y}; {transform.position.z}");
             SetTargetField(target);
             //Debug.Log($"Card target coordinates: {targetPosition.x}; {targetPosition.y}; {targetPosition.z}");
             yield return StartCoroutine(AnimateMove(duration));
-        }
+        } 
 
         private void SetTargetField(FieldBehaviour target)
         {

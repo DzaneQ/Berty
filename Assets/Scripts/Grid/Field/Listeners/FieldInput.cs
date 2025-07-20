@@ -1,4 +1,4 @@
-using Berty.CardTransfer.Managers;
+using Berty.UI.Card.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;

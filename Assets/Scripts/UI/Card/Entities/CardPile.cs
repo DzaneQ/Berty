@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Berty.CardTransfer.Entities
+namespace Berty.UI.Card.Entities
 {
     public class CardPile
     {
@@ -93,7 +93,8 @@ namespace Berty.CardTransfer.Entities
             int initialTableCount = table.Count;
             table.RemoveAll(card => cardsToDiscard.Contains(card));
             discardedCards.AddRange(cardsToDiscard);
-            if (table.Count != initialTableCount - cardsToDiscard.Count) throw new Exception("Unexpected amount of remaining cards.");
+            if (table.Count != initialTableCount - cardsToDiscard.Count) throw new Exception(
+                $"Unexpected amount of remaining cards. Count: {table.Count}, initial: {initialTableCount}, cardsToDiscard: {cardsToDiscard.Count}");
         }
 
         private void KillCard(CharacterConfig card)

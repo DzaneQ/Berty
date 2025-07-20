@@ -1,7 +1,7 @@
-﻿using Berty.BoardCards.Button;
+﻿using Berty.BoardCards.Animation;
+using Berty.BoardCards.Button;
 using Berty.BoardCards.Entities;
 using Berty.BoardCards.Listeners;
-using Berty.BoardCards.Navigation;
 using Berty.BoardCards.State;
 using Berty.Enums;
 using Berty.Grid.Field.Behaviour;
@@ -108,7 +108,9 @@ namespace Berty.BoardCards.Behaviours
 
         public void MoveCardObject(FieldBehaviour field)
         {
+            core.ParentField.ColorizeNotOccupied();
             moveCard.ToField(field);
+            core.SetFieldBehaviour(field);
         }
 
         public void RotateCardObject(int angle)
@@ -133,7 +135,7 @@ namespace Berty.BoardCards.Behaviours
 
         public bool IsCardAnimating()
         {
-            return rotateCard.CoroutineCount > 0;
+            return rotateCard.CoroutineCount > 0 || moveCard.CoroutineCount > 0;
         }
     }
 }

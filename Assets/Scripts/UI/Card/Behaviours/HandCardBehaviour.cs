@@ -53,12 +53,20 @@ namespace Berty.UI.Card
 
         public void ShowObjectAsSelected()
         {
+            if (select.IsCardSelected) throw new Exception("This card is already selected!");
             ChangeSelection();
         }
 
         public void ShowObjectAsUnselected()
         {
+            if (!select.IsCardSelected) throw new Exception("This card is already unselected!");
             ChangeSelection();
+        }
+
+        public void MakeObjectUnselectedWithoutAnimation()
+        {
+            if (!select.IsCardSelected) throw new Exception("This card is already unselected!");
+            ChangeSelection(true);
         }
 
         public void ChangeSelection(bool ignoreAnimation = false)

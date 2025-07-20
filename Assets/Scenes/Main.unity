@@ -1709,6 +1709,7 @@ MonoBehaviour:
   opponentTable: {fileID: 1740268250}
   lookupCard: {fileID: 1331529693}
   fieldBoard: {fileID: 1181834772}
+  cornerButton: {fileID: 1498936183}
 --- !u!4 &1473762351
 Transform:
   m_ObjectHideFlags: 0
@@ -1990,6 +1991,7 @@ GameObject:
   - component: {fileID: 1498936186}
   - component: {fileID: 1498936185}
   - component: {fileID: 1498936188}
+  - component: {fileID: 1498936189}
   m_Layer: 5
   m_Name: EndTurnButton
   m_TagString: Untagged
@@ -2108,7 +2110,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1498936183}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61c10065308fdfb45a48d9d1d1b0ce32, type: 3}
+  m_Script: {fileID: 11500000, guid: b949639264322ff41a06de5c880f0947, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1498936189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1498936183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ec6354e45c6f194da7283ce9265edcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1503324222

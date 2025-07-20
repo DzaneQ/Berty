@@ -1,4 +1,3 @@
-using Berty.CardTransfer.Managers;
 using Berty.Gameplay.ConfigData;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
@@ -6,7 +5,7 @@ using Berty.UI.Card.Managers;
 using Berty.UI.Card.Systems;
 using UnityEngine;
 
-namespace Berty.CardTransfer.Listeners
+namespace Berty.UI.Card.Listeners
 {
     public class TurnListener : MonoBehaviour
     {
@@ -32,7 +31,7 @@ namespace Berty.CardTransfer.Listeners
 
         private void HandleNewTurn()
         {
-            selectionSystem.ClearSelection(); // TODO: Move to another listener and correct the code so hand card objects look unselected.
+            HandCardSelectManager.Instance.ClearSelection();
             int totalCardCount = game.GameConfig.TableCapacity;
             PileToHandManager.Instance.PullCardsTo(totalCardCount);
         }
