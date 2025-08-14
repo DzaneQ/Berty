@@ -10,6 +10,7 @@ using Berty.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Berty.BoardCards.Behaviours;
 
 namespace Berty.Gameplay.Managers
 {
@@ -23,10 +24,10 @@ namespace Berty.Gameplay.Managers
             paymentSystem = CoreManager.Instance.SelectionAndPaymentSystem;
         }
 
-        public void CallPayment(int price)
+        public void CallPayment(int price, BoardCardCore card)
         {
             paymentSystem.DemandPayment(price);
-            EventManager.Instance.RaiseOnPaymentStart();
+            EventManager.Instance.RaiseOnPaymentStart(card);
         }
 
         public void CancelPayment()

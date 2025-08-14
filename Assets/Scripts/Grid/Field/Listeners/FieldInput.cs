@@ -7,6 +7,7 @@ using Berty.UI.Card.Systems;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Berty.BoardCards.Behaviours;
 
 namespace Berty.Grid.Field.Listeners
 {
@@ -67,8 +68,8 @@ namespace Berty.Grid.Field.Listeners
         private void PutTheCard()
         {
             HandToFieldManager.Instance.RemoveSelectedCardFromHand();
-            HandToFieldManager.Instance.SetCardOnHoldOnField(behaviour);
-            PaymentManager.Instance.CallPayment(behaviour.BoardField.OccupantCard.Stats.Power);
+            BoardCardCore newCard = HandToFieldManager.Instance.SetCardOnHoldOnField(behaviour);
+            PaymentManager.Instance.CallPayment(behaviour.BoardField.OccupantCard.Stats.Power, newCard);
         }
 
         private void PrepareAnAttack()

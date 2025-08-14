@@ -7,6 +7,7 @@ using Berty.Gameplay.Managers;
 using Berty.UI.Card.Managers;
 using Berty.UI.Card.Systems;
 using UnityEngine;
+using System;
 
 namespace Berty.BoardCards.Listeners
 {
@@ -34,9 +35,9 @@ namespace Berty.BoardCards.Listeners
             EventManager.Instance.OnPaymentCancel -= HandlePaymentCancel;
         }
 
-        private void HandlePaymentStart()
+        private void HandlePaymentStart(object sender, EventArgs args)
         {
-            if (core.IsForPay()) return;
+            if (sender.Equals(core)) return;
             core.SetIdle();
         }
 
@@ -49,7 +50,7 @@ namespace Berty.BoardCards.Listeners
         {
             if (core.CardState == CardStateEnum.NewCard)
             {
-                core.RemoveCard();
+                core.DestroyCard();
                 return;
             }
             core.SetMainState();

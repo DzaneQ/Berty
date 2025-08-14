@@ -7,6 +7,7 @@ using UnityEngine;
 using Berty.Grid.Field.Entities;
 using System;
 using Berty.Grid.Managers;
+using Berty.BoardCards.Behaviours;
 
 namespace Berty.Grid.Field.Behaviour
 {
@@ -15,6 +16,8 @@ namespace Berty.Grid.Field.Behaviour
         private MeshRenderer render;
 
         public BoardField BoardField { get; private set; }
+
+        public BoardCardCore ChildCard { get; private set; }
 
         private void Awake()
         {
@@ -37,15 +40,33 @@ namespace Berty.Grid.Field.Behaviour
                 "Field SE" => grid.GetFieldFromCoordsOrThrow(1, -1),
                 _ => throw new Exception("Unknown field name to handle."),
             };
-            ColorizeField();
+            UpdateField();
             //Debug.Log($"{name} got coordinates: ({BoardField.Coordinates.x}, {BoardField.Coordinates.y})");
         }
 
-        public void ColorizeField()
+        public void UpdateField()
+        {
+            if (transform.childCount == 0) ChildCard = null;
+            else if (transform.GetChild(transform.childCount - 1) != ChildCard.transform && )
+                ChildCard = transform.GetChild(transform.childCount - 1).GetComponent<BoardCardCore>();
+            ColorizeField();
+        }
+
+        public void UpdateFieldWithCard(BoardCardCore card)
+        {
+            if (card == null) throw new Exception("Updating field with null card");
+            if (transform.childCount == 0) throw new Exception("Attempted to update field with card when no children");
+            if (card.BoardCard.OccupiedField != BoardField) throw new Exception("Board field entities are not matching");
+            ChildCard = card;
+            ColorizeField();
+        }
+
+        private void ColorizeField()
         {
             render.material = ColorizeFieldManager.Instance.GetMaterialFromAlignment(BoardField.Align);
         }
 
+        // NOTE: Use for animation purposes
         public void ColorizeNotOccupied()
         {
             render.material = ColorizeFieldManager.Instance.GetNeutralMaterial();

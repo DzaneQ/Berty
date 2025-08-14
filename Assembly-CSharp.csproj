@@ -9,7 +9,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{F7F88DE6-4556-2ACA-8AA0-8BFE989131A4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -60,6 +61,7 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.29f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\BoardCards\Managers\BoardCardCollectionManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandToPileManager.cs" />
     <Compile Include="Assets\Scripts\Enums\LanguageEnum.cs" />
     <Compile Include="Assets\Scripts\Enums\AlignmentEnum.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertPogromca.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Listeners\FieldInput.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Managers\StatChangeManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\Tankbert.cs" />
     <Compile Include="Assets\Scripts\Enums\CornerButtonEnum.cs" />

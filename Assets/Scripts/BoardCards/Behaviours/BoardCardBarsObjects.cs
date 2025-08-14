@@ -30,6 +30,25 @@ namespace Berty.BoardCards.Behaviours
             CardBars = transform.GetChild(1).GetComponentsInChildren<CardBar>();
         }
 
+        public void UpdateBar(StatEnum stat)
+        {
+            switch (stat)
+            {
+                case StatEnum.Strength:
+                    CardBars[0].UpdateBar();
+                    break;
+                case StatEnum.Power:
+                    CardBars[1].UpdateBar();
+                    break;
+                case StatEnum.Dexterity:
+                    CardBars[2].UpdateBar();
+                    break;
+                case StatEnum.Health:
+                    CardBars[3].UpdateBar();
+                    break;
+            }
+        }
+
         public void HideBars()
         {
             foreach (CardBar bar in CardBars) bar.HideBar();
