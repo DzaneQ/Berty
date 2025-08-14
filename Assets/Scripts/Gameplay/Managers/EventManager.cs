@@ -6,13 +6,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditorInternal;
 using UnityEngine;
+using Berty.BoardCards.Behaviours;
 
 namespace Berty.Gameplay.Managers
 {
     public class EventManager : ManagerSingleton<EventManager>
     {
         public event Action OnNewTurn;
-        public event Action OnPaymentStart;
+        public event EventHandler OnPaymentStart;
         public event Action OnPaymentConfirm;
         public event Action OnPaymentCancel;
 
@@ -21,9 +22,9 @@ namespace Berty.Gameplay.Managers
             OnNewTurn?.Invoke();
         }
 
-        public void RaiseOnPaymentStart()
+        public void RaiseOnPaymentStart(BoardCardCore card)
         {
-            OnPaymentStart?.Invoke();
+            OnPaymentStart?.Invoke(card, EventArgs.Empty);
         }
 
         public void RaiseOnPaymentConfirm()

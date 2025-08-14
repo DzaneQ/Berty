@@ -13,6 +13,7 @@ using UnityEngine;
 using Berty.BoardCards.ConfigData;
 using Berty.Grid.Field.Behaviour;
 using Berty.BoardCards.State;
+using Berty.BoardCards.Behaviours;
 
 namespace Berty.UI.Card.Managers
 {
@@ -40,10 +41,11 @@ namespace Berty.UI.Card.Managers
             HandCardSelectManager.Instance.ClearSelection();
         }
 
-        public void SetCardOnHoldOnField(FieldBehaviour field)
+        public BoardCardCore SetCardOnHoldOnField(FieldBehaviour field)
         {
-            Instantiate(boardCardPrefab, field.transform);
-            field.ColorizeField();
+            BoardCardCore card = Instantiate(boardCardPrefab, field.transform).GetComponent<BoardCardCore>();
+            field.UpdateFieldWithCard(card);
+            return card;
         }
     }
 }

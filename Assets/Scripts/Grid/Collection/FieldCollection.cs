@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Berty.UI.Card.Collection
+namespace Berty.Grid.Collection
 {
     public class FieldCollection : MonoBehaviour
     {

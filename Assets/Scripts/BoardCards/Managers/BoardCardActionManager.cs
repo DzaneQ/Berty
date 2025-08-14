@@ -1,6 +1,7 @@
 using Berty.BoardCards.Behaviours;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
+using Berty.Grid.Collection;
 using Berty.Grid.Entities;
 using Berty.Grid.Field.Entities;
 using Berty.UI.Card.Collection;
@@ -15,9 +16,9 @@ namespace Berty.BoardCards.Managers
         private BoardGrid Grid;
         private FieldCollection fieldCollection;
 
-        private void Awake()
+        protected override void Awake()
         {
-            InitializeSingleton();
+            base.Awake();
             Grid = CoreManager.Instance.Game.Grid;
             fieldCollection = ObjectReadManager.Instance.FieldBoard.GetComponent<FieldCollection>();
         }
@@ -40,7 +41,7 @@ namespace Berty.BoardCards.Managers
             }
             bool paidAction = card.IsDexterityBased();
             card.SetNewTransformFromNavigation(navigation);
-            if (paidAction) PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity);
+            if (paidAction) PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity, card);
         }
 
         // TODO: Handle two cards moving.
@@ -66,13 +67,13 @@ namespace Berty.BoardCards.Managers
             }
             bool paidAction = card.IsDexterityBased();
             card.SetNewTransformFromNavigation(navigation);
-            if (paidAction) PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity);
+            if (paidAction) PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity, card);
         }
 
         public void PrepareToAttack(BoardCardCore card)
         {
             card.SetAttacking();
-            PaymentManager.Instance.CallPayment(card.BoardCard.Stats.Dexterity);
+            PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity, card);
         }
 
         public void ConfirmPayment(BoardCardCore card)

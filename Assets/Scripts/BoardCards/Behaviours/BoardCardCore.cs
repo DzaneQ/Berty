@@ -152,10 +152,10 @@ namespace Berty.BoardCards.Behaviours
             Bars.ShowBars();
         }
 
-        public void RemoveCard()
+        public void DestroyCard()
         {
             BoardCard.DeactivateCard(); // TODO: Prove that the BoardCard entity no longer exists.
-            ParentField.ColorizeField();
+            ParentField.UpdateField();
             Destroy(this);
         }
     }
