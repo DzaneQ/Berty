@@ -9,8 +9,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{F7F88DE6-4556-2ACA-8AA0-8BFE989131A4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -61,7 +60,6 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.29f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\BoardCards\Managers\BoardCardCollectionManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandToPileManager.cs" />
     <Compile Include="Assets\Scripts\Enums\LanguageEnum.cs" />
     <Compile Include="Assets\Scripts\Enums\AlignmentEnum.cs" />
@@ -149,6 +147,7 @@
     <Compile Include="Assets\Scripts\BoardCards\State\AttackingState.cs" />
     <Compile Include="Assets\Scripts\BoardCards\CardSpriteBehaviour.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\PrezydentBert.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Managers\BoardCardCollectionManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandCardObjectManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Animation\AnimatingCardImage.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\OutdatedFieldBehaviour.cs" />
@@ -206,6 +205,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\ZalobnyBert.cs" />
     <Compile Include="Assets\Scripts\Grid\Init\GridInitialization.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\TurnListener.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\FieldToHandManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\SelectStatus.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveDown.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IMoveCard.cs" />
@@ -230,6 +230,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Listeners\TurnListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\IdleState.cs" />
+    <Compile Include="Assets\Scripts\Grid\Managers\FieldCollectionManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Init\HandCardInitialization.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Behaviour\FieldBehaviour.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\ButtonObjectManager.cs" />

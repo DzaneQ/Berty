@@ -1,6 +1,7 @@
 using Berty.BoardCards.ConfigData;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.Grid.Collection;
 using Berty.Grid.Field.Behaviour;
 using Berty.UI.Card;
 using Berty.UI.Card.Collection;
@@ -21,7 +22,6 @@ namespace Berty.Gameplay.Init
         {
             InitializeGameEntity();
             InitializeHandCardObjectsAndCardPileEntity();
-            InitializeFieldCollection();
         }
 
         void Start()
@@ -45,14 +45,6 @@ namespace Berty.Gameplay.Init
             HandCardCollection collectionComponent = stackForHandCards.GetComponent<HandCardCollection>();
             collectionComponent.InitializeCollection(handCardBehaviourCollection);
             Destroy(init);
-        }
-
-        private void InitializeFieldCollection()
-        {
-            GameObject fieldBoard = ObjectReadManager.Instance.FieldBoard;
-            List<FieldBehaviour> fieldBehaviourCollection = fieldBoard.GetComponentsInChildren<FieldBehaviour>().ToList();
-            FieldCollection collectionComponent = fieldBoard.GetComponent<FieldCollection>();
-            collectionComponent.InitializeCollection(fieldBehaviourCollection);
         }
 
         private void StartTheGame()

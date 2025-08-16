@@ -28,11 +28,11 @@ namespace Berty.BoardCards.Button
         public void EnableButton()
         {
             if (!isActivated) return;
-            Debug.Log($"Enable attempt: {name} on card: {card.name}");
+            //Debug.Log($"Enable attempt: {name} on card: {card.name}");
             if (!card.CardNavigation.IsInteractableEnabled()) return;
             if (!CanNavigate()) return;
             //if (card != card.Grid.Turn.GetFocusedCard()) return;
-            Debug.Log("Enable: " + name + " on card: " + card.name);
+            //Debug.Log("Enable: " + name + " on card: " + card.name);
             rend.enabled = true;
             coll.enabled = true;
         }

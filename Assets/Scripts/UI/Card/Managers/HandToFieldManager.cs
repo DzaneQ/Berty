@@ -44,7 +44,7 @@ namespace Berty.UI.Card.Managers
         public BoardCardCore SetCardOnHoldOnField(FieldBehaviour field)
         {
             BoardCardCore card = Instantiate(boardCardPrefab, field.transform).GetComponent<BoardCardCore>();
-            field.UpdateFieldWithCard(card);
+            field.UpdateField();
             return card;
         }
     }

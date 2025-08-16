@@ -56,6 +56,13 @@ namespace Berty.UI.Card.Managers
             return behaviourCollection.GetBehaviourFromCharacterConfig(characterConfig).Sprite;
         }
 
+        public void AddCardObjectFromConfigForTable(CharacterConfig characterConfig, AlignmentEnum alignment)
+        {
+            Transform card = behaviourCollection.GetBehaviourFromCharacterConfig(characterConfig).transform;
+            Transform table = GetTableObjectFromAlignment(alignment).transform;
+            card.SetParent(table);
+        }
+
         private void AddCardObjectsForTable(AlignmentEnum alignment)
         {
             Transform table = GetTableObjectFromAlignment(alignment).transform;
@@ -83,7 +90,8 @@ namespace Berty.UI.Card.Managers
         private void RemoveCardObjectsFromTable(Transform table, List<CharacterConfig> pileData)
         {
             List<Transform> ownedCardTransforms = behaviourCollection.GetTransformListFromCharacterConfigs(pileData);
-            for (int i = 0; i < table.childCount; i++)
+            int tableCount = table.childCount;
+            for (int i = tableCount - 1; 0 <= i; i--)
             {
                 Transform card = table.GetChild(i);
                 if (ownedCardTransforms.Contains(card)) continue;

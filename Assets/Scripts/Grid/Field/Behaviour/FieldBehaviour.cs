@@ -8,6 +8,7 @@ using Berty.Grid.Field.Entities;
 using System;
 using Berty.Grid.Managers;
 using Berty.BoardCards.Behaviours;
+using Berty.BoardCards.Managers;
 
 namespace Berty.Grid.Field.Behaviour
 {
@@ -46,18 +47,8 @@ namespace Berty.Grid.Field.Behaviour
 
         public void UpdateField()
         {
-            if (transform.childCount == 0) ChildCard = null;
-            else if (transform.GetChild(transform.childCount - 1) != ChildCard.transform && )
-                ChildCard = transform.GetChild(transform.childCount - 1).GetComponent<BoardCardCore>();
-            ColorizeField();
-        }
-
-        public void UpdateFieldWithCard(BoardCardCore card)
-        {
-            if (card == null) throw new Exception("Updating field with null card");
-            if (transform.childCount == 0) throw new Exception("Attempted to update field with card when no children");
-            if (card.BoardCard.OccupiedField != BoardField) throw new Exception("Board field entities are not matching");
-            ChildCard = card;
+            if (BoardField.OccupantCard == null) ChildCard = null;
+            else ChildCard = BoardCardCollectionManager.Instance.GetCoreFromEntity(BoardField.OccupantCard);
             ColorizeField();
         }
 

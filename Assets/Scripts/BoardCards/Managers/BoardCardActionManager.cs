@@ -3,8 +3,11 @@ using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Collection;
 using Berty.Grid.Entities;
+using Berty.Grid.Field.Behaviour;
 using Berty.Grid.Field.Entities;
+using Berty.Grid.Managers;
 using Berty.UI.Card.Collection;
+using Berty.UI.Managers;
 using Berty.Utility;
 using System;
 using UnityEngine;
@@ -14,13 +17,11 @@ namespace Berty.BoardCards.Managers
     public class BoardCardActionManager : ManagerSingleton<BoardCardActionManager>
     {
         private BoardGrid Grid;
-        private FieldCollection fieldCollection;
 
         protected override void Awake()
         {
             base.Awake();
             Grid = CoreManager.Instance.Game.Grid;
-            fieldCollection = ObjectReadManager.Instance.FieldBoard.GetComponent<FieldCollection>();
         }
 
         public void RotateCard(BoardCardCore card, NavigationEnum navigation)
@@ -39,9 +40,10 @@ namespace Berty.BoardCards.Managers
                 PaymentManager.Instance.CancelPayment();
                 return;
             }
-            bool paidAction = card.IsDexterityBased();
+            if (!card.IsDexterityBased()) return;
             card.SetNewTransformFromNavigation(navigation);
-            if (paidAction) PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity, card);
+            PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity, card);
+            ButtonObjectManager.Instance.HideCornerButton();
         }
 
         // TODO: Handle two cards moving.
@@ -56,18 +58,19 @@ namespace Berty.BoardCards.Managers
                 _ => throw new ArgumentException("Invalid NavigationEnum for MoveCard")
             };
             BoardField targetField = Grid.GetFieldDistancedFromCardOrThrow(distance.x, distance.y, card.BoardCard);
-            card.CardNavigation.MoveCardObject(fieldCollection.GetBehaviourFromEntity(targetField));
             AlignmentEnum cardAlign = card.BoardCard.OccupiedField.Align;
             card.BoardCard.OccupiedField.RemoveCard();
             targetField.PlaceCard(card.BoardCard, cardAlign);
+            card.CardNavigation.MoveCardObject(FieldCollectionManager.Instance.GetBehaviourFromEntity(targetField));
             if (card.CardState == CardStateEnum.NewTransform)
             {
                 PaymentManager.Instance.CancelPayment();
                 return;
             }
-            bool paidAction = card.IsDexterityBased();
+            if (!card.IsDexterityBased()) return;
             card.SetNewTransformFromNavigation(navigation);
-            if (paidAction) PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity, card);
+            PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity, card);
+            ButtonObjectManager.Instance.HideCornerButton();
         }
 
         public void PrepareToAttack(BoardCardCore card)
