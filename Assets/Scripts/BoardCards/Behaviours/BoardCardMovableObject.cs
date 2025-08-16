@@ -108,8 +108,8 @@ namespace Berty.BoardCards.Behaviours
 
         public void MoveCardObject(FieldBehaviour field)
         {
-            core.ParentField.ColorizeNotOccupied();
             moveCard.ToField(field);
+            core.ParentField.UpdateField();
             core.SetFieldBehaviour(field);
         }
 

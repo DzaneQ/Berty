@@ -156,7 +156,7 @@ namespace Berty.BoardCards.Behaviours
         {
             BoardCard.DeactivateCard(); // TODO: Prove that the BoardCard entity no longer exists.
             ParentField.UpdateField();
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 }

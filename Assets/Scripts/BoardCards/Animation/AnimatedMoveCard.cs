@@ -51,7 +51,7 @@ namespace Berty.BoardCards.Animation
             yield return MoveToField(target, durationSeconds);
             //occupantCard = card;
             //card.SetField(this, true);
-            target.ColorizeField();
+            target.UpdateField();
             //card.EnableButtons();
             yield return null;
         }

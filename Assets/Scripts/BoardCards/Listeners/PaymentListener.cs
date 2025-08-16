@@ -50,6 +50,7 @@ namespace Berty.BoardCards.Listeners
         {
             if (core.CardState == CardStateEnum.NewCard)
             {
+                FieldToHandManager.Instance.RetrieveCardOnHold();
                 core.DestroyCard();
                 return;
             }

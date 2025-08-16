@@ -27,14 +27,16 @@ namespace Berty.Gameplay.Managers
         public void CallPayment(int price, BoardCardCore card)
         {
             paymentSystem.DemandPayment(price);
+            ButtonObjectManager.Instance.DisplayUndoButton();
             EventManager.Instance.RaiseOnPaymentStart(card);
         }
 
         public void CancelPayment()
         {
             HandCardSelectManager.Instance.ClearSelection();
-            paymentSystem.SetAsNotPaymentTime();
+            ButtonObjectManager.Instance.DisplayEndTurnButton();
             EventManager.Instance.RaiseOnPaymentCancel();
+            paymentSystem.SetAsNotPaymentTime();
         }
 
         public void ConfirmPayment()
@@ -42,6 +44,7 @@ namespace Berty.Gameplay.Managers
             if (!paymentSystem.CheckOffer()) return;
             HandToPileManager.Instance.DiscardSelectedCardsFromHand();
             paymentSystem.SetAsNotPaymentTime();
+            ButtonObjectManager.Instance.DisplayEndTurnButton();
             EventManager.Instance.RaiseOnPaymentConfirm();
         }
     }

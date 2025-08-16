@@ -59,6 +59,12 @@ namespace Berty.UI.Card.Entities
             return PullCard(table);
         }
 
+        public void RetrieveCard(CharacterConfig card, AlignmentEnum align)
+        {
+            List<CharacterConfig> table = GetCardsFromAlign(align);
+            table.Add(card);
+        }
+
         private bool Reshuffle()
         {
             if (pileCards.Count > 0) throw new InvalidOperationException("There are still cards in pile.");
