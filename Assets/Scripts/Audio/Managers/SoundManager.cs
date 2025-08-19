@@ -1,8 +1,9 @@
+using Berty.Utility;
 using UnityEngine;
 
-namespace Berty.Audio
+namespace Berty.Audio.Managers
 {
-    public class SoundSystem : MonoBehaviour
+    public class SoundManager : ManagerSingleton<SoundManager>
     {
         private Transform mainTransform;
         private AudioSource soundSrc;
@@ -17,9 +18,10 @@ namespace Berty.Audio
         [SerializeField] private AudioClip cardSelectClip;
         [SerializeField] private AudioClip cardDeselectClip;
 
-        private void Start()
+        protected override void Awake()
         {
-            soundSrc = GetComponent<AudioSource>();
+            base.Awake();
+            soundSrc = GameObject.Find("SoundSource").GetComponent<AudioSource>();
             mainTransform = FindObjectOfType<Camera>().GetComponent<Transform>();
         }
 

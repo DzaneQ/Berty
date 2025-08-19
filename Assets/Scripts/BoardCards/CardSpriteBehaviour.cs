@@ -135,7 +135,7 @@ namespace Berty.BoardCards
             //UpdateRelativeCoordinates();
             CallPayment(cardStatus.Power);
             occupiedField.ConvertField(Turn.CurrentAlignment);
-            if (animating != null) animating.PutCardSound();
+            //if (animating != null) animating.PutCardSound();
             ApplyPhysics();
         }
 
@@ -171,7 +171,7 @@ namespace Berty.BoardCards
 
         public void ConfirmNewCard()
         {
-            if (animating != null) animating.ConfirmSound();
+            //if (animating != null) animating.ConfirmSound();
             ClearCardResistance();
             if (occupiedField.IsAligned(Grid.CurrentStatus.Revolution) && GetRole() == RoleEnum.Special) AdvanceStrength(1);
             if (occupiedField.IsAligned(Grid.CurrentStatus.JudgementRevenge)) AdvanceTempStrength(1);
@@ -193,7 +193,7 @@ namespace Berty.BoardCards
         {
             //Debug.Log($"Deactivating card: {name}");
             occupiedField.AdjustCardRemoval();
-            if (animating != null) animating.TakeCardSound();
+            //if (animating != null) animating.TakeCardSound();
             state = state.DeactivateCard();
             //cardManager.RemoveFromField(imageReference);
         }

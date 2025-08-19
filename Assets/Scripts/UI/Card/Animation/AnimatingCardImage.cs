@@ -1,4 +1,4 @@
-using Berty.Audio;
+using Berty.Audio.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +11,6 @@ namespace Berty.UI.Card.Animation
         private Vector3 targetPosition;
         private Vector3 targetRotation;
         private int coroutineCount;
-        private SoundSystem sound;
 
         public int CoroutineCount
         {
@@ -21,16 +20,6 @@ namespace Berty.UI.Card.Animation
                 coroutineCount = value;
                 if (coroutineCount < 0) throw new Exception("Negative coroutine count!");
             }
-        }
-
-        void Start()
-        {
-            AttachSound();
-        }
-
-        public void AttachSound()
-        {
-            sound = FindObjectOfType<SoundSystem>().GetComponent<SoundSystem>();
         }
 
         public void MoveCard(Vector3 pos, Vector3 rot, bool selecting, float durationSeconds)
@@ -50,7 +39,7 @@ namespace Berty.UI.Card.Animation
             CoroutineCount++;
             //Debug.Log("Is sound null when animating move? " + (sound == null));
             //Debug.Log("Targeted rotation: " + targetRotation);
-            if (sound != null) sound.SelectSound(selecting);
+            SoundManager.Instance.SelectSound(selecting);
             float currentTime = 0;
             for (; transform.eulerAngles != targetRotation;)
             {

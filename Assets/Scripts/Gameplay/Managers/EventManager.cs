@@ -1,14 +1,15 @@
-using Berty.Grid.Entities;
+using Berty.BoardCards.Behaviours;
 using Berty.Enums;
+using Berty.Gameplay.Entities;
+using Berty.Grid.Entities;
+using Berty.Grid.Field.Entities;
 using Berty.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEditorInternal;
 using UnityEngine;
-using Berty.BoardCards.Behaviours;
-using Berty.Grid.Field.Entities;
-using Berty.Gameplay.Entities;
 
 namespace Berty.Gameplay.Managers
 {
@@ -22,6 +23,8 @@ namespace Berty.Gameplay.Managers
         public event Action OnPaymentCancel;
         public event EventHandler<DirectAttackEventArgs> OnDirectlyAttacked;
         public event EventHandler OnAttackNewStand;
+        public event EventHandler<DirectAttackEventArgs> OnHighlightStart;
+        public event Action OnHighlightEnd;
 
         protected override void Awake()
         {
@@ -60,9 +63,22 @@ namespace Berty.Gameplay.Managers
 
         public void RaiseOnAttackNewStand(BoardCardCore defender)
         {
-            Debug.Log($"Attacking {defender.name} for being new stand");
             OnAttackNewStand?.Invoke(defender, EventArgs.Empty);
         }
+
+        public void RaiseOnHighlightStart(BoardCardCore focusedCard)
+        {
+            DirectAttackEventArgs args = new()
+            {
+                AttackedFields = game.Grid.GetFieldsInRange(focusedCard.BoardCard, focusedCard.BoardCard.CharacterConfig.AttackRange)
+            };
+            OnHighlightStart?.Invoke(focusedCard, args);
+        }
+
+        public void RaiseOnHighlightEnd()
+        {
+            OnHighlightEnd?.Invoke();
+        }    
     }
 
     public class DirectAttackEventArgs : EventArgs

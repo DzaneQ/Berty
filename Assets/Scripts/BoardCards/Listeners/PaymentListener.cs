@@ -1,9 +1,10 @@
+using Berty.Audio.Managers;
 using Berty.BoardCards.Behaviours;
-using Berty.UI.Card.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
-using UnityEngine;
+using Berty.UI.Card.Managers;
 using System;
+using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
 {
@@ -41,10 +42,12 @@ namespace Berty.BoardCards.Listeners
         {
             if (core.CardState == CardStateEnum.Attacking)
             {
+                SoundManager.Instance.AttackSound(core.SoundSource, core.BoardCard.CharacterConfig.AttackSound);
                 EventManager.Instance.RaiseOnDirectlyAttacked(core);
             }
             else if (core.CardState == CardStateEnum.NewCard)
             {
+                SoundManager.Instance.ConfirmSound(core.SoundSource);
                 EventManager.Instance.RaiseOnAttackNewStand(core);
             }    
             core.SetMainState();
@@ -55,6 +58,7 @@ namespace Berty.BoardCards.Listeners
             if (core.CardState == CardStateEnum.NewCard)
             {
                 FieldToHandManager.Instance.RetrieveCardOnHold();
+                SoundManager.Instance.TakeSound(core.transform);
                 core.DestroyCard();
                 return;
             }

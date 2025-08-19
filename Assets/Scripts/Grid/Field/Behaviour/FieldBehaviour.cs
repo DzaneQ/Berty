@@ -15,9 +15,18 @@ namespace Berty.Grid.Field.Behaviour
     public class FieldBehaviour : MonoBehaviour
     {
         private MeshRenderer render;
+        private HighlightEnum highlight;
 
         public BoardField BoardField { get; private set; }
         public BoardCardCore ChildCard { get; private set; }
+        public HighlightEnum Highlight { get => highlight;
+            private set
+            {
+                highlight = value;
+                ColorizeField();
+                HighlightCard();
+            }
+        }
 
         private void Awake()
         {
@@ -53,7 +62,28 @@ namespace Berty.Grid.Field.Behaviour
 
         private void ColorizeField()
         {
-            render.material = ColorizeFieldManager.Instance.GetMaterialFromAlignment(BoardField.Align);
+            render.material = ColorizeObjectManager.Instance.GetMaterialFromAlignment(BoardField.Align, Highlight);
+        }
+
+        public void HighlightAsUnderAttack()
+        {
+            Highlight = HighlightEnum.UnderAttack;
+        }
+
+        public void HighlightAsUnderBlock()
+        {
+            Highlight = HighlightEnum.UnderBlock;
+        }
+
+        public void Unhighlight()
+        {
+            Highlight = HighlightEnum.None;
+        }
+
+        private void HighlightCard()
+        {
+            if (ChildCard == null) return;
+            ChildCard.HighlightAs(Highlight);
         }
     }
 }

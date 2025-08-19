@@ -1,4 +1,5 @@
 using Berty.Audio;
+using Berty.Audio.Managers;
 using Berty.Enums;
 using Berty.Gameplay;
 using Berty.Gameplay.Managers;
@@ -28,7 +29,7 @@ namespace Berty.UI.Listeners
 
         private void HandleTheButtonClick()
         {
-            //soundSystem.ButtonClickSound();
+            SoundManager.Instance.ButtonClickSound();
             ButtonActionManager.Instance.HandleCornerButtonClick(core.ButtonType);
         }
     }

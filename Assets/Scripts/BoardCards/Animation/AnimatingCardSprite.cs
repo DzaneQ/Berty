@@ -1,5 +1,3 @@
-using Berty.Audio;
-using Berty.BoardCards.ConfigData;
 using Berty.Grid.Field;
 using Berty.Structs;
 using System;
@@ -14,7 +12,6 @@ namespace Berty.BoardCards.Animation
         private float rotatingAngle;
         private Vector3 targetPosition;
         private int coroutineCount;
-        private SoundSystem sound;
         private AudioSource soundSrc;
 
         public int CoroutineCount
@@ -35,7 +32,6 @@ namespace Berty.BoardCards.Animation
 
         public void AttachSound()
         {
-            sound = FindObjectOfType<SoundSystem>().GetComponent<SoundSystem>();
             soundSrc = GetComponent<AudioSource>();
         }
 
@@ -56,7 +52,7 @@ namespace Berty.BoardCards.Animation
         private IEnumerator AnimateRotate(float durationSeconds)
         {
             CoroutineCount++;
-            if (sound != null) sound.MoveSound(soundSrc);
+            //if (sound != null) sound.MoveSound(soundSrc);
             float currentTime = 0;
             for (; rotatingAngle != 0;)
             {
@@ -106,7 +102,7 @@ namespace Berty.BoardCards.Animation
         private IEnumerator AnimateMove(float durationSeconds)
         {
             CoroutineCount++;
-            if (sound != null) sound.MoveSound(soundSrc);
+            //if (sound != null) sound.MoveSound(soundSrc);
             float currentTime = 0;
             //Debug.Log($"Target location for {transform.name}: {targetPosition.x}, {targetPosition.y}, {targetPosition.z}");
             for (; targetPosition != transform.position;)
@@ -172,29 +168,29 @@ namespace Berty.BoardCards.Animation
         #endregion
 
         #region Sound
-        public void PutCardSound()
-        {
-            if (sound == null) return;
-            sound.PutSound(soundSrc);
-        }
+        //public void PutCardSound()
+        //{
+        //    if (sound == null) return;
+        //    sound.PutSound(soundSrc);
+        //}
 
-        public void TakeCardSound()
-        {
-            if (sound == null) return;
-            sound.TakeSound(transform);
-        }
+        //public void TakeCardSound()
+        //{
+        //    if (sound == null) return;
+        //    sound.TakeSound(transform);
+        //}
 
-        public void AttackingSound(CharacterConfig character)
-        {
-            if (sound == null) return;
-            sound.AttackSound(soundSrc, character.AttackSound);
-        }
+        //public void AttackingSound(CharacterConfig character)
+        //{
+        //    if (sound == null) return;
+        //    sound.AttackSound(soundSrc, character.AttackSound);
+        //}
 
-        public void ConfirmSound()
-        {
-            if (sound == null) return;
-            sound.ConfirmSound(soundSrc);
-        }
+        //public void ConfirmSound()
+        //{
+        //    if (sound == null) return;
+        //    sound.ConfirmSound(soundSrc);
+        //}
         #endregion
     }
 }

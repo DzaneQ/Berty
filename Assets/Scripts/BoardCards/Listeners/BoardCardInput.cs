@@ -2,7 +2,9 @@ using Berty.BoardCards;
 using Berty.BoardCards.Behaviours;
 using Berty.BoardCards.Button;
 using Berty.BoardCards.Managers;
+using Berty.Display.Managers;
 using Berty.Enums;
+using Berty.Gameplay.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,6 +39,20 @@ namespace Berty.BoardCards.Listeners
         public void OnMouseOver()
         {
             if (IsLeftClicked()) HandleLeftClick();
+        }
+
+        public void OnMouseEnter()
+        {
+            DisplayManager.Instance.ShowLookupCard(behaviour.Sprite);
+            if (behaviour.CardNavigation.IsCardAnimating()) return;
+            EventManager.Instance.RaiseOnHighlightStart(behaviour);
+        }
+
+        // NOTE: Can this not be displayed when input is disabled while mouse over?
+        public void OnMouseExit()
+        {
+            DisplayManager.Instance.HideLookupCard();
+            EventManager.Instance.RaiseOnHighlightEnd();
         }
 
         private bool IsLeftClicked()

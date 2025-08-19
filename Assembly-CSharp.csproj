@@ -101,13 +101,13 @@
     <Compile Include="Assets\Scripts\UI\Managers\OverlayObjectManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IRotateCard.cs" />
     <Compile Include="Assets\Scripts\Enums\CardStateEnum.cs" />
+    <Compile Include="Assets\Scripts\Audio\Managers\SoundManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertZawodowiec.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\ActiveState.cs" />
     <Compile Include="Assets\Scripts\Debugging\DevTools.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Entities\Game.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardMovableObject.cs" />
-    <Compile Include="Assets\Scripts\Audio\SoundSystem.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveRight.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\PrymusBert.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
@@ -127,7 +127,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\Scripts\Display\Managers\DisplayManager.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\CloseGameInput.cs" />
-    <Compile Include="Assets\Scripts\Grid\Managers\ColorizeFieldManager.cs" />
     <Compile Include="Assets\Scripts\Enums\NavigationEnum.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveUp.cs" />
     <Compile Include="Assets\Scripts\Grid\Collection\FieldCollection.cs" />
@@ -151,9 +150,11 @@
     <Compile Include="Assets\Scripts\BoardCards\Managers\BoardCardCollectionManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandCardObjectManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Animation\AnimatingCardImage.cs" />
+    <Compile Include="Assets\Scripts\Display\View\RotateCamera.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\OutdatedFieldBehaviour.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\NewTransformState.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\Bertonator.cs" />
+    <Compile Include="Assets\Scripts\Grid\Field\Listeners\HighlightListener.cs" />
     <Compile Include="Assets\Scripts\Utility\ManagerSingleton.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\RycerzBerti.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
@@ -219,6 +220,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KuglarzBert.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\ButtonInput.cs" />
+    <Compile Include="Assets\Scripts\Enums\HighlightEnum.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveLeft.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\DeadCard.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Entities\CardPile.cs" />
@@ -226,6 +228,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\KoszmarZBertwood.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\BackupCard.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\PaymentManager.cs" />
+    <Compile Include="Assets\Scripts\Grid\Managers\ColorizeObjectManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\SedziaBertt.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />

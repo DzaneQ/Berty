@@ -1,3 +1,4 @@
+using Berty.Audio.Managers;
 using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
 using Berty.BoardCards.Managers;
@@ -8,6 +9,7 @@ using Berty.Gameplay.Managers;
 using Berty.Grid.Entities;
 using Berty.Grid.Field.Behaviour;
 using Berty.Grid.Field.Entities;
+using Berty.Grid.Managers;
 using Berty.UI.Card;
 using Berty.UI.Card.Managers;
 using Berty.UI.Card.Systems;
@@ -22,7 +24,9 @@ namespace Berty.BoardCards.Behaviours
         private Game Game;
         private CardStateEnum _cardState;
         private SpriteRenderer characterSprite;
+        private Color defaultColor;
         private Rigidbody cardRB;
+        private AudioSource soundSource;
         public BoardCardBarsObjects Bars { get; private set; }
         public BoardCardMovableObject CardNavigation { get; private set; }
 
@@ -38,12 +42,16 @@ namespace Berty.BoardCards.Behaviours
             }
         }
         public FieldBehaviour ParentField { get; private set; }
+        public Sprite Sprite => characterSprite.sprite;
+        public AudioSource SoundSource => soundSource;
 
         private void Awake()
         {
             BoardCardCollectionManager.Instance.AddCardToCollection(this);
             Game = CoreManager.Instance.Game;
             characterSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
+            defaultColor = characterSprite.color;
+            soundSource = GetComponent<AudioSource>();
             Bars = GetComponent<BoardCardBarsObjects>();
             CardNavigation = GetComponent<BoardCardMovableObject>();
             ParentField = GetComponentInParent<FieldBehaviour>();
@@ -53,6 +61,7 @@ namespace Berty.BoardCards.Behaviours
 
         private void Start()
         {
+            SoundManager.Instance.PutSound(SoundSource);
             UpdateCharacter();
             CardState = CardStateEnum.NewCard;
             InitializeRigidbody();
@@ -85,6 +94,14 @@ namespace Berty.BoardCards.Behaviours
         public void ApplyPhysics(bool isApplied = true)
         {
             cardRB.isKinematic = !isApplied;
+        }
+
+        public void HighlightAs(HighlightEnum highlight)
+        {
+            characterSprite.color = highlight switch { 
+                HighlightEnum.UnderAttack or HighlightEnum.UnderBlock => ColorizeObjectManager.Instance.GetColorForCard(highlight),
+                _ => defaultColor
+            };
         }
 
         public void SetFieldBehaviour(FieldBehaviour fieldBehaviour)

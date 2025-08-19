@@ -1,3 +1,4 @@
+using Berty.Audio.Managers;
 using Berty.BoardCards.Behaviours;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
@@ -10,6 +11,7 @@ using Berty.UI.Card.Collection;
 using Berty.UI.Managers;
 using Berty.Utility;
 using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Berty.BoardCards.Managers
@@ -26,6 +28,7 @@ namespace Berty.BoardCards.Managers
 
         public void RotateCard(BoardCardCore card, NavigationEnum navigation)
         {
+            SoundManager.Instance.MoveSound(card.SoundSource);
             int angle = navigation switch
             {
                 NavigationEnum.RotateLeft => -90,
@@ -49,6 +52,7 @@ namespace Berty.BoardCards.Managers
         // TODO: Handle two cards moving.
         public void MoveCard(BoardCardCore card, NavigationEnum navigation)
         {
+            SoundManager.Instance.MoveSound(card.SoundSource);
             Vector2Int distance = navigation switch
             {
                 NavigationEnum.MoveUp => new Vector2Int(0, 1),
