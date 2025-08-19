@@ -242,7 +242,7 @@ namespace Berty.Gameplay
         public void SelectField(OutdatedFieldBehaviour target)
         {
             target.OccupantCard.ShowLookupCard(true);
-            ct.SetTargets(target);
+            //ct.SetTargets(target);
         }
 
         public void UnselectField()

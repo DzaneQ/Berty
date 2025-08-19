@@ -10,12 +10,10 @@ namespace Berty.UI.Card.Listeners
     public class TurnListener : MonoBehaviour
     {
         private Game game;
-        private SelectionAndPaymentSystem selectionSystem;
 
         private void Awake()
         {
             game = CoreManager.Instance.Game;
-            selectionSystem = CoreManager.Instance.SelectionAndPaymentSystem;
         }
 
         private void OnEnable()

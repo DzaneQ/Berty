@@ -17,9 +17,11 @@ namespace Berty.BoardCards.Managers
             base.Awake();
         }
 
-        public void AdvanceStrength(BoardCardCore card, int value)
+        public void AdvanceHealth(BoardCardCore card, int value)
         {
-            
+            if (card.BoardCard == null) return;
+            card.BoardCard.AdvanceHealth(value);
+            card.Bars.UpdateBar(StatEnum.Health);
         }
     }
 }

@@ -117,7 +117,7 @@ namespace Berty.Display
             {
                 targetField = fields[fieldIndex];
                 if (lastTarget == null) lastTarget = targetField;
-                if (targetField != lastTarget || selectedCard == null) SetTargets(targetField);
+                //if (targetField != lastTarget || selectedCard == null) SetTargets(targetField);
                 //Debug.DrawRay(transform.position, hit.point - transform.position, Color.blue);
                 lastTarget = targetField;
             }
@@ -134,30 +134,30 @@ namespace Berty.Display
             }
         }
 
-        public void SetTargets(OutdatedFieldBehaviour sourceField)
-        {
-            if (sourceField.OccupantCard == selectedCard) return;
-            if (selectedCard != null) ClearTarget();
-            selectedCard = sourceField.OccupantCard;
-            selectedCard.EnableButtons();
-            selectedCard.ShowLookupCard(false);
-            bool riposte = false;
-            foreach (int[] distance in selectedCard.Character.AttackRange)
-            {
-                OutdatedFieldBehaviour targetField = selectedCard.GetTargetField(distance);
-                if (targetField == null) continue;
-                bool block = false;
-                if (targetField.IsOccupied())
-                {
-                    CardSpriteBehaviour targetCard = targetField.OccupantCard;
-                    if (!riposte &&
-                        targetCard.Character.CanRiposte(targetCard.GetFieldDistance(sourceField))) riposte = true;
-                    if (targetCard.Character.CanBlock(targetCard.GetFieldDistance(sourceField))) block = true;
-                }
-                HighlightTarget(targetField, block);
-            }
-            if (riposte) HighlightTarget(sourceField);
-        }
+        //public void SetTargets(OutdatedFieldBehaviour sourceField)
+        //{
+        //    if (sourceField.OccupantCard == selectedCard) return;
+        //    if (selectedCard != null) ClearTarget();
+        //    selectedCard = sourceField.OccupantCard;
+        //    selectedCard.EnableButtons();
+        //    selectedCard.ShowLookupCard(false);
+        //    bool riposte = false;
+        //    foreach (Vector2Int distance in selectedCard.Character.AttackRange)
+        //    {
+        //        OutdatedFieldBehaviour targetField = selectedCard.GetTargetField(distance);
+        //        if (targetField == null) continue;
+        //        bool block = false;
+        //        if (targetField.IsOccupied())
+        //        {
+        //            CardSpriteBehaviour targetCard = targetField.OccupantCard;
+        //            if (!riposte &&
+        //                targetCard.Character.CanRiposte(targetCard.GetFieldDistance(sourceField))) riposte = true;
+        //            if (targetCard.Character.CanBlock(targetCard.GetFieldDistance(sourceField))) block = true;
+        //        }
+        //        HighlightTarget(targetField, block);
+        //    }
+        //    if (riposte) HighlightTarget(sourceField);
+        //}
 
         private void HighlightTarget(OutdatedFieldBehaviour target, bool blockState = false)
         {

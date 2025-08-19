@@ -30,38 +30,38 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("564485__rizzard__monster-growl");
         }
 
-        public override void SkillOnNewCard(CardSpriteBehaviour card)
-        {
-            attackPause = false;
-        }
+        //public override void SkillOnNewCard(CardSpriteBehaviour card)
+        //{
+        //    attackPause = false;
+        //}
 
-        public override void SkillOnAttack(CardSpriteBehaviour card)
-        {
-            attackPause = true;
-        }
+        //public override void SkillOnAttack(CardSpriteBehaviour card)
+        //{
+        //    attackPause = true;
+        //}
 
-        public override bool SkillSpecialAttack(CardSpriteBehaviour card)
-        {
-            foreach (int[] distance in AttackRange)
-            {
-                OutdatedFieldBehaviour targetField = card.GetTargetField(distance);
-                if (targetField == null || !targetField.IsOccupied()) continue;
-                targetField.OccupantCard.AdvanceTempStrength(1, card);
-                targetField.OccupantCard.AdvanceTempPower(1, card);
-                targetField.OccupantCard.TakeDamage(card.GetStrength(), card.OccupiedField);
-            }
-            SkillOnAttack(card);
-            return true;
-        }
+        //public override bool SkillSpecialAttack(CardSpriteBehaviour card)
+        //{
+        //    foreach (int[] distance in AttackRange)
+        //    {
+        //        OutdatedFieldBehaviour targetField = card.GetTargetField(distance);
+        //        if (targetField == null || !targetField.IsOccupied()) continue;
+        //        targetField.OccupantCard.AdvanceTempStrength(1, card);
+        //        targetField.OccupantCard.AdvanceTempPower(1, card);
+        //        targetField.OccupantCard.TakeDamage(card.GetStrength(), card.OccupiedField);
+        //    }
+        //    SkillOnAttack(card);
+        //    return true;
+        //}
 
-        public override void SkillOnNewTurn(CardSpriteBehaviour card)
-        {
-            if (!card.OccupiedField.IsAligned(card.Grid.Turn.CurrentAlignment)) return;
-            if (attackPause)
-            {
-                attackPause = false;
-                card.ExhaustAttack();
-            }
-        }
+        //public override void SkillOnNewTurn(CardSpriteBehaviour card)
+        //{
+        //    if (!card.OccupiedField.IsAligned(card.Grid.Turn.CurrentAlignment)) return;
+        //    if (attackPause)
+        //    {
+        //        attackPause = false;
+        //        card.ExhaustAttack();
+        //    }
+        //}
     }
 }

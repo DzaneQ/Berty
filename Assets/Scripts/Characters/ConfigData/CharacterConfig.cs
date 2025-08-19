@@ -16,9 +16,9 @@ namespace Berty.BoardCards.ConfigData
         protected int power;
         protected int dexterity;
         protected int health;
-        protected List<int[]> blockRange = new List<int[]>();
-        protected List<int[]> riposteRange = new List<int[]>();
-        protected List<int[]> attackRange = new List<int[]>();
+        protected List<Vector2Int> blockRange = new List<Vector2Int>();
+        protected List<Vector2Int> riposteRange = new List<Vector2Int>();
+        protected List<Vector2Int> attackRange = new List<Vector2Int>();
         protected AudioClip attackSound;
         public string Name { get => name; }
         public GenderEnum Gender { get => gender; }
@@ -27,24 +27,22 @@ namespace Berty.BoardCards.ConfigData
         public int Power { get => power; }
         public int Dexterity { get => dexterity; }
         public int Health { get => health; }
-        public List<int[]> AttackRange { get => attackRange; }
+        public List<Vector2Int> AttackRange { get => attackRange; }
         public AudioClip AttackSound { get => attackSound; }
 
-
-        public bool CanBlock(int[] source)
+        public bool CanAttack(Vector2Int target)
         {
-            foreach (int[] block in blockRange)
-            {
-                if (AreCoordinatesEqual(source, block)) return true;
-            }
-            return false;
+            return attackRange.Contains(target);
         }
 
-        public bool CanRiposte(int[] source)
+        public bool CanBlock(Vector2Int source)
         {
-            foreach (int[] riposte in riposteRange)
-                if (AreCoordinatesEqual(source, riposte)) return true;
-            return false;
+            return blockRange.Contains(source);
+        }
+
+        public bool CanRiposte(Vector2Int source)
+        {
+            return riposteRange.Contains(source);
         }
 
         protected void AddName(string characterName)
@@ -64,9 +62,9 @@ namespace Berty.BoardCards.ConfigData
             gender = gndr;
             role = rl;
         }
-        protected void AddRange(int relativeX, int relativeY, List<int[]> range)
+        protected void AddRange(int relativeX, int relativeY, List<Vector2Int> range)
         {
-            int[] coordinate = { relativeX, relativeY };
+            Vector2Int coordinate = new(relativeX, relativeY);
             if (relativeX == 0 && relativeY == 0) throw new Exception("Attempt to target self as a range.");
             if (range.Contains(coordinate)) throw new Exception("Duplicate coordinates.");
             range.Add(coordinate);
@@ -74,16 +72,6 @@ namespace Berty.BoardCards.ConfigData
         protected void AddSoundEffect(string fileName)
         {
             attackSound = Resources.Load<AudioClip>("CharacterAttackSfx/" + fileName);
-        }
-
-        private bool AreCoordinatesEqual(int[] first, int[] second)
-        {
-            if (first.Length != second.Length || first.Length != 2) return false;
-            for (int i = 0; i < first.Length; i++)
-            {
-                if (first[i] != second[i]) return false;
-            }
-            return true;
         }
 
         public virtual void SkillOnSuccessfulAttack(CardSpriteBehaviour cardSprite) { }

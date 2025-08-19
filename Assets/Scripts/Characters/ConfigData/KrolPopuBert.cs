@@ -26,32 +26,32 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("570804__soundslikewillem__orchestra-hit-2");
         }
 
-        public override void SkillAdjustHealthChange(int value, CardSpriteBehaviour card) // BUG: glitchy interaction with cards that move on attack (serferka berta, ronin bert)
-        {
-            if (card.CardStatus.Health > 0) return;
-            HandCardBehaviour kid = null;
-            foreach (HandCardBehaviour image in card.CardManager.AllOutsideCards())
-            {
-                if (image.Character.Gender != GenderEnum.Kid) continue;
-                if (IsEnemyCard(image.Character, card)) continue;
-                kid = image;
-                break;
-            }
-            if (kid == null) return;
-            card.CardManager.RemoveCharacter(kid.Character);
-            foreach (OutdatedFieldBehaviour field in card.Grid.Fields)
-                if (field.IsOccupied() && field.OccupantCard.CanUseSkill())
-                    field.OccupantCard.Character.SkillOnOtherCardDeath(field.OccupantCard, card);
-            card.UpdateCard(kid);
-            if (card.CanUseSkill()) card.Character.SkillOnNewCard(card);
-        }
+        //public override void SkillAdjustHealthChange(int value, CardSpriteBehaviour card) // BUG: glitchy interaction with cards that move on attack (serferka berta, ronin bert)
+        //{
+        //    if (card.CardStatus.Health > 0) return;
+        //    HandCardBehaviour kid = null;
+        //    foreach (HandCardBehaviour image in card.CardManager.AllOutsideCards())
+        //    {
+        //        if (image.Character.Gender != GenderEnum.Kid) continue;
+        //        if (IsEnemyCard(image.Character, card)) continue;
+        //        kid = image;
+        //        break;
+        //    }
+        //    if (kid == null) return;
+        //    card.CardManager.RemoveCharacter(kid.Character);
+        //    foreach (OutdatedFieldBehaviour field in card.Grid.Fields)
+        //        if (field.IsOccupied() && field.OccupantCard.CanUseSkill())
+        //            field.OccupantCard.Character.SkillOnOtherCardDeath(field.OccupantCard, card);
+        //    card.UpdateCard(kid);
+        //    if (card.CanUseSkill()) card.Character.SkillOnNewCard(card);
+        //}
 
-        private bool IsEnemyCard(CharacterConfig character, CardSpriteBehaviour card)
-        {
-            if (card.Grid.Turn.CurrentAlignment == card.OccupiedField.Align)
-                return card.CardManager.DisabledCards.FindIndex(x => x.Character.GetType() == character.GetType()) >= 0;
-            else
-                return card.CardManager.EnabledCards.FindIndex(x => x.Character.GetType() == character.GetType()) >= 0;
-        }
+        //private bool IsEnemyCard(CharacterConfig character, CardSpriteBehaviour card)
+        //{
+        //    if (card.Grid.Turn.CurrentAlignment == card.OccupiedField.Align)
+        //        return card.CardManager.DisabledCards.FindIndex(x => x.Character.GetType() == character.GetType()) >= 0;
+        //    else
+        //        return card.CardManager.EnabledCards.FindIndex(x => x.Character.GetType() == character.GetType()) >= 0;
+        //}
     }
 }

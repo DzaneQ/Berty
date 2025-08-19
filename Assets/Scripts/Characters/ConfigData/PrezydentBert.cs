@@ -20,15 +20,15 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("557114__firediesproductions__fdp-coin-flip-3");
         }
 
-        public override void SkillOnAttack(CardSpriteBehaviour card)
-        {
-            foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards()) if (card.IsAllied(adjCard.OccupiedField)) adjCard.AdvanceStrength(1, card);
-            card.AdvancePower(-1, card);
-        }
+        //public override void SkillOnAttack(CardSpriteBehaviour card)
+        //{
+        //    foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards()) if (card.IsAllied(adjCard.OccupiedField)) adjCard.AdvanceStrength(1, card);
+        //    card.AdvancePower(-1, card);
+        //}
 
-        public override void SkillOnMove(CardSpriteBehaviour card)
-        {
-            SkillOnAttack(card);
-        }
+        //public override void SkillOnMove(CardSpriteBehaviour card)
+        //{
+        //    SkillOnAttack(card);
+        //}
     }
 }

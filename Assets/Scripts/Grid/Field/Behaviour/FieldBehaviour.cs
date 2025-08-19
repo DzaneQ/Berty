@@ -17,7 +17,6 @@ namespace Berty.Grid.Field.Behaviour
         private MeshRenderer render;
 
         public BoardField BoardField { get; private set; }
-
         public BoardCardCore ChildCard { get; private set; }
 
         private void Awake()
@@ -48,19 +47,13 @@ namespace Berty.Grid.Field.Behaviour
         public void UpdateField()
         {
             if (BoardField.OccupantCard == null) ChildCard = null;
-            else ChildCard = BoardCardCollectionManager.Instance.GetCoreFromEntity(BoardField.OccupantCard);
+            else ChildCard = BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(BoardField.OccupantCard);  
             ColorizeField();
         }
 
         private void ColorizeField()
         {
             render.material = ColorizeFieldManager.Instance.GetMaterialFromAlignment(BoardField.Align);
-        }
-
-        // NOTE: Use for animation purposes
-        public void ColorizeNotOccupied()
-        {
-            render.material = ColorizeFieldManager.Instance.GetNeutralMaterial();
         }
     }
 }

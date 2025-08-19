@@ -22,26 +22,26 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("189575__unopiate__breaking-glass");
         }
 
-        public override void SkillOnNewCard(CardSpriteBehaviour card)
-        {
-            card.Grid.AddCardIntoQueue(AlignmentEnum.Player);
-            card.Grid.AddCardIntoQueue(AlignmentEnum.Player);
-            card.Grid.AddCardIntoQueue(AlignmentEnum.Opponent);
-            card.Grid.AddCardIntoQueue(AlignmentEnum.Opponent);
-            foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards()) SkillOnNeighbor(card, adjCard);
-        }
+        //public override void SkillOnNewCard(CardSpriteBehaviour card)
+        //{
+        //    card.Grid.AddCardIntoQueue(AlignmentEnum.Player);
+        //    card.Grid.AddCardIntoQueue(AlignmentEnum.Player);
+        //    card.Grid.AddCardIntoQueue(AlignmentEnum.Opponent);
+        //    card.Grid.AddCardIntoQueue(AlignmentEnum.Opponent);
+        //    foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards()) SkillOnNeighbor(card, adjCard);
+        //}
 
-        public override void SkillOnNeighbor(CardSpriteBehaviour card, CardSpriteBehaviour target)
-        {
-            target.AdvancePower(-1, card);
-            target.AddResistance(this);
-        }
+        //public override void SkillOnNeighbor(CardSpriteBehaviour card, CardSpriteBehaviour target)
+        //{
+        //    target.AdvancePower(-1, card);
+        //    target.AddResistance(this);
+        //}
 
-        public override void SkillOnMove(CardSpriteBehaviour card) => SkillOnNewCard(card);
+        //public override void SkillOnMove(CardSpriteBehaviour card) => SkillOnNewCard(card);
 
-        public override void SkillOnDeath(CardSpriteBehaviour card)
-        {
-            card.ReturnCharacter();
-        }
+        //public override void SkillOnDeath(CardSpriteBehaviour card)
+        //{
+        //    card.ReturnCharacter();
+        //}
     }
 }

@@ -66,6 +66,7 @@ namespace Berty.BoardCards.Animation
                 yield return null;
             }
             CoroutineCount--;
+            card.Bars.HandleAfterBarChange();
         }
 
         private void BarChangeFrame(ref float currentTime, float endTime)

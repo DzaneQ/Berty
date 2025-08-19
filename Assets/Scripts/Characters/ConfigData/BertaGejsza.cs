@@ -21,18 +21,18 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("217656__reitanna__knuckles-cracking");
         }
 
-        public override void SkillOnNewCard(CardSpriteBehaviour card)
-        {
-            foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards()) SkillOnNeighbor(card, adjCard);
-        }
+        //public override void SkillOnNewCard(CardSpriteBehaviour card)
+        //{
+        //    foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards()) SkillOnNeighbor(card, adjCard);
+        //}
 
-        public override void SkillOnNeighbor(CardSpriteBehaviour card, CardSpriteBehaviour target)
-        {
-            if (card.IsAllied(target.OccupiedField)) target.AdvanceDexterity(-1, card);
-            else target.AdvanceDexterity(-3, card);
-            target.AddResistance(this);
-        }
+        //public override void SkillOnNeighbor(CardSpriteBehaviour card, CardSpriteBehaviour target)
+        //{
+        //    if (card.IsAllied(target.OccupiedField)) target.AdvanceDexterity(-1, card);
+        //    else target.AdvanceDexterity(-3, card);
+        //    target.AddResistance(this);
+        //}
 
-        public override void SkillOnMove(CardSpriteBehaviour card) => SkillOnNewCard(card);
+        //public override void SkillOnMove(CardSpriteBehaviour card) => SkillOnNewCard(card);
     }
 }

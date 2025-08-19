@@ -28,7 +28,6 @@ namespace Berty.UI.Listeners
 
         private void HandleTheButtonClick()
         {
-            Debug.Log("Left button click is being handled.");
             //soundSystem.ButtonClickSound();
             ButtonActionManager.Instance.HandleCornerButtonClick(core.ButtonType);
         }

@@ -30,9 +30,11 @@ namespace Berty.BoardCards.Managers
             boardCardCoreCollection = new List<BoardCardCore>();
         }
 
-        public BoardCardCore GetCoreFromEntity(BoardCard boardCard)
+        public BoardCardCore GetCoreFromEntityOrThrow(BoardCard boardCard)
         {
-            return boardCardCoreCollection.Find((BoardCardCore core) => core.BoardCard == boardCard);
+            BoardCardCore core = boardCardCoreCollection.Find((BoardCardCore core) => core.BoardCard == boardCard);
+            if (core == null) throw new Exception($"Trying to get core from entity {boardCard.CharacterConfig.Name} that is null");
+            return core;
         }
 
         public void AddCardToCollection(BoardCardCore card)

@@ -50,6 +50,7 @@ namespace Berty.BoardCards.Behaviours
             switch (core.CardState)
             {
                 case CardStateEnum.Idle:
+                case CardStateEnum.Attacking:
                     DeactivateAllButtons();
                     break;
                 case CardStateEnum.Active:

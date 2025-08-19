@@ -29,40 +29,23 @@ namespace Berty.Grid.Field.Listeners
 
         private void OnMouseOver()
         {
-            if (Input.GetMouseButtonDown(0)) HandleLeftClick();
-            else if (Input.GetMouseButtonDown(1)) HandleRightClick();
+            if (HasACard()) HandleCardClick();
+            else if (Input.GetMouseButtonDown(0)) HandleLeftClick();
+        }
+
+        private void HandleCardClick()
+        {
+            behaviour.ChildCard.SendMessage("OnMouseOver");
         }
 
         private void HandleLeftClick()
         {
-            if (IsItPaymentTime()) ConfirmPayment();
-            else if (PuttingIntent()) PutTheCard();
-            else if (AttackingIntent()) PrepareAnAttack();
-        }
-
-        private void HandleRightClick()
-        {
-            // TODO: Handle card's right click
+            if (PuttingIntent()) PutTheCard();
         }
 
         private bool PuttingIntent()
         {
             return selectionSystem.GetTheOnlySelectedCardOrNull() != null;
-        }
-
-        private bool AttackingIntent()
-        {
-            return selectionSystem.GetSelectedCardsCount() == 0;
-        }
-
-        private bool IsItPaymentTime()
-        { 
-            return selectionSystem.IsItPaymentTime();
-        }
-
-        private void ConfirmPayment()
-        {
-            //if (CardManager.Instance.SelectionSystem.CheckOffer()) ; // Remove selected cards and update state.
         }
 
         private void PutTheCard()
@@ -72,9 +55,10 @@ namespace Berty.Grid.Field.Listeners
             PaymentManager.Instance.CallPayment(behaviour.BoardField.OccupantCard.Stats.Power, newCard);
         }
 
-        private void PrepareAnAttack()
+        private bool HasACard()
         {
-            throw new System.NotImplementedException();
-        }
+            //Debug.Log("Checking for card...");
+            return behaviour.ChildCard != null;
+        }    
     }
 }

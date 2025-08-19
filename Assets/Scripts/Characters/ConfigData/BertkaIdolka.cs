@@ -22,21 +22,21 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("392483__gpag1__footsteps-boots-1.5");
         }
 
-        public override bool CanAffectStrength(CardSpriteBehaviour card, CardSpriteBehaviour spellSource)
-        {
-            if (card == spellSource) return true;
-            return false;
-        }
+        //public override bool CanAffectStrength(CardSpriteBehaviour card, CardSpriteBehaviour spellSource)
+        //{
+        //    if (card == spellSource) return true;
+        //    return false;
+        //}
 
-        public override bool CanAffectPower(CardSpriteBehaviour card, CardSpriteBehaviour spellSource)
-        {
-            if (card.CardStatus.Power <= 3) return card.IsAllied(spellSource.OccupiedField);
-            return true;
-        }
+        //public override bool CanAffectPower(CardSpriteBehaviour card, CardSpriteBehaviour spellSource)
+        //{
+        //    if (card.CardStatus.Power <= 3) return card.IsAllied(spellSource.OccupiedField);
+        //    return true;
+        //}
 
-        public override void SkillAdjustPowerChange(int value, CardSpriteBehaviour card, CardSpriteBehaviour spellSource)
-        {
-            card.AdvanceStrength(value, card);
-        }
+        //public override void SkillAdjustPowerChange(int value, CardSpriteBehaviour card, CardSpriteBehaviour spellSource)
+        //{
+        //    card.AdvanceStrength(value, card);
+        //}
     }
 }

@@ -1,5 +1,6 @@
 using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
+using Berty.BoardCards.Managers;
 using Berty.BoardCards.State;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
@@ -40,6 +41,7 @@ namespace Berty.BoardCards.Behaviours
 
         private void Awake()
         {
+            BoardCardCollectionManager.Instance.AddCardToCollection(this);
             Game = CoreManager.Instance.Game;
             characterSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
             Bars = GetComponent<BoardCardBarsObjects>();
@@ -59,6 +61,11 @@ namespace Berty.BoardCards.Behaviours
         private void OnCollisionEnter(Collision collision)
         {
             ApplyPhysics(false);
+        }
+
+        public void HandleClick()
+        {
+            Debug.Log("Dummy message.");
         }
 
         private void UpdateCharacter()
@@ -87,6 +94,11 @@ namespace Berty.BoardCards.Behaviours
 
         public void SetMainState()
         {
+            if (BoardCard == null || BoardCard.OccupiedField == null)
+            {
+                SetIdle();
+                return;
+            }
             AlignmentEnum currentAlign = Game.CurrentAlignment;
             AlignmentEnum cardAlign = BoardCard.Align;
             if (currentAlign == cardAlign) SetActive();
@@ -152,10 +164,17 @@ namespace Berty.BoardCards.Behaviours
             Bars.ShowBars();
         }
 
+        public void KillCard()
+        {
+            Game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
+            DestroyCard();
+        }
+
         public void DestroyCard()
         {
             BoardCard.DeactivateCard(); // TODO: Prove that the BoardCard entity no longer exists.
             ParentField.UpdateField();
+            BoardCardCollectionManager.Instance.RemoveCardFromCollection(this);
             Destroy(gameObject);
         }
     }

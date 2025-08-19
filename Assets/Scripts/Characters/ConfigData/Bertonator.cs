@@ -22,23 +22,23 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("233053__lukeupf__footballtable");
         }
 
-        public override bool SkillSpecialAttack(CardSpriteBehaviour card)
-        {
-            foreach (int[] distance in AttackRange)
-            {
-                OutdatedFieldBehaviour targetField = card.GetTargetField(distance);
-                if (targetField == null || !targetField.IsOccupied()) continue;
-                targetField.OccupantCard.TakeDamage(card.GetStrength(), card.OccupiedField);
-                if (!targetField.IsOccupied()) continue;
-                targetField.OccupantCard.AdvanceDexterity(-1, card);
-                UnityEngine.Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
-                int[] knockback = distance.Clone() as int[];
-                knockback[1]++;
-                OutdatedFieldBehaviour knockbackField = card.GetTargetField(knockback);
-                if (knockbackField == null || knockbackField.IsOccupied()) targetField.OccupantCard.AdvanceHealth(-1);
-                else targetField.OccupantCard.SwapWith(knockbackField);
-            }
-            return true;
-        }
+        //public override bool SkillSpecialAttack(CardSpriteBehaviour card)
+        //{
+        //    foreach (int[] distance in AttackRange)
+        //    {
+        //        OutdatedFieldBehaviour targetField = card.GetTargetField(distance);
+        //        if (targetField == null || !targetField.IsOccupied()) continue;
+        //        targetField.OccupantCard.TakeDamage(card.GetStrength(), card.OccupiedField);
+        //        if (!targetField.IsOccupied()) continue;
+        //        targetField.OccupantCard.AdvanceDexterity(-1, card);
+        //        UnityEngine.Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
+        //        int[] knockback = distance.Clone() as int[];
+        //        knockback[1]++;
+        //        OutdatedFieldBehaviour knockbackField = card.GetTargetField(knockback);
+        //        if (knockbackField == null || knockbackField.IsOccupied()) targetField.OccupantCard.AdvanceHealth(-1);
+        //        else targetField.OccupantCard.SwapWith(knockbackField);
+        //    }
+        //    return true;
+        //}
     }
 }

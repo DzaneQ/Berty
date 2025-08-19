@@ -36,9 +36,7 @@ namespace Berty.BoardCards.Listeners
 
         public void OnMouseOver()
         {
-            //Debug.Log("OnMouseOver event trigger on: " + name);
-            if (IsLeftClicked()) HandleClick();
-            //else if (IsRightClicked()) HandleSideClick();
+            if (IsLeftClicked()) HandleLeftClick();
         }
 
         private bool IsLeftClicked()
@@ -53,8 +51,9 @@ namespace Berty.BoardCards.Listeners
             else return false;
         }*/
 
-        private void HandleClick()
+        private void HandleLeftClick()
         {
+            if (!IsLeftClicked()) return;
             switch (behaviour.CardState)
             {
                 case CardStateEnum.Active:

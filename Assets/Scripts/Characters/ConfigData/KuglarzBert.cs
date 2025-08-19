@@ -21,24 +21,24 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("181679__gingie__knife-throw");
         }
 
-        public override void SkillOnSuccessfulAttack(CardSpriteBehaviour card)
-        {
-            card.AdvanceDexterity(-1, card);
-            card.AdvanceHealth(1);
-        }
+        //public override void SkillOnSuccessfulAttack(CardSpriteBehaviour card)
+        //{
+        //    card.AdvanceDexterity(-1, card);
+        //    card.AdvanceHealth(1);
+        //}
 
-        public override void SkillOnNewCard(CardSpriteBehaviour card)
-        {
-            foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards()) SkillOnNeighbor(card, adjCard);
-        }
+        //public override void SkillOnNewCard(CardSpriteBehaviour card)
+        //{
+        //    foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards()) SkillOnNeighbor(card, adjCard);
+        //}
 
-        public override void SkillOnNeighbor(CardSpriteBehaviour card, CardSpriteBehaviour target)
-        {
-            if (!card.IsAllied(target.OccupiedField)) return;
-            target.AdvancePower(1, card);
-            target.AddResistance(this);
-        }
+        //public override void SkillOnNeighbor(CardSpriteBehaviour card, CardSpriteBehaviour target)
+        //{
+        //    if (!card.IsAllied(target.OccupiedField)) return;
+        //    target.AdvancePower(1, card);
+        //    target.AddResistance(this);
+        //}
 
-        public override void SkillOnMove(CardSpriteBehaviour card) => SkillOnNewCard(card);
+        //public override void SkillOnMove(CardSpriteBehaviour card) => SkillOnNewCard(card);
     }
 }

@@ -1,11 +1,7 @@
 using Berty.BoardCards.Behaviours;
 using Berty.UI.Card.Managers;
 using Berty.Enums;
-using Berty.Gameplay.ConfigData;
-using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.UI.Card.Managers;
-using Berty.UI.Card.Systems;
 using UnityEngine;
 using System;
 
@@ -43,6 +39,14 @@ namespace Berty.BoardCards.Listeners
 
         private void HandlePaymentConfirm()
         {
+            if (core.CardState == CardStateEnum.Attacking)
+            {
+                EventManager.Instance.RaiseOnDirectlyAttacked(core);
+            }
+            else if (core.CardState == CardStateEnum.NewCard)
+            {
+                EventManager.Instance.RaiseOnAttackNewStand(core);
+            }    
             core.SetMainState();
         }
 

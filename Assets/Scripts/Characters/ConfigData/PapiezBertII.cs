@@ -22,16 +22,16 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("676109__vcs2683__church-claps-2.1-4.4");
         }
 
-        public override void SkillOnNewTurn(CardSpriteBehaviour card)
-        {
-            if (!card.OccupiedField.IsAligned(card.Grid.Turn.CurrentAlignment)) return;
-            //if (IsBlockedDuringRevolution(card)) return;
-            foreach (OutdatedFieldBehaviour field in card.Grid.Fields)
-            {
-                if (!field.IsOccupied() || field.IsAligned(card.OccupiedField.Align)) continue;
-                field.OccupantCard.AdvancePower(-2, card);
-            }
-        }
+        //public override void SkillOnNewTurn(CardSpriteBehaviour card)
+        //{
+        //    if (!card.OccupiedField.IsAligned(card.Grid.Turn.CurrentAlignment)) return;
+        //    //if (IsBlockedDuringRevolution(card)) return;
+        //    foreach (OutdatedFieldBehaviour field in card.Grid.Fields)
+        //    {
+        //        if (!field.IsOccupied() || field.IsAligned(card.OccupiedField.Align)) continue;
+        //        field.OccupantCard.AdvancePower(-2, card);
+        //    }
+        //}
 
         /*private bool IsBlockedDuringRevolution(CardSprite card)
         {

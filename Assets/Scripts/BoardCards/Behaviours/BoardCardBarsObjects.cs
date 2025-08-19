@@ -17,6 +17,8 @@ namespace Berty.BoardCards.Behaviours
 {
     public class BoardCardBarsObjects : MonoBehaviour
     {
+        private BoardCardCore core;
+
         /* CardBars index:
             0 - Strength
             1 - Power
@@ -25,8 +27,10 @@ namespace Berty.BoardCards.Behaviours
          */
         private CardBar[] CardBars { get; set; }
 
+
         private void Awake()
         {
+            core = GetComponent<BoardCardCore>();
             CardBars = transform.GetChild(1).GetComponentsInChildren<CardBar>();
         }
 
@@ -63,6 +67,12 @@ namespace Berty.BoardCards.Behaviours
         {
             foreach (CardBar bar in CardBars) if (bar.IsAnimating()) return true;
             return false;
+        }
+
+        public void HandleAfterBarChange()
+        {
+            if (AreBarsAnimating()) return;
+            if (core.BoardCard.Stats.Health <= 0) core.KillCard();
         }
     }
 }

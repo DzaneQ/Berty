@@ -23,17 +23,17 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("400174__jgriffie919__flesh-bite");
         }
 
-        public override void SkillOnSuccessfulAttack(CardSpriteBehaviour card)
-        {
-            OutdatedFieldBehaviour targetField = card.GetTargetField(AttackRange[0]);
-            if (!targetField.IsOccupied() || card.IsAllied(targetField)) return;
-            targetField.OccupantCard.AdvancePower(-1, card);
-        }
+        //public override void SkillOnSuccessfulAttack(CardSpriteBehaviour card)
+        //{
+        //    OutdatedFieldBehaviour targetField = card.GetTargetField(AttackRange[0]);
+        //    if (!targetField.IsOccupied() || card.IsAllied(targetField)) return;
+        //    targetField.OccupantCard.AdvancePower(-1, card);
+        //}
 
-        public override void SkillOnOtherCardDeath(CardSpriteBehaviour card, CardSpriteBehaviour otherCard)
-        {
-            if (card.IsAllied(otherCard.OccupiedField)) return;
-            card.AdvanceHealth(1);
-        }
+        //public override void SkillOnOtherCardDeath(CardSpriteBehaviour card, CardSpriteBehaviour otherCard)
+        //{
+        //    if (card.IsAllied(otherCard.OccupiedField)) return;
+        //    card.AdvanceHealth(1);
+        //}
     }
 }

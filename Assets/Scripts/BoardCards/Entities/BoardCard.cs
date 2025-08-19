@@ -123,7 +123,6 @@ namespace Berty.BoardCards.Entities
             //if (!CharacterConfig.CanAffectPower(this, skillSource)) return;
             if (CharacterConfig.GlobalSkillResistance() && skillSource == null) return;
             Stats.Power += value;
-            if (Stats.Power <= 0) SwitchSides();
         }
 
         public void AdvanceTempPower(int value, BoardCard skillSource = null)
@@ -131,7 +130,6 @@ namespace Berty.BoardCards.Entities
             //if (!CharacterConfig.CanAffectPower(this, skillSource)) return;
             if (CharacterConfig.GlobalSkillResistance() && skillSource == null) return;
             Stats.TempPower += value;
-            if (Stats.Power <= 0) SwitchSides();
         }
 
         public void AdvanceDexterity(int value, BoardCard skillSource = null)
@@ -147,7 +145,6 @@ namespace Berty.BoardCards.Entities
             if (skillSource != null && resistance.Contains(skillSource.CharacterConfig)) return;
             Stats.Health += value;
             //if (CanUseSkill()) CharacterConfig.SkillAdjustHealthChange(value, this);
-            if (Stats.Health <= 0) KillCard();
         }
 
         public bool CanAttack()
@@ -186,14 +183,25 @@ namespace Berty.BoardCards.Entities
             DeactivateCard();
         }
 
-        private Vector2Int CalculateCoordinates()
+        public Vector2Int GetDistanceTo(BoardCard target)
+        {
+            Vector2Int targetRelCoords = target.GetCoordinatesByDirection(Direction);
+            return targetRelCoords - RelativeCoordinates;
+        }
+
+        public Vector2Int GetCoordinatesByDirection(DirectionEnum direction)
         {
             int x = OccupiedField.Coordinates.x;
             int y = OccupiedField.Coordinates.y;
-            float angle = (float)Direction;
+            float angle = (float)direction;
             int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
             int cosinus = (int)Math.Round(Math.Cos(angle / 180 * Math.PI));
             return new Vector2Int(cosinus * x - sinus * y, cosinus * y + sinus * x);
+        }
+
+        private Vector2Int CalculateCoordinates()
+        {
+            return GetCoordinatesByDirection(Direction);
         }
     }
 }

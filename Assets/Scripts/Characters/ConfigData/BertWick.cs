@@ -22,18 +22,18 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("587172__derplayer__pistol-fire-until-empty");
         }
 
-        public override void SkillAdjustHealthChange(int value, CardSpriteBehaviour card)
-        {
-            if (card.CardStatus.Health > 0 || card.CardStatus.Dexterity <= 0) return;
-            card.AdvanceHealth(2);
-            card.AdvanceStrength(1, card);
-            card.AdvancePower(1, card);
-            card.AdvanceDexterity(-1, card);
-        }
+        //public override void SkillAdjustHealthChange(int value, CardSpriteBehaviour card)
+        //{
+        //    if (card.CardStatus.Health > 0 || card.CardStatus.Dexterity <= 0) return;
+        //    card.AdvanceHealth(2);
+        //    card.AdvanceStrength(1, card);
+        //    card.AdvancePower(1, card);
+        //    card.AdvanceDexterity(-1, card);
+        //}
 
-        public override void SkillAdjustDexterityChange(int value, CardSpriteBehaviour card)
-        {
-            if (card.CardStatus.Dexterity == 0) card.AdvanceHealth(-6);
-        }
+        //public override void SkillAdjustDexterityChange(int value, CardSpriteBehaviour card)
+        //{
+        //    if (card.CardStatus.Dexterity == 0) card.AdvanceHealth(-6);
+        //}
     }
 }

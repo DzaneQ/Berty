@@ -23,13 +23,13 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("632821__cloud-10__gunshot");
         }
 
-        public override void SkillOnNewCard(CardSpriteBehaviour card)
-        {
-            foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards())
-            {
-                card.AdvanceStrength(1, card);
-                if (card.IsAllied(adjCard.OccupiedField)) adjCard.AdvancePower(1, card);
-            }
-        }
+        //public override void SkillOnNewCard(CardSpriteBehaviour card)
+        //{
+        //    foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards())
+        //    {
+        //        card.AdvanceStrength(1, card);
+        //        if (card.IsAllied(adjCard.OccupiedField)) adjCard.AdvancePower(1, card);
+        //    }
+        //}
     }
 }

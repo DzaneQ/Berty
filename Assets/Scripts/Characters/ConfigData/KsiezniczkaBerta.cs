@@ -21,13 +21,13 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("335354__littlerainyseasons__magic");
         }
 
-        public override void SkillAdjustPowerChange(int value, CardSpriteBehaviour card, CardSpriteBehaviour spellSource)
-        {
-            if (card.CardStatus.Power > 0) return;
-            card.ResetPower();
-            AlignmentEnum buffTurn = card.Grid.Turn.CurrentAlignment;
-            if (spellSource != null) buffTurn = spellSource.OccupiedField.Align;
-            card.Grid.Turn.ExecutePrincessTurn(buffTurn);
-        }
+        //public override void SkillAdjustPowerChange(int value, CardSpriteBehaviour card, CardSpriteBehaviour spellSource)
+        //{
+        //    if (card.CardStatus.Power > 0) return;
+        //    card.ResetPower();
+        //    AlignmentEnum buffTurn = card.Grid.Turn.CurrentAlignment;
+        //    if (spellSource != null) buffTurn = spellSource.OccupiedField.Align;
+        //    card.Grid.Turn.ExecutePrincessTurn(buffTurn);
+        //}
     }
 }

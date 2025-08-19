@@ -19,18 +19,18 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("467777__sgak__thunder");
         }
 
-        public override void SkillOnNewCard(CardSpriteBehaviour card)
-        {
-            card.Grid.InitiateResurrection();
-            card.Grid.MakeAllStatesIdle(card.OccupiedField);
-        }
+        //public override void SkillOnNewCard(CardSpriteBehaviour card)
+        //{
+        //    card.Grid.InitiateResurrection();
+        //    card.Grid.MakeAllStatesIdle(card.OccupiedField);
+        //}
 
-        public override void SkillSideClick(CardSpriteBehaviour card)
-        {
-            //if (card.Grid.CurrentStatus.Resurrection != Alignment.None) return;
-            SkillOnNewCard(card);
-            card.SetIdle();
-            card.DeactivateCard();
-        }
+        //public override void SkillSideClick(CardSpriteBehaviour card)
+        //{
+        //    //if (card.Grid.CurrentStatus.Resurrection != Alignment.None) return;
+        //    SkillOnNewCard(card);
+        //    card.SetIdle();
+        //    card.DeactivateCard();
+        //}
     }
 }

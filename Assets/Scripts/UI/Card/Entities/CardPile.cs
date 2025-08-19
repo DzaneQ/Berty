@@ -103,7 +103,7 @@ namespace Berty.UI.Card.Entities
                 $"Unexpected amount of remaining cards. Count: {table.Count}, initial: {initialTableCount}, cardsToDiscard: {cardsToDiscard.Count}");
         }
 
-        private void KillCard(CharacterConfig card)
+        public void MarkCardAsDead(CharacterConfig card)
         {
             deadCards.Add(card);
         }

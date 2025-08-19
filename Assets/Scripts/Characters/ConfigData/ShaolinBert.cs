@@ -21,11 +21,11 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("518292__logicogonist__gong-2");
         }
 
-        public override void SkillOnNewCard(CardSpriteBehaviour card)
-        {
-            foreach (OutdatedFieldBehaviour field in card.Grid.Fields)
-                if (field.IsOccupied() && !card.IsAllied(field))
-                    field.OccupantCard.AdvanceStrength(-field.OccupantCard.CardStatus.Power / 3, card);
-        }
+        //public override void SkillOnNewCard(CardSpriteBehaviour card)
+        //{
+        //    foreach (OutdatedFieldBehaviour field in card.Grid.Fields)
+        //        if (field.IsOccupied() && !card.IsAllied(field))
+        //            field.OccupantCard.AdvanceStrength(-field.OccupantCard.CardStatus.Power / 3, card);
+        //}
     }
 }

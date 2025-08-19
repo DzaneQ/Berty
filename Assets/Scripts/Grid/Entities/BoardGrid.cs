@@ -77,6 +77,17 @@ namespace Berty.Grid.Entities
             return GetFieldDistancedFromCardOrNull(x, y, card) ?? throw new Exception($"There is not field at distance ({x},{y}) away from {card.CharacterConfig.Name}");
         }
 
+        public List<BoardField> GetFieldsInRange(BoardCard card, List<Vector2Int> range)
+        {
+            List<BoardField> fields = new List<BoardField>();
+            foreach (Vector2Int distance in range)
+            {
+                BoardField target = GetFieldDistancedFromCardOrNull(distance.x, distance.y, card);
+                if (target != null) fields.Add(target);
+            }
+            return fields;
+        }
+
         public List<BoardField> AlignedFields(AlignmentEnum alignment, bool countBackup = false)
         {
             List<BoardField> alignedFields = new List<BoardField>();

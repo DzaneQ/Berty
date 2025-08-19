@@ -23,28 +23,28 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("638292__captainyulef__laser-sword");
         }
 
-        public override void SkillOnNewCard(CardSpriteBehaviour card)
-        {
-            OutdatedFieldBehaviour targetField = null;
-            for (int i = 0; i < 4; i++)
-            {
-                OutdatedFieldBehaviour adjacentField = card.GetAdjacentField(i * 90);
-                if (adjacentField == null || !adjacentField.IsOccupied()) continue;
-                targetField = adjacentField;
-                if (adjacentField.IsOpposed(card.OccupiedField.Align)) break;
-            }
-            if (targetField != null) targetField.OccupantCard.AdvancePower(-3, card);
-            card.Grid.SetTelekinesis(card.OccupiedField.Align, card.CardStatus.Dexterity);
-        }
+        //public override void SkillOnNewCard(CardSpriteBehaviour card)
+        //{
+        //    OutdatedFieldBehaviour targetField = null;
+        //    for (int i = 0; i < 4; i++)
+        //    {
+        //        OutdatedFieldBehaviour adjacentField = card.GetAdjacentField(i * 90);
+        //        if (adjacentField == null || !adjacentField.IsOccupied()) continue;
+        //        targetField = adjacentField;
+        //        if (adjacentField.IsOpposed(card.OccupiedField.Align)) break;
+        //    }
+        //    if (targetField != null) targetField.OccupantCard.AdvancePower(-3, card);
+        //    card.Grid.SetTelekinesis(card.OccupiedField.Align, card.CardStatus.Dexterity);
+        //}
 
-        public override void SkillAdjustDexterityChange(int value, CardSpriteBehaviour card)
-        {
-            card.Grid.SetTelekinesis(card.OccupiedField.Align, card.CardStatus.Dexterity);
-        }
+        //public override void SkillAdjustDexterityChange(int value, CardSpriteBehaviour card)
+        //{
+        //    card.Grid.SetTelekinesis(card.OccupiedField.Align, card.CardStatus.Dexterity);
+        //}
 
-        public override void SkillOnDeath(CardSpriteBehaviour card)
-        {
-            card.Grid.RemoveTelekinesis();
-        }
+        //public override void SkillOnDeath(CardSpriteBehaviour card)
+        //{
+        //    card.Grid.RemoveTelekinesis();
+        //}
     }
 }

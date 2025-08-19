@@ -259,12 +259,12 @@ namespace Berty.BoardCards
 
         public bool CanAttackField(OutdatedFieldBehaviour targetField)
         {
-            if (targetField == null) return false;
-            foreach (int[] distance in Character.AttackRange)
-            {
-                int[] target = { relCoord[0] + distance[0], relCoord[1] + distance[1] };
-                if (targetField == GetRelativeField(target[0], target[1])) return true;
-            }
+            //if (targetField == null) return false;
+            //foreach (int[] distance in Character.AttackRange)
+            //{
+            //    int[] target = { relCoord[0] + distance[0], relCoord[1] + distance[1] };
+            //    if (targetField == GetRelativeField(target[0], target[1])) return true;
+            //}
             return false;
         }
 
@@ -275,44 +275,44 @@ namespace Berty.BoardCards
 
         public void OrderAttack()
         {
-            //Debug.Log("Start ordering attack");
-            ExhaustAttack();
-            if (CanUseSkill() && Character.SkillSpecialAttack(this)) return;
-            bool successfulAttack = false;
-            //Debug.Log("Check ranges");
-            foreach (int[] distance in Character.AttackRange)
-            {
-                OutdatedFieldBehaviour targetField = GetTargetField(distance);
-                if (targetField == null || !targetField.IsOccupied()) continue;
-                if (targetField.OccupantCard.TakeDamage(GetStrength(), occupiedField)) successfulAttack = true;
-                Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
-            }
-            //Debug.Log("Ranges checked");
-            if (successfulAttack && CanUseSkill()) Character.SkillOnSuccessfulAttack(this);
-            if (CanUseSkill()) Character.SkillOnAttack(this);
-            //Debug.Log("End ordering attack");
+            ////Debug.Log("Start ordering attack");
+            //ExhaustAttack();
+            //if (CanUseSkill() && Character.SkillSpecialAttack(this)) return;
+            //bool successfulAttack = false;
+            ////Debug.Log("Check ranges");
+            //foreach (int[] distance in Character.AttackRange)
+            //{
+            //    OutdatedFieldBehaviour targetField = GetTargetField(distance);
+            //    if (targetField == null || !targetField.IsOccupied()) continue;
+            //    if (targetField.OccupantCard.TakeDamage(GetStrength(), occupiedField)) successfulAttack = true;
+            //    Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
+            //}
+            ////Debug.Log("Ranges checked");
+            //if (successfulAttack && CanUseSkill()) Character.SkillOnSuccessfulAttack(this);
+            //if (CanUseSkill()) Character.SkillOnAttack(this);
+            ////Debug.Log("End ordering attack");
         }
 
 
         public bool TakeDamage(int damage, OutdatedFieldBehaviour source, bool riposte = false)
         {
-            if (CanUseSkill()) damage = Character.SkillDefenceModifier(damage, source.OccupantCard);
-            if (source.OccupantCard.CanUseSkill()) damage = source.OccupantCard.Character.SkillAttackModifier(damage, this);
-            //Debug.Log("Damage on field - X: " + occupiedField.GetX() + "; Y: " + occupiedField.GetY());
-            if (!gameObject.activeSelf) return false;
-            if (riposte)
-            {
-                AdvanceHealth(-damage);
-                return false;
-            }
-            //int[] srcRel = source.GetRelativeCoordinates(GetRelativeAngle());
-            //int[] srcDistance = { srcRel[0] - relCoord[0], srcRel[1] - relCoord[1] };
-            int[] srcDistance = GetFieldDistance(source);
-            //Debug.Log("Character health: " + CardStatus.Health);
-            if (Character.CanRiposte(srcDistance)) source.OccupantCard.TakeDamage(GetStrength(), OccupiedField, true);
-            if (Character.CanBlock(srcDistance)) return false;
-            AdvanceHealth(-damage);
-            //Debug.Log($"{damage} damage taken for card {name}. Remaining HP: {cardStatus.Health}");
+            //if (CanUseSkill()) damage = Character.SkillDefenceModifier(damage, source.OccupantCard);
+            //if (source.OccupantCard.CanUseSkill()) damage = source.OccupantCard.Character.SkillAttackModifier(damage, this);
+            ////Debug.Log("Damage on field - X: " + occupiedField.GetX() + "; Y: " + occupiedField.GetY());
+            //if (!gameObject.activeSelf) return false;
+            //if (riposte)
+            //{
+            //    AdvanceHealth(-damage);
+            //    return false;
+            //}
+            ////int[] srcRel = source.GetRelativeCoordinates(GetRelativeAngle());
+            ////int[] srcDistance = { srcRel[0] - relCoord[0], srcRel[1] - relCoord[1] };
+            //int[] srcDistance = GetFieldDistance(source);
+            ////Debug.Log("Character health: " + CardStatus.Health);
+            //if (Character.CanRiposte(srcDistance)) source.OccupantCard.TakeDamage(GetStrength(), OccupiedField, true);
+            //if (Character.CanBlock(srcDistance)) return false;
+            //AdvanceHealth(-damage);
+            ////Debug.Log($"{damage} damage taken for card {name}. Remaining HP: {cardStatus.Health}");
             return true;
         }
         #endregion
@@ -656,17 +656,17 @@ namespace Berty.BoardCards
 
         private bool VenturaCheck()
         {
-            foreach (CardSpriteBehaviour card in GetAdjacentCards())
-            {
-                if (card.Character.GetType() != typeof(BertVentura) || IsAllied(card.OccupiedField)) continue;
-                foreach (int[] range in Character.AttackRange)
-                {
-                    OutdatedFieldBehaviour targetField = GetTargetField(range);
-                    if (targetField == null || !targetField.IsOccupied()) continue;
-                    if (targetField.OccupantCard.Character.GetType() == typeof(BertVentura)) return false;
-                }
-                return true;
-            }
+            //foreach (CardSpriteBehaviour card in GetAdjacentCards())
+            //{
+            //    if (card.Character.GetType() != typeof(BertVentura) || IsAllied(card.OccupiedField)) continue;
+            //    foreach (int[] range in Character.AttackRange)
+            //    {
+            //        OutdatedFieldBehaviour targetField = GetTargetField(range);
+            //        if (targetField == null || !targetField.IsOccupied()) continue;
+            //        if (targetField.OccupantCard.Character.GetType() == typeof(BertVentura)) return false;
+            //    }
+            //    return true;
+            //}
             return false;
         }
 

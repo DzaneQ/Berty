@@ -25,29 +25,29 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("351429__kinoton__gun-laser-single-shot-sci-fi");
         }
 
-        public override void SkillOnNewCard(CardSpriteBehaviour card)
-        {
-            card.Grid.SetJudgement(card.OccupiedField.Align);
-        }
+        //public override void SkillOnNewCard(CardSpriteBehaviour card)
+        //{
+        //    card.Grid.SetJudgement(card.OccupiedField.Align);
+        //}
 
-        public override void SkillOnDeath(CardSpriteBehaviour card)
-        {
-            card.Grid.RemoveJudgement();
-        }
+        //public override void SkillOnDeath(CardSpriteBehaviour card)
+        //{
+        //    card.Grid.RemoveJudgement();
+        //}
 
-        public override void SkillOnOtherCardDeath(CardSpriteBehaviour card, CardSpriteBehaviour source)
-        {
-            if (card.Grid.CurrentStatus.IsJudgement) return;
-            if (!source.OccupiedField.IsOpposed(card.OccupiedField.Align)) return;
-            card.Grid.SetJudgement(card.OccupiedField.Align);
-        }
+        //public override void SkillOnOtherCardDeath(CardSpriteBehaviour card, CardSpriteBehaviour source)
+        //{
+        //    if (card.Grid.CurrentStatus.IsJudgement) return;
+        //    if (!source.OccupiedField.IsOpposed(card.OccupiedField.Align)) return;
+        //    card.Grid.SetJudgement(card.OccupiedField.Align);
+        //}
 
-        public override void SkillAdjustPowerChange(int value, CardSpriteBehaviour card, CardSpriteBehaviour spellSource)
-        {
-            if (card.CardStatus.Power > 0) return;
-            if (card.OccupiedField.Align == AlignmentEnum.Opponent) card.Grid.SetJudgement(AlignmentEnum.Player);
-            else if (card.OccupiedField.Align == AlignmentEnum.Opponent) card.Grid.SetJudgement(AlignmentEnum.Opponent);
-            else throw new System.Exception("Unidentified align for judgement change");
-        }
+        //public override void SkillAdjustPowerChange(int value, CardSpriteBehaviour card, CardSpriteBehaviour spellSource)
+        //{
+        //    if (card.CardStatus.Power > 0) return;
+        //    if (card.OccupiedField.Align == AlignmentEnum.Opponent) card.Grid.SetJudgement(AlignmentEnum.Player);
+        //    else if (card.OccupiedField.Align == AlignmentEnum.Opponent) card.Grid.SetJudgement(AlignmentEnum.Opponent);
+        //    else throw new System.Exception("Unidentified align for judgement change");
+        //}
     }
 }

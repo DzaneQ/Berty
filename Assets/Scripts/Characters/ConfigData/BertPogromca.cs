@@ -24,34 +24,34 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("536528__smice_6__chop-off-head-with-axe");
         }
 
-        public override void SkillOnNewCard(CardSpriteBehaviour card)
-        {
-            foreach (CharacterConfig character in card.CardManager.AllOutsideCharacters())
-            {
-                if (character.Role != RoleEnum.Special) continue;
-                card.AddResistance(character);
-            }
-            foreach (CharacterConfig character in card.Grid.AllInsideCharacters())
-            {
-                if (character.Role != RoleEnum.Special) continue;
-                card.AddResistance(character);
-            }
-        }
+        //public override void SkillOnNewCard(CardSpriteBehaviour card)
+        //{
+        //    foreach (CharacterConfig character in card.CardManager.AllOutsideCharacters())
+        //    {
+        //        if (character.Role != RoleEnum.Special) continue;
+        //        card.AddResistance(character);
+        //    }
+        //    foreach (CharacterConfig character in card.Grid.AllInsideCharacters())
+        //    {
+        //        if (character.Role != RoleEnum.Special) continue;
+        //        card.AddResistance(character);
+        //    }
+        //}
 
-        public override bool SkillSpecialAttack(CardSpriteBehaviour card)
-        {
-            foreach (int[] distance in AttackRange)
-            {
-                OutdatedFieldBehaviour targetField = card.GetTargetField(distance);
-                if (targetField == null || !targetField.IsOccupied()) continue;
-                if (targetField.OccupantCard.Character.Role == RoleEnum.Special)
-                    targetField.OccupantCard.TakeDamage(card.GetStrength() + 2, card.OccupiedField);
-                else targetField.OccupantCard.TakeDamage(card.GetStrength(), card.OccupiedField);
-                //Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
-            }
-            return true;
-        }
+        //public override bool SkillSpecialAttack(CardSpriteBehaviour card)
+        //{
+        //    foreach (int[] distance in AttackRange)
+        //    {
+        //        OutdatedFieldBehaviour targetField = card.GetTargetField(distance);
+        //        if (targetField == null || !targetField.IsOccupied()) continue;
+        //        if (targetField.OccupantCard.Character.Role == RoleEnum.Special)
+        //            targetField.OccupantCard.TakeDamage(card.GetStrength() + 2, card.OccupiedField);
+        //        else targetField.OccupantCard.TakeDamage(card.GetStrength(), card.OccupiedField);
+        //        //Debug.Log("Attack - X: " + targetField.GetX() + "; Y: " + targetField.GetY());
+        //    }
+        //    return true;
+        //}
 
-        public override bool GlobalSkillResistance() => true;
+        //public override bool GlobalSkillResistance() => true;
     }
 }

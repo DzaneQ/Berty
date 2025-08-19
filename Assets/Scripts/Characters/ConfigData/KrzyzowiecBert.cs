@@ -21,10 +21,10 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("733887__velcronator__sword-impact");
         }
 
-        public override void SkillAdjustHealthChange(int value, CardSpriteBehaviour card)
-        {
-            if (value >= 0) return;
-            card.AdvanceStrength(-value, card);
-        }
+        //public override void SkillAdjustHealthChange(int value, CardSpriteBehaviour card)
+        //{
+        //    if (value >= 0) return;
+        //    card.AdvanceStrength(-value, card);
+        //}
     }
 }

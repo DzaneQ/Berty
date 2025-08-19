@@ -21,15 +21,15 @@ namespace Berty.BoardCards.ConfigData
             AddSoundEffect("212143__qubodup__splash-by-blaukreuz");
         }
 
-        public override int SkillAttackModifier(int damage, CardSpriteBehaviour target)
-        {
-            if (IsTheCardDamaged(target)) return damage + 2;
-            return damage;
-        }
+        //public override int SkillAttackModifier(int damage, CardSpriteBehaviour target)
+        //{
+        //    if (IsTheCardDamaged(target)) return damage + 2;
+        //    return damage;
+        //}
 
-        private bool IsTheCardDamaged(CardSpriteBehaviour targetCard)
-        {
-            return targetCard.CardStatus.Health < targetCard.Character.Health;
-        }
+        //private bool IsTheCardDamaged(CardSpriteBehaviour targetCard)
+        //{
+        //    return targetCard.CardStatus.Health < targetCard.Character.Health;
+        //}
     }
 }
