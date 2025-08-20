@@ -17,11 +17,25 @@ namespace Berty.BoardCards.Managers
             base.Awake();
         }
 
+        public void AdvanceDexterity(BoardCardCore card, int value)
+        {
+            if (card.BoardCard == null) return;
+            card.BoardCard.AdvanceDexterity(value);
+            card.Bars.UpdateBar(StatEnum.Dexterity);
+        }
+
         public void AdvanceHealth(BoardCardCore card, int value)
         {
             if (card.BoardCard == null) return;
             card.BoardCard.AdvanceHealth(value);
             card.Bars.UpdateBar(StatEnum.Health);
+        }
+
+        public void ProgressTemporaryStats(BoardCardCore card)
+        {
+            if (card.BoardCard.Stats.AreTempStatZeros()) return;
+            card.BoardCard.Stats.ProgressTempStats();
+            card.Bars.UpdateBars();
         }
     }
 }

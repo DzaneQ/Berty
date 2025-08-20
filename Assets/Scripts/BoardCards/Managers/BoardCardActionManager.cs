@@ -28,6 +28,7 @@ namespace Berty.BoardCards.Managers
 
         public void RotateCard(BoardCardCore card, NavigationEnum navigation)
         {
+            if (card.IsDexterityBased() && card.BoardCard.IsTired) return;
             SoundManager.Instance.MoveSound(card.SoundSource);
             int angle = navigation switch
             {
@@ -52,6 +53,7 @@ namespace Berty.BoardCards.Managers
         // TODO: Handle two cards moving.
         public void MoveCard(BoardCardCore card, NavigationEnum navigation)
         {
+            if (card.IsDexterityBased() && card.BoardCard.IsTired) return;
             SoundManager.Instance.MoveSound(card.SoundSource);
             Vector2Int distance = navigation switch
             {
@@ -79,6 +81,7 @@ namespace Berty.BoardCards.Managers
 
         public void PrepareToAttack(BoardCardCore card)
         {
+            if (card.BoardCard.HasAttacked || card.BoardCard.IsTired) return;
             card.SetAttacking();
             PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity, card);
         }

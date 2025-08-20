@@ -1,5 +1,6 @@
 using Berty.Audio.Managers;
 using Berty.BoardCards.Behaviours;
+using Berty.BoardCards.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Managers;
@@ -44,6 +45,7 @@ namespace Berty.BoardCards.Listeners
             {
                 SoundManager.Instance.AttackSound(core.SoundSource, core.BoardCard.CharacterConfig.AttackSound);
                 EventManager.Instance.RaiseOnDirectlyAttacked(core);
+                CardStatusManager.Instance.DisableAttack(core);
             }
             else if (core.CardState == CardStateEnum.NewCard)
             {

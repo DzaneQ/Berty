@@ -13,7 +13,7 @@ namespace Berty.BoardCards.Entities
         private Vector2Int? _cached_relativeCoordinates;
         private BoardField _occupiedField;
         private DirectionEnum _direction;
-        private List<CharacterConfig> resistance;
+        private readonly List<CharacterConfig> resistance;
         public CharacterConfig CharacterConfig { get; }
         public BoardField OccupiedField {
             get => _occupiedField;
@@ -65,20 +65,14 @@ namespace Berty.BoardCards.Entities
             SetDirection(direction);
         }
 
-        public void HandleNewTurn()
-        {
-            Stats.HandleNewTurn();
-        }
-
-        public void HandleOwnNewTurn()
-        {
-            ResetAttack();
-            if (IsTired) RegenerateDexterity();
-        }
-
-        public void HandleAttack()
+        public void MarkAsHasAttacked()
         {
             HasAttacked = true;
+        }
+
+        public void MarkAsHasNotAttacked()
+        {
+            HasAttacked = false;
         }
 
         public int GetAngle()
@@ -137,7 +131,7 @@ namespace Berty.BoardCards.Entities
             if (skillSource != null && resistance.Contains(skillSource.CharacterConfig)) return;
             if (skillSource == null) Debug.LogWarning($"No source affecting {CharacterConfig.Name}");
             Stats.Dexterity += value;
-            if (Stats.Dexterity <= 0) ExhaustCard();
+            if (Stats.Dexterity <= 0) MarkAsTired();
         }
 
         public void AdvanceHealth(int value, BoardCard skillSource = null)
@@ -152,20 +146,20 @@ namespace Berty.BoardCards.Entities
             return !HasAttacked && Stats.Strength > 0;
         }
 
-        private void ResetAttack()
-        {
-            HasAttacked = false;
-        }
-
         private void SwitchSides()
         {
             OccupiedField.SwitchSides();
             Stats.Power = CharacterConfig.Power;
         }
 
-        private void ExhaustCard()
+        private void MarkAsTired()
         {
             IsTired = true;
+        }
+
+        public void MarkAsRested()
+        {
+            IsTired = false;
         }
 
         private void RegenerateDexterity()

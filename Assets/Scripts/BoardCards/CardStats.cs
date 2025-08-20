@@ -71,11 +71,6 @@ namespace Berty.BoardCards
             nextTempStat = InitZeroStat();
         }
 
-        public void HandleNewTurn()
-        {
-            ProgressTempStats();
-        }
-
         /*public void AdvanceStrength(int value)
         {
             Strength += value;
@@ -116,10 +111,15 @@ namespace Berty.BoardCards
             TempHealth += value;
         }*/
 
-        private void ProgressTempStats()
+        public void ProgressTempStats()
         {
             currentTempStat = new Dictionary<StatEnum, int>(nextTempStat);
             nextTempStat = nextTempStat.ToDictionary(keyValue => keyValue.Key, keyValue => 0);
+        }
+
+        public bool AreTempStatZeros()
+        {
+            return currentTempStat.Values.All(x => x == 0) && nextTempStat.Values.All(x => x == 0);
         }
 
         private int GetStat(int value)

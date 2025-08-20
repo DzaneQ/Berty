@@ -127,8 +127,8 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\Scripts\Display\Managers\DisplayManager.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\CloseGameInput.cs" />
-    <Compile Include="Assets\Scripts\Enums\NavigationEnum.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveUp.cs" />
+    <Compile Include="Assets\Scripts\Enums\NavigationEnum.cs" />
     <Compile Include="Assets\Scripts\Grid\Collection\FieldCollection.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
@@ -172,6 +172,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Characters\Init\CharacterData.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IBarWidth.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Managers\CardStatusManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\TargetState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />

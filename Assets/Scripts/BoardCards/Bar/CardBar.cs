@@ -63,6 +63,7 @@ namespace Berty.BoardCards.Bar
             int stat = ReadStat();
             barSize.x = startOutlineWidth + (unitWidth * stat);
             float widthDiff = barSize.x - oldWidth;
+            if (Mathf.Abs(widthDiff) < 0.001f) return;
             Vector3 targetPosition = barFill.localPosition;
             targetPosition.x += widthDiff / 2;
             barWidth.AdvanceToVectors(targetPosition, barSize);
