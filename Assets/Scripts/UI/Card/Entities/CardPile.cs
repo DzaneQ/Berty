@@ -43,6 +43,15 @@ namespace Berty.UI.Card.Entities
             return true;
         }
 
+        public void PullCardIfInPile(CharacterEnum character, AlignmentEnum align)
+        {
+            CharacterConfig takenCard = pileCards.Find(x => x.Character == character);
+            if (takenCard == null) return;
+            List<CharacterConfig> targetTable = GetCardsFromAlign(align);
+            pileCards.Remove(takenCard);
+            targetTable.Add(takenCard);
+        }
+
         private bool PullCard(List<CharacterConfig> targetTable)
         {
             if (pileCards.Count == 0 && !Reshuffle()) return false;

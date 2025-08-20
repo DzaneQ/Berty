@@ -10,6 +10,8 @@ using Berty.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Berty.Debugging;
+using Berty.BoardCards.ConfigData;
 
 namespace Berty.UI.Card.Managers
 {
@@ -27,7 +29,7 @@ namespace Berty.UI.Card.Managers
         public void PullCardsTo(int capacity)
         {
             AlignmentEnum align = game.CurrentAlignment;
-
+            DebugManager.Instance?.TakeCardIfInPile(CharacterEnum.MisiekBert, align);
             if (cardPile.PullCardsTo(capacity, align)) HandCardObjectManager.Instance.AddCardObjects();
             else TurnManager.Instance.EndTheGame();
         }

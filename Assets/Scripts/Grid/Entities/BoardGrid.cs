@@ -100,16 +100,23 @@ namespace Berty.Grid.Entities
             return alignedFields;
         }
 
-        private int AlignedCardCount(AlignmentEnum alignment)
-        {
-            return AlignedFields(alignment, true).Count;
-        }
-
         public AlignmentEnum WinningSide()
         {
             if (AlignedCardCount(AlignmentEnum.Player) > AlignedCardCount(AlignmentEnum.Opponent)) return AlignmentEnum.Player;
             if (AlignedCardCount(AlignmentEnum.Player) < AlignedCardCount(AlignmentEnum.Opponent)) return AlignmentEnum.Opponent;
             return HigherByAmountOfType();
+        }
+
+        public bool AreNeighboring(BoardField firstField, BoardField secondField)
+        {
+            int xDiff = Mathf.Abs(firstField.Coordinates.x - secondField.Coordinates.x);
+            int yDiff = Mathf.Abs(firstField.Coordinates.y - secondField.Coordinates.y);
+            return xDiff + yDiff == 1;
+        }
+
+        private int AlignedCardCount(AlignmentEnum alignment)
+        {
+            return AlignedFields(alignment, true).Count;
         }
 
         private AlignmentEnum HigherByAmountOfType()

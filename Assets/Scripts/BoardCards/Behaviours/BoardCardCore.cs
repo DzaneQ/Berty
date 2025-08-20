@@ -157,6 +157,12 @@ namespace Berty.BoardCards.Behaviours
             return false;
         }
 
+        public bool IsOnNewMove()
+        {
+            if (CardState != CardStateEnum.NewTransform) return false;
+            return CardNavigation.IsAnyMoveButtonActivated();
+        }
+
         public void SetNewTransformFromNavigation(NavigationEnum navigation)
         {
             if (!IsDexterityBased()) return;

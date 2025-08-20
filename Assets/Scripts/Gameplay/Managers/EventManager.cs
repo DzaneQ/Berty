@@ -23,6 +23,8 @@ namespace Berty.Gameplay.Managers
         public event Action OnPaymentCancel;
         public event EventHandler<DirectAttackEventArgs> OnDirectlyAttacked;
         public event EventHandler OnAttackNewStand;
+        public event EventHandler OnNewCharacter;
+        public event EventHandler OnMovedCharacter;
         public event EventHandler<DirectAttackEventArgs> OnHighlightStart;
         public event Action OnHighlightEnd;
 
@@ -64,6 +66,16 @@ namespace Berty.Gameplay.Managers
         public void RaiseOnAttackNewStand(BoardCardCore defender)
         {
             OnAttackNewStand?.Invoke(defender, EventArgs.Empty);
+        }
+
+        public void RaiseOnNewCharacter(BoardCardCore newCard)
+        {
+            OnNewCharacter?.Invoke(newCard, EventArgs.Empty);
+        }
+
+        public void RaiseOnMovedCharacter(BoardCardCore movedCard)
+        {
+            OnMovedCharacter?.Invoke(movedCard, EventArgs.Empty);
         }
 
         public void RaiseOnHighlightStart(BoardCardCore focusedCard)

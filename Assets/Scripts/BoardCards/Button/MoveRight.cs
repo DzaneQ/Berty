@@ -12,7 +12,7 @@ namespace Berty.BoardCards.Button
     {
         private void OnMouseDown()
         {
-            BoardCardActionManager.Instance.MoveCard(card, GetName());
+            BoardCardActionManager.Instance.OrderMoveCard(card, GetName());
         }
 
         protected override bool CanNavigate()

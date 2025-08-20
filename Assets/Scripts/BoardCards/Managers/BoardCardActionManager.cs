@@ -26,7 +26,7 @@ namespace Berty.BoardCards.Managers
             Grid = CoreManager.Instance.Game.Grid;
         }
 
-        public void RotateCard(BoardCardCore card, NavigationEnum navigation)
+        public void OrderRotateCard(BoardCardCore card, NavigationEnum navigation)
         {
             if (card.IsDexterityBased() && card.BoardCard.IsTired) return;
             SoundManager.Instance.MoveSound(card.SoundSource);
@@ -36,9 +36,7 @@ namespace Berty.BoardCards.Managers
                 NavigationEnum.RotateRight => 90,
                 _ => throw new ArgumentException("Invalid NavigationEnum for RotateCard")
             };
-            card.CardNavigation.RotateCardObject(angle);
-            card.BoardCard.AdvanceAngleBy(angle);
-            Debug.Log($"{card.name} has angle {card.BoardCard.Direction} with coordinates: ({card.BoardCard.RelativeCoordinates.x},{card.BoardCard.RelativeCoordinates.y})");
+            CardNavigationManager.Instance.RotateCard(card, angle);
             if (card.CardState == CardStateEnum.NewTransform)
             {
                 PaymentManager.Instance.CancelPayment();
@@ -50,8 +48,7 @@ namespace Berty.BoardCards.Managers
             ButtonObjectManager.Instance.HideCornerButton();
         }
 
-        // TODO: Handle two cards moving.
-        public void MoveCard(BoardCardCore card, NavigationEnum navigation)
+        public void OrderMoveCard(BoardCardCore card, NavigationEnum navigation)
         {
             if (card.IsDexterityBased() && card.BoardCard.IsTired) return;
             SoundManager.Instance.MoveSound(card.SoundSource);
@@ -64,10 +61,7 @@ namespace Berty.BoardCards.Managers
                 _ => throw new ArgumentException("Invalid NavigationEnum for MoveCard")
             };
             BoardField targetField = Grid.GetFieldDistancedFromCardOrThrow(distance.x, distance.y, card.BoardCard);
-            AlignmentEnum cardAlign = card.BoardCard.OccupiedField.Align;
-            card.BoardCard.OccupiedField.RemoveCard();
-            targetField.PlaceCard(card.BoardCard, cardAlign);
-            card.CardNavigation.MoveCardObject(FieldCollectionManager.Instance.GetBehaviourFromEntity(targetField));
+            CardNavigationManager.Instance.MoveCard(card, targetField);
             if (card.CardState == CardStateEnum.NewTransform)
             {
                 PaymentManager.Instance.CancelPayment();

@@ -16,6 +16,8 @@ namespace Berty.BoardCards.Button
         private Material neutralMaterial;
         private bool isActivated;
 
+        public bool IsActivated => isActivated;
+
         private void Awake()
         {
             card = GetComponentInParent<BoardCardCore>();

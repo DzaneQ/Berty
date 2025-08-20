@@ -138,5 +138,15 @@ namespace Berty.BoardCards.Behaviours
         {
             return rotateCard.CoroutineCount > 0 || moveCard.CoroutineCount > 0;
         }
+
+        public bool IsAnyMoveButtonActivated()
+        {
+            foreach (CardButton button in Buttons)
+            {
+                if (!button.IsMoveButton()) continue;
+                if (button.IsActivated) return true;
+            }
+            return false;
+        }
     }
 }
