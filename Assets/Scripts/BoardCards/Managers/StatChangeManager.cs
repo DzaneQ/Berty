@@ -17,6 +17,20 @@ namespace Berty.BoardCards.Managers
             base.Awake();
         }
 
+        public void AdvanceStrength(BoardCardCore card, int value)
+        {
+            if (card.BoardCard == null) return;
+            card.BoardCard.AdvanceStrength(value);
+            card.Bars.UpdateBar(StatEnum.Strength);
+        }
+
+        public void AdvancePower(BoardCardCore card, int value)
+        {
+            if (card.BoardCard == null) return;
+            card.BoardCard.AdvancePower(value);
+            card.Bars.UpdateBar(StatEnum.Power);
+        }
+
         public void AdvanceDexterity(BoardCardCore card, int value)
         {
             if (card.BoardCard == null) return;

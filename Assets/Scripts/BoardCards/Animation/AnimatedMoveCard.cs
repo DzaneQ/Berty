@@ -49,10 +49,7 @@ namespace Berty.BoardCards.Animation
             AlignmentEnum align = card.BoardCard.Align;
             card.CardNavigation.DisableInteraction();
             yield return MoveToField(target, durationSeconds);
-            //occupantCard = card;
-            //card.SetField(this, true);
-            target.UpdateField();
-            //card.EnableButtons();
+            card.CardNavigation.HandleAfterMoveAnimation();
             yield return null;
         }
 

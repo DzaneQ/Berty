@@ -13,9 +13,9 @@ namespace Berty.Gameplay.Managers
     {
         private Dictionary<string, string> languageDictionary;
 
-        private void Awake()
+        protected override void Awake()
         {
-            InitializeSingleton();
+            base.Awake();
             LoadLanguageDictionary();
         }
 

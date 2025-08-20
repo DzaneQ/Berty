@@ -4,6 +4,7 @@ using Berty.BoardCards.Entities;
 using Berty.BoardCards.Listeners;
 using Berty.BoardCards.State;
 using Berty.Enums;
+using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
 using System;
 using System.Collections;
@@ -28,6 +29,7 @@ namespace Berty.BoardCards.Behaviours
         private BoardCardInput input;
         private IMoveCard moveCard;
         private IRotateCard rotateCard;
+        private bool queuedMovementEffect;
 
         private void Awake()
         {
@@ -35,6 +37,7 @@ namespace Berty.BoardCards.Behaviours
             moveCard = GetComponent<IMoveCard>();
             rotateCard = GetComponent<IRotateCard>();
             input = GetComponent<BoardCardInput>();
+            queuedMovementEffect = false;
             InitializeNavigation();
         }
 
@@ -112,6 +115,8 @@ namespace Berty.BoardCards.Behaviours
             moveCard.ToField(field);
             core.ParentField.UpdateField();
             core.SetFieldBehaviour(field);
+            if (core.CardState == CardStateEnum.Active || core.CardState == CardStateEnum.Telekinetic) return; // Don't run before NewTransform state is set
+            HandleNewMovement();
         }
 
         public void RotateCardObject(int angle)
@@ -147,6 +152,19 @@ namespace Berty.BoardCards.Behaviours
                 if (button.IsActivated) return true;
             }
             return false;
+        }
+
+        public void HandleNewMovement()
+        {
+            queuedMovementEffect = true;
+            if (!IsCardAnimating()) HandleAfterMoveAnimation();
+        }
+
+        public void HandleAfterMoveAnimation()
+        {
+            if (!queuedMovementEffect) return;
+            EventManager.Instance.RaiseOnMovedCharacter(core);
+            queuedMovementEffect = false;
         }
     }
 }

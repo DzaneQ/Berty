@@ -26,9 +26,9 @@ namespace Berty.Debugging
             game = CoreManager.Instance.Game;
         }
 
-        public void TakeCardIfInPile(CharacterEnum character, AlignmentEnum align)
+        public void TakeCardIfInPile(AlignmentEnum align)
         {
-            game.CardPile.PullCardIfInPile(character, align);
+            game.CardPile.PullCardIfInPile(CharacterEnum.EBerta, align);
         }
     }
 #else

@@ -177,6 +177,16 @@ namespace Berty.BoardCards.Entities
             DeactivateCard();
         }
 
+        public bool IsResistantTo(BoardCard card)
+        {
+            return resistance.Find(x => x == card.CharacterConfig) != null;
+        }
+
+        public void AddResistanceToCharacter(CharacterConfig character)
+        {
+            resistance.Add(character);
+        }
+
         public Vector2Int GetDistanceTo(BoardCard target)
         {
             Vector2Int targetRelCoords = target.GetCoordinatesByDirection(Direction);

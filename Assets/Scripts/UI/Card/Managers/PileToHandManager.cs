@@ -29,7 +29,7 @@ namespace Berty.UI.Card.Managers
         public void PullCardsTo(int capacity)
         {
             AlignmentEnum align = game.CurrentAlignment;
-            DebugManager.Instance?.TakeCardIfInPile(CharacterEnum.MisiekBert, align);
+            DebugManager.Instance?.TakeCardIfInPile(align);
             if (cardPile.PullCardsTo(capacity, align)) HandCardObjectManager.Instance.AddCardObjects();
             else TurnManager.Instance.EndTheGame();
         }

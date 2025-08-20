@@ -13,9 +13,9 @@ namespace Berty.UI.Managers
     {
         protected GameObject canvasObject;
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
-            InitializeSingleton();
+            base.Awake();
             canvasObject = FindObjectOfType<Canvas>().gameObject;
         }
     }
