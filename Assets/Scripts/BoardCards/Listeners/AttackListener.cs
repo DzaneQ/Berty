@@ -49,14 +49,14 @@ namespace Berty.BoardCards.Listeners
                 return;
             }
             //Debug.Log($"{card.name} with {card.BoardCard.Stats.Health} health takes damage");
-            StatChangeManager.Instance.AdvanceHealth(card, -attacker.BoardCard.Stats.Strength); // Take damage
+            card.StatChange.AdvanceHealth(-attacker.BoardCard.Stats.Strength); // Take damage
             //Debug.Log($"{card.name} has {card.BoardCard.Stats.Health} health");
             if (!card.BoardCard.CharacterConfig.CanRiposte(distanceToAttacker))
             {
                 HandleCharacterSkillEventManager.Instance.HandleDirectAttackWitness(card, attacker);
                 return;
             }
-            StatChangeManager.Instance.AdvanceHealth(attacker, -card.BoardCard.Stats.Strength); // Do riposte
+            attacker.StatChange.AdvanceHealth(-card.BoardCard.Stats.Strength); // Do riposte
             //Debug.Log($"{attacker.name} has {card.BoardCard.Stats.Health} health due to riposte");
             HandleCharacterSkillEventManager.Instance.HandleDirectAttackWitness(card, attacker);
         }
@@ -72,7 +72,7 @@ namespace Berty.BoardCards.Listeners
             Vector2Int distanceToDefender = card.BoardCard.GetDistanceTo(defender.BoardCard);
             if (!card.BoardCard.CharacterConfig.CanAttack(distanceToDefender)) return; // Has to be in attack range
             //Debug.Log($"{defender.name} with {defender.BoardCard.Stats.Health} health is attacked by {card.name}");
-            StatChangeManager.Instance.AdvanceHealth(defender, -card.BoardCard.Stats.Strength);
+            defender.StatChange.AdvanceHealth(-card.BoardCard.Stats.Strength);
             //Debug.Log($"{defender.name} has {defender.BoardCard.Stats.Health} health after being attacked by {card.name}");
         }
     }

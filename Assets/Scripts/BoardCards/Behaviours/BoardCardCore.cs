@@ -16,6 +16,7 @@ using Berty.UI.Card.Systems;
 using System;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using static UnityEngine.CullingGroup;
 
 namespace Berty.BoardCards.Behaviours
 {
@@ -29,6 +30,7 @@ namespace Berty.BoardCards.Behaviours
         private AudioSource soundSource;
         public BoardCardBarsObjects Bars { get; private set; }
         public BoardCardMovableObject CardNavigation { get; private set; }
+        public BoardCardStatChange StatChange { get; private set; }
 
         public BoardCard BoardCard { get; private set; }
         public CardStateEnum CardState
@@ -54,6 +56,7 @@ namespace Berty.BoardCards.Behaviours
             soundSource = GetComponent<AudioSource>();
             Bars = GetComponent<BoardCardBarsObjects>();
             CardNavigation = GetComponent<BoardCardMovableObject>();
+            StatChange = GetComponent<BoardCardStatChange>();
             ParentField = GetComponentInParent<FieldBehaviour>();
             SelectionAndPaymentSystem system = CoreManager.Instance.SelectionAndPaymentSystem;
             BoardCard = ParentField.BoardField.AddCard(system.GetCardOnHoldOrThrow(), Game.CurrentAlignment);

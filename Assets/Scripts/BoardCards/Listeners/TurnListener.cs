@@ -46,7 +46,7 @@ namespace Berty.BoardCards.Listeners
 
         private void ProgressTemporaryStats()
         {
-            StatChangeManager.Instance.ProgressTemporaryStats(core);
+            core.StatChange.ProgressTemporaryStats();
         }
 
         private void RegenerateDexterity()
@@ -57,7 +57,7 @@ namespace Berty.BoardCards.Listeners
                 core.BoardCard.MarkAsRested();
                 return;
             }
-            StatChangeManager.Instance.AdvanceDexterity(core, 1);
+            core.StatChange.AdvanceDexterity(1);
             if (core.BoardCard.Stats.Dexterity >= core.BoardCard.CharacterConfig.Dexterity) core.BoardCard.MarkAsRested();
         }
 

@@ -112,10 +112,10 @@ namespace Berty.Characters.Managers
                 target.BoardCard.Stats.Health
             };
             int minStat = stats.Min();
-            if (stats[0] == minStat) StatChangeManager.Instance.AdvanceStrength(target, 1);
-            if (stats[1] == minStat) StatChangeManager.Instance.AdvancePower(target, 1);
-            if (stats[2] == minStat) StatChangeManager.Instance.AdvanceDexterity(target, 1);
-            if (stats[3] == minStat) StatChangeManager.Instance.AdvanceHealth(target, 1);
+            if (stats[0] == minStat) target.StatChange.AdvanceStrength(1);
+            if (stats[1] == minStat) target.StatChange.AdvancePower(1);
+            if (stats[2] == minStat) target.StatChange.AdvanceDexterity(1);
+            if (stats[3] == minStat) target.StatChange.AdvanceHealth(1);
             target.BoardCard.AddResistanceToCharacter(eBerta.BoardCard.CharacterConfig);
         }
     }

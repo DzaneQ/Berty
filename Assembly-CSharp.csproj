@@ -73,7 +73,6 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertPogromca.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Listeners\FieldInput.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Managers\StatChangeManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\Tankbert.cs" />
     <Compile Include="Assets\Scripts\Enums\CornerButtonEnum.cs" />
@@ -162,6 +161,7 @@
     <Compile Include="Assets\Scripts\BoardCards\Button\RotateRight.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\AstronautaBert.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardStatChange.cs" />
     <Compile Include="Assets\Scripts\Enums\RoleEnum.cs" />
     <Compile Include="Assets\Scripts\Grid\FieldGrid.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertWick.cs" />
@@ -173,8 +173,8 @@
     <Compile Include="Assets\Scripts\BoardCards\State\CardState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Characters\Init\CharacterData.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Animation\IBarWidth.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Managers\CardStatusManager.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Animation\IBarWidth.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\TargetState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
