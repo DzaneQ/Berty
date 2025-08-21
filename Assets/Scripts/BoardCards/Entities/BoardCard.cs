@@ -2,7 +2,6 @@ using Berty.BoardCards.ConfigData;
 using Berty.Enums;
 using Berty.Grid.Field.Entities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -119,6 +118,14 @@ namespace Berty.BoardCards.Entities
             Stats.Power += value;
         }
 
+        public void SetPower(int value, BoardCard skillSource = null)
+        {
+            if (skillSource != null && resistance.Contains(skillSource.CharacterConfig)) return;
+            //if (!CharacterConfig.CanAffectPower(this, skillSource)) return;
+            if (CharacterConfig.GlobalSkillResistance() && skillSource == null) return;
+            Stats.Power = value - Stats.TempPower;
+        }
+
         public void AdvanceTempPower(int value, BoardCard skillSource = null)
         {
             //if (!CharacterConfig.CanAffectPower(this, skillSource)) return;
@@ -131,7 +138,6 @@ namespace Berty.BoardCards.Entities
             if (skillSource != null && resistance.Contains(skillSource.CharacterConfig)) return;
             if (skillSource == null) Debug.LogWarning($"No source affecting {CharacterConfig.Name}");
             Stats.Dexterity += value;
-            if (Stats.Dexterity <= 0) MarkAsTired();
         }
 
         public void AdvanceHealth(int value, BoardCard skillSource = null)
@@ -146,13 +152,7 @@ namespace Berty.BoardCards.Entities
             return !HasAttacked && Stats.Strength > 0;
         }
 
-        private void SwitchSides()
-        {
-            OccupiedField.SwitchSides();
-            Stats.Power = CharacterConfig.Power;
-        }
-
-        private void MarkAsTired()
+        public void MarkAsTired()
         {
             IsTired = true;
         }

@@ -40,6 +40,13 @@ namespace Berty.BoardCards.Behaviours
             Bars.UpdateBar(StatEnum.Power);
         }
 
+        public void SetPower(int value)
+        {
+            if (Card == null) return;
+            Card.SetPower(value);
+            Bars.UpdateBar(StatEnum.Power);
+        }
+
         public void AdvanceDexterity(int value)
         {
             if (Card == null) return;
@@ -59,6 +66,27 @@ namespace Berty.BoardCards.Behaviours
             if (Card.Stats.AreTempStatZeros()) return;
             Card.Stats.ProgressTempStats();
             Bars.UpdateBars();
+        }
+
+        public void HandleAfterAnimationStatChange()
+        {
+            if (Card.Stats.Health <= 0)
+            {
+                core.KillCard();
+                return;
+            }
+            if (Card.Stats.Dexterity <= 0)
+            {
+                Card.MarkAsTired(); 
+            }
+            if (Card.Stats.Dexterity >= Card.CharacterConfig.Dexterity)
+            {
+                Card.MarkAsRested();
+            }
+            if (Card.Stats.Power <= 0)
+            {
+                core.SwitchSides();
+            }    
         }
     }
 }

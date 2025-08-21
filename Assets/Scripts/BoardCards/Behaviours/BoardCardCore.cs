@@ -190,6 +190,13 @@ namespace Berty.BoardCards.Behaviours
             Bars.ShowBars();
         }
 
+        public void SwitchSides()
+        {
+            BoardCard.OccupiedField.SwitchSides();
+            StatChange.SetPower(BoardCard.CharacterConfig.Power);
+            ParentField.UpdateField();
+        }
+
         public void KillCard()
         {
             Game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);

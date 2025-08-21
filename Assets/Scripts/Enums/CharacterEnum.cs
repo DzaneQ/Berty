@@ -7,6 +7,7 @@ namespace Berty.Enums
     public enum CharacterEnum
     {
         Unknown = 0,
+        BertaSJW,
         EBerta,
         MisiekBert,
     }

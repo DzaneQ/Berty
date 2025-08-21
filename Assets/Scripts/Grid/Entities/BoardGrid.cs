@@ -114,6 +114,11 @@ namespace Berty.Grid.Entities
             return xDiff + yDiff == 1;
         }
 
+        public bool AreAligned(BoardField firstField, BoardField secondField)
+        {
+            return firstField.Align == secondField.Align;
+        }
+
         private int AlignedCardCount(AlignmentEnum alignment)
         {
             return AlignedFields(alignment, true).Count;

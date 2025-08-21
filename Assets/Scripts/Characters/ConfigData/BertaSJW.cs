@@ -8,6 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public BertaSJW()
         {
             AddName("berta sjw");
+            SetCharacter(CharacterEnum.BertaSJW);
             AddProperties(GenderEnum.Female, RoleEnum.Special);
             AddStats(1, 3, 5, 3);
             AddRange(-1, 0, attackRange);

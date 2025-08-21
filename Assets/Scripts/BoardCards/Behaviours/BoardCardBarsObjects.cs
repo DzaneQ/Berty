@@ -80,7 +80,7 @@ namespace Berty.BoardCards.Behaviours
         public void HandleAfterBarChange()
         {
             if (AreBarsAnimating()) return;
-            if (core.BoardCard.Stats.Health <= 0) core.KillCard();
+            core.StatChange.HandleAfterAnimationStatChange();
         }
     }
 }

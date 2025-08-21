@@ -1,4 +1,5 @@
 using Berty.BoardCards;
+using Berty.BoardCards.Animation;
 using Berty.BoardCards.Behaviours;
 using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Managers;
@@ -32,8 +33,7 @@ namespace Berty.Characters.Managers
             switch (attacker.BoardCard.CharacterConfig.Character)
             {
                 case CharacterEnum.MisiekBert:
-                    if (game.Grid.AreNeighboring(witness.ParentField.BoardField, attacker.ParentField.BoardField))
-                        ApplyMisiekBertEffect(witness, attacker);
+                    ApplyMisiekBertEffect(witness, attacker);
                     break;
             }
         }
@@ -44,24 +44,25 @@ namespace Berty.Characters.Managers
             // When new card is the character with skill
             switch (newCard.BoardCard.CharacterConfig.Character)
             {
-                case CharacterEnum.MisiekBert:
-                    if (game.Grid.AreNeighboring(witness.ParentField.BoardField, newCard.ParentField.BoardField))
-                        ApplyMisiekBertEffect(witness, newCard);
+                case CharacterEnum.BertaSJW:
+                    ApplyBertaSJWEffect(witness, newCard);
                     break;
                 case CharacterEnum.EBerta:
-                    if (game.Grid.AreNeighboring(witness.ParentField.BoardField, newCard.ParentField.BoardField)
-                        && !witness.BoardCard.IsResistantTo(newCard.BoardCard))
-                        ApplyEBertaEffect(witness, newCard);
+                    ApplyEBertaEffect(witness, newCard);
+                    break;
+                case CharacterEnum.MisiekBert:
+                    ApplyMisiekBertEffect(witness, newCard);
                     break;
             }
 
             // When witness is the character with skill
             switch (witness.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BertaSJW:
+                    ApplyBertaSJWEffect(newCard, witness);
+                    break;
                 case CharacterEnum.EBerta:
-                    if (game.Grid.AreNeighboring(witness.ParentField.BoardField, newCard.ParentField.BoardField)
-                        && !newCard.BoardCard.IsResistantTo(witness.BoardCard))
-                        ApplyEBertaEffect(newCard, witness);
+                    ApplyEBertaEffect(newCard, witness);
                     break;
             }
         }
@@ -72,39 +73,44 @@ namespace Berty.Characters.Managers
             // When moved card is the character with skill
             switch (movedCard.BoardCard.CharacterConfig.Character)
             {
-                case CharacterEnum.MisiekBert:
-                    if (game.Grid.AreNeighboring(witness.ParentField.BoardField, movedCard.ParentField.BoardField))
-                        ApplyMisiekBertEffect(witness, movedCard);
+                case CharacterEnum.BertaSJW:
+                    ApplyBertaSJWEffect(witness, movedCard);
                     break;
                 case CharacterEnum.EBerta:
-                    if (game.Grid.AreNeighboring(witness.ParentField.BoardField, movedCard.ParentField.BoardField)
-                        && !witness.BoardCard.IsResistantTo(movedCard.BoardCard))
-                        ApplyEBertaEffect(witness, movedCard);
+                    ApplyEBertaEffect(witness, movedCard);
+                    break;
+                case CharacterEnum.MisiekBert:
+                    ApplyMisiekBertEffect(witness, movedCard);
                     break;
             }
 
             // When witness is the character with skill
             switch (witness.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BertaSJW:
+                    ApplyBertaSJWEffect(movedCard, witness);
+                    break;
                 case CharacterEnum.EBerta:
-                    if (game.Grid.AreNeighboring(witness.ParentField.BoardField, movedCard.ParentField.BoardField)
-                        && !movedCard.BoardCard.IsResistantTo(witness.BoardCard))
-                        ApplyEBertaEffect(movedCard, witness);
+                    ApplyEBertaEffect(movedCard, witness);
                     break;
             }
         }
 
-        private void ApplyMisiekBertEffect(BoardCardCore card, BoardCardCore misiekBert)
+        private void ApplyMisiekBertEffect(BoardCardCore target, BoardCardCore misiekBert)
         {
             if (misiekBert.BoardCard.CharacterConfig.Character != CharacterEnum.MisiekBert)
                 throw new Exception($"Misiek bert effect is casted by {misiekBert.BoardCard.CharacterConfig.Name}");
-            CardNavigationManager.Instance.RotateCard(card, 270);
+            if (!game.Grid.AreNeighboring(target.ParentField.BoardField, misiekBert.ParentField.BoardField)) return;
+            CardNavigationManager.Instance.RotateCard(target, 270);
         }
 
         private void ApplyEBertaEffect(BoardCardCore target, BoardCardCore eBerta)
         {
             if (eBerta.BoardCard.CharacterConfig.Character != CharacterEnum.EBerta)
                 throw new Exception($"eBerta effect is casted by {eBerta.BoardCard.CharacterConfig.Name}");
+            if (!game.Grid.AreNeighboring(target.ParentField.BoardField, eBerta.ParentField.BoardField)) return;
+            if (!game.Grid.AreAligned(target.ParentField.BoardField, eBerta.ParentField.BoardField)) return;
+            if (target.BoardCard.IsResistantTo(eBerta.BoardCard)) return;
             int[] stats = { 
                 target.BoardCard.Stats.Strength, 
                 target.BoardCard.Stats.Power, 
@@ -117,6 +123,16 @@ namespace Berty.Characters.Managers
             if (stats[2] == minStat) target.StatChange.AdvanceDexterity(1);
             if (stats[3] == minStat) target.StatChange.AdvanceHealth(1);
             target.BoardCard.AddResistanceToCharacter(eBerta.BoardCard.CharacterConfig);
+        }
+
+        private void ApplyBertaSJWEffect(BoardCardCore target, BoardCardCore bertaSJW)
+        {
+            if (bertaSJW.BoardCard.CharacterConfig.Character != CharacterEnum.BertaSJW)
+                throw new Exception($"BertaSJW effect is casted by {bertaSJW.BoardCard.CharacterConfig.Name}");
+            if (!game.Grid.AreNeighboring(target.ParentField.BoardField, bertaSJW.ParentField.BoardField)) return;
+            if (target.BoardCard.IsResistantTo(bertaSJW.BoardCard)) return;
+            target.StatChange.AdvancePower(-3);
+            target.BoardCard.AddResistanceToCharacter(bertaSJW.BoardCard.CharacterConfig);
         }
     }
 }
