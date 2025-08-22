@@ -100,8 +100,10 @@
     <Compile Include="Assets\Scripts\UI\Managers\OverlayObjectManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IRotateCard.cs" />
     <Compile Include="Assets\Scripts\Enums\CardStateEnum.cs" />
+    <Compile Include="Assets\Scripts\Characters\Managers\HandleSkillEventManager.cs" />
     <Compile Include="Assets\Scripts\Audio\Managers\SoundManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
+    <Compile Include="Assets\Scripts\Characters\Managers\ModifyStatChangeManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertZawodowiec.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\ActiveState.cs" />
     <Compile Include="Assets\Scripts\Debugging\DevTools.cs" />
@@ -234,7 +236,6 @@
     <Compile Include="Assets\Scripts\Gameplay\Managers\PaymentManager.cs" />
     <Compile Include="Assets\Scripts\Grid\Managers\ColorizeObjectManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
-    <Compile Include="Assets\Scripts\Characters\Managers\HandleCharacterSkillEventManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\SedziaBertt.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Listeners\TurnListener.cs" />

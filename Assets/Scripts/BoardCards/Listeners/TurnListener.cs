@@ -51,7 +51,7 @@ namespace Berty.BoardCards.Listeners
                 core.BoardCard.MarkAsRested();
                 return;
             }
-            core.StatChange.AdvanceDexterity(1);
+            core.StatChange.AdvanceDexterity(1, null);
             if (core.BoardCard.Stats.Dexterity >= core.BoardCard.CharacterConfig.Dexterity) core.BoardCard.MarkAsRested();
         }
 

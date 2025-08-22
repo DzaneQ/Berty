@@ -35,13 +35,13 @@ namespace Berty.BoardCards.Listeners
         private void HandleNewCharacter(object sender, EventArgs args)
         {
             BoardCardCore newCharacter = (BoardCardCore)sender;
-            HandleCharacterSkillEventManager.Instance.HandleNewCardWitness(core, newCharacter);
+            HandleSkillEventManager.Instance.HandleNewCardWitness(core, newCharacter);
         }
 
         private void HandleMovedCharacter(object sender, EventArgs args)
         {
             BoardCardCore movedCharacter = (BoardCardCore)sender;
-            HandleCharacterSkillEventManager.Instance.HandleNewCardWitness(core, movedCharacter);
+            HandleSkillEventManager.Instance.HandleMovedCardWitness(core, movedCharacter);
         }
     }
 }

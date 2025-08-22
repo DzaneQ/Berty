@@ -94,57 +94,39 @@ namespace Berty.BoardCards.Entities
             Direction = (DirectionEnum)(((int)Direction + angle) % 360);
         }
 
-        // TODO: Change argument types of external methods from CardSpriteBehaviour to BoardCard
-        public void AdvanceStrength(int value, BoardCard skillSource = null)
+        public void AdvanceStrength(int value)
         {
-            if (skillSource != null && resistance.Contains(skillSource.CharacterConfig)) return;
-            //if (!CharacterConfig.CanAffectStrength(this, skillSource)) return;
-            if (CharacterConfig.GlobalSkillResistance() && skillSource == null) return;
             Stats.Strength += value;
         }
 
-        public void AdvanceTempStrength(int value, BoardCard skillSource = null)
+        public void AdvanceTempStrength(int value)
         {
-            //if (!CharacterConfig.CanAffectStrength(this, skillSource)) return;
-            if (CharacterConfig.GlobalSkillResistance() && skillSource == null) return;
             Stats.TempStrength += value;
         }
 
-        public void AdvancePower(int value, BoardCard skillSource = null)
+        public void AdvancePower(int value)
         {
-            if (skillSource != null && resistance.Contains(skillSource.CharacterConfig)) return;
-            //if (!CharacterConfig.CanAffectPower(this, skillSource)) return;
-            if (CharacterConfig.GlobalSkillResistance() && skillSource == null) return;
             Stats.Power += value;
         }
 
-        public void SetPower(int value, BoardCard skillSource = null)
+        public void SetPower(int value)
         {
-            if (skillSource != null && resistance.Contains(skillSource.CharacterConfig)) return;
-            //if (!CharacterConfig.CanAffectPower(this, skillSource)) return;
-            if (CharacterConfig.GlobalSkillResistance() && skillSource == null) return;
             Stats.Power = value - Stats.TempPower;
         }
 
-        public void AdvanceTempPower(int value, BoardCard skillSource = null)
+        public void AdvanceTempPower(int value)
         {
-            //if (!CharacterConfig.CanAffectPower(this, skillSource)) return;
-            if (CharacterConfig.GlobalSkillResistance() && skillSource == null) return;
             Stats.TempPower += value;
         }
 
-        public void AdvanceDexterity(int value, BoardCard skillSource = null)
+        public void AdvanceDexterity(int value)
         {
-            if (skillSource != null && resistance.Contains(skillSource.CharacterConfig)) return;
-            if (skillSource == null) Debug.LogWarning($"No source affecting {CharacterConfig.Name}");
             Stats.Dexterity += value;
         }
 
-        public void AdvanceHealth(int value, BoardCard skillSource = null)
+        public void AdvanceHealth(int value)
         {
-            if (skillSource != null && resistance.Contains(skillSource.CharacterConfig)) return;
             Stats.Health += value;
-            //if (CanUseSkill()) CharacterConfig.SkillAdjustHealthChange(value, this);
         }
 
         public bool CanAttack()
@@ -160,21 +142,6 @@ namespace Berty.BoardCards.Entities
         public void MarkAsRested()
         {
             IsTired = false;
-        }
-
-        private void RegenerateDexterity()
-        {
-            if (Stats.Dexterity < CharacterConfig.Dexterity) AdvanceDexterity(1);
-            if (Stats.Dexterity >= CharacterConfig.Dexterity) IsTired = false;
-        }
-
-        private void KillCard()
-        {
-            //CharacterConfig.SkillOnDeath(this);
-            //foreach (BoardField field in Grid.Fields)
-            //    if (field.IsOccupied() && field.OccupantCard.CanUseSkill())
-            //        field.OccupantCard.CharacterConfig.SkillOnOtherCardDeath(field.OccupantCard, this);
-            DeactivateCard();
         }
 
         public bool IsResistantTo(BoardCard card)

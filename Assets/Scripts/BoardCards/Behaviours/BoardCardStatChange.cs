@@ -2,6 +2,7 @@ using Berty.BoardCards.Bar;
 using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
 using Berty.BoardCards.State;
+using Berty.Characters.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
@@ -26,14 +27,14 @@ namespace Berty.BoardCards.Behaviours
             core = GetComponent<BoardCardCore>();
         }
 
-        public void AdvanceStrength(int value)
+        public void AdvanceStrength(int value, BoardCardCore source)
         {
             if (Card == null) return;
             Card.AdvanceStrength(value);
             Bars.UpdateBar(StatEnum.Strength);
         }
 
-        public void AdvancePower(int value)
+        public void AdvancePower(int value, BoardCardCore source)
         {
             if (Card == null) return;
             Card.AdvancePower(value);
@@ -47,18 +48,20 @@ namespace Berty.BoardCards.Behaviours
             Bars.UpdateBar(StatEnum.Power);
         }
 
-        public void AdvanceDexterity(int value)
+        public void AdvanceDexterity(int value, BoardCardCore source)
         {
             if (Card == null) return;
             Card.AdvanceDexterity(value);
             Bars.UpdateBar(StatEnum.Dexterity);
         }
 
-        public void AdvanceHealth(int value)
+        public void AdvanceHealth(int value, BoardCardCore source)
         {
             if (Card == null) return;
+            if (ModifyStatChangeManager.Instance.BeforeHealthChange(core, ref value, source)) return;
             Card.AdvanceHealth(value);
             Bars.UpdateBar(StatEnum.Health);
+            ModifyStatChangeManager.Instance.AfterHealthChange(core, value, source);
         }
 
         public void ProgressTemporaryStats()

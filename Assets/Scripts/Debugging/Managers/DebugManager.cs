@@ -28,13 +28,15 @@ namespace Berty.Debugging
 
         public void TakeCardIfInPile(AlignmentEnum align)
         {
-            game.CardPile.PullCardIfInPile(CharacterEnum.BertaSJW, align);
+            game.CardPile.PullCardIfInPile(CharacterEnum.PrymusBert, align);
         }
     }
 #else
     public class DebugManager
     {
         public static DebugManager Instance => null;
+
+        public void TakeCardIfInPile(AlignmentEnum align) {}
     }
 #endif
 }

@@ -8,6 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public PrymusBert()
         {
             AddName("prymus bert");
+            SetCharacter(CharacterEnum.PrymusBert);
             AddProperties(GenderEnum.Kid, RoleEnum.Support);
             AddStats(1, 3, 5, 3);
             AddRange(0, 1, attackRange);

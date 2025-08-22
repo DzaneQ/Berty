@@ -9,6 +9,8 @@ namespace Berty.Enums
         Unknown = 0,
         BertaSJW,
         EBerta,
+        KrzyzowiecBert,
         MisiekBert,
+        PrymusBert,
     }
 }
