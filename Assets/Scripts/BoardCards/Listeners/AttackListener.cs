@@ -49,14 +49,16 @@ namespace Berty.BoardCards.Listeners
                 return;
             }
             //Debug.Log($"{card.name} with {card.BoardCard.Stats.Health} health takes damage");
-            card.StatChange.AdvanceHealth(-attacker.BoardCard.Stats.Strength, attacker); // Take damage
+            int modifiedAttackerStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(card, attacker);
+            card.StatChange.AdvanceHealth(-modifiedAttackerStrength, attacker); // Take damage
             //Debug.Log($"{card.name} has {card.BoardCard.Stats.Health} health");
             if (!card.BoardCard.CharacterConfig.CanRiposte(distanceToAttacker))
             {
                 HandleSkillEventManager.Instance.HandleDirectAttackWitness(card, attacker);
                 return;
             }
-            attacker.StatChange.AdvanceHealth(-card.BoardCard.Stats.Strength, card); // Do riposte
+            int modifiedRiposteStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(attacker, card);
+            attacker.StatChange.AdvanceHealth(-modifiedRiposteStrength, card); // Do riposte
             //Debug.Log($"{attacker.name} has {card.BoardCard.Stats.Health} health due to riposte");
             HandleSkillEventManager.Instance.HandleDirectAttackWitness(card, attacker);
         }
@@ -72,7 +74,8 @@ namespace Berty.BoardCards.Listeners
             Vector2Int distanceToDefender = card.BoardCard.GetDistanceTo(defender.BoardCard);
             if (!card.BoardCard.CharacterConfig.CanAttack(distanceToDefender)) return; // Has to be in attack range
             //Debug.Log($"{defender.name} with {defender.BoardCard.Stats.Health} health is attacked by {card.name}");
-            defender.StatChange.AdvanceHealth(-card.BoardCard.Stats.Strength, card);
+            int modifiedStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(defender, card);
+            defender.StatChange.AdvanceHealth(-modifiedStrength, card);
             //Debug.Log($"{defender.name} has {defender.BoardCard.Stats.Health} health after being attacked by {card.name}");
         }
     }

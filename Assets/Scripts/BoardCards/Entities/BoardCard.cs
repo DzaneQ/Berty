@@ -129,6 +129,12 @@ namespace Berty.BoardCards.Entities
             Stats.Health += value;
         }
 
+        // TODO: Handle role change on SedziaBertt
+        public RoleEnum GetRole()
+        {
+            return CharacterConfig.Role;
+        }
+
         public bool CanAttack()
         {
             return !HasAttacked && Stats.Strength > 0;

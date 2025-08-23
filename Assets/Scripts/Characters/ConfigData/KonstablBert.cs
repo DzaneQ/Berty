@@ -10,6 +10,7 @@ namespace Berty.BoardCards.ConfigData
         public KonstablBert()
         {
             AddName("konstabl bert");
+            SetCharacter(CharacterEnum.KonstablBert);
             AddProperties(GenderEnum.Male, RoleEnum.Agile);
             AddStats(2, 3, 5, 3);
             AddRange(0, 2, attackRange);

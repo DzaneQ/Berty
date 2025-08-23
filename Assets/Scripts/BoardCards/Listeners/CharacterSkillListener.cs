@@ -38,6 +38,7 @@ namespace Berty.BoardCards.Listeners
             HandleSkillEventManager.Instance.HandleNewCardWitness(core, newCharacter);
         }
 
+        // BUG: This method is run even when cancelling move during NewTransform.
         private void HandleMovedCharacter(object sender, EventArgs args)
         {
             BoardCardCore movedCharacter = (BoardCardCore)sender;

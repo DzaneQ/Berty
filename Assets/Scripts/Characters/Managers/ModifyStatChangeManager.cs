@@ -24,14 +24,16 @@ namespace Berty.Characters.Managers
 
         public bool BeforeHealthChange(BoardCardCore target, ref int value, BoardCardCore source)
         {
+            bool shouldPreventStatChange = false;
+
             switch (target.BoardCard.CharacterConfig.Character)
             {
                 case CharacterEnum.PrymusBert:
                     if (value < 0) value++;
-                    return value == 0;
-                default:
-                    return false;
+                    break;
             }
+
+            return shouldPreventStatChange;
         }
 
         // NOTE: After<stat>Change is executed during stat change animation
@@ -45,5 +47,19 @@ namespace Berty.Characters.Managers
                     break;
             }
         }
+
+        public int GetModifiedStrengthForAttack(BoardCardCore target, BoardCardCore source)
+        {
+            switch (source.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.KonstablBert:
+                    RoleEnum targetRole = target.BoardCard.GetRole();
+                    RoleEnum[] vulnerableRoles = { RoleEnum.Special, RoleEnum.Support };
+                    if (vulnerableRoles.Contains(targetRole)) return source.BoardCard.Stats.Strength + 1;
+                    break;
+            }
+
+            return source.BoardCard.Stats.Strength;
+        }    
     }
 }

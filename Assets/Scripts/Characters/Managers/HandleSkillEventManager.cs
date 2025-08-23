@@ -14,7 +14,9 @@ using Berty.UI.Card.Collection;
 using Berty.Utility;
 using System;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Berty.Characters.Managers
 {
@@ -30,10 +32,12 @@ namespace Berty.Characters.Managers
 
         public void HandleDirectAttackWitness(BoardCardCore witness, BoardCardCore attacker)
         {
-            if (witness == attacker) return;
+            if (witness == attacker) HandleDirectAttackSelf(attacker);
+
             switch (attacker.BoardCard.CharacterConfig.Character)
             {
                 case CharacterEnum.MisiekBert:
+                case CharacterEnum.PrezydentBert:
                     HandleNeighborCharacterSkill(witness, attacker);
                     break;
             }
@@ -41,8 +45,6 @@ namespace Berty.Characters.Managers
 
         public void HandleNewCardWitness(BoardCardCore witness, BoardCardCore newCard)
         {
-            if (witness == newCard) return;
-
             // When new card is the character with skill
             switch (newCard.BoardCard.CharacterConfig.Character)
             {
@@ -51,6 +53,10 @@ namespace Berty.Characters.Managers
                 case CharacterEnum.MisiekBert:
                 case CharacterEnum.PrymusBert:
                     HandleNeighborCharacterSkill(witness, newCard);
+                    break;
+                case CharacterEnum.KonstablBert:
+                case CharacterEnum.ShaolinBert:
+                    ApplyCharacterEffect(witness, newCard);
                     break;
             }
 
@@ -62,12 +68,15 @@ namespace Berty.Characters.Managers
                 case CharacterEnum.PrymusBert:
                     HandleNeighborCharacterSkill(newCard, witness);
                     break;
+                case CharacterEnum.ShaolinBert:
+                    ApplyCharacterEffect(newCard, witness);
+                    break;
             }
         }
 
         public void HandleMovedCardWitness(BoardCardCore witness, BoardCardCore movedCard)
         {
-            if (witness == movedCard) return;
+            if (witness == movedCard) HandleMovedCardSelf(movedCard);
 
             // When moved card is the character with skill
             switch (movedCard.BoardCard.CharacterConfig.Character)
@@ -75,6 +84,7 @@ namespace Berty.Characters.Managers
                 case CharacterEnum.BertaSJW:
                 case CharacterEnum.EBerta:
                 case CharacterEnum.MisiekBert:
+                case CharacterEnum.PrezydentBert:
                 case CharacterEnum.PrymusBert:
                     HandleNeighborCharacterSkill(witness, movedCard);
                     break;
@@ -87,6 +97,26 @@ namespace Berty.Characters.Managers
                 case CharacterEnum.EBerta:
                 case CharacterEnum.PrymusBert:
                     HandleNeighborCharacterSkill(movedCard, witness);
+                    break;
+            }
+        }
+
+        private void HandleDirectAttackSelf(BoardCardCore skillCard)
+        {
+            switch (skillCard.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.PrezydentBert:
+                    skillCard.StatChange.AdvancePower(-1, null);
+                    break;
+            }
+        }
+
+        private void HandleMovedCardSelf(BoardCardCore skillCard)
+        {
+            switch (skillCard.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.PrezydentBert:
+                    skillCard.StatChange.AdvancePower(-1, null);
                     break;
             }
         }
@@ -129,11 +159,23 @@ namespace Berty.Characters.Managers
                 case CharacterEnum.EBerta:
                     ApplyEBertaEffect(target, skillOwner);
                     break;
+                case CharacterEnum.KonstablBert:
+                    if (target.BoardCard.GetRole() != RoleEnum.Special) break;
+                    target.StatChange.AdvanceHealth(-1, skillOwner);
+                    break;
                 case CharacterEnum.MisiekBert:
                     CardNavigationManager.Instance.RotateCard(target, 270);
                     break;
+                case CharacterEnum.PrezydentBert:
+                    if (!AreAllied(target, skillOwner)) break;
+                    target.StatChange.AdvanceStrength(1, skillOwner);
+                    break;
                 case CharacterEnum.PrymusBert:
                     target.StatChange.AdvancePower(3, skillOwner);
+                    break;
+                case CharacterEnum.ShaolinBert:
+                    if (AreAllied(target, skillOwner)) break;
+                    target.StatChange.AdvanceStrength(-target.BoardCard.Stats.Power / 3, skillOwner);
                     break;
                 default:
                     throw new Exception($"Applying unknown effect for {target.name} from {skillOwner.name}");
@@ -144,7 +186,7 @@ namespace Berty.Characters.Managers
         {
             if (eBerta.BoardCard.CharacterConfig.Character != CharacterEnum.EBerta)
                 throw new Exception($"eBerta effect is casted by {eBerta.BoardCard.CharacterConfig.Name}");
-            if (!game.Grid.AreAligned(target.ParentField.BoardField, eBerta.ParentField.BoardField)) return;
+            if (!AreAllied(target, eBerta)) return;
             int[] stats = { 
                 target.BoardCard.Stats.Strength, 
                 target.BoardCard.Stats.Power, 
@@ -156,6 +198,11 @@ namespace Berty.Characters.Managers
             if (stats[1] == minStat) target.StatChange.AdvancePower(1, eBerta);
             if (stats[2] == minStat) target.StatChange.AdvanceDexterity(1, eBerta);
             if (stats[3] == minStat) target.StatChange.AdvanceHealth(1, eBerta);
-        }  
+        }
+
+        private bool AreAllied(BoardCardCore firstCard, BoardCardCore secondCard)
+        {
+            return game.Grid.AreAligned(firstCard.ParentField.BoardField, secondCard.ParentField.BoardField);
+        }    
     }
 }
