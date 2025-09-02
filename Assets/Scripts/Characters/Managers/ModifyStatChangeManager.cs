@@ -45,6 +45,13 @@ namespace Berty.Characters.Managers
                 case CharacterEnum.KrzyzowiecBert:
                     if (value < 0) target.StatChange.AdvanceStrength(-value, null);
                     break;
+                case CharacterEnum.Tankbert:
+                    if (value < 0)
+                    {
+                        target.StatChange.AdvanceStrength(value, null);
+                        target.StatChange.AdvanceDexterity(-value, null);
+                    }
+                    break;
             }
         }
 

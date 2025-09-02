@@ -15,5 +15,6 @@ namespace Berty.Enums
         PrezydentBert,
         PrymusBert,
         ShaolinBert,
+        Tankbert,
     }
 }
