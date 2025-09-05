@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Berty.Characters.Managers
 {
-    public class HandleSkillEventManager : ManagerSingleton<HandleSkillEventManager>
+    public class ApplySkillEffectManager : ManagerSingleton<ApplySkillEffectManager>
     {
         private Game game;
 
@@ -22,109 +22,7 @@ namespace Berty.Characters.Managers
             game = CoreManager.Instance.Game;
         }
 
-        public void HandleDirectAttackWitness(BoardCardCore witness, BoardCardCore attacker)
-        {
-            if (witness == attacker) HandleDirectAttackSelf(attacker);
-
-            switch (attacker.BoardCard.CharacterConfig.Character)
-            {
-                case CharacterEnum.MisiekBert:
-                case CharacterEnum.PrezydentBert:
-                    HandleNeighborCharacterSkill(witness, attacker);
-                    break;
-            }
-        }
-
-        public void HandleNewCardWitness(BoardCardCore witness, BoardCardCore newCard)
-        {
-            // When new card is the character with skill
-            switch (newCard.BoardCard.CharacterConfig.Character)
-            {
-                case CharacterEnum.BertaSJW:
-                case CharacterEnum.EBerta:
-                case CharacterEnum.MisiekBert:
-                case CharacterEnum.PrymusBert:
-                    HandleNeighborCharacterSkill(witness, newCard);
-                    break;
-                case CharacterEnum.KonstablBert:
-                case CharacterEnum.ShaolinBert:
-                    ApplyCharacterEffect(witness, newCard);
-                    break;
-            }
-
-            // When witness is the character with skill
-            switch (witness.BoardCard.CharacterConfig.Character)
-            {
-                case CharacterEnum.BertaSJW:
-                case CharacterEnum.EBerta:
-                case CharacterEnum.PrymusBert:
-                    HandleNeighborCharacterSkill(newCard, witness);
-                    break;
-                case CharacterEnum.ShaolinBert:
-                    ApplyCharacterEffect(newCard, witness);
-                    break;
-            }
-        }
-
-        public void HandleMovedCardWitness(BoardCardCore witness, BoardCardCore movedCard)
-        {
-            if (witness == movedCard) HandleMovedCardSelf(movedCard);
-
-            // When moved card is the character with skill
-            switch (movedCard.BoardCard.CharacterConfig.Character)
-            {
-                case CharacterEnum.BertaSJW:
-                case CharacterEnum.EBerta:
-                case CharacterEnum.MisiekBert:
-                case CharacterEnum.PrezydentBert:
-                case CharacterEnum.PrymusBert:
-                    HandleNeighborCharacterSkill(witness, movedCard);
-                    break;
-            }
-
-            // When witness is the character with skill
-            switch (witness.BoardCard.CharacterConfig.Character)
-            {
-                case CharacterEnum.BertaSJW:
-                case CharacterEnum.EBerta:
-                case CharacterEnum.PrymusBert:
-                    HandleNeighborCharacterSkill(movedCard, witness);
-                    break;
-            }
-        }
-
-        public void HandleValueChange(BoardCardCore witness, BoardCardCore valueChangedCard, int delta)
-        {
-            // When value changed card is the character with skill
-            switch (valueChangedCard.BoardCard.CharacterConfig.Character)
-            {
-                case CharacterEnum.ZalobnyBert:
-                    HandleNeighborCharacterSkill(witness, valueChangedCard, delta);
-                    break;
-            }
-        }
-
-        private void HandleDirectAttackSelf(BoardCardCore skillCard)
-        {
-            switch (skillCard.BoardCard.CharacterConfig.Character)
-            {
-                case CharacterEnum.PrezydentBert:
-                    skillCard.StatChange.AdvancePower(-1, null);
-                    break;
-            }
-        }
-
-        private void HandleMovedCardSelf(BoardCardCore skillCard)
-        {
-            switch (skillCard.BoardCard.CharacterConfig.Character)
-            {
-                case CharacterEnum.PrezydentBert:
-                    skillCard.StatChange.AdvancePower(-1, null);
-                    break;
-            }
-        }
-
-        private void HandleNeighborCharacterSkill(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
+        public void HandleNeighborCharacterSkill(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
         {
             if (!game.Grid.AreNeighboring(target.ParentField.BoardField, skillOwner.ParentField.BoardField)) return;
             Debug.Log("Handling neighbor skill");
@@ -152,7 +50,7 @@ namespace Berty.Characters.Managers
             }
         }
 
-        private void ApplyCharacterEffect(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
+        public void ApplyCharacterEffect(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
         {
             switch (skillOwner.BoardCard.CharacterConfig.Character)
             {

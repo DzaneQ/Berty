@@ -100,7 +100,6 @@
     <Compile Include="Assets\Scripts\UI\Managers\OverlayObjectManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IRotateCard.cs" />
     <Compile Include="Assets\Scripts\Enums\CardStateEnum.cs" />
-    <Compile Include="Assets\Scripts\Characters\Managers\HandleSkillEventManager.cs" />
     <Compile Include="Assets\Scripts\Audio\Managers\SoundManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\Scripts\Characters\Managers\ModifyStatChangeManager.cs" />
@@ -228,6 +227,7 @@
     <Compile Include="Assets\Scripts\UI\Listeners\ButtonInput.cs" />
     <Compile Include="Assets\Scripts\Enums\HighlightEnum.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveLeft.cs" />
+    <Compile Include="Assets\Scripts\Characters\Managers\ApplySkillEffectManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\DeadCard.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Entities\CardPile.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertkaIdolka.cs" />

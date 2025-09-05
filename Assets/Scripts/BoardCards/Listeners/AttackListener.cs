@@ -22,6 +22,7 @@ namespace Berty.BoardCards.Listeners
         private void OnEnable()
         {
             EventManager.Instance.OnDirectlyAttacked += HandleDirectlyAttacked;
+            EventManager.Instance.OnDirectlyAttacked += HandleDirectAttackWitness;
             EventManager.Instance.OnAttackNewStand += HandleAttackNewStand;
         }
 
@@ -29,6 +30,7 @@ namespace Berty.BoardCards.Listeners
         {
             if (!gameObject.scene.isLoaded) return;
             EventManager.Instance.OnDirectlyAttacked -= HandleDirectlyAttacked;
+            EventManager.Instance.OnDirectlyAttacked -= HandleDirectAttackWitness;
             EventManager.Instance.OnAttackNewStand -= HandleAttackNewStand;
         }
 
@@ -36,31 +38,18 @@ namespace Berty.BoardCards.Listeners
         {
             BoardCardCore attacker = (BoardCardCore)sender;
             //Debug.Log($"Handling direct attack by {card.name}");
-            if (!args.AttackedFields.Contains(card.BoardCard.OccupiedField))
-            {
-                HandleSkillEventManager.Instance.HandleDirectAttackWitness(card, attacker);
-                return;
-            }
+            if (!args.AttackedFields.Contains(card.BoardCard.OccupiedField)) return;
             //Debug.Log($"{card.name} is attacked");
             Vector2Int distanceToAttacker = card.BoardCard.GetDistanceTo(attacker.BoardCard);
-            if (card.BoardCard.CharacterConfig.CanBlock(distanceToAttacker)) // Try blocking
-            {
-                HandleSkillEventManager.Instance.HandleDirectAttackWitness(card, attacker);
-                return;
-            }
+            if (card.BoardCard.CharacterConfig.CanBlock(distanceToAttacker)) return; // Try blocking
             //Debug.Log($"{card.name} with {card.BoardCard.Stats.Health} health takes damage");
             int modifiedAttackerStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(card, attacker);
             card.StatChange.AdvanceHealth(-modifiedAttackerStrength, attacker); // Take damage
             //Debug.Log($"{card.name} has {card.BoardCard.Stats.Health} health");
-            if (!card.BoardCard.CharacterConfig.CanRiposte(distanceToAttacker))
-            {
-                HandleSkillEventManager.Instance.HandleDirectAttackWitness(card, attacker);
-                return;
-            }
+            if (!card.BoardCard.CharacterConfig.CanRiposte(distanceToAttacker)) return;
             int modifiedRiposteStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(attacker, card);
             attacker.StatChange.AdvanceHealth(-modifiedRiposteStrength, card); // Do riposte
             //Debug.Log($"{attacker.name} has {card.BoardCard.Stats.Health} health due to riposte");
-            HandleSkillEventManager.Instance.HandleDirectAttackWitness(card, attacker);
         }
 
         private void HandleAttackNewStand(object sender, EventArgs args)
@@ -78,5 +67,32 @@ namespace Berty.BoardCards.Listeners
             defender.StatChange.AdvanceHealth(-modifiedStrength, card);
             //Debug.Log($"{defender.name} has {defender.BoardCard.Stats.Health} health after being attacked by {card.name}");
         }
+
+        private void HandleDirectAttackWitness(object sender, EventArgs args)
+        {
+            BoardCardCore attacker = (BoardCardCore)sender;
+            BoardCardCore witness = card;
+
+            if (witness == attacker) HandleDirectAttackSelf(attacker);
+
+            switch (attacker.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.MisiekBert:
+                case CharacterEnum.PrezydentBert:
+                    ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, attacker);
+                    break;
+            }
+        }
+
+        private void HandleDirectAttackSelf(BoardCardCore skillCard)
+        {
+            switch (skillCard.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.PrezydentBert:
+                    skillCard.StatChange.AdvancePower(-1, null);
+                    break;
+            }
+        }
+
     }
 }
