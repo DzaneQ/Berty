@@ -23,6 +23,7 @@ namespace Berty.BoardCards.Listeners
         {
             EventManager.Instance.OnNewCharacter += HandleNewCharacter;
             EventManager.Instance.OnMovedCharacter += HandleMovedCharacter;
+            EventManager.Instance.OnValueChange += HandleValueChange;
         }
 
         private void OnDisable()
@@ -30,6 +31,7 @@ namespace Berty.BoardCards.Listeners
             if (!gameObject.scene.isLoaded) return;
             EventManager.Instance.OnNewCharacter -= HandleNewCharacter;
             EventManager.Instance.OnMovedCharacter -= HandleMovedCharacter;
+            EventManager.Instance.OnValueChange -= HandleValueChange;
         }
 
         private void HandleNewCharacter(object sender, EventArgs args)
@@ -43,6 +45,12 @@ namespace Berty.BoardCards.Listeners
         {
             BoardCardCore movedCharacter = (BoardCardCore)sender;
             HandleSkillEventManager.Instance.HandleMovedCardWitness(core, movedCharacter);
+        }
+
+        private void HandleValueChange(object sender, ValueChangeEventArgs args)
+        {
+            BoardCardCore sourceCharacter = (BoardCardCore)sender;
+            HandleSkillEventManager.Instance.HandleValueChange(core, sourceCharacter, args.Delta);
         }
     }
 }

@@ -14,6 +14,7 @@ using Berty.Utility;
 using System;
 using System.Linq;
 using UnityEngine;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 namespace Berty.Characters.Managers
 {
@@ -30,6 +31,9 @@ namespace Berty.Characters.Managers
             {
                 case CharacterEnum.PrymusBert:
                     if (value < 0) value++;
+                    break;
+                case CharacterEnum.ZalobnyBert:
+                    if (value < 0 && source.BoardCard.GetRole() == RoleEnum.Offensive) shouldPreventStatChange = true;
                     break;
             }
 
@@ -52,6 +56,9 @@ namespace Berty.Characters.Managers
                         target.StatChange.AdvanceDexterity(-value, null);
                     }
                     break;
+                case CharacterEnum.ZalobnyBert:
+                    if (value < 0) EventManager.Instance.RaiseOnValueChange(target, value);
+                    break;
             }
         }
 
@@ -67,6 +74,6 @@ namespace Berty.Characters.Managers
             }
 
             return source.BoardCard.Stats.Strength;
-        }    
+        }
     }
 }

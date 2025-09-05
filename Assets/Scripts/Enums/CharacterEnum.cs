@@ -16,5 +16,6 @@ namespace Berty.Enums
         PrymusBert,
         ShaolinBert,
         Tankbert,
+        ZalobnyBert,
     }
 }

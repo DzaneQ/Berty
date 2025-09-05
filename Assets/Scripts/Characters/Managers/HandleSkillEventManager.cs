@@ -1,22 +1,14 @@
-using Berty.BoardCards;
-using Berty.BoardCards.Animation;
 using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
 using Berty.BoardCards.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.Grid.Entities;
-using Berty.Grid.Field.Entities;
 using Berty.Structs;
-using Berty.UI.Card.Collection;
 using Berty.Utility;
 using System;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Berty.Characters.Managers
 {
@@ -101,6 +93,17 @@ namespace Berty.Characters.Managers
             }
         }
 
+        public void HandleValueChange(BoardCardCore witness, BoardCardCore valueChangedCard, int delta)
+        {
+            // When value changed card is the character with skill
+            switch (valueChangedCard.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.ZalobnyBert:
+                    HandleNeighborCharacterSkill(witness, valueChangedCard, delta);
+                    break;
+            }
+        }
+
         private void HandleDirectAttackSelf(BoardCardCore skillCard)
         {
             switch (skillCard.BoardCard.CharacterConfig.Character)
@@ -121,13 +124,13 @@ namespace Berty.Characters.Managers
             }
         }
 
-        private void HandleNeighborCharacterSkill(BoardCardCore target, BoardCardCore skillOwner)
+        private void HandleNeighborCharacterSkill(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
         {
             if (!game.Grid.AreNeighboring(target.ParentField.BoardField, skillOwner.ParentField.BoardField)) return;
             Debug.Log("Handling neighbor skill");
             if (IsResistant(target.BoardCard, skillOwner.BoardCard)) return;
             Debug.Log("No resistance for neighbor skill");
-            ApplyCharacterEffect(target, skillOwner);
+            ApplyCharacterEffect(target, skillOwner, delta);
         }
 
         // Handles characters which skills are applied only once
@@ -149,7 +152,7 @@ namespace Berty.Characters.Managers
             }
         }
 
-        private void ApplyCharacterEffect(BoardCardCore target, BoardCardCore skillOwner)
+        private void ApplyCharacterEffect(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
         {
             switch (skillOwner.BoardCard.CharacterConfig.Character)
             {
@@ -176,6 +179,10 @@ namespace Berty.Characters.Managers
                 case CharacterEnum.ShaolinBert:
                     if (AreAllied(target, skillOwner)) break;
                     target.StatChange.AdvanceStrength(-target.BoardCard.Stats.Power / 3, skillOwner);
+                    break;
+                case CharacterEnum.ZalobnyBert:
+                    if (!AreAllied(target, skillOwner)) break;
+                    target.StatChange.AdvanceHealth(-2 * delta, skillOwner);
                     break;
                 default:
                     throw new Exception($"Applying unknown effect for {target.name} from {skillOwner.name}");

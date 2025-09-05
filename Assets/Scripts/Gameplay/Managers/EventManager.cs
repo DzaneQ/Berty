@@ -25,6 +25,7 @@ namespace Berty.Gameplay.Managers
         public event EventHandler OnAttackNewStand;
         public event EventHandler OnNewCharacter;
         public event EventHandler OnMovedCharacter;
+        public event EventHandler<ValueChangeEventArgs> OnValueChange;
         public event EventHandler<DirectAttackEventArgs> OnHighlightStart;
         public event Action OnHighlightEnd;
 
@@ -78,6 +79,15 @@ namespace Berty.Gameplay.Managers
             OnMovedCharacter?.Invoke(movedCard, EventArgs.Empty);
         }
 
+        public void RaiseOnValueChange(BoardCardCore statChangedCard, int value)
+        {
+            ValueChangeEventArgs args = new()
+            {
+                Delta = value
+            };
+            OnValueChange?.Invoke(statChangedCard, args);
+        }
+
         public void RaiseOnHighlightStart(BoardCardCore focusedCard)
         {
             DirectAttackEventArgs args = new()
@@ -96,5 +106,10 @@ namespace Berty.Gameplay.Managers
     public class DirectAttackEventArgs : EventArgs
     {
         public List<BoardField> AttackedFields;
+    }
+
+    public class ValueChangeEventArgs : EventArgs
+    {
+        public int Delta;
     }
 }
