@@ -59,7 +59,9 @@ namespace Berty.BoardCards.Listeners
             // When new card is the character with skill
             switch (newCard.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BertaGejsza:
                 case CharacterEnum.BertaSJW:
+                case CharacterEnum.BertaTrojanska:
                 case CharacterEnum.EBerta:
                 case CharacterEnum.MisiekBert:
                 case CharacterEnum.PrymusBert:
@@ -74,7 +76,9 @@ namespace Berty.BoardCards.Listeners
             // When witness is the character with skill
             switch (witness.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BertaGejsza:
                 case CharacterEnum.BertaSJW:
+                case CharacterEnum.BertaTrojanska:
                 case CharacterEnum.EBerta:
                 case CharacterEnum.PrymusBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(newCard, witness);
@@ -92,7 +96,9 @@ namespace Berty.BoardCards.Listeners
             // When moved card is the character with skill
             switch (movedCard.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BertaGejsza:
                 case CharacterEnum.BertaSJW:
+                case CharacterEnum.BertaTrojanska:
                 case CharacterEnum.EBerta:
                 case CharacterEnum.MisiekBert:
                 case CharacterEnum.PrezydentBert:
@@ -104,7 +110,9 @@ namespace Berty.BoardCards.Listeners
             // When witness is the character with skill
             switch (witness.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BertaGejsza:
                 case CharacterEnum.BertaSJW:
+                case CharacterEnum.BertaTrojanska:
                 case CharacterEnum.EBerta:
                 case CharacterEnum.PrymusBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(movedCard, witness);

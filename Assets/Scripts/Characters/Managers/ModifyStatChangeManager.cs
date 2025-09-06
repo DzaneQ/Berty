@@ -64,16 +64,22 @@ namespace Berty.Characters.Managers
 
         public int GetModifiedStrengthForAttack(BoardCardCore target, BoardCardCore source)
         {
+            int strength = source.BoardCard.Stats.Strength;
             switch (source.BoardCard.CharacterConfig.Character)
             {
                 case CharacterEnum.KonstablBert:
                     RoleEnum targetRole = target.BoardCard.GetRole();
                     RoleEnum[] vulnerableRoles = { RoleEnum.Special, RoleEnum.Support };
-                    if (vulnerableRoles.Contains(targetRole)) return source.BoardCard.Stats.Strength + 1;
+                    if (vulnerableRoles.Contains(targetRole))
+                        strength++;
+                    break;
+                case CharacterEnum.StaryBert:
+                    if (target.BoardCard.Stats.Health < target.BoardCard.CharacterConfig.Health)
+                        strength = strength + 2;
                     break;
             }
 
-            return source.BoardCard.Stats.Strength;
+            return strength;
         }
     }
 }

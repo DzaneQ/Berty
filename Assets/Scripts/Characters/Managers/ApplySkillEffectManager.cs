@@ -36,7 +36,9 @@ namespace Berty.Characters.Managers
         {
             switch (skillOwner.CharacterConfig.Character)
             {
+                case CharacterEnum.BertaGejsza:
                 case CharacterEnum.BertaSJW:
+                case CharacterEnum.BertaTrojanska:
                 case CharacterEnum.EBerta:
                 case CharacterEnum.PrymusBert:
                     if (target.IsResistantTo(skillOwner)) return true;
@@ -56,6 +58,14 @@ namespace Berty.Characters.Managers
             {
                 case CharacterEnum.BertaSJW:
                     target.StatChange.AdvancePower(-3, skillOwner);
+                    break;
+                case CharacterEnum.BertaGejsza:
+                    if (AreAllied(target, skillOwner)) target.StatChange.AdvanceDexterity(-1, skillOwner);
+                    else target.StatChange.AdvanceDexterity(-3, skillOwner);
+                    break;
+                case CharacterEnum.BertaTrojanska:
+                    if (AreAllied(target, skillOwner)) target.StatChange.AdvancePower(1, skillOwner);
+                    else target.StatChange.AdvanceStrength(-1, skillOwner);
                     break;
                 case CharacterEnum.EBerta:
                     ApplyEBertaEffect(target, skillOwner);

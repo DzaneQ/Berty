@@ -28,7 +28,7 @@ namespace Berty.Debugging
 
         public void TakeCardIfInPile(AlignmentEnum align)
         {
-            game.CardPile.PullCardIfInPile(CharacterEnum.ZalobnyBert, align);
+            game.CardPile.PullCardIfInPile(CharacterEnum.BertaGejsza, align);
         }
     }
 #else

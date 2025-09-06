@@ -7,7 +7,9 @@ namespace Berty.Enums
     public enum CharacterEnum
     {
         Unknown = 0,
+        BertaGejsza,
         BertaSJW,
+        BertaTrojanska,
         EBerta,
         KonstablBert,
         KrzyzowiecBert,
@@ -15,6 +17,7 @@ namespace Berty.Enums
         PrezydentBert,
         PrymusBert,
         ShaolinBert,
+        StaryBert,
         Tankbert,
         ZalobnyBert,
     }
