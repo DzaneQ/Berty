@@ -75,21 +75,65 @@ namespace Berty.BoardCards.Behaviours
         {
             if (Card.Stats.Health <= 0)
             {
-                core.KillCard();
-                return;
+                HandleZeroHealth();
             }
+            if (Card == null) return;
             if (Card.Stats.Dexterity <= 0)
             {
-                Card.MarkAsTired(); 
+                HandleZeroDexterity(); 
             }
+            if (Card == null) return;
             if (Card.Stats.Dexterity >= Card.CharacterConfig.Dexterity)
             {
                 Card.MarkAsRested();
             }
+            if (Card == null) return;
             if (Card.Stats.Power <= 0)
             {
-                core.SwitchSides();
+                HandleZeroPower();
             }    
+        }
+
+        private void HandleZeroPower()
+        {
+            switch (core.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.AstronautaBert:
+                    core.KillCard();
+                    break;
+                default:
+                    core.SwitchSides();
+                    break;
+            }
+        }
+
+        private void HandleZeroDexterity()
+        {
+            switch (core.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.BertWick:
+                    core.KillCard();
+                    break;
+                default:
+                    Card.MarkAsTired();
+                    break;
+            }
+        }
+
+        private void HandleZeroHealth()
+        {
+            switch (core.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.BertWick:
+                    AdvanceHealth(2, null);
+                    AdvancePower(1, null);
+                    AdvanceStrength(1, null);
+                    AdvanceDexterity(-1, null);
+                    break;
+                default:
+                    core.KillCard();
+                    break;
+            }
         }
     }
 }

@@ -63,6 +63,7 @@ namespace Berty.BoardCards.Listeners
                 case CharacterEnum.BertaSJW:
                 case CharacterEnum.BertaTrojanska:
                 case CharacterEnum.EBerta:
+                case CharacterEnum.KuglarzBert:
                 case CharacterEnum.MisiekBert:
                 case CharacterEnum.PrymusBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, newCard);
@@ -78,6 +79,7 @@ namespace Berty.BoardCards.Listeners
             {
                 case CharacterEnum.BertaGejsza:
                 case CharacterEnum.BertaSJW:
+                case CharacterEnum.KuglarzBert:
                 case CharacterEnum.BertaTrojanska:
                 case CharacterEnum.EBerta:
                 case CharacterEnum.PrymusBert:
@@ -100,6 +102,7 @@ namespace Berty.BoardCards.Listeners
                 case CharacterEnum.BertaSJW:
                 case CharacterEnum.BertaTrojanska:
                 case CharacterEnum.EBerta:
+                case CharacterEnum.KuglarzBert:
                 case CharacterEnum.MisiekBert:
                 case CharacterEnum.PrezydentBert:
                 case CharacterEnum.PrymusBert:
@@ -112,6 +115,7 @@ namespace Berty.BoardCards.Listeners
             {
                 case CharacterEnum.BertaGejsza:
                 case CharacterEnum.BertaSJW:
+                case CharacterEnum.KuglarzBert:
                 case CharacterEnum.BertaTrojanska:
                 case CharacterEnum.EBerta:
                 case CharacterEnum.PrymusBert:

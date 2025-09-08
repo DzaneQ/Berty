@@ -40,6 +40,7 @@ namespace Berty.Characters.Managers
                 case CharacterEnum.BertaSJW:
                 case CharacterEnum.BertaTrojanska:
                 case CharacterEnum.EBerta:
+                case CharacterEnum.KuglarzBert:
                 case CharacterEnum.PrymusBert:
                     if (target.IsResistantTo(skillOwner)) return true;
                     else
@@ -73,6 +74,9 @@ namespace Berty.Characters.Managers
                 case CharacterEnum.KonstablBert:
                     if (target.BoardCard.GetRole() != RoleEnum.Special) break;
                     target.StatChange.AdvanceHealth(-1, skillOwner);
+                    break;
+                case CharacterEnum.KuglarzBert:
+                    if (AreAllied(target, skillOwner)) target.StatChange.AdvancePower(1, skillOwner);
                     break;
                 case CharacterEnum.MisiekBert:
                     CardNavigationManager.Instance.RotateCard(target, 270);

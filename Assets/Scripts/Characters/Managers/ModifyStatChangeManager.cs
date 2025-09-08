@@ -60,6 +60,19 @@ namespace Berty.Characters.Managers
                     if (value < 0) EventManager.Instance.RaiseOnValueChange(target, value);
                     break;
             }
+
+            if (source == null) return;
+
+            switch (source.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.KuglarzBert:
+                    if (value < 0)
+                    {
+                        source.StatChange.AdvanceHealth(1, null);
+                        source.StatChange.AdvanceDexterity(-1, null);
+                    }
+                    break;
+            }
         }
 
         public int GetModifiedStrengthForAttack(BoardCardCore target, BoardCardCore source)

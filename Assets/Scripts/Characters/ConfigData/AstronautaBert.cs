@@ -8,6 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public AstronautaBert()
         {
             AddName("astronauta bert");
+            SetCharacter(CharacterEnum.AstronautaBert);
             AddProperties(GenderEnum.Male, RoleEnum.Agile);
             AddStats(1, 2, 5, 2);
             AddRange(1, 1, attackRange);

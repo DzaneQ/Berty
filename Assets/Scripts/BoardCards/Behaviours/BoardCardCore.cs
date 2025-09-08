@@ -206,6 +206,7 @@ namespace Berty.BoardCards.Behaviours
         public void DestroyCard()
         {
             BoardCard.DeactivateCard(); // TODO: Prove that the BoardCard entity no longer exists.
+            BoardCard = null;
             ParentField.UpdateField();
             BoardCardCollectionManager.Instance.RemoveCardFromCollection(this);
             Destroy(gameObject);
