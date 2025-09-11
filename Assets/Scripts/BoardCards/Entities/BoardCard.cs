@@ -171,8 +171,8 @@ namespace Berty.BoardCards.Entities
             int x = OccupiedField.Coordinates.x;
             int y = OccupiedField.Coordinates.y;
             float angle = (float)direction;
-            int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
-            int cosinus = (int)Math.Round(Math.Cos(angle / 180 * Math.PI));
+            int sinus = (int)MathF.Round(MathF.Sin(angle / 180 * MathF.PI));
+            int cosinus = (int)MathF.Round(MathF.Cos(angle / 180 * MathF.PI));
             return new Vector2Int(cosinus * x - sinus * y, cosinus * y + sinus * x);
         }
 

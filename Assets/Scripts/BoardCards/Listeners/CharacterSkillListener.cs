@@ -1,12 +1,16 @@
 using Berty.BoardCards.Animation;
 using Berty.BoardCards.Behaviours;
+using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Managers;
 using Berty.Characters.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.Grid.Field.Entities;
+using Berty.Structs;
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Berty.BoardCards.Listeners
 {
@@ -75,6 +79,7 @@ namespace Berty.BoardCards.Listeners
                 case CharacterEnum.KuglarzBert:
                 case CharacterEnum.MisiekBert:
                 case CharacterEnum.PrymusBert:
+                case CharacterEnum.SamurajBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, newCard);
                     break;
                 case CharacterEnum.KonstablBert:
@@ -92,6 +97,7 @@ namespace Berty.BoardCards.Listeners
                 case CharacterEnum.BertaTrojanska:
                 case CharacterEnum.EBerta:
                 case CharacterEnum.PrymusBert:
+                case CharacterEnum.SamurajBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(newCard, witness);
                     break;
                 case CharacterEnum.ShaolinBert:
@@ -115,6 +121,7 @@ namespace Berty.BoardCards.Listeners
                 case CharacterEnum.MisiekBert:
                 case CharacterEnum.PrezydentBert:
                 case CharacterEnum.PrymusBert:
+                case CharacterEnum.SamurajBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, movedCard);
                     break;
             }
@@ -128,6 +135,7 @@ namespace Berty.BoardCards.Listeners
                 case CharacterEnum.BertaTrojanska:
                 case CharacterEnum.EBerta:
                 case CharacterEnum.PrymusBert:
+                case CharacterEnum.SamurajBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(movedCard, witness);
                     break;
             }

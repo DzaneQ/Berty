@@ -19,6 +19,7 @@ namespace Berty.Enums
         MisiekBert,
         PrezydentBert,
         PrymusBert,
+        SamurajBert,
         ShaolinBert,
         StaryBert,
         Tankbert,

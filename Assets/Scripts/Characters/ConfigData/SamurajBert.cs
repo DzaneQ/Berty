@@ -5,11 +5,10 @@ namespace Berty.BoardCards.ConfigData
 {
     public class SamurajBert : CharacterConfig
     {
-        private bool activeSpell = true;
         public SamurajBert()
         {
             AddName("samuraj bert");
-            //SetCharacter(CharacterEnum.SamurajBert);
+            SetCharacter(CharacterEnum.SamurajBert);
             AddProperties(GenderEnum.Male, RoleEnum.Offensive);
             AddStats(2, 3, 3, 4);
             AddRange(0, 1, attackRange);
