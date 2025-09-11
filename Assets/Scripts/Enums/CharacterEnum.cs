@@ -22,6 +22,7 @@ namespace Berty.Enums
         SamurajBert,
         ShaolinBert,
         StaryBert,
+        SuperfanBert,
         Tankbert,
         ZalobnyBert,
         Zombert,

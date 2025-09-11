@@ -69,6 +69,8 @@ namespace Berty.BoardCards.Listeners
 
         public void HandleNewCardWitness(BoardCardCore witness, BoardCardCore newCard)
         {
+            if (witness == newCard) HandleNewCardSelf(newCard);
+
             // When new card is the character with skill
             switch (newCard.BoardCard.CharacterConfig.Character)
             {
@@ -80,6 +82,7 @@ namespace Berty.BoardCards.Listeners
                 case CharacterEnum.MisiekBert:
                 case CharacterEnum.PrymusBert:
                 case CharacterEnum.SamurajBert:
+                case CharacterEnum.SuperfanBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, newCard);
                     break;
                 case CharacterEnum.KonstablBert:
@@ -98,6 +101,7 @@ namespace Berty.BoardCards.Listeners
                 case CharacterEnum.EBerta:
                 case CharacterEnum.PrymusBert:
                 case CharacterEnum.SamurajBert:
+                case CharacterEnum.SuperfanBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(newCard, witness);
                     break;
                 case CharacterEnum.ShaolinBert:
@@ -122,6 +126,7 @@ namespace Berty.BoardCards.Listeners
                 case CharacterEnum.PrezydentBert:
                 case CharacterEnum.PrymusBert:
                 case CharacterEnum.SamurajBert:
+                case CharacterEnum.SuperfanBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, movedCard);
                     break;
             }
@@ -131,11 +136,12 @@ namespace Berty.BoardCards.Listeners
             {
                 case CharacterEnum.BertaGejsza:
                 case CharacterEnum.BertaSJW:
-                case CharacterEnum.KuglarzBert:
                 case CharacterEnum.BertaTrojanska:
                 case CharacterEnum.EBerta:
+                case CharacterEnum.KuglarzBert:
                 case CharacterEnum.PrymusBert:
                 case CharacterEnum.SamurajBert:
+                case CharacterEnum.SuperfanBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(movedCard, witness);
                     break;
             }
@@ -162,6 +168,21 @@ namespace Berty.BoardCards.Listeners
             {
                 case CharacterEnum.ZalobnyBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, valueChangedCard, delta);
+                    break;
+            }
+        }
+
+        private void HandleNewCardSelf(BoardCardCore skillCard)
+        {
+            switch (skillCard.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.SuperfanBert:
+                    int hour = DateTime.Now.Hour;
+                    if (hour < 5 || 18 <= hour)
+                    {
+                        skillCard.StatChange.AdvanceStrength(1, null);
+                        skillCard.StatChange.AdvancePower(2, null);
+                    }
                     break;
             }
         }

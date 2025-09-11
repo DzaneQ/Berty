@@ -37,6 +37,7 @@ namespace Berty.Characters.Managers
                 case CharacterEnum.EBerta:
                 case CharacterEnum.KuglarzBert:
                 case CharacterEnum.PrymusBert:
+                case CharacterEnum.SuperfanBert:
                     if (target.BoardCard.IsResistantTo(skillOwner.BoardCard)) return;
                     if (ApplyCharacterEffect(target, skillOwner, delta))
                         target.BoardCard.AddResistanceToCharacter(skillOwner.BoardCard.CharacterConfig);
@@ -72,6 +73,7 @@ namespace Berty.Characters.Managers
                     target.StatChange.AdvanceHealth(-1, skillOwner);
                     break;
                 case CharacterEnum.KuglarzBert:
+                case CharacterEnum.SuperfanBert:
                     if (AreAllied(target, skillOwner)) target.StatChange.AdvancePower(1, skillOwner);
                     else return false;
                     break;
