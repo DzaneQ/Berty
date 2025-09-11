@@ -1,3 +1,4 @@
+using Berty.BoardCards.Animation;
 using Berty.BoardCards.Behaviours;
 using Berty.BoardCards.Managers;
 using Berty.Characters.Managers;
@@ -25,6 +26,7 @@ namespace Berty.BoardCards.Listeners
             EventManager.Instance.OnNewCharacter += HandleNewCharacter;
             EventManager.Instance.OnMovedCharacter += HandleMovedCharacter;
             EventManager.Instance.OnValueChange += HandleValueChange;
+            EventManager.Instance.OnCharacterDeath += HandleCharacterDeath;
         }
 
         private void OnDisable()
@@ -33,6 +35,7 @@ namespace Berty.BoardCards.Listeners
             EventManager.Instance.OnNewCharacter -= HandleNewCharacter;
             EventManager.Instance.OnMovedCharacter -= HandleMovedCharacter;
             EventManager.Instance.OnValueChange -= HandleValueChange;
+            EventManager.Instance.OnCharacterDeath -= HandleCharacterDeath;
         }
 
         private void HandleNewCharacter(object sender, EventArgs args)
@@ -46,6 +49,12 @@ namespace Berty.BoardCards.Listeners
         {
             BoardCardCore movedCharacter = (BoardCardCore)sender;
             HandleMovedCardWitness(core, movedCharacter);
+        }
+
+        private void HandleCharacterDeath(object sender, EventArgs args)
+        {
+            BoardCardCore dyingCharacter = (BoardCardCore)sender;
+            HandleDeathWitness(core, dyingCharacter);
         }
 
         private void HandleValueChange(object sender, ValueChangeEventArgs args)
@@ -123,6 +132,20 @@ namespace Berty.BoardCards.Listeners
                     break;
             }
         }
+
+        private void HandleDeathWitness(BoardCardCore witness, BoardCardCore dyingCard)
+        {
+            if (witness == dyingCard) return;
+
+            // When witness is the character with skill
+            switch (witness.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.Zombert:
+                    if (dyingCard.BoardCard.Align == witness.BoardCard.Align) break;
+                    witness.StatChange.AdvanceHealth(1, null);
+                    break;
+            }
+        }    
 
         public void HandleValueChange(BoardCardCore witness, BoardCardCore valueChangedCard, int delta)
         {

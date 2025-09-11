@@ -25,6 +25,7 @@ namespace Berty.Gameplay.Managers
         public event EventHandler OnAttackNewStand;
         public event EventHandler OnNewCharacter;
         public event EventHandler OnMovedCharacter;
+        public event EventHandler OnCharacterDeath;
         public event EventHandler<ValueChangeEventArgs> OnValueChange;
         public event EventHandler<DirectAttackEventArgs> OnHighlightStart;
         public event Action OnHighlightEnd;
@@ -77,6 +78,11 @@ namespace Berty.Gameplay.Managers
         public void RaiseOnMovedCharacter(BoardCardCore movedCard)
         {
             OnMovedCharacter?.Invoke(movedCard, EventArgs.Empty);
+        }
+
+        public void RaiseOnCharacterDeath(BoardCardCore dyingCard)
+        {
+            OnCharacterDeath?.Invoke(dyingCard, EventArgs.Empty);
         }
 
         public void RaiseOnValueChange(BoardCardCore statChangedCard, int value)

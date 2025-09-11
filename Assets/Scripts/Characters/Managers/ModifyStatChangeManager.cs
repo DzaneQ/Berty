@@ -72,6 +72,10 @@ namespace Berty.Characters.Managers
                         source.StatChange.AdvanceDexterity(-1, null);
                     }
                     break;
+                case CharacterEnum.Zombert:
+                    if (target.BoardCard.Align == source.BoardCard.Align) break;
+                    if (value < 0) target.StatChange.AdvancePower(-1, source);
+                    break;
             }
         }
 

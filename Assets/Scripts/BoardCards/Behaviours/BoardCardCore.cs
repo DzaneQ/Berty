@@ -199,6 +199,7 @@ namespace Berty.BoardCards.Behaviours
 
         public void KillCard()
         {
+            EventManager.Instance.RaiseOnCharacterDeath(this);
             Game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
             DestroyCard();
         }

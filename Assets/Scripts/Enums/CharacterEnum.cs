@@ -23,5 +23,6 @@ namespace Berty.Enums
         StaryBert,
         Tankbert,
         ZalobnyBert,
+        Zombert,
     }
 }
