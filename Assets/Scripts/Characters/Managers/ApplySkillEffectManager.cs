@@ -51,6 +51,8 @@ namespace Berty.Characters.Managers
         // output: Has the effect been applied
         public bool ApplyCharacterEffect(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
         {
+            if (DoesPreventEffect(target, skillOwner)) return false;
+
             switch (skillOwner.BoardCard.CharacterConfig.Character)
             {
                 case CharacterEnum.BertaSJW:
@@ -141,9 +143,20 @@ namespace Berty.Characters.Managers
             return true;
         }
 
+        private bool DoesPreventEffect(BoardCardCore target, BoardCardCore skillCard)
+        {
+            switch (target.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.BigMadB:
+                    return skillCard.BoardCard.GetRole() == RoleEnum.Support;
+                default:
+                    return false;
+            }
+        }
+
         private bool AreAllied(BoardCardCore firstCard, BoardCardCore secondCard)
         {
             return game.Grid.AreAligned(firstCard.ParentField.BoardField, secondCard.ParentField.BoardField);
-        }    
+        }
     }
 }

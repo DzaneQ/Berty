@@ -44,11 +44,11 @@ namespace Berty.BoardCards.Listeners
             if (card.BoardCard.CharacterConfig.CanBlock(distanceToAttacker)) return; // Try blocking
             //Debug.Log($"{card.name} with {card.BoardCard.Stats.Health} health takes damage");
             int modifiedAttackerStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(card, attacker);
-            card.StatChange.AdvanceHealth(-modifiedAttackerStrength, attacker); // Take damage
+            card.StatChange.AdvanceHealth(-modifiedAttackerStrength, attacker, true); // Take damage
             //Debug.Log($"{card.name} has {card.BoardCard.Stats.Health} health");
             if (!card.BoardCard.CharacterConfig.CanRiposte(distanceToAttacker)) return;
             int modifiedRiposteStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(attacker, card);
-            attacker.StatChange.AdvanceHealth(-modifiedRiposteStrength, card); // Do riposte
+            attacker.StatChange.AdvanceHealth(-modifiedRiposteStrength, card, true); // Do riposte
             //Debug.Log($"{attacker.name} has {card.BoardCard.Stats.Health} health due to riposte");
         }
 
@@ -64,7 +64,7 @@ namespace Berty.BoardCards.Listeners
             if (!card.BoardCard.CharacterConfig.CanAttack(distanceToDefender)) return; // Has to be in attack range
             //Debug.Log($"{defender.name} with {defender.BoardCard.Stats.Health} health is attacked by {card.name}");
             int modifiedStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(defender, card);
-            defender.StatChange.AdvanceHealth(-modifiedStrength, card);
+            defender.StatChange.AdvanceHealth(-modifiedStrength, card, true);
             //Debug.Log($"{defender.name} has {defender.BoardCard.Stats.Health} health after being attacked by {card.name}");
         }
 
@@ -88,6 +88,10 @@ namespace Berty.BoardCards.Listeners
         {
             switch (skillCard.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BigMadB:
+                    skillCard.StatChange.AdvanceDexterity(-1, null);
+                    skillCard.StatChange.AdvanceStrength(1, null);
+                    break;
                 case CharacterEnum.PrezydentBert:
                     skillCard.StatChange.AdvancePower(-1, null);
                     break;

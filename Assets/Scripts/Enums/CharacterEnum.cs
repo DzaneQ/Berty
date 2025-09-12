@@ -12,6 +12,7 @@ namespace Berty.Enums
         BertaSJW,
         BertaTrojanska,
         BertWick,
+        BigMadB,
         EBerta,
         KonstablBert,
         KrzyzowiecBert,

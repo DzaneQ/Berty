@@ -55,10 +55,10 @@ namespace Berty.BoardCards.Behaviours
             Bars.UpdateBar(StatEnum.Dexterity);
         }
 
-        public void AdvanceHealth(int value, BoardCardCore source)
+        public void AdvanceHealth(int value, BoardCardCore source, bool isBasicAttack = false)
         {
             if (Card == null) return;
-            if (ModifyStatChangeManager.Instance.BeforeHealthChange(core, ref value, source)) return;
+            if (ModifyStatChangeManager.Instance.BeforeHealthChange(core, ref value, source, isBasicAttack)) return;
             Card.AdvanceHealth(value);
             Bars.UpdateBar(StatEnum.Health);
             ModifyStatChangeManager.Instance.AfterHealthChange(core, value, source);

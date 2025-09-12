@@ -20,15 +20,18 @@ namespace Berty.Characters.Managers
 {
     public class ModifyStatChangeManager : ManagerSingleton<ModifyStatChangeManager>
     {
+        // NOTE: Ensure that BigMadB (and other prevention skill cards) have logic applied when new stat modifier is made
  
         // output: If true, prevent stat change
-
-        public bool BeforeHealthChange(BoardCardCore target, ref int value, BoardCardCore source)
+        public bool BeforeHealthChange(BoardCardCore target, ref int value, BoardCardCore source, bool isBasicAttack = false)
         {
             bool shouldPreventStatChange = false;
 
             switch (target.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BigMadB:
+                    if (source.BoardCard.GetRole() == RoleEnum.Support && !isBasicAttack) return true;
+                    break;
                 case CharacterEnum.PrymusBert:
                     if (value < 0) value++;
                     break;
@@ -46,6 +49,9 @@ namespace Berty.Characters.Managers
         {
             switch (target.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BigMadB:
+                    if (source.BoardCard.GetRole() == RoleEnum.Support) return;
+                    break;
                 case CharacterEnum.KrzyzowiecBert:
                     if (value < 0) target.StatChange.AdvanceStrength(-value, null);
                     break;
@@ -82,6 +88,14 @@ namespace Berty.Characters.Managers
         public int GetModifiedStrengthForAttack(BoardCardCore target, BoardCardCore source)
         {
             int strength = source.BoardCard.Stats.Strength;
+
+            switch (target.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.BigMadB:
+                    if (source.BoardCard.GetRole() == RoleEnum.Support) return strength;
+                    break;
+            }    
+
             switch (source.BoardCard.CharacterConfig.Character)
             {
                 case CharacterEnum.KonstablBert:
