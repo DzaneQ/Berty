@@ -74,6 +74,10 @@ namespace Berty.Characters.Managers
                     if (target.BoardCard.GetRole() != RoleEnum.Special) return false;
                     target.StatChange.AdvanceHealth(-1, skillOwner);
                     break;
+                case CharacterEnum.KowbojBert:
+                    if (!AreAllied(target, skillOwner)) return false;
+                    target.StatChange.AdvanceDexterity(delta, skillOwner);
+                    break;
                 case CharacterEnum.KuglarzBert:
                 case CharacterEnum.SuperfanBert:
                     if (AreAllied(target, skillOwner)) target.StatChange.AdvancePower(1, skillOwner);

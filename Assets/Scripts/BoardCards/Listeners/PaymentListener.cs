@@ -45,6 +45,7 @@ namespace Berty.BoardCards.Listeners
             {
                 SoundManager.Instance.AttackSound(core.SoundSource, core.BoardCard.CharacterConfig.AttackSound);
                 EventManager.Instance.RaiseOnDirectlyAttacked(core);
+                if (core.IsSuccessfulAttack) HandleSuccessfulAttack();
                 CardStatusManager.Instance.DisableAttack(core);
             }
             else if (core.CardState == CardStateEnum.NewCard)
@@ -70,6 +71,21 @@ namespace Berty.BoardCards.Listeners
                 return;
             }
             core.SetMainState();
+        }
+
+        private void HandleSuccessfulAttack()
+        {
+            switch (core.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.KowbojBert:
+                    core.StatChange.AdvanceDexterity(1, core);
+                    EventManager.Instance.RaiseOnValueChange(core, 1);
+                    break;
+                case CharacterEnum.KuglarzBert:
+                    core.StatChange.AdvanceDexterity(-1, null);
+                    core.StatChange.AdvanceHealth(1, null);
+                    break;
+            }
         }
     }
 }

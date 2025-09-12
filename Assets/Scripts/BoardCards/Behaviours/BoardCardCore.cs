@@ -1,6 +1,7 @@
 using Berty.Audio.Managers;
 using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
+using Berty.BoardCards.Listeners;
 using Berty.BoardCards.Managers;
 using Berty.BoardCards.State;
 using Berty.Enums;
@@ -28,6 +29,7 @@ namespace Berty.BoardCards.Behaviours
         private Color defaultColor;
         private Rigidbody cardRB;
         private AudioSource soundSource;
+        public bool IsSuccessfulAttack { get; private set; }
         public BoardCardBarsObjects Bars { get; private set; }
         public BoardCardMovableObject CardNavigation { get; private set; }
         public BoardCardStatChange StatChange { get; private set; }
@@ -142,6 +144,7 @@ namespace Berty.BoardCards.Behaviours
 
         public void SetAttacking()
         {
+            IsSuccessfulAttack = false;
             CardState = CardStateEnum.Attacking;
         }
 
@@ -181,6 +184,11 @@ namespace Berty.BoardCards.Behaviours
             };
             CardNavigation.ActivateNeutralButton(oppositeNavigation);
             CardState = CardStateEnum.NewTransform;
+        }
+
+        public void MarkSuccessfulAttack()
+        {
+            IsSuccessfulAttack = true;
         }
 
         public void HandleAnimationEnd()

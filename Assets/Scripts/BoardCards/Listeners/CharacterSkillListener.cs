@@ -166,6 +166,9 @@ namespace Berty.BoardCards.Listeners
             // When value changed card is the character with skill
             switch (valueChangedCard.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.KowbojBert:
+                    ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, valueChangedCard, delta);
+                    break;
                 case CharacterEnum.ZalobnyBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, valueChangedCard, delta);
                     break;

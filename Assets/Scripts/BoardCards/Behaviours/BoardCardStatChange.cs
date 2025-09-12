@@ -59,6 +59,7 @@ namespace Berty.BoardCards.Behaviours
         {
             if (Card == null) return;
             if (ModifyStatChangeManager.Instance.BeforeHealthChange(core, ref value, source, isBasicAttack)) return;
+            if (isBasicAttack) source.MarkSuccessfulAttack();
             Card.AdvanceHealth(value);
             Bars.UpdateBar(StatEnum.Health);
             ModifyStatChangeManager.Instance.AfterHealthChange(core, value, source);

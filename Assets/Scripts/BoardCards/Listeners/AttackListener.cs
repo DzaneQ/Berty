@@ -4,15 +4,18 @@ using Berty.Characters.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Managers;
+using Newtonsoft.Json.Linq;
 using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Berty.BoardCards.Listeners
 {
     public class AttackListener : MonoBehaviour
     {
         private BoardCardCore card;
+        private bool isSuccessfulAttack;
 
         private void Start()
         {
@@ -36,6 +39,7 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleDirectlyAttacked(object sender, DirectAttackEventArgs args)
         {
+            isSuccessfulAttack = false;
             BoardCardCore attacker = (BoardCardCore)sender;
             //Debug.Log($"Handling direct attack by {card.name}");
             if (!args.AttackedFields.Contains(card.BoardCard.OccupiedField)) return;
@@ -73,7 +77,7 @@ namespace Berty.BoardCards.Listeners
             BoardCardCore attacker = (BoardCardCore)sender;
             BoardCardCore witness = card;
 
-            if (witness == attacker) HandleDirectAttackSelf(attacker);
+            if (witness == attacker) HandleDirectAttackSelf();
 
             switch (attacker.BoardCard.CharacterConfig.Character)
             {
@@ -84,19 +88,18 @@ namespace Berty.BoardCards.Listeners
             }
         }
 
-        private void HandleDirectAttackSelf(BoardCardCore skillCard)
+        private void HandleDirectAttackSelf()
         {
-            switch (skillCard.BoardCard.CharacterConfig.Character)
+            switch (card.BoardCard.CharacterConfig.Character)
             {
                 case CharacterEnum.BigMadB:
-                    skillCard.StatChange.AdvanceDexterity(-1, null);
-                    skillCard.StatChange.AdvanceStrength(1, null);
+                    card.StatChange.AdvanceDexterity(-1, null);
+                    card.StatChange.AdvanceStrength(1, null);
                     break;
                 case CharacterEnum.PrezydentBert:
-                    skillCard.StatChange.AdvancePower(-1, null);
+                    card.StatChange.AdvancePower(-1, null);
                     break;
             }
         }
-
     }
 }

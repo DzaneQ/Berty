@@ -28,8 +28,8 @@ namespace Berty.Debugging
 
         public void TakeCardIfInPile(AlignmentEnum align)
         {
-            if (align == AlignmentEnum.Player) game.CardPile.PullCardIfInPile(CharacterEnum.BertPogromca, align);
-            //else game.CardPile.PullCardIfInPile(CharacterEnum.BertaSJW, align);
+            if (align == AlignmentEnum.Player) game.CardPile.PullCardIfInPile(CharacterEnum.KuglarzBert, align);
+            else game.CardPile.PullCardIfInPile(CharacterEnum.KowbojBert, align);
         }
     }
 #else
