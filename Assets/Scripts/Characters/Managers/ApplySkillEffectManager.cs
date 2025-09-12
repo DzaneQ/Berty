@@ -147,6 +147,8 @@ namespace Berty.Characters.Managers
         {
             switch (target.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BertPogromca:
+                    return skillCard.BoardCard.GetRole() == RoleEnum.Special;
                 case CharacterEnum.BigMadB:
                     return skillCard.BoardCard.GetRole() == RoleEnum.Support;
                 default:

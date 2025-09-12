@@ -20,7 +20,7 @@ namespace Berty.Characters.Managers
 {
     public class ModifyStatChangeManager : ManagerSingleton<ModifyStatChangeManager>
     {
-        // NOTE: Ensure that BigMadB (and other prevention skill cards) have logic applied when new stat modifier is made
+        // NOTE: Ensure that BigMadB, PogromcaBert (and other prevention skill cards) have logic applied when new stat modifier is made
  
         // output: If true, prevent stat change
         public bool BeforeHealthChange(BoardCardCore target, ref int value, BoardCardCore source, bool isBasicAttack = false)
@@ -29,6 +29,9 @@ namespace Berty.Characters.Managers
 
             switch (target.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BertPogromca:
+                    if (source.BoardCard.GetRole() == RoleEnum.Special && !isBasicAttack) return true;
+                    break;
                 case CharacterEnum.BigMadB:
                     if (source.BoardCard.GetRole() == RoleEnum.Support && !isBasicAttack) return true;
                     break;
@@ -49,6 +52,9 @@ namespace Berty.Characters.Managers
         {
             switch (target.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BertPogromca:
+                    if (source.BoardCard.GetRole() == RoleEnum.Special) return;
+                    break;
                 case CharacterEnum.BigMadB:
                     if (source.BoardCard.GetRole() == RoleEnum.Support) return;
                     break;
@@ -91,6 +97,9 @@ namespace Berty.Characters.Managers
 
             switch (target.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BertPogromca:
+                    if (source.BoardCard.GetRole() == RoleEnum.Special) return strength;
+                    break;
                 case CharacterEnum.BigMadB:
                     if (source.BoardCard.GetRole() == RoleEnum.Support) return strength;
                     break;
@@ -98,6 +107,9 @@ namespace Berty.Characters.Managers
 
             switch (source.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BertPogromca:
+                    if (target.BoardCard.GetRole() == RoleEnum.Special) strength = strength + 2;
+                    break;
                 case CharacterEnum.KonstablBert:
                     RoleEnum targetRole = target.BoardCard.GetRole();
                     RoleEnum[] vulnerableRoles = { RoleEnum.Special, RoleEnum.Support };
