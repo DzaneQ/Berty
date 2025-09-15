@@ -51,6 +51,7 @@ namespace Berty.BoardCards.Behaviours
         public void AdvanceDexterity(int value, BoardCardCore source)
         {
             if (Card == null) return;
+            Debug.Log($"Advancing dexterity for {Card.CharacterConfig.Name} of value {value}");
             Card.AdvanceDexterity(value);
             Bars.UpdateBar(StatEnum.Dexterity);
         }
@@ -59,7 +60,7 @@ namespace Berty.BoardCards.Behaviours
         {
             if (Card == null) return;
             if (ModifyStatChangeManager.Instance.BeforeHealthChange(core, ref value, source, isBasicAttack)) return;
-            if (isBasicAttack) source.MarkSuccessfulAttack();
+            if (isBasicAttack) source.MarkSuccessfulAttack(core);
             Card.AdvanceHealth(value);
             Bars.UpdateBar(StatEnum.Health);
             ModifyStatChangeManager.Instance.AfterHealthChange(core, value, source);

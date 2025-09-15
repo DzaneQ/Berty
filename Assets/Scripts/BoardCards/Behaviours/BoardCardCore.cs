@@ -15,6 +15,7 @@ using Berty.UI.Card;
 using Berty.UI.Card.Managers;
 using Berty.UI.Card.Systems;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using static UnityEngine.CullingGroup;
@@ -29,10 +30,11 @@ namespace Berty.BoardCards.Behaviours
         private Color defaultColor;
         private Rigidbody cardRB;
         private AudioSource soundSource;
-        public bool IsSuccessfulAttack { get; private set; }
+        private List<BoardCardCore> _attackedCards = new List<BoardCardCore>();
         public BoardCardBarsObjects Bars { get; private set; }
         public BoardCardMovableObject CardNavigation { get; private set; }
         public BoardCardStatChange StatChange { get; private set; }
+        public IReadOnlyList<BoardCardCore> AttackedCards => _attackedCards;
 
         public BoardCard BoardCard { get; private set; }
         public CardStateEnum CardState
@@ -144,7 +146,7 @@ namespace Berty.BoardCards.Behaviours
 
         public void SetAttacking()
         {
-            IsSuccessfulAttack = false;
+            _attackedCards.Clear();
             CardState = CardStateEnum.Attacking;
         }
 
@@ -186,9 +188,10 @@ namespace Berty.BoardCards.Behaviours
             CardState = CardStateEnum.NewTransform;
         }
 
-        public void MarkSuccessfulAttack()
+        public void MarkSuccessfulAttack(BoardCardCore card)
         {
-            IsSuccessfulAttack = true;
+            if (_attackedCards.Contains(card)) throw new Exception($"Card {card.name} already exists in the list of attacked cards by {name}");
+            _attackedCards.Add(card);
         }
 
         public void HandleAnimationEnd()

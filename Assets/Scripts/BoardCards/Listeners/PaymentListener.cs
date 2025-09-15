@@ -45,7 +45,7 @@ namespace Berty.BoardCards.Listeners
             {
                 SoundManager.Instance.AttackSound(core.SoundSource, core.BoardCard.CharacterConfig.AttackSound);
                 EventManager.Instance.RaiseOnDirectlyAttacked(core);
-                if (core.IsSuccessfulAttack) HandleSuccessfulAttack();
+                if (core.AttackedCards.Count > 0) HandleSuccessfulAttack();
                 CardStatusManager.Instance.DisableAttack(core);
             }
             else if (core.CardState == CardStateEnum.NewCard)
@@ -75,6 +75,7 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleSuccessfulAttack()
         {
+            Debug.Log($"Executing successful attack for {core}");
             switch (core.BoardCard.CharacterConfig.Character)
             {
                 case CharacterEnum.KowbojBert:
