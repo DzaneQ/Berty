@@ -11,6 +11,7 @@ namespace Berty.Enums
         BertaGejsza,
         BertaSJW,
         BertaTrojanska,
+        Bertonator,
         BertPogromca,
         BertWick,
         BigMadB,

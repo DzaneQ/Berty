@@ -9,6 +9,7 @@ namespace Berty.BoardCards.ConfigData
         public Bertonator()
         {
             AddName("bertonator");
+            SetCharacter(CharacterEnum.Bertonator);
             AddProperties(GenderEnum.Male, RoleEnum.Agile);
             AddStats(0, 3, 4, 4);
             AddRange(0, 1, attackRange);

@@ -188,9 +188,10 @@ namespace Berty.BoardCards.Behaviours
             CardState = CardStateEnum.NewTransform;
         }
 
+        // WARNING: The code logic applies successful attack on riposte and attack new stand as it's basic attack.
+        //    But it's only used when ordered attack is applied so it doesn't matter... until there's a new code that does.
         public void MarkSuccessfulAttack(BoardCardCore card)
         {
-            if (_attackedCards.Contains(card)) throw new Exception($"Card {card.name} already exists in the list of attacked cards by {name}");
             _attackedCards.Add(card);
         }
 
