@@ -29,6 +29,7 @@ namespace Berty.BoardCards.Listeners
         {
             EventManager.Instance.OnNewCharacter += HandleNewCharacter;
             EventManager.Instance.OnMovedCharacter += HandleMovedCharacter;
+            EventManager.Instance.OnCharacterSpecialEffect += HandleCharacterSpecialEffect;
             EventManager.Instance.OnValueChange += HandleValueChange;
             EventManager.Instance.OnCharacterDeath += HandleCharacterDeath;
         }
@@ -61,10 +62,16 @@ namespace Berty.BoardCards.Listeners
             HandleDeathWitness(core, dyingCharacter);
         }
 
+        private void HandleCharacterSpecialEffect(object sender, EventArgs args)
+        {
+            BoardCardCore specialCharacter = (BoardCardCore)sender;
+            HandleCustomEffect(core, specialCharacter);
+        }
+
         private void HandleValueChange(object sender, ValueChangeEventArgs args)
         {
             BoardCardCore sourceCharacter = (BoardCardCore)sender;
-            HandleValueChange(core, sourceCharacter, args.Delta);
+            HandleCustomEffect(core, sourceCharacter, args.Delta);
         }
 
         public void HandleNewCardWitness(BoardCardCore witness, BoardCardCore newCard)
@@ -159,18 +166,21 @@ namespace Berty.BoardCards.Listeners
                     witness.StatChange.AdvanceHealth(1, null);
                     break;
             }
-        }    
+        }
 
-        public void HandleValueChange(BoardCardCore witness, BoardCardCore valueChangedCard, int delta)
+        private void HandleCustomEffect(BoardCardCore witness, BoardCardCore customEffectCard, int delta = 0)
         {
-            // When value changed card is the character with skill
-            switch (valueChangedCard.BoardCard.CharacterConfig.Character)
+            // When customed effect is triggered by the character with skill
+            switch (customEffectCard.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.PapiezBertII:
+                    ApplySkillEffectManager.Instance.ApplyCharacterEffect(witness, customEffectCard);
+                    break;
                 case CharacterEnum.KowbojBert:
-                    ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, valueChangedCard, delta);
+                    ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, customEffectCard, delta);
                     break;
                 case CharacterEnum.ZalobnyBert:
-                    ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, valueChangedCard, delta);
+                    ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, customEffectCard, delta);
                     break;
             }
         }

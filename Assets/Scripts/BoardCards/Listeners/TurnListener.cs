@@ -1,4 +1,6 @@
 using Berty.BoardCards.Behaviours;
+using Berty.Characters.Managers;
+using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using System;
@@ -32,6 +34,7 @@ namespace Berty.BoardCards.Listeners
         {
             if (core.IsForPay()) throw new Exception($"Board card {name} detected for pay when switching turns.");
             ProgressTemporaryStats();
+            HandleCharacterEffect();
             if (game.CurrentAlignment != core.ParentField.BoardField.Align) return;
             RegenerateDexterity();
             EnableAttack();
@@ -58,6 +61,17 @@ namespace Berty.BoardCards.Listeners
         private void EnableAttack()
         {
             core.BoardCard.MarkAsHasNotAttacked();
+        }
+
+        private void HandleCharacterEffect()
+        {
+            switch (core.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.PapiezBertII:
+                    if (core.BoardCard.Align == game.CurrentAlignment)
+                        EventManager.Instance.RaiseOnCharacterSpecialEffect(core);
+                    break;
+            }
         }
     }
 }

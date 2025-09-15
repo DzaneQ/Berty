@@ -9,6 +9,7 @@ namespace Berty.BoardCards.ConfigData
         public PapiezBertII()
         {
             AddName("papiez bert II");
+            SetCharacter(CharacterEnum.PapiezBertII);
             AddProperties(GenderEnum.Male, RoleEnum.Special);
             AddStats(2, 3, 5, 3);
             AddRange(0, 2, attackRange);

@@ -20,6 +20,7 @@ namespace Berty.Enums
         KrzyzowiecBert,
         KuglarzBert,
         MisiekBert,
+        PapiezBertII,
         PrezydentBert,
         PrymusBert,
         SamurajBert,

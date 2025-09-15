@@ -86,6 +86,10 @@ namespace Berty.Characters.Managers
                 case CharacterEnum.MisiekBert:
                     CardNavigationManager.Instance.RotateCard(target, 270);
                     break;
+                case CharacterEnum.PapiezBertII:
+                    if (AreAllied(target, skillOwner)) return false;
+                    target.StatChange.AdvancePower(-2, skillOwner);
+                    break;
                 case CharacterEnum.PrezydentBert:
                     if (!AreAllied(target, skillOwner)) return false;
                     target.StatChange.AdvanceStrength(1, skillOwner);
