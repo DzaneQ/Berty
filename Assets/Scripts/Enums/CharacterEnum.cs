@@ -8,6 +8,7 @@ namespace Berty.Enums
     {
         Unknown = 0,
         AstronautaBert,
+        BertaAmazonka,
         BertaGejsza,
         BertaSJW,
         BertaTrojanska,

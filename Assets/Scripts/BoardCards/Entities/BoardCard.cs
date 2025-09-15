@@ -133,12 +133,7 @@ namespace Berty.BoardCards.Entities
         public RoleEnum GetRole()
         {
             return CharacterConfig.Role;
-        }
-
-        public bool CanAttack()
-        {
-            return !HasAttacked && Stats.Strength > 0;
-        }
+        }     
 
         public void MarkAsTired()
         {
@@ -158,6 +153,11 @@ namespace Berty.BoardCards.Entities
         public void AddResistanceToCharacter(CharacterConfig character)
         {
             resistance.Add(character);
+        }
+
+        public bool CanAttackCard(BoardCard target)
+        {
+            return CharacterConfig.CanAttack(GetDistanceTo(target));
         }
 
         public Vector2Int GetDistanceTo(BoardCard target)

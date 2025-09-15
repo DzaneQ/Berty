@@ -1,8 +1,12 @@
 using Berty.BoardCards.Behaviours;
+using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Managers;
 using Berty.Characters.Managers;
 using Berty.Enums;
+using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.Grid.Field.Entities;
+using Berty.Grid.Managers;
 using Berty.UI.Card.Managers;
 using Newtonsoft.Json.Linq;
 using System;
@@ -15,11 +19,12 @@ namespace Berty.BoardCards.Listeners
     public class AttackListener : MonoBehaviour
     {
         private BoardCardCore card;
-        private bool isSuccessfulAttack;
+        private Game game;
 
         private void Start()
         {
             card = GetComponent<BoardCardCore>();
+            game = CoreManager.Instance.Game;
         }
 
         private void OnEnable()
@@ -39,7 +44,6 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleDirectlyAttacked(object sender, DirectAttackEventArgs args)
         {
-            isSuccessfulAttack = false;
             BoardCardCore attacker = (BoardCardCore)sender;
             //Debug.Log($"Handling direct attack by {card.name}");
             if (!args.AttackedFields.Contains(card.BoardCard.OccupiedField)) return;
@@ -81,6 +85,10 @@ namespace Berty.BoardCards.Listeners
 
             switch (attacker.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BertaAmazonka:
+                    if (attacker.BoardCard.CanAttackCard(witness.BoardCard))
+                        HandleBertaAmazonkaEffect(witness, attacker);
+                    break;
                 case CharacterEnum.MisiekBert:
                 case CharacterEnum.PrezydentBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, attacker);
@@ -101,5 +109,31 @@ namespace Berty.BoardCards.Listeners
                     break;
             }
         }
+
+        private void HandleBertaAmazonkaEffect(BoardCardCore target, BoardCardCore bertaAmazonka)
+        {
+            if (bertaAmazonka.BoardCard.CharacterConfig.Character != CharacterEnum.BertaAmazonka)
+                throw new Exception($"BertaAmazonka effect is casted by {bertaAmazonka.BoardCard.CharacterConfig.Name}");
+            Vector2Int distance = target.BoardCard.GetDistanceTo(bertaAmazonka.BoardCard); // According to the target's direction, not BertaAmazonka's
+            if (distance.x == 0 && distance.y != 0)
+            {
+                BoardField neighbor = game.Grid.GetFieldDistancedFromCardOrNull(-1, 0, target.BoardCard);
+                if (neighbor != null && neighbor.IsOccupied()) 
+                    BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(neighbor.OccupantCard).StatChange.AdvanceHealth(-1, bertaAmazonka);
+                neighbor = game.Grid.GetFieldDistancedFromCardOrNull(1, 0, target.BoardCard);
+                if (neighbor != null && neighbor.IsOccupied())
+                    BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(neighbor.OccupantCard).StatChange.AdvanceHealth(-1, bertaAmazonka);
+            }
+            else if (distance.x != 0 && distance.y == 0)
+            {
+                BoardField neighbor = game.Grid.GetFieldDistancedFromCardOrNull(0, -1, target.BoardCard);
+                if (neighbor != null && neighbor.IsOccupied())
+                    BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(neighbor.OccupantCard).StatChange.AdvanceHealth(-1, bertaAmazonka);
+                neighbor = game.Grid.GetFieldDistancedFromCardOrNull(0, 1, target.BoardCard);
+                if (neighbor != null && neighbor.IsOccupied())
+                    BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(neighbor.OccupantCard).StatChange.AdvanceHealth(-1, bertaAmazonka);
+            }
+            else throw new Exception($"Target shouldn't be distanced from BertaAmazonka by: {distance.x}, {distance.y}");
+        }    
     }
 }
