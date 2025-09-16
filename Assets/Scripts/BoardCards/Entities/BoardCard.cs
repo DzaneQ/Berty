@@ -99,6 +99,11 @@ namespace Berty.BoardCards.Entities
             Stats.Strength += value;
         }
 
+        public void SetStrength(int value)
+        {
+            Stats.Strength = value;
+        }
+
         public void AdvanceTempStrength(int value)
         {
             Stats.TempStrength += value;

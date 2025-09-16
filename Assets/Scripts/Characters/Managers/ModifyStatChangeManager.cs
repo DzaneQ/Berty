@@ -1,7 +1,9 @@
 using Berty.BoardCards.Behaviours;
 using Berty.BoardCards.ConfigData;
 using Berty.Enums;
+using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.Grid.Entities;
 using Berty.Utility;
 using System;
 using System.Linq;
@@ -11,9 +13,44 @@ namespace Berty.Characters.Managers
 {
     public class ModifyStatChangeManager : ManagerSingleton<ModifyStatChangeManager>
     {
+        private BoardGrid grid;
+
+        protected override void Awake()
+        {
+            grid = CoreManager.Instance.Game.Grid;
+        }
+
         // NOTE: Ensure that BigMadB, PogromcaBert (and other prevention skill cards) have logic applied when new stat modifier is made
- 
+
         // output: If true, prevent stat change
+        public bool BeforeStrengthChange(BoardCardCore target, ref int value, BoardCardCore source)
+        {
+            bool shouldPreventStatChange = false;
+
+            switch (target.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.BertkaIdolka:
+                    if (target != source) return true;
+                    break;
+            }
+
+            return shouldPreventStatChange;
+        }
+
+        public bool BeforePowerChange(BoardCardCore target, ref int value, BoardCardCore source)
+        {
+            bool shouldPreventStatChange = false;
+
+            switch (target.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.BertkaIdolka:
+                    if (!grid.AreAligned(target.BoardCard.OccupiedField, source.BoardCard.OccupiedField) && target.BoardCard.Stats.Power <= 3) return true;
+                    break;
+            }
+
+            return shouldPreventStatChange;
+        }
+
         public bool BeforeHealthChange(BoardCardCore target, ref int value, BoardCardCore source, bool isBasicAttack = false)
         {
             bool shouldPreventStatChange = false;
@@ -45,6 +82,16 @@ namespace Berty.Characters.Managers
         }
 
         // NOTE: After<stat>Change is executed during stat change animation
+
+        public void AfterPowerChange(BoardCardCore target, int value, BoardCardCore source)
+        {
+            switch (target.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.BertkaIdolka:
+                    target.StatChange.SetStrength(target.BoardCard.Stats.Power, target);
+                    break;
+            }
+        }
 
         public void AfterHealthChange(BoardCardCore target, int value, BoardCardCore source)
         {

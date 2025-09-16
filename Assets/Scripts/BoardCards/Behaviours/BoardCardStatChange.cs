@@ -30,28 +30,37 @@ namespace Berty.BoardCards.Behaviours
         public void AdvanceStrength(int value, BoardCardCore source)
         {
             if (Card == null) return;
+            if (ModifyStatChangeManager.Instance.BeforeStrengthChange(core, ref value, source)) return;
             Card.AdvanceStrength(value);
             Bars.UpdateBar(StatEnum.Strength);
+        }
+
+        public void SetStrength(int value, BoardCardCore source)
+        {
+            if (Card == null) return;
+            int delta = value - Card.Stats.Strength;
+            AdvanceStrength(delta, source);
         }
 
         public void AdvancePower(int value, BoardCardCore source)
         {
             if (Card == null) return;
+            if (ModifyStatChangeManager.Instance.BeforePowerChange(core, ref value, source)) return;
             Card.AdvancePower(value);
             Bars.UpdateBar(StatEnum.Power);
+            ModifyStatChangeManager.Instance.AfterPowerChange(core, value, source);
         }
 
-        public void SetPower(int value)
+        public void SetPower(int value, BoardCardCore source)
         {
             if (Card == null) return;
-            Card.SetPower(value);
-            Bars.UpdateBar(StatEnum.Power);
+            int delta = value - Card.Stats.Power;
+            AdvancePower(delta, source);
         }
 
         public void AdvanceDexterity(int value, BoardCardCore source)
         {
             if (Card == null) return;
-            Debug.Log($"Advancing dexterity for {Card.CharacterConfig.Name} of value {value}");
             Card.AdvanceDexterity(value);
             Bars.UpdateBar(StatEnum.Dexterity);
         }

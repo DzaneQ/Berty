@@ -206,7 +206,7 @@ namespace Berty.BoardCards.Behaviours
         public void SwitchSides()
         {
             BoardCard.OccupiedField.SwitchSides();
-            StatChange.SetPower(BoardCard.CharacterConfig.Power);
+            StatChange.SetPower(BoardCard.CharacterConfig.Power, this);
             ParentField.UpdateField();
         }
 
