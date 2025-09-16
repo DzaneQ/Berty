@@ -25,6 +25,7 @@ namespace Berty.Enums
         PapiezBertII,
         PrezydentBert,
         PrymusBert,
+        RoninBert,
         SamurajBert,
         ShaolinBert,
         StaryBert,

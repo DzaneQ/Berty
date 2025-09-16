@@ -8,6 +8,8 @@ using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Entities;
 using Berty.UI.Card.Managers;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
@@ -97,6 +99,9 @@ namespace Berty.BoardCards.Listeners
                     core.StatChange.AdvanceDexterity(-1, null);
                     core.StatChange.AdvanceHealth(1, null);
                     break;
+                case CharacterEnum.RoninBert:
+                    HandleRoninBertEffect(core.AttackedCards, core);
+                    break;
             }
         }
 
@@ -108,6 +113,24 @@ namespace Berty.BoardCards.Listeners
             BoardField targetField = game.Grid.GetFieldDistancedFromCardOrNull(distance.x * 2, distance.y * 2, bertonator.BoardCard);
             if (targetField == null || targetField.IsOccupied()) target.StatChange.AdvanceHealth(-1, bertonator);
             else CardNavigationManager.Instance.MoveCard(target, targetField);
+        }
+
+        private void HandleRoninBertEffect(IReadOnlyList<BoardCardCore> attackedCards, BoardCardCore roninBert)
+        {
+            if (roninBert.BoardCard.CharacterConfig.Character != CharacterEnum.RoninBert)
+                throw new Exception($"RoninBert effect is casted by {roninBert.BoardCard.CharacterConfig.Name}");
+            if (attackedCards.Count > 2)
+                throw new Exception($"RoninBert got {attackedCards.Count} cards attacked");
+            BoardCardCore swapTarget = attackedCards[0];
+            // Get further card as swap target
+            if (attackedCards.Count > 1
+                && roninBert.BoardCard.GetDistanceTo(attackedCards[1].BoardCard).magnitude > roninBert.BoardCard.GetDistanceTo(swapTarget.BoardCard).magnitude)
+                swapTarget = attackedCards[1];
+            // Lose health if attacking more powerful card
+            if (attackedCards.Any(core => core.BoardCard.Stats.Power > roninBert.BoardCard.Stats.Power))
+                roninBert.StatChange.AdvanceHealth(-1, null);
+            // Swap card positions
+            CardNavigationManager.Instance.SwapCards(roninBert, swapTarget);
         }
     }
 }

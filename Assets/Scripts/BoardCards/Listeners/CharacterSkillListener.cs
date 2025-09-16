@@ -53,6 +53,7 @@ namespace Berty.BoardCards.Listeners
         private void HandleMovedCharacter(object sender, EventArgs args)
         {
             BoardCardCore movedCharacter = (BoardCardCore)sender;
+            if (movedCharacter.BoardCard == null) return;
             HandleMovedCardWitness(core, movedCharacter);
         }
 
@@ -74,7 +75,7 @@ namespace Berty.BoardCards.Listeners
             HandleCustomEffect(core, sourceCharacter, args.Delta);
         }
 
-        public void HandleNewCardWitness(BoardCardCore witness, BoardCardCore newCard)
+        private void HandleNewCardWitness(BoardCardCore witness, BoardCardCore newCard)
         {
             if (witness == newCard) HandleNewCardSelf(newCard);
 
@@ -117,7 +118,7 @@ namespace Berty.BoardCards.Listeners
             }
         }
 
-        public void HandleMovedCardWitness(BoardCardCore witness, BoardCardCore movedCard)
+        private void HandleMovedCardWitness(BoardCardCore witness, BoardCardCore movedCard)
         {
             if (witness == movedCard) HandleMovedCardSelf(movedCard);
 

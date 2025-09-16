@@ -194,9 +194,10 @@ namespace Berty.BoardCards.Behaviours
         {
             _attackedCards.Add(card);
         }
-
+        
         public void HandleAnimationEnd()
         {
+            if (BoardCard == null) return;
             if (CardNavigation.IsCardAnimating()) return;
             if (!Bars.AreBarsAnimating()) CardNavigation.EnableInteraction();
             Bars.ShowBars();
