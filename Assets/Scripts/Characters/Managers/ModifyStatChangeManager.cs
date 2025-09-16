@@ -1,20 +1,11 @@
-using Berty.BoardCards;
-using Berty.BoardCards.Animation;
 using Berty.BoardCards.Behaviours;
 using Berty.BoardCards.ConfigData;
-using Berty.BoardCards.Managers;
 using Berty.Enums;
-using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.Grid.Entities;
-using Berty.Grid.Field.Entities;
-using Berty.Structs;
-using Berty.UI.Card.Collection;
 using Berty.Utility;
 using System;
 using System.Linq;
 using UnityEngine;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 namespace Berty.Characters.Managers
 {
@@ -40,6 +31,13 @@ namespace Berty.Characters.Managers
                     break;
                 case CharacterEnum.ZalobnyBert:
                     if (value < 0 && source.BoardCard.GetRole() == RoleEnum.Offensive) shouldPreventStatChange = true;
+                    break;
+            }
+
+            switch (source.BoardCard.CharacterConfig.Character)
+            {
+                case CharacterEnum.BertkaSerferka:
+                    if (isBasicAttack) return PreventDependingOnBertkaSerferkaPosition(target, source);
                     break;
             }
 
@@ -117,5 +115,24 @@ namespace Berty.Characters.Managers
 
             return strength;
         }
+
+        private bool PreventDependingOnBertkaSerferkaPosition(BoardCardCore target, BoardCardCore bertkaSerferka)
+        {
+            if (bertkaSerferka.BoardCard.CharacterConfig.Character != CharacterEnum.BertkaSerferka)
+                throw new Exception($"BertkaSerferka effect is casted by {bertkaSerferka.BoardCard.CharacterConfig.Name}");
+            Vector2Int distance = bertkaSerferka.BoardCard.GetDistanceTo(target.BoardCard);
+            if (distance.y < 2) return false; // Allow riposte attack
+            switch (distance.x)
+            {
+                case -1:
+                    return bertkaSerferka.BoardCard.Stats.Strength < target.BoardCard.Stats.Strength;
+                case 0:
+                    return bertkaSerferka.BoardCard.Stats.Power < target.BoardCard.Stats.Power;
+                case 1:
+                    return bertkaSerferka.BoardCard.Stats.Dexterity < target.BoardCard.Stats.Dexterity;
+                default:
+                    throw new Exception($"Undefined BertkaSerferka's distance to target: {distance.x}, {distance.y}");
+            }
+        }    
     }
 }

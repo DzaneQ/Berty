@@ -85,6 +85,10 @@ namespace Berty.BoardCards.Listeners
             Debug.Log($"Executing successful attack for {core}");
             switch (core.BoardCard.CharacterConfig.Character)
             {
+                case CharacterEnum.BertkaSerferka:
+                    BoardCardCore swapTarget = core.AttackedCards.OrderByDescending(attackedCard => core.BoardCard.GetDistanceTo(attackedCard.BoardCard).x).First();
+                    CardNavigationManager.Instance.SwapCards(core, swapTarget);
+                    break;
                 case CharacterEnum.Bertonator:
                     if (core.AttackedCards.Count > 1) throw new Exception($"Bertonator is targeting {core.AttackedCards.Count} cards");
                     BoardCardCore pushedCard = core.AttackedCards[0];
