@@ -11,11 +11,13 @@ namespace Berty.Gameplay.ConfigData
     {
         public int TableCapacity { get; }
         public LanguageEnum Language { get; }
+        public float AnimationSeconds { get; }
 
         public GameConfig()
         {
             TableCapacity = 6;
             Language = LanguageEnum.Polish;
+            AnimationSeconds = 0.15f;
         }
     }
 }

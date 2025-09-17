@@ -1,6 +1,7 @@
 using Berty.BoardCards.Bar;
 using Berty.BoardCards.Behaviours;
 using Berty.Gameplay;
+using Berty.Gameplay.Managers;
 using Berty.Structs;
 using System;
 using System.Collections;
@@ -12,8 +13,7 @@ namespace Berty.BoardCards.Animation
 {
     public class AnimatedBarWidth : MonoBehaviour, IBarWidth
     {
-        private const float durationSeconds = 1f;
-
+        private float durationSeconds;
         private BoardCardCore card;
         private int _coroutineCount;
         private SpriteRenderer rend;
@@ -35,6 +35,7 @@ namespace Berty.BoardCards.Animation
         {
             _coroutineCount = 0;
             rend = GetComponent<SpriteRenderer>();
+            durationSeconds = CoreManager.Instance.Game.GameConfig.AnimationSeconds;
         }
 
         void Start()

@@ -203,6 +203,7 @@ namespace Berty.BoardCards.Behaviours
             Bars.ShowBars();
         }
 
+        // TODO: Handle changed side for cards that apply skills to allies
         public void SwitchSides()
         {
             BoardCard.OccupiedField.SwitchSides();

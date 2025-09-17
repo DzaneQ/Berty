@@ -1,5 +1,6 @@
 using Berty.BoardCards.Behaviours;
 using Berty.Gameplay;
+using Berty.Gameplay.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,8 +10,7 @@ namespace Berty.BoardCards.Animation
 {
     public class AnimatedRotateCard : MonoBehaviour, IRotateCard
     {
-        private const float durationSeconds = 1f;
-
+        private float durationSeconds;
         private BoardCardCore card;
         private float rotatingAngle;
         private int _coroutineCount;
@@ -30,6 +30,7 @@ namespace Berty.BoardCards.Animation
         {
             rotatingAngle = 0;
             _coroutineCount = 0;
+            durationSeconds = CoreManager.Instance.Game.GameConfig.AnimationSeconds;
         }
 
         void Start()

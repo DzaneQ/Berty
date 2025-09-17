@@ -1,6 +1,7 @@
 using Berty.BoardCards.Behaviours;
 using Berty.Enums;
 using Berty.Gameplay;
+using Berty.Gameplay.Managers;
 using Berty.Grid.Field;
 using Berty.Grid.Field.Behaviour;
 using System;
@@ -12,8 +13,7 @@ namespace Berty.BoardCards.Animation
 {
     public class AnimatedMoveCard : MonoBehaviour, IMoveCard
     {
-        private const float durationSeconds = 1f;
-
+        private float durationSeconds;
         private BoardCardCore card;
         private Vector3 targetPosition;
         private int _coroutineCount;
@@ -32,6 +32,7 @@ namespace Berty.BoardCards.Animation
         private void Awake()
         {
             _coroutineCount = 0;
+            durationSeconds = CoreManager.Instance.Game.GameConfig.AnimationSeconds;
         }
 
         void Start()
