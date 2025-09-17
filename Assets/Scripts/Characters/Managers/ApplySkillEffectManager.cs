@@ -135,16 +135,7 @@ namespace Berty.Characters.Managers
             if (samurajBert.BoardCard.CharacterConfig.Character != CharacterEnum.SamurajBert)
                 throw new Exception($"SamurajBert effect is casted by {samurajBert.BoardCard.CharacterConfig.Name}");
             if (samurajBert.BoardCard.IsResistantTo(samurajBert.BoardCard)) return false;
-            int occupiedNeighbors = 0;
-            for (int i = 0; i < 4; i++)
-            {
-                int xDistance = (int)MathF.Round(MathF.Sin(i / 2f * MathF.PI));
-                int yDistance = (int)MathF.Round(MathF.Cos(i / 2f * MathF.PI));
-                BoardField neighbor = game.Grid.GetFieldDistancedFromCardOrNull(xDistance, yDistance, samurajBert.BoardCard);
-                if (neighbor == null) continue;
-                if (neighbor.IsOccupied()) occupiedNeighbors++;
-            }
-            if (occupiedNeighbors < 3) return false;
+            if (game.Grid.GetAllNeighbors(samurajBert.BoardCard).Count < 3) return false;
             samurajBert.StatChange.AdvanceDexterity(1, samurajBert);
             samurajBert.StatChange.AdvancePower(1, samurajBert);
             samurajBert.BoardCard.AddResistanceToCharacter(samurajBert.BoardCard.CharacterConfig);

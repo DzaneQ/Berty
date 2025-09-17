@@ -77,6 +77,19 @@ namespace Berty.Grid.Entities
             return GetFieldDistancedFromCardOrNull(x, y, card) ?? throw new Exception($"There is not field at distance ({x},{y}) away from {card.CharacterConfig.Name}");
         }
 
+        public List<BoardCard> GetAllNeighbors(BoardCard card)
+        {
+            List<BoardCard> neighbors = new();
+            for (int i = 0; i < 4; i++)
+            {
+                BoardField neighboringField = GetFieldDistancedFromCardOrNull(Mathf.RoundToInt(Mathf.Sin(i / 2f * Mathf.PI)), Mathf.RoundToInt(Mathf.Cos(i / 2f * Mathf.PI)), card);
+                if (neighboringField == null || !neighboringField.IsOccupied()) continue;
+                neighbors.Add(neighboringField.OccupantCard);
+                if (neighboringField.BackupCard != null) neighbors.Add(neighboringField.BackupCard);
+            }
+            return neighbors;
+        }
+
         public List<BoardField> GetFieldsInRange(BoardCard card, List<Vector2Int> range)
         {
             List<BoardField> fields = new List<BoardField>();
