@@ -13,7 +13,7 @@ namespace Berty.UI.Card.Systems
     {
         public List<CharacterConfig> SelectedCards { get; }
         public int? cardPrice;
-        private CharacterConfig cardOnHold;
+        private CharacterConfig pendingCard;
 
         public SelectionAndPaymentSystem()
         {
@@ -66,7 +66,7 @@ namespace Berty.UI.Card.Systems
         public void SetAsNotPaymentTime()
         {
             cardPrice = null;
-            ClearCardOnHold();
+            ClearPendingCard();
         }
 
         public bool CheckOffer()
@@ -79,20 +79,25 @@ namespace Berty.UI.Card.Systems
             return GetSelectedCardsCount() < (cardPrice ?? 1);
         }
 
-        public CharacterConfig GetCardOnHoldOrThrow()
+        public CharacterConfig GetPendingCardOrThrow()
         {
-            if (cardOnHold == null) throw new ArgumentNullException("Card on hold cannot be null!");
-            return cardOnHold;
+            if (pendingCard == null) throw new ArgumentNullException("Card on hold cannot be null!");
+            return pendingCard;
         }
 
-        public void PutSelectedCardOnHold()
+        public void PutSelectedCardAsPending()
         {
-            cardOnHold = GetSelectedCardOrThrow();
+            pendingCard = GetSelectedCardOrThrow();
         }
 
-        public void ClearCardOnHold()
+        public void SetCardAsPending(CharacterConfig characterConfig)
         {
-            cardOnHold = null;
+            pendingCard = characterConfig;
+        }
+
+        public void ClearPendingCard()
+        {
+            pendingCard = null;
         }
     }
 }

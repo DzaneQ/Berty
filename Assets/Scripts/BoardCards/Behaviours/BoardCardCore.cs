@@ -17,6 +17,7 @@ using Berty.UI.Card.Systems;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.SocialPlatforms.Impl;
 using static UnityEngine.CullingGroup;
 
@@ -63,13 +64,13 @@ namespace Berty.BoardCards.Behaviours
             StatChange = GetComponent<BoardCardStatChange>();
             ParentField = GetComponentInParent<FieldBehaviour>();
             SelectionAndPaymentSystem system = CoreManager.Instance.SelectionAndPaymentSystem;
-            BoardCard = ParentField.BoardField.AddCard(system.GetCardOnHoldOrThrow(), Game.CurrentAlignment);
+            BoardCard = ParentField.BoardField.AddCard(system.GetPendingCardOrThrow(), Game.CurrentAlignment);
         }
 
         private void Start()
         {
             SoundManager.Instance.PutSound(SoundSource);
-            UpdateCharacter();
+            UpdateObjectFromCharacterConfig();
             CardState = CardStateEnum.NewCard;
             InitializeRigidbody();
         }
@@ -84,7 +85,7 @@ namespace Berty.BoardCards.Behaviours
             Debug.Log("Dummy message.");
         }
 
-        private void UpdateCharacter()
+        private void UpdateObjectFromCharacterConfig()
         {
             CharacterConfig character = BoardCard.CharacterConfig;
             characterSprite.sprite = HandCardObjectManager.Instance.GetSpriteFromHandCardObject(character);
@@ -209,6 +210,30 @@ namespace Berty.BoardCards.Behaviours
             BoardCard.OccupiedField.SwitchSides();
             StatChange.SetPower(BoardCard.CharacterConfig.Power, this);
             ParentField.UpdateField();
+        }
+
+        public void UpdateCardWithRandomKid()
+        {
+            if (BoardCard.CharacterConfig.Character != CharacterEnum.KrolPopuBert)
+                throw new Exception($"KrolPopuBert effect is casted by {BoardCard.CharacterConfig.Name}");
+            CharacterConfig newCard = Game.CardPile.GetRandomKidFromPile();
+            if (newCard == null)
+            {
+                KillCard();
+                return;
+            }
+            EventManager.Instance.RaiseOnCharacterDeath(this);
+            DirectionEnum direction = (DirectionEnum)BoardCard.GetAngle();
+            AlignmentEnum align = BoardCard.Align;
+            Game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
+            BoardCard.DeactivateCard();
+            BoardCard = ParentField.BoardField.AddCard(newCard, align);
+            BoardCard.SetDirection(direction);
+            UpdateObjectFromCharacterConfig();
+            Bars.UpdateBars();
+            characterSprite.color = defaultColor;
+            ParentField.UpdateField();
+            EventManager.Instance.RaiseOnNewCharacter(this);
         }
 
         public void KillCard()

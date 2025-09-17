@@ -38,6 +38,11 @@ namespace Berty.BoardCards.Animation
             card = GetComponent<BoardCardCore>();
         }
 
+        public void SetAngleWithoutAnimation(Quaternion rotation)
+        {
+            transform.rotation = rotation;
+        }
+
         public void ByAngle(int angle)
         {
             StartCoroutine(RotateCardCoroutine(angle));

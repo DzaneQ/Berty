@@ -47,7 +47,7 @@ namespace Berty.Grid.Field.Listeners
         private void PutTheCard()
         {
             HandToFieldManager.Instance.RemoveSelectedCardFromHand();
-            BoardCardCore newCard = HandToFieldManager.Instance.SetCardOnHoldOnField(behaviour);
+            BoardCardCore newCard = HandToFieldManager.Instance.SetCardOnField(behaviour);
             PaymentManager.Instance.CallPayment(behaviour.BoardField.OccupantCard.Stats.Power, newCard);
         }
 

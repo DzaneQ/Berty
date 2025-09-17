@@ -35,13 +35,13 @@ namespace Berty.UI.Card.Managers
         public void RemoveSelectedCardFromHand()
         {
             CharacterConfig selectedCard = SelectionSystem.GetSelectedCardOrThrow();
-            SelectionSystem.PutSelectedCardOnHold();
+            SelectionSystem.PutSelectedCardAsPending();
             CardPile.LeaveCard(selectedCard, Game.CurrentAlignment);
             HandCardObjectManager.Instance.RemoveCardObjects();
             HandCardSelectManager.Instance.ClearSelection();
         }
 
-        public BoardCardCore SetCardOnHoldOnField(FieldBehaviour field)
+        public BoardCardCore SetCardOnField(FieldBehaviour field)
         {
             BoardCardCore card = Instantiate(boardCardPrefab, field.transform).GetComponent<BoardCardCore>();
             field.UpdateField();

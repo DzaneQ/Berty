@@ -111,7 +111,7 @@ namespace Berty.Characters.Managers
                     throw new Exception($"Applying unknown effect for {target.name} from {skillOwner.name}");
             }
             return true;
-        }    
+        }
 
         private void ApplyEBertaEffect(BoardCardCore target, BoardCardCore eBerta)
         {

@@ -84,7 +84,7 @@ namespace Berty.BoardCards.Entities
             OccupiedField = field;
         }
 
-        private void SetDirection(DirectionEnum direction)
+        public void SetDirection(DirectionEnum direction)
         {
             Direction = direction;
         }

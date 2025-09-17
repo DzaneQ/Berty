@@ -25,6 +25,7 @@ namespace Berty.BoardCards.Behaviours
         private void Awake()
         {
             core = GetComponent<BoardCardCore>();
+            
         }
 
         public void AdvanceStrength(int value, BoardCardCore source)
@@ -140,6 +141,9 @@ namespace Berty.BoardCards.Behaviours
                     AdvancePower(1, null);
                     AdvanceStrength(1, null);
                     AdvanceDexterity(-1, null);
+                    break;
+                case CharacterEnum.KrolPopuBert:
+                    core.UpdateCardWithRandomKid();
                     break;
                 default:
                     core.KillCard();

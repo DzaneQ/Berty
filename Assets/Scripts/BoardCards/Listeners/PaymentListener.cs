@@ -72,7 +72,7 @@ namespace Berty.BoardCards.Listeners
         {
             if (core.CardState == CardStateEnum.NewCard)
             {
-                FieldToHandManager.Instance.RetrieveCardOnHold();
+                FieldToHandManager.Instance.RetrievePendingCard();
                 SoundManager.Instance.TakeSound(core.transform);
                 core.DestroyCard();
                 return;

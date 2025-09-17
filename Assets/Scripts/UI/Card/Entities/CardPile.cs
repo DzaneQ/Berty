@@ -3,6 +3,7 @@ using Berty.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -127,6 +128,15 @@ namespace Berty.UI.Card.Entities
             List<CharacterConfig> table = GetCardsFromAlign(align);
             if (!table.Contains(card)) throw new Exception($"Attempting to get {card.Name} from wrong table");
             table.Remove(card);
+        }
+
+        public CharacterConfig GetRandomKidFromPile()
+        {
+            List<CharacterConfig> kids = pileCards.Where(card => card.Gender == GenderEnum.Kid).ToList();
+            if (kids.Count == 0) kids = discardedCards.Where(card => card.Gender == GenderEnum.Kid).ToList();
+            if (kids.Count == 0) return null;
+            int index = Random.Range(0, kids.Count);
+            return kids[index];
         }
     }
 }

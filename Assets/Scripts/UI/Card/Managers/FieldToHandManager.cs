@@ -27,12 +27,12 @@ namespace Berty.UI.Card.Managers
             selectionSystem = CoreManager.Instance.SelectionAndPaymentSystem;
         }
 
-        public void RetrieveCardOnHold()
+        public void RetrievePendingCard()
         {
             AlignmentEnum align = game.CurrentAlignment;
-            CharacterConfig cardOnHold = selectionSystem.GetCardOnHoldOrThrow();
-            cardPile.RetrieveCard(cardOnHold, align);
-            HandCardObjectManager.Instance.AddCardObjectFromConfigForTable(cardOnHold, align);
+            CharacterConfig pendingCard = selectionSystem.GetPendingCardOrThrow();
+            cardPile.RetrieveCard(pendingCard, align);
+            HandCardObjectManager.Instance.AddCardObjectFromConfigForTable(pendingCard, align);
         }
     }
 }

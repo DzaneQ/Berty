@@ -21,6 +21,7 @@ namespace Berty.Enums
         EBerta,
         KonstablBert,
         KowbojBert,
+        KrolPopuBert,
         KrzyzowiecBert,
         KuglarzBert,
         MisiekBert,
