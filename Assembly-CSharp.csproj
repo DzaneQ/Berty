@@ -95,6 +95,7 @@
     <Compile Include="Assets\Scripts\Display\CameraMechanics.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\RotateLeft.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
+    <Compile Include="Assets\Scripts\Enums\StatusEnum.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Listeners\HandCardInput.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\OverlayObjectManager.cs" />
@@ -174,7 +175,6 @@
     <Compile Include="Assets\Scripts\BoardCards\State\CardState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Characters\Init\CharacterData.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Managers\CardStatusManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IBarWidth.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\TargetState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
@@ -189,6 +189,7 @@
     <Compile Include="Assets\Scripts\Gameplay\Managers\LanguageManager.cs" />
     <Compile Include="Assets\Scripts\AutomaticPlayer\OpponentControl.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\EBerta.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\StatusManager.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\CoreManager.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\TurnManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\PaymentListener.cs" />
@@ -202,10 +203,10 @@
     <Compile Include="Assets\Scripts\Gameplay\Init\SceneInit.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Entities\BoardCard.cs" />
     <Compile Include="Assets\Scripts\Enums\GenderEnum.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Entities\Status.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\RoninBert.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertVentura.cs" />
-    <Compile Include="Assets\Scripts\Grid\Entities\GlobalEffects.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\TelecineticState.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\UIObjectManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\ZalobnyBert.cs" />

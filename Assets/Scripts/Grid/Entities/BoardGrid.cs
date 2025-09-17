@@ -1,5 +1,6 @@
 using Berty.BoardCards.Entities;
 using Berty.Enums;
+using Berty.Gameplay.Entities;
 using Berty.Grid.Entities;
 using Berty.Grid.Field;
 using Berty.Grid.Field.Entities;
@@ -12,18 +13,19 @@ namespace Berty.Grid.Entities
 {
     public class BoardGrid
     {
-        public BoardField[] Fields { get; private set; }
+        public BoardField[] Fields { get; }
 
-        public GlobalEffects GlobalEffects { get; private set; }
+        public Game Game { get; }
 
-        public BoardGrid()
+        public BoardGrid(Game game)
         {
+            Game = game;
             Fields = new BoardField[9];
             int index = 0;
             for (int x = -1; x <= 1; x++)
                 for (int y = -1; y <= 1; y++)
                 {
-                    Fields[index] = new BoardField(x, y);
+                    Fields[index] = new BoardField(x, y, this);
                     index++;
                 }
         }

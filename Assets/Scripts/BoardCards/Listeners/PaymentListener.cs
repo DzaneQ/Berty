@@ -53,7 +53,7 @@ namespace Berty.BoardCards.Listeners
                 SoundManager.Instance.AttackSound(core.SoundSource, core.BoardCard.CharacterConfig.AttackSound);
                 EventManager.Instance.RaiseOnDirectlyAttacked(core);
                 if (core.AttackedCards.Count > 0) HandleSuccessfulAttack();
-                CardStatusManager.Instance.DisableAttack(core);
+                core.BoardCard.MarkAsHasAttacked();
             }
             else if (core.CardState == CardStateEnum.NewCard)
             {

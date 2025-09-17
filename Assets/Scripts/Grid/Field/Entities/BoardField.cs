@@ -1,6 +1,7 @@
 using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
 using Berty.Enums;
+using Berty.Grid.Entities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,11 +26,13 @@ namespace Berty.Grid.Field.Entities
         public BoardCard BackupCard { get; private set; }
         public AlignmentEnum Align { get; private set; }
         public Vector2Int Coordinates { get; }
+        public BoardGrid Grid { get; }
 
-        public BoardField(int x, int y)
+        public BoardField(int x, int y, BoardGrid grid)
         {
             Coordinates = new Vector2Int(x, y);
             Align = AlignmentEnum.None;
+            Grid = grid;
         }
 
         public BoardCard AddCard(CharacterConfig characterConfig, AlignmentEnum newAlign)
