@@ -35,6 +35,7 @@ namespace Berty.Characters.Managers
                 case SkillEnum.BertaSJW:
                 case SkillEnum.BertaTrojanska:
                 case SkillEnum.BertWho:
+                case SkillEnum.BertZawodowiec:
                 case SkillEnum.EBerta:
                 case SkillEnum.KuglarzBert:
                 case SkillEnum.PrymusBert:
@@ -69,6 +70,10 @@ namespace Berty.Characters.Managers
                     break;
                 case SkillEnum.BertWho:
                     target.StatChange.AdvancePower(-1, skillOwner);
+                    break;
+                case SkillEnum.BertZawodowiec:
+                    if (AreAllied(target, skillOwner)) target.StatChange.AdvancePower(1, skillOwner);
+                    skillOwner.StatChange.AdvanceStrength(1, null);
                     break;
                 case SkillEnum.EBerta:
                     if (!AreAllied(target, skillOwner)) return false;

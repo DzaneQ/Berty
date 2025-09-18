@@ -19,6 +19,7 @@ namespace Berty.Enums
         BertPogromca,
         BertWho,
         BertWick,
+        BertZawodowiec,
         BigMadB,
         EBerta,
         KonstablBert,

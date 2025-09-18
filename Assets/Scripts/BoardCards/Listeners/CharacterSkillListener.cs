@@ -87,6 +87,7 @@ namespace Berty.BoardCards.Listeners
                 case SkillEnum.BertaSJW:
                 case SkillEnum.BertaTrojanska:
                 case SkillEnum.BertWho:
+                case SkillEnum.BertZawodowiec:
                 case SkillEnum.EBerta:
                 case SkillEnum.KuglarzBert:
                 case SkillEnum.MisiekBert:
@@ -107,6 +108,7 @@ namespace Berty.BoardCards.Listeners
                 case SkillEnum.BertaGejsza:
                 case SkillEnum.BertaSJW:
                 case SkillEnum.BertWho:
+                case SkillEnum.BertZawodowiec:
                 case SkillEnum.KuglarzBert:
                 case SkillEnum.BertaTrojanska:
                 case SkillEnum.EBerta:
@@ -132,6 +134,7 @@ namespace Berty.BoardCards.Listeners
                 case SkillEnum.BertaSJW:
                 case SkillEnum.BertaTrojanska:
                 case SkillEnum.BertWho:
+                case SkillEnum.BertZawodowiec:
                 case SkillEnum.EBerta:
                 case SkillEnum.KuglarzBert:
                 case SkillEnum.MisiekBert:
@@ -150,6 +153,7 @@ namespace Berty.BoardCards.Listeners
                 case SkillEnum.BertaSJW:
                 case SkillEnum.BertaTrojanska:
                 case SkillEnum.BertWho:
+                case SkillEnum.BertZawodowiec:
                 case SkillEnum.EBerta:
                 case SkillEnum.KuglarzBert:
                 case SkillEnum.PrymusBert:
