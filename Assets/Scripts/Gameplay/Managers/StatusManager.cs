@@ -23,7 +23,7 @@ namespace Berty.Gameplay.Managers
 
         public void AddStatusWithProvider(StatusEnum name, BoardCard card)
         {
-            // TODO: Add status by name and provider
+            game.AddStatusWithNameAndProvider(name, card);
             // Event on status added
         }
 
@@ -36,6 +36,7 @@ namespace Berty.Gameplay.Managers
         public void IncrementChargedStatusWithAlignment(StatusEnum name, AlignmentEnum align, int charges)
         {
             game.IncrementChargedStatusWithNameAndAlignment(name, align, charges);
+            // Event on status updated
         }
 
         public void RemoveStatusFromProvider(BoardCard card)

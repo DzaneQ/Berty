@@ -33,9 +33,9 @@ namespace Berty.BoardCards.Listeners
         private void HandleNewTurn()
         {
             if (core.IsForPay()) throw new Exception($"Board card {name} detected for pay when switching turns.");
-            ProgressTemporaryStats();
-            HandleCharacterEffect();
             if (game.CurrentAlignment != core.ParentField.BoardField.Align) return;
+            HandleCharacterEffect();
+            ProgressTemporaryStats();
             RegenerateDexterity();
             EnableAttack();
             core.SetMainState();
@@ -60,7 +60,9 @@ namespace Berty.BoardCards.Listeners
 
         private void EnableAttack()
         {
-            core.BoardCard.MarkAsHasNotAttacked();
+            Status providedStatus = game.GetStatusFromProviderOrNull(core.BoardCard);
+            if (providedStatus?.Name == StatusEnum.ExtraAttackCooldown) StatusManager.Instance.RemoveStatus(providedStatus);
+            else core.BoardCard.MarkAsHasNotAttacked();
         }
 
         private void HandleCharacterEffect()
@@ -68,8 +70,7 @@ namespace Berty.BoardCards.Listeners
             switch (core.BoardCard.GetSkill())
             {
                 case SkillEnum.PapiezBertII:
-                    if (core.BoardCard.Align == game.CurrentAlignment)
-                        EventManager.Instance.RaiseOnCharacterSpecialEffect(core);
+                    EventManager.Instance.RaiseOnCharacterSpecialEffect(core);
                     break;
             }
         }

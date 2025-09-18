@@ -91,7 +91,8 @@ namespace Berty.Characters.Managers
             switch (target.BoardCard.GetSkill())
             {
                 case SkillEnum.BertkaIdolka:
-                    target.StatChange.SetStrength(target.BoardCard.Stats.Power, target);
+                    target.StatChange.SetStrength(target.BoardCard.Stats.Power - target.BoardCard.Stats.TempPower, target);
+                    target.StatChange.SetTempStrength(target.BoardCard.Stats.TempPower, target);
                     break;
                 case SkillEnum.Bertolaj:
                     if (target.BoardCard.Stats.Power <= 0) 
@@ -129,6 +130,13 @@ namespace Berty.Characters.Managers
 
             switch (source.BoardCard.GetSkill())
             {
+                case SkillEnum.KoszmarZBertwood:
+                    if (value < 0)
+                    {
+                        target.StatChange.AdvanceTempStrength(1, source);
+                        target.StatChange.AdvanceTempPower(1, source);
+                    }
+                    break;
                 case SkillEnum.Zombert:
                     if (target.BoardCard.Align == source.BoardCard.Align) break;
                     if (value < 0) target.StatChange.AdvancePower(-1, source);

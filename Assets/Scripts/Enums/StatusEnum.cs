@@ -4,5 +4,6 @@ namespace Berty.Enums
     {
         None,
         ExtraCardNextTurn,
+        ExtraAttackCooldown,
     }
 }

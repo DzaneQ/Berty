@@ -23,6 +23,7 @@ namespace Berty.Enums
         BigMadB,
         EBerta,
         KonstablBert,
+        KoszmarZBertwood,
         KowbojBert,
         KrolPopuBert,
         KrzyzowiecBert,

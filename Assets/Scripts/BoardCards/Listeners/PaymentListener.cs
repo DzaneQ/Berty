@@ -52,7 +52,7 @@ namespace Berty.BoardCards.Listeners
             {
                 SoundManager.Instance.AttackSound(core.SoundSource, core.BoardCard.CharacterConfig.AttackSound);
                 EventManager.Instance.RaiseOnDirectlyAttacked(core);
-                if (core.AttackedCards.Count > 0) HandleSuccessfulAttack();
+                HandleAfterAttackOrder();
                 core.BoardCard.MarkAsHasAttacked();
             }
             else if (core.CardState == CardStateEnum.NewCard)
@@ -80,9 +80,18 @@ namespace Berty.BoardCards.Listeners
             core.SetMainState();
         }
 
-        private void HandleSuccessfulAttack()
+        private void HandleAfterAttackOrder()
         {
-            Debug.Log($"Executing successful attack for {core}");
+            switch (core.BoardCard.GetSkill())
+            {
+                case SkillEnum.KoszmarZBertwood:
+                    StatusManager.Instance.AddStatusWithProvider(StatusEnum.ExtraAttackCooldown, core.BoardCard);
+                    break;
+            }
+
+            // Handle successful attack
+            if (core.AttackedCards.Count <= 0) return;
+
             switch (core.BoardCard.GetSkill())
             {
                 case SkillEnum.BertkaSerferka:

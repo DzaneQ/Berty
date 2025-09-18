@@ -39,22 +39,22 @@ namespace Berty.BoardCards
         public int TempStrength
         {
             get => currentTempStat[StatEnum.Strength];
-            set { currentTempStat[StatEnum.Strength] = value; nextTempStat[StatEnum.Strength] = value; }
+            set { nextTempStat[StatEnum.Strength] = value; }
         }
         public int TempPower
         {
             get => currentTempStat[StatEnum.Power];
-            set { currentTempStat[StatEnum.Power] = value; nextTempStat[StatEnum.Power] = value; }
+            set { nextTempStat[StatEnum.Power] = value; }
         }
         public int TempDexterity
         {
             get => currentTempStat[StatEnum.Dexterity];
-            set { currentTempStat[StatEnum.Dexterity] = value; nextTempStat[StatEnum.Dexterity] = value; }
+            set { nextTempStat[StatEnum.Dexterity] = value; }
         }
         public int TempHealth
         {
             get => currentTempStat[StatEnum.Health];
-            set { currentTempStat[StatEnum.Health] = value; nextTempStat[StatEnum.Health] = value; }
+            set { nextTempStat[StatEnum.Health] = value; }
         }
 
         public CardStats(CharacterConfig character)

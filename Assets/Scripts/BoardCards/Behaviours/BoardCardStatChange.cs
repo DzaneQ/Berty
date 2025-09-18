@@ -43,6 +43,22 @@ namespace Berty.BoardCards.Behaviours
             AdvanceStrength(delta, source);
         }
 
+        public void AdvanceTempStrength(int value, BoardCardCore source)
+        {
+            if (Card == null) return;
+            if (ModifyStatChangeManager.Instance.BeforeStrengthChange(core, ref value, source)) return;
+            Card.AdvanceTempStrength(value);
+            Bars.UpdateBar(StatEnum.Strength);
+        }
+
+        public void SetTempStrength(int value, BoardCardCore source)
+        {
+            if (Card == null) return;
+            int delta = value - Card.Stats.TempStrength;
+            AdvanceTempStrength(delta, source);
+            Bars.UpdateBar(StatEnum.Strength);
+        }
+
         public void AdvancePower(int value, BoardCardCore source)
         {
             if (Card == null) return;
@@ -57,6 +73,15 @@ namespace Berty.BoardCards.Behaviours
             if (Card == null) return;
             int delta = value - Card.Stats.Power;
             AdvancePower(delta, source);
+        }
+
+        public void AdvanceTempPower(int value, BoardCardCore source)
+        {
+            if (Card == null) return;
+            if (ModifyStatChangeManager.Instance.BeforePowerChange(core, ref value, source)) return;
+            Card.AdvanceTempPower(value);
+            Bars.UpdateBar(StatEnum.Power);
+            ModifyStatChangeManager.Instance.AfterPowerChange(core, value, source);
         }
 
         public void AdvanceDexterity(int value, BoardCardCore source)
