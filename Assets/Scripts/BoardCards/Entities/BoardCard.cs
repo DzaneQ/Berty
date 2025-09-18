@@ -134,16 +134,16 @@ namespace Berty.BoardCards.Entities
             Stats.Health += value;
         }
 
-        // TODO: Handle role change on SedziaBertt
         public RoleEnum GetRole()
         {
+            if (OccupiedField.Grid.Game.HasStatusByName(StatusEnum.ForceSpecialRole)) return RoleEnum.Special;
             return CharacterConfig.Role;
         }
         
         public SkillEnum GetSkill()
         {
-            if (CharacterConfig.Skill == SkillEnum.BertPogromca) return CharacterConfig.Skill;
-            // TODO: Handle skill loss
+            if (CharacterConfig.Skill == SkillEnum.BertPogromca || CharacterConfig.Skill == SkillEnum.CheBert) return CharacterConfig.Skill;
+            if (OccupiedField.Grid.Game.HasStatusByNameOpposedToAlignment(StatusEnum.DisableEnemySpecialSkill, Align)) return SkillEnum.None;
             return CharacterConfig.Skill;
         }
 

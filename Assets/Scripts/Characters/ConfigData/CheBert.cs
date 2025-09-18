@@ -9,6 +9,7 @@ namespace Berty.BoardCards.ConfigData
         public CheBert()
         {
             AddName("che bert");
+            AddSkill(SkillEnum.CheBert);
             AddProperties(GenderEnum.Male, RoleEnum.Special);
             AddStats(1, 3, 5, 3);
             AddRange(0, 1, attackRange);

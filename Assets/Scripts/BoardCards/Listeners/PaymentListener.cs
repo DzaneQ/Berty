@@ -85,7 +85,7 @@ namespace Berty.BoardCards.Listeners
             switch (core.BoardCard.GetSkill())
             {
                 case SkillEnum.KoszmarZBertwood:
-                    StatusManager.Instance.AddStatusWithProvider(StatusEnum.ExtraAttackCooldown, core.BoardCard);
+                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ExtraAttackCooldown, core.BoardCard);
                     break;
             }
 

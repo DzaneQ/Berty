@@ -21,8 +21,9 @@ namespace Berty.Gameplay.Managers
             game = CoreManager.Instance.Game;
         }
 
-        public void AddStatusWithProvider(StatusEnum name, BoardCard card)
+        public void AddUniqueStatusWithProvider(StatusEnum name, BoardCard card)
         {
+            if (game.HasStatusByName(name)) return;
             game.AddStatusWithNameAndProvider(name, card);
             // Event on status added
         }

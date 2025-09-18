@@ -27,7 +27,11 @@ namespace Berty.Characters.Managers
         public void HandleNeighborCharacterSkill(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
         {
             if (!game.Grid.AreNeighboring(target.ParentField.BoardField, skillOwner.ParentField.BoardField)) return;
+            HandleCharacterSkill(target, skillOwner, delta);         
+        }
 
+        public void HandleCharacterSkill(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
+        {
             switch (skillOwner.BoardCard.GetSkill())
             {
                 // Handle characters which skills are applied only once
@@ -36,6 +40,7 @@ namespace Berty.Characters.Managers
                 case SkillEnum.BertaTrojanska:
                 case SkillEnum.BertWho:
                 case SkillEnum.BertZawodowiec:
+                case SkillEnum.CheBert:
                 case SkillEnum.EBerta:
                 case SkillEnum.KuglarzBert:
                 case SkillEnum.PrymusBert:
@@ -47,11 +52,11 @@ namespace Berty.Characters.Managers
                 default:
                     ApplyCharacterEffect(target, skillOwner, delta);
                     break;
-            }          
+            }
         }
 
         // output: Has the effect been applied
-        public bool ApplyCharacterEffect(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
+        private bool ApplyCharacterEffect(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
         {
             if (DoesPreventEffect(target, skillOwner)) return false;
 
@@ -74,6 +79,10 @@ namespace Berty.Characters.Managers
                 case SkillEnum.BertZawodowiec:
                     if (AreAllied(target, skillOwner)) target.StatChange.AdvancePower(1, skillOwner);
                     skillOwner.StatChange.AdvanceStrength(1, null);
+                    break;
+                case SkillEnum.CheBert:
+                    if (!AreAllied(target, skillOwner)) StatusManager.Instance.RemoveStatusFromProvider(target.BoardCard);
+                    else if (target.BoardCard.GetRole() == RoleEnum.Special && target != skillOwner) target.StatChange.AdvanceStrength(1, skillOwner);
                     break;
                 case SkillEnum.EBerta:
                     if (!AreAllied(target, skillOwner)) return false;
@@ -118,7 +127,7 @@ namespace Berty.Characters.Managers
                     break;
                 default:
                     throw new Exception($"Applying unknown effect for {target.name} from {skillOwner.name}");
-            }
+                }
             return true;
         }
 

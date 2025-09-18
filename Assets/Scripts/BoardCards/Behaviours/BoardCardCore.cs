@@ -238,7 +238,8 @@ namespace Berty.BoardCards.Behaviours
 
         public void KillCard()
         {
-            EventManager.Instance.RaiseOnCharacterDeath(this);
+            StatusManager.Instance.RemoveStatusFromProvider(BoardCard);
+            EventManager.Instance.RaiseOnCharacterDeath(this);      
             if (BoardCard.GetSkill() == SkillEnum.BertWho) Game.CardPile.PutCardToTheBottomPile(BoardCard.CharacterConfig);
             else Game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
             RemoveCard();

@@ -1,5 +1,4 @@
-﻿using Berty.BoardCards;
-using Berty.Enums;
+﻿using Berty.Enums;
 
 namespace Berty.BoardCards.ConfigData
 {
@@ -8,6 +7,7 @@ namespace Berty.BoardCards.ConfigData
         public SedziaBertt()
         {
             AddName("sedzia bertt");
+            AddSkill(SkillEnum.SedziaBertt);
             AddProperties(GenderEnum.Male, RoleEnum.Special);
             AddStats(1, 4, 4, 4);
             AddRange(1, 2, attackRange);

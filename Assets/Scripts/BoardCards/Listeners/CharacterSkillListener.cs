@@ -39,6 +39,7 @@ namespace Berty.BoardCards.Listeners
             if (!gameObject.scene.isLoaded) return;
             EventManager.Instance.OnNewCharacter -= HandleNewCharacter;
             EventManager.Instance.OnMovedCharacter -= HandleMovedCharacter;
+            EventManager.Instance.OnCharacterSpecialEffect -= HandleCharacterSpecialEffect;
             EventManager.Instance.OnValueChange -= HandleValueChange;
             EventManager.Instance.OnCharacterDeath -= HandleCharacterDeath;
         }
@@ -96,9 +97,10 @@ namespace Berty.BoardCards.Listeners
                 case SkillEnum.SuperfanBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, newCard);
                     break;
+                case SkillEnum.CheBert:
                 case SkillEnum.KonstablBert:
                 case SkillEnum.ShaolinBert:
-                    ApplySkillEffectManager.Instance.ApplyCharacterEffect(witness, newCard);
+                    ApplySkillEffectManager.Instance.HandleCharacterSkill(witness, newCard);
                     break;
             }
 
@@ -117,8 +119,9 @@ namespace Berty.BoardCards.Listeners
                 case SkillEnum.SuperfanBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(newCard, witness);
                     break;
+                case SkillEnum.CheBert:
                 case SkillEnum.ShaolinBert:
-                    ApplySkillEffectManager.Instance.ApplyCharacterEffect(newCard, witness);
+                    ApplySkillEffectManager.Instance.HandleCharacterSkill(newCard, witness);
                     break;
             }
         }
@@ -176,6 +179,17 @@ namespace Berty.BoardCards.Listeners
                     witness.StatChange.AdvanceHealth(1, null);
                     break;
             }
+
+            // When dying card is the character with skill
+            switch (dyingCard.BoardCard.GetSkill())
+            {
+                case SkillEnum.CheBert:
+                    RetrieveStatusEffect(witness);
+                    break;
+                case SkillEnum.SedziaBertt:
+                    if (dyingCard.BoardCard.Align == witness.BoardCard.Align) witness.StatChange.AdvanceTempStrength(1, dyingCard);
+                    return;
+            }
         }
 
         private void HandleCustomEffect(BoardCardCore witness, BoardCardCore customEffectCard, int delta = 0)
@@ -184,7 +198,7 @@ namespace Berty.BoardCards.Listeners
             switch (customEffectCard.BoardCard.GetSkill())
             {
                 case SkillEnum.PapiezBertII:
-                    ApplySkillEffectManager.Instance.ApplyCharacterEffect(witness, customEffectCard);
+                    ApplySkillEffectManager.Instance.HandleCharacterSkill(witness, customEffectCard);
                     break;
                 case SkillEnum.KowbojBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, customEffectCard, delta);
@@ -203,6 +217,12 @@ namespace Berty.BoardCards.Listeners
                     StatusManager.Instance.IncrementChargedStatusWithAlignment(StatusEnum.ExtraCardNextTurn, AlignmentEnum.Player, 2);
                     StatusManager.Instance.IncrementChargedStatusWithAlignment(StatusEnum.ExtraCardNextTurn, AlignmentEnum.Opponent, 2);
                     break;
+                case SkillEnum.CheBert:
+                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.DisableEnemySpecialSkill, skillCard.BoardCard);
+                    break;
+                case SkillEnum.SedziaBertt:
+                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ForceSpecialRole, skillCard.BoardCard);
+                    break;
                 case SkillEnum.SuperfanBert:
                     int hour = DateTime.Now.Hour;
                     if (hour < 5 || 18 <= hour)
@@ -220,6 +240,16 @@ namespace Berty.BoardCards.Listeners
             {
                 case SkillEnum.PrezydentBert:
                     skillCard.StatChange.AdvancePower(-1, null);
+                    break;
+            }
+        }
+
+        private void RetrieveStatusEffect(BoardCardCore skillCard)
+        {
+            switch (skillCard.BoardCard.GetSkill())
+            {
+                case SkillEnum.SedziaBertt:
+                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ForceSpecialRole, skillCard.BoardCard);
                     break;
             }
         }
