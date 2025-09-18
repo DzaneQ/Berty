@@ -30,6 +30,12 @@ namespace Berty.UI.Card.Managers
         {
             AlignmentEnum align = game.CurrentAlignment;
             DebugManager.Instance?.TakeCardIfInPile(align);
+            Status extraCardStatus = game.GetStatusByNameAndAlignmentOrNull(StatusEnum.ExtraCardNextTurn, align);
+            if (extraCardStatus != null)
+            {
+                capacity += extraCardStatus.Charges;
+                StatusManager.Instance.RemoveStatus(extraCardStatus);
+            }
             if (cardPile.PullCardsTo(capacity, align)) HandCardObjectManager.Instance.AddCardObjects();
             else TurnManager.Instance.EndTheGame();
         }

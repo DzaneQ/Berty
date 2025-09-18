@@ -67,7 +67,7 @@ namespace Berty.Characters.Managers
                     if (value < 0) value++;
                     break;
                 case CharacterEnum.ZalobnyBert:
-                    if (value < 0 && source.BoardCard.GetRole() == RoleEnum.Offensive) shouldPreventStatChange = true;
+                    if (value < 0 && source.BoardCard.GetRole() == RoleEnum.Offensive) return true;
                     break;
             }
 
@@ -75,6 +75,9 @@ namespace Berty.Characters.Managers
             {
                 case CharacterEnum.BertkaSerferka:
                     if (isBasicAttack) return PreventDependingOnBertkaSerferkaPosition(target, source);
+                    break;
+                case CharacterEnum.Bertolaj:
+                    if (isBasicAttack && target.BoardCard.Stats.Power > 3) return true;
                     break;
             }
 
@@ -89,6 +92,10 @@ namespace Berty.Characters.Managers
             {
                 case CharacterEnum.BertkaIdolka:
                     target.StatChange.SetStrength(target.BoardCard.Stats.Power, target);
+                    break;
+                case CharacterEnum.Bertolaj:
+                    if (target.BoardCard.Stats.Power <= 0) 
+                        StatusManager.Instance.IncrementChargedStatusWithAlignment(StatusEnum.ExtraCardNextTurn, source.BoardCard.Align, 1);
                     break;
             }
         }

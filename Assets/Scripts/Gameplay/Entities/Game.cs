@@ -50,24 +50,41 @@ namespace Berty.Gameplay.Entities
             Statuses.Add(new Status(name, align));
         }
 
-        public bool HasStatusByName(StatusEnum status)
+        public void IncrementChargedStatusWithNameAndAlignment(StatusEnum name, AlignmentEnum align, int delta)
         {
-            return Statuses.Find(x => x.Name == status) != null;
+            Status status = Statuses.Find(x => x.Name == name && x.GetAlign() == align);
+            if (status == null) Statuses.Add(new Status(name, align, delta));
+            else status.IncrementCharges(delta);
         }
 
-        public bool HasStatusByNameAndAlignment(StatusEnum status, AlignmentEnum align)
+        public bool HasStatusByName(StatusEnum name)
         {
-            return Statuses.Find(x => x.Name == status && x.GetAlign() == align) != null;
+            return Statuses.Find(x => x.Name == name) != null;
         }
 
-        public Status FindStatusFromProviderOrNull(BoardCard provider)
+        public bool HasStatusByNameAndAlignment(StatusEnum name, AlignmentEnum align)
+        {
+            return Statuses.Find(x => x.Name == name && x.GetAlign() == align) != null;
+        }
+
+        public Status GetStatusByNameAndAlignmentOrNull(StatusEnum name, AlignmentEnum align)
+        {
+            return Statuses.Find(x => x.Name == name && x.GetAlign() == align);
+        }
+
+        public Status GetStatusFromProviderOrNull(BoardCard provider)
         {
             return Statuses.Find(x => x.Provider == provider);
         }
 
-        public void RemoveStatusByName(StatusEnum status)
+        public void RemoveStatusByName(StatusEnum name)
         {
-            Statuses.Remove(Statuses.Find(x => x.Name == status));
+            Statuses.Remove(Statuses.Find(x => x.Name == name));
+        }
+
+        public void RemoveStatus(Status status)
+        {
+            Statuses.Remove(status);
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Berty.Gameplay.Entities
         public StatusEnum Name { get; }
         public BoardCard Provider { get; }
         private AlignmentEnum Align { get; }
+        public int Charges { get; private set; }
 
         public Status(StatusEnum name, BoardCard provider)
         {
@@ -30,10 +31,27 @@ namespace Berty.Gameplay.Entities
             Align = align;
         }
 
+        public Status(StatusEnum name, AlignmentEnum align, int charges)
+        {
+            Name = name;
+            Align = align;
+            Charges = charges;
+        }
+
         public AlignmentEnum GetAlign()
         {
             if (Provider != null) return Provider.Align;
             return Align;
+        }
+
+        public void SetCharges(int charges)
+        {
+            Charges = charges;
+        }
+
+        public void IncrementCharges(int delta)
+        {
+            Charges += delta;
         }
     }
 }

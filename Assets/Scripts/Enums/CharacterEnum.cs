@@ -14,6 +14,7 @@ namespace Berty.Enums
         BertaTrojanska,
         BertkaIdolka,
         BertkaSerferka,
+        Bertolaj,
         Bertonator,
         BertPogromca,
         BertWick,
