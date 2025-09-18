@@ -235,6 +235,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\KoszmarZBertwood.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\BackupCard.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\PaymentManager.cs" />
+    <Compile Include="Assets\Scripts\Enums\SkillEnum.cs" />
     <Compile Include="Assets\Scripts\Grid\Managers\ColorizeObjectManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\SedziaBertt.cs" />
@@ -256,7 +257,6 @@
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\TrenerPokebertow.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
-    <Compile Include="Assets\Scripts\Enums\CharacterEnum.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\CheBert.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Collection\HandCardCollection.cs" />
   </ItemGroup>

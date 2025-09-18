@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public StaryBert()
         {
             AddName("stary bert i moze");
-            SetCharacter(CharacterEnum.StaryBert);
+            AddSkill(SkillEnum.StaryBert);
             AddProperties(GenderEnum.Male, RoleEnum.Offensive);
             AddStats(1, 2, 5, 3);
             AddRange(0, 2, attackRange);

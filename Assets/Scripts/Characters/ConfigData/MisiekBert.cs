@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public MisiekBert()
         {
             AddName("misiek bert");
-            SetCharacter(CharacterEnum.MisiekBert);
+            AddSkill(SkillEnum.MisiekBert);
             AddProperties(GenderEnum.Male, RoleEnum.Special);
             AddStats(1, 3, 4, 4);
             AddRange(0, 1, attackRange);

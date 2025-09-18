@@ -11,7 +11,7 @@ namespace Berty.BoardCards.ConfigData
         public KrolPopuBert()
         {
             AddName("krol popu bert");
-            SetCharacter(CharacterEnum.KrolPopuBert);
+            AddSkill(SkillEnum.KrolPopuBert);
             AddProperties(GenderEnum.Male, RoleEnum.Special);
             AddStats(1, 3, 5, 2);
             AddRange(0, 1, attackRange);

@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public KuglarzBert()
         {
             AddName("kuglarz bert");
-            SetCharacter(CharacterEnum.KuglarzBert);
+            AddSkill(SkillEnum.KuglarzBert);
             AddProperties(GenderEnum.Male, RoleEnum.Agile);
             AddStats(1, 2, 6, 2);
             AddRange(1, 1, attackRange);

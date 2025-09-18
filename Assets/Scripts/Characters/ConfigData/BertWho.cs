@@ -10,6 +10,7 @@ namespace Berty.BoardCards.ConfigData
         public BertWho()
         {
             AddName("bert who");
+            AddSkill(SkillEnum.BertWho);
             AddProperties(GenderEnum.Male, RoleEnum.Support);
             AddStats(1, 3, 5, 4);
             AddRange(0, 1, attackRange);

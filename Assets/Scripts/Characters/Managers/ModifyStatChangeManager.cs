@@ -27,9 +27,9 @@ namespace Berty.Characters.Managers
         {
             bool shouldPreventStatChange = false;
 
-            switch (target.BoardCard.CharacterConfig.Character)
+            switch (target.BoardCard.GetSkill())
             {
-                case CharacterEnum.BertkaIdolka:
+                case SkillEnum.BertkaIdolka:
                     if (target != source) return true;
                     break;
             }
@@ -41,9 +41,9 @@ namespace Berty.Characters.Managers
         {
             bool shouldPreventStatChange = false;
 
-            switch (target.BoardCard.CharacterConfig.Character)
+            switch (target.BoardCard.GetSkill())
             {
-                case CharacterEnum.BertkaIdolka:
+                case SkillEnum.BertkaIdolka:
                     if (!grid.AreAligned(target.BoardCard.OccupiedField, source.BoardCard.OccupiedField) && target.BoardCard.Stats.Power <= 3) return true;
                     break;
             }
@@ -55,28 +55,28 @@ namespace Berty.Characters.Managers
         {
             bool shouldPreventStatChange = false;
 
-            switch (target.BoardCard.CharacterConfig.Character)
+            switch (target.BoardCard.GetSkill())
             {
-                case CharacterEnum.BertPogromca:
+                case SkillEnum.BertPogromca:
                     if (source.BoardCard.GetRole() == RoleEnum.Special && !isBasicAttack) return true;
                     break;
-                case CharacterEnum.BigMadB:
+                case SkillEnum.BigMadB:
                     if (source.BoardCard.GetRole() == RoleEnum.Support && !isBasicAttack) return true;
                     break;
-                case CharacterEnum.PrymusBert:
+                case SkillEnum.PrymusBert:
                     if (value < 0) value++;
                     break;
-                case CharacterEnum.ZalobnyBert:
+                case SkillEnum.ZalobnyBert:
                     if (value < 0 && source.BoardCard.GetRole() == RoleEnum.Offensive) return true;
                     break;
             }
 
-            switch (source.BoardCard.CharacterConfig.Character)
+            switch (source.BoardCard.GetSkill())
             {
-                case CharacterEnum.BertkaSerferka:
+                case SkillEnum.BertkaSerferka:
                     if (isBasicAttack) return PreventDependingOnBertkaSerferkaPosition(target, source);
                     break;
-                case CharacterEnum.Bertolaj:
+                case SkillEnum.Bertolaj:
                     if (isBasicAttack && target.BoardCard.Stats.Power > 3) return true;
                     break;
             }
@@ -88,12 +88,12 @@ namespace Berty.Characters.Managers
 
         public void AfterPowerChange(BoardCardCore target, int value, BoardCardCore source)
         {
-            switch (target.BoardCard.CharacterConfig.Character)
+            switch (target.BoardCard.GetSkill())
             {
-                case CharacterEnum.BertkaIdolka:
+                case SkillEnum.BertkaIdolka:
                     target.StatChange.SetStrength(target.BoardCard.Stats.Power, target);
                     break;
-                case CharacterEnum.Bertolaj:
+                case SkillEnum.Bertolaj:
                     if (target.BoardCard.Stats.Power <= 0) 
                         StatusManager.Instance.IncrementChargedStatusWithAlignment(StatusEnum.ExtraCardNextTurn, source.BoardCard.Align, 1);
                     break;
@@ -102,34 +102,34 @@ namespace Berty.Characters.Managers
 
         public void AfterHealthChange(BoardCardCore target, int value, BoardCardCore source)
         {
-            switch (target.BoardCard.CharacterConfig.Character)
+            switch (target.BoardCard.GetSkill())
             {
-                case CharacterEnum.BertPogromca:
+                case SkillEnum.BertPogromca:
                     if (source.BoardCard.GetRole() == RoleEnum.Special) return;
                     break;
-                case CharacterEnum.BigMadB:
+                case SkillEnum.BigMadB:
                     if (source.BoardCard.GetRole() == RoleEnum.Support) return;
                     break;
-                case CharacterEnum.KrzyzowiecBert:
+                case SkillEnum.KrzyzowiecBert:
                     if (value < 0) target.StatChange.AdvanceStrength(-value, null);
                     break;
-                case CharacterEnum.Tankbert:
+                case SkillEnum.Tankbert:
                     if (value < 0)
                     {
                         target.StatChange.AdvanceStrength(value, null);
                         target.StatChange.AdvanceDexterity(-value, null);
                     }
                     break;
-                case CharacterEnum.ZalobnyBert:
+                case SkillEnum.ZalobnyBert:
                     if (value < 0) EventManager.Instance.RaiseOnValueChange(target, value);
                     break;
             }
 
             if (source == null) return;
 
-            switch (source.BoardCard.CharacterConfig.Character)
+            switch (source.BoardCard.GetSkill())
             {
-                case CharacterEnum.Zombert:
+                case SkillEnum.Zombert:
                     if (target.BoardCard.Align == source.BoardCard.Align) break;
                     if (value < 0) target.StatChange.AdvancePower(-1, source);
                     break;
@@ -140,28 +140,28 @@ namespace Berty.Characters.Managers
         {
             int strength = source.BoardCard.Stats.Strength;
 
-            switch (target.BoardCard.CharacterConfig.Character)
+            switch (target.BoardCard.GetSkill())
             {
-                case CharacterEnum.BertPogromca:
+                case SkillEnum.BertPogromca:
                     if (source.BoardCard.GetRole() == RoleEnum.Special) return strength;
                     break;
-                case CharacterEnum.BigMadB:
+                case SkillEnum.BigMadB:
                     if (source.BoardCard.GetRole() == RoleEnum.Support) return strength;
                     break;
             }    
 
-            switch (source.BoardCard.CharacterConfig.Character)
+            switch (source.BoardCard.GetSkill())
             {
-                case CharacterEnum.BertPogromca:
+                case SkillEnum.BertPogromca:
                     if (target.BoardCard.GetRole() == RoleEnum.Special) strength = strength + 2;
                     break;
-                case CharacterEnum.KonstablBert:
+                case SkillEnum.KonstablBert:
                     RoleEnum targetRole = target.BoardCard.GetRole();
                     RoleEnum[] vulnerableRoles = { RoleEnum.Special, RoleEnum.Support };
                     if (vulnerableRoles.Contains(targetRole))
                         strength++;
                     break;
-                case CharacterEnum.StaryBert:
+                case SkillEnum.StaryBert:
                     if (target.BoardCard.Stats.Health < target.BoardCard.CharacterConfig.Health)
                         strength = strength + 2;
                     break;
@@ -172,7 +172,7 @@ namespace Berty.Characters.Managers
 
         private bool PreventDependingOnBertkaSerferkaPosition(BoardCardCore target, BoardCardCore bertkaSerferka)
         {
-            if (bertkaSerferka.BoardCard.CharacterConfig.Character != CharacterEnum.BertkaSerferka)
+            if (bertkaSerferka.BoardCard.GetSkill() != SkillEnum.BertkaSerferka)
                 throw new Exception($"BertkaSerferka effect is casted by {bertkaSerferka.BoardCard.CharacterConfig.Name}");
             Vector2Int distance = bertkaSerferka.BoardCard.GetDistanceTo(target.BoardCard);
             if (distance.y < 2) return false; // Allow riposte attack

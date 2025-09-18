@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public SamurajBert()
         {
             AddName("samuraj bert");
-            SetCharacter(CharacterEnum.SamurajBert);
+            AddSkill(SkillEnum.SamurajBert);
             AddProperties(GenderEnum.Male, RoleEnum.Offensive);
             AddStats(2, 3, 3, 4);
             AddRange(0, 1, attackRange);

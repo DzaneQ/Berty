@@ -44,9 +44,9 @@ namespace Berty.UI.Card.Entities
             return true;
         }
 
-        public void PullCardIfInPile(CharacterEnum character, AlignmentEnum align)
+        public void PullCardIfInPile(SkillEnum character, AlignmentEnum align)
         {
-            CharacterConfig takenCard = pileCards.Find(x => x.Character == character);
+            CharacterConfig takenCard = pileCards.Find(x => x.Skill == character);
             if (takenCard == null) return;
             List<CharacterConfig> targetTable = GetCardsFromAlign(align);
             pileCards.Remove(takenCard);
@@ -116,6 +116,12 @@ namespace Berty.UI.Card.Entities
         public void MarkCardAsDead(CharacterConfig card)
         {
             deadCards.Add(card);
+        }
+
+        public void PutCardToTheBottomPile(CharacterConfig card)
+        {
+            if (bottomCard != null) throw new Exception("There is already a designated card at the bottom of the pile");
+            bottomCard = card;
         }
 
         private void ReviveCard(CharacterConfig card)

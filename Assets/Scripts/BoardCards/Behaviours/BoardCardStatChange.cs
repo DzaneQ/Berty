@@ -108,9 +108,9 @@ namespace Berty.BoardCards.Behaviours
 
         private void HandleZeroPower()
         {
-            switch (core.BoardCard.CharacterConfig.Character)
+            switch (core.BoardCard.GetSkill())
             {
-                case CharacterEnum.AstronautaBert:
+                case SkillEnum.AstronautaBert:
                     core.KillCard();
                     break;
                 default:
@@ -121,9 +121,9 @@ namespace Berty.BoardCards.Behaviours
 
         private void HandleZeroDexterity()
         {
-            switch (core.BoardCard.CharacterConfig.Character)
+            switch (core.BoardCard.GetSkill())
             {
-                case CharacterEnum.BertWick:
+                case SkillEnum.BertWick:
                     core.KillCard();
                     break;
                 default:
@@ -134,15 +134,15 @@ namespace Berty.BoardCards.Behaviours
 
         private void HandleZeroHealth()
         {
-            switch (core.BoardCard.CharacterConfig.Character)
+            switch (core.BoardCard.GetSkill())
             {
-                case CharacterEnum.BertWick:
+                case SkillEnum.BertWick:
                     AdvanceHealth(2, null);
                     AdvancePower(1, null);
                     AdvanceStrength(1, null);
                     AdvanceDexterity(-1, null);
                     break;
-                case CharacterEnum.KrolPopuBert:
+                case SkillEnum.KrolPopuBert:
                     core.UpdateCardWithRandomKid();
                     break;
                 default:

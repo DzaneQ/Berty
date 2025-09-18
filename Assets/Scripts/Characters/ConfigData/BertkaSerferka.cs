@@ -9,7 +9,7 @@ namespace Berty.BoardCards.ConfigData
         public BertkaSerferka()
         {
             AddName("bertka serferka");
-            SetCharacter(CharacterEnum.BertkaSerferka);
+            AddSkill(SkillEnum.BertkaSerferka);
             AddProperties(GenderEnum.Female, RoleEnum.Agile);
             AddStats(2, 3, 5, 4);
             AddRange(0, 2, attackRange);

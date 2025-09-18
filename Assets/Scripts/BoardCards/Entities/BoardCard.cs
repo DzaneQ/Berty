@@ -138,7 +138,14 @@ namespace Berty.BoardCards.Entities
         public RoleEnum GetRole()
         {
             return CharacterConfig.Role;
-        }     
+        }
+        
+        public SkillEnum GetSkill()
+        {
+            if (CharacterConfig.Skill == SkillEnum.BertPogromca) return CharacterConfig.Skill;
+            // TODO: Handle skill loss
+            return CharacterConfig.Skill;
+        }
 
         public void MarkAsTired()
         {
@@ -158,6 +165,11 @@ namespace Berty.BoardCards.Entities
         public void AddResistanceToCharacter(CharacterConfig character)
         {
             resistance.Add(character);
+        }
+
+        public void RemoveResistanceToCharacter(CharacterConfig character)
+        {
+            resistance.Remove(character);
         }
 
         public bool CanAttackCard(BoardCard target)

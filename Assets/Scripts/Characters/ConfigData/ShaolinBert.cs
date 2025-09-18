@@ -9,7 +9,7 @@ namespace Berty.BoardCards.ConfigData
         public ShaolinBert()
         {
             AddName("shaolin bert");
-            SetCharacter(CharacterEnum.ShaolinBert);
+            AddSkill(SkillEnum.ShaolinBert);
             AddProperties(GenderEnum.Male, RoleEnum.Support);
             AddStats(1, 3, 5, 4);
             AddRange(1, 1, attackRange);

@@ -83,14 +83,14 @@ namespace Berty.BoardCards.Listeners
 
             if (witness == attacker) HandleDirectAttackSelf();
 
-            switch (attacker.BoardCard.CharacterConfig.Character)
+            switch (attacker.BoardCard.GetSkill())
             {
-                case CharacterEnum.BertaAmazonka:
+                case SkillEnum.BertaAmazonka:
                     if (attacker.BoardCard.CanAttackCard(witness.BoardCard))
                         HandleBertaAmazonkaEffect(witness, attacker);
                     break;
-                case CharacterEnum.MisiekBert:
-                case CharacterEnum.PrezydentBert:
+                case SkillEnum.MisiekBert:
+                case SkillEnum.PrezydentBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, attacker);
                     break;
             }
@@ -98,13 +98,13 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleDirectAttackSelf()
         {
-            switch (card.BoardCard.CharacterConfig.Character)
+            switch (card.BoardCard.GetSkill())
             {
-                case CharacterEnum.BigMadB:
+                case SkillEnum.BigMadB:
                     card.StatChange.AdvanceDexterity(-1, null);
                     card.StatChange.AdvanceStrength(1, null);
                     break;
-                case CharacterEnum.PrezydentBert:
+                case SkillEnum.PrezydentBert:
                     card.StatChange.AdvancePower(-1, null);
                     break;
             }
@@ -112,7 +112,7 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleBertaAmazonkaEffect(BoardCardCore target, BoardCardCore bertaAmazonka)
         {
-            if (bertaAmazonka.BoardCard.CharacterConfig.Character != CharacterEnum.BertaAmazonka)
+            if (bertaAmazonka.BoardCard.GetSkill() != SkillEnum.BertaAmazonka)
                 throw new Exception($"BertaAmazonka effect is casted by {bertaAmazonka.BoardCard.CharacterConfig.Name}");
             Vector2Int distance = target.BoardCard.GetDistanceTo(bertaAmazonka.BoardCard); // According to the target's direction, not BertaAmazonka's
             if (distance.x == 0 && distance.y != 0)

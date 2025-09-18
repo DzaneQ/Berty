@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Berty.Enums
 {
-    public enum CharacterEnum
+    public enum SkillEnum
     {
-        Unknown = 0,
+        None = 0,
         AstronautaBert,
         BertaAmazonka,
         BertaGejsza,
@@ -17,6 +17,7 @@ namespace Berty.Enums
         Bertolaj,
         Bertonator,
         BertPogromca,
+        BertWho,
         BertWick,
         BigMadB,
         EBerta,

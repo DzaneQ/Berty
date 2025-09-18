@@ -214,7 +214,7 @@ namespace Berty.BoardCards.Behaviours
 
         public void UpdateCardWithRandomKid()
         {
-            if (BoardCard.CharacterConfig.Character != CharacterEnum.KrolPopuBert)
+            if (BoardCard.GetSkill() != SkillEnum.KrolPopuBert)
                 throw new Exception($"KrolPopuBert effect is casted by {BoardCard.CharacterConfig.Name}");
             CharacterConfig newCard = Game.CardPile.GetRandomKidFromPile();
             if (newCard == null)
@@ -239,11 +239,12 @@ namespace Berty.BoardCards.Behaviours
         public void KillCard()
         {
             EventManager.Instance.RaiseOnCharacterDeath(this);
-            Game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
-            DestroyCard();
+            if (BoardCard.GetSkill() == SkillEnum.BertWho) Game.CardPile.PutCardToTheBottomPile(BoardCard.CharacterConfig);
+            else Game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
+            RemoveCard();
         }
 
-        public void DestroyCard()
+        public void RemoveCard()
         {
             BoardCard.DeactivateCard(); // TODO: Prove that the BoardCard entity no longer exists.
             BoardCard = null;

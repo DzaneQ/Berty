@@ -65,9 +65,9 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleCharacterEffect()
         {
-            switch (core.BoardCard.CharacterConfig.Character)
+            switch (core.BoardCard.GetSkill())
             {
-                case CharacterEnum.PapiezBertII:
+                case SkillEnum.PapiezBertII:
                     if (core.BoardCard.Align == game.CurrentAlignment)
                         EventManager.Instance.RaiseOnCharacterSpecialEffect(core);
                     break;
