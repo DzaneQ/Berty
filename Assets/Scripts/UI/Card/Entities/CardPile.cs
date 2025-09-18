@@ -136,6 +136,8 @@ namespace Berty.UI.Card.Entities
             if (kids.Count == 0) kids = discardedCards.Where(card => card.Gender == GenderEnum.Kid).ToList();
             if (kids.Count == 0) return null;
             int index = Random.Range(0, kids.Count);
+            discardedCards.Remove(kids[index]);
+            pileCards.Remove(kids[index]);
             return kids[index];
         }
     }
