@@ -7,5 +7,6 @@ namespace Berty.Enums
         ExtraCardNextTurn,
         ExtraAttackCooldown,
         ForceSpecialRole,
+        TelekineticArea,
     }
 }

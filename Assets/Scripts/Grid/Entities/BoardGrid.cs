@@ -92,6 +92,18 @@ namespace Berty.Grid.Entities
             return neighbors;
         }
 
+        public List<BoardCard> GetOccupantNeighbors(BoardCard card)
+        {
+            List<BoardCard> neighbors = new();
+            for (int i = 0; i < 4; i++)
+            {
+                BoardField neighboringField = GetFieldDistancedFromCardOrNull(Mathf.RoundToInt(Mathf.Sin(i / 2f * Mathf.PI)), Mathf.RoundToInt(Mathf.Cos(i / 2f * Mathf.PI)), card);
+                if (neighboringField == null || !neighboringField.IsOccupied()) continue;
+                neighbors.Add(neighboringField.OccupantCard);
+            }
+            return neighbors;
+        }
+
         public List<BoardField> GetFieldsInRange(BoardCard card, List<Vector2Int> range)
         {
             List<BoardField> fields = new List<BoardField>();

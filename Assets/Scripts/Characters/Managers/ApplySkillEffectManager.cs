@@ -58,7 +58,7 @@ namespace Berty.Characters.Managers
         // output: Has the effect been applied
         private bool ApplyCharacterEffect(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
         {
-            if (DoesPreventEffect(target, skillOwner)) return false;
+            if (DoesPreventEffect(target.BoardCard, skillOwner.BoardCard)) return false;
 
             switch (skillOwner.BoardCard.GetSkill())
             {
@@ -160,14 +160,14 @@ namespace Berty.Characters.Managers
             return true;
         }
 
-        private bool DoesPreventEffect(BoardCardCore target, BoardCardCore skillCard)
+        public bool DoesPreventEffect(BoardCard target, BoardCard skillCard)
         {
-            switch (target.BoardCard.GetSkill())
+            switch (target.GetSkill())
             {
                 case SkillEnum.BertPogromca:
-                    return skillCard.BoardCard.GetRole() == RoleEnum.Special;
+                    return skillCard.GetRole() == RoleEnum.Special;
                 case SkillEnum.BigMadB:
-                    return skillCard.BoardCard.GetRole() == RoleEnum.Support;
+                    return skillCard.GetRole() == RoleEnum.Support;
                 default:
                     return false;
             }

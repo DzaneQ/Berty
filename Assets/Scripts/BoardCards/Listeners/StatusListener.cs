@@ -50,15 +50,22 @@ namespace Berty.BoardCards.Listeners
             switch (args.StatusName)
             {
                 case StatusEnum.DisableEnemySpecialSkill:
-                    RetrieveUniqueStatus();
+                    TryRetrievingUniqueStatus();
+                    break;
+                case StatusEnum.ForceSpecialRole:
+                    if (game.HasStatusByName(StatusEnum.DisableEnemySpecialSkill))
+                        TryRetrievingUniqueStatus();
                     break;
             }
         }
 
-        private void RetrieveUniqueStatus()
+        private void TryRetrievingUniqueStatus()
         {
             switch (core.BoardCard.GetSkill())
             {
+                case SkillEnum.RycerzBerti:
+                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.TelekineticArea, core.BoardCard);
+                    break;
                 case SkillEnum.SedziaBertt:
                     StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ForceSpecialRole, core.BoardCard);
                     break;

@@ -1,6 +1,7 @@
 using Berty.BoardCards.Animation;
 using Berty.BoardCards.Behaviours;
 using Berty.BoardCards.ConfigData;
+using Berty.BoardCards.Entities;
 using Berty.BoardCards.Managers;
 using Berty.Characters.Managers;
 using Berty.Enums;
@@ -9,6 +10,8 @@ using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Entities;
 using Berty.Structs;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -217,6 +220,10 @@ namespace Berty.BoardCards.Listeners
                 case SkillEnum.CheBert:
                     StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.DisableEnemySpecialSkill, skillCard.BoardCard);
                     break;
+                case SkillEnum.RycerzBerti:
+                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.TelekineticArea, skillCard.BoardCard);
+                    DecreasePowerForNeighbor(skillCard);
+                    break;
                 case SkillEnum.SedziaBertt:
                     StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ForceSpecialRole, skillCard.BoardCard);
                     break;
@@ -239,6 +246,18 @@ namespace Berty.BoardCards.Listeners
                     skillCard.StatChange.AdvancePower(-1, null);
                     break;
             }
+        }
+
+        private void DecreasePowerForNeighbor(BoardCardCore skillCard)
+        {
+            // Get neighbors that do not resist the skill card
+            List<BoardCard> neighbors = game.Grid.GetOccupantNeighbors(skillCard.BoardCard)
+                .Where(card => !ApplySkillEffectManager.Instance.DoesPreventEffect(card, skillCard.BoardCard)).ToList();
+            if (neighbors.Count <= 0) return;
+            // Get enemy if possible
+            BoardCard target = neighbors.Find(card => card.Align != skillCard.BoardCard.Align);
+            if (target == null) target = neighbors.First();
+            BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(target).StatChange.AdvancePower(-3, skillCard);
         }
     }
 }

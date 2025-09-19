@@ -75,6 +75,16 @@ namespace Berty.Gameplay.Entities
             return Statuses.Find(x => x.Name == name && x.GetAlign() != align) != null;
         }
 
+        public Status GetStatusByNameOrNull(StatusEnum name)
+        {
+            return Statuses.Find(x => x.Name == name);
+        }
+
+        public Status GetStatusByNameOrThrow(StatusEnum name)
+        {
+            return GetStatusByNameOrNull(name) ?? throw new Exception($"Unable to find status of name {name}");
+        }
+
         public Status GetStatusByNameAndAlignmentOrNull(StatusEnum name, AlignmentEnum align)
         {
             return Statuses.Find(x => x.Name == name && x.GetAlign() == align);

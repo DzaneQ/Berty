@@ -1,6 +1,7 @@
 using Berty.Audio.Managers;
 using Berty.BoardCards.Behaviours;
 using Berty.Enums;
+using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Collection;
 using Berty.Grid.Entities;
@@ -69,7 +70,7 @@ namespace Berty.BoardCards.Managers
             }
             if (!card.IsDexterityBased()) return;
             card.SetNewTransformFromNavigation(navigation);
-            PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity, card);
+            PaymentManager.Instance.CallPayment(GetPriceForMoving(card), card);
             ButtonObjectManager.Instance.HideCornerButton();
         }
 
@@ -83,6 +84,14 @@ namespace Berty.BoardCards.Managers
         public void ConfirmPayment(BoardCardCore card)
         {
             PaymentManager.Instance.ConfirmPayment();
+        }
+
+        private int GetPriceForMoving(BoardCardCore card)
+        {
+            if (card.IsEligibleForTelekineticState())
+                return Mathf.Min(6 - card.BoardCard.Stats.Dexterity,
+                    6 - Grid.Game.GetStatusByNameOrThrow(StatusEnum.TelekineticArea).Provider.Stats.Dexterity);
+            return 6 - card.BoardCard.Stats.Dexterity;
         }
     }
 }

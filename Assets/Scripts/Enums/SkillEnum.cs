@@ -34,6 +34,7 @@ namespace Berty.Enums
         PrezydentBert,
         PrymusBert,
         RoninBert,
+        RycerzBerti,
         SamurajBert,
         SedziaBertt,
         ShaolinBert,

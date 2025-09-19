@@ -126,7 +126,8 @@ namespace Berty.BoardCards.Behaviours
             }
             AlignmentEnum currentAlign = Game.CurrentAlignment;
             AlignmentEnum cardAlign = BoardCard.Align;
-            if (currentAlign == cardAlign) SetActive();
+            if (currentAlign == cardAlign && !BoardCard.IsTired) SetActive();
+            else if (IsEligibleForTelekineticState()) SetTelekinetic();
             else SetIdle();
         }
 
@@ -140,7 +141,7 @@ namespace Berty.BoardCards.Behaviours
             CardState = CardStateEnum.Idle;
         }
 
-        public void SetTelecinetic()
+        public void SetTelekinetic()
         {
             CardState = CardStateEnum.Telekinetic;
         }
@@ -157,6 +158,14 @@ namespace Berty.BoardCards.Behaviours
             if (CardState == CardStateEnum.NewTransform) return true;
             if (CardState == CardStateEnum.Attacking) return true;
             return false;
+        }
+
+        public bool IsEligibleForTelekineticState()
+        {
+            Status telekinesisArea = Game.GetStatusByNameOrNull(StatusEnum.TelekineticArea);
+            if (telekinesisArea == null) return false;
+            if (telekinesisArea.Provider.IsTired) return false;
+            return telekinesisArea.Provider.Align == Game.CurrentAlignment;
         }
 
         public bool IsDexterityBased()

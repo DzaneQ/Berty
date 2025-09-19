@@ -9,6 +9,7 @@ namespace Berty.BoardCards.ConfigData
         public RycerzBerti()
         {
             AddName("rycerz berti");
+            AddSkill(SkillEnum.RycerzBerti);
             AddProperties(GenderEnum.Female, RoleEnum.Support);
             AddStats(2, 4, 5, 4);
             AddRange(0, 2, attackRange);
