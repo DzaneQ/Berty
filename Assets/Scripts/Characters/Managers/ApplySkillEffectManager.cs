@@ -81,8 +81,8 @@ namespace Berty.Characters.Managers
                     skillOwner.StatChange.AdvanceStrength(1, null);
                     break;
                 case SkillEnum.CheBert:
-                    if (!AreAllied(target, skillOwner)) StatusManager.Instance.RemoveStatusFromProvider(target.BoardCard);
-                    else if (target.BoardCard.GetRole() == RoleEnum.Special && target != skillOwner) target.StatChange.AdvanceStrength(1, skillOwner);
+                    if (AreAllied(target, skillOwner) && target.BoardCard.GetRole() == RoleEnum.Special && target != skillOwner)
+                        target.StatChange.AdvanceStrength(1, skillOwner);
                     break;
                 case SkillEnum.EBerta:
                     if (!AreAllied(target, skillOwner)) return false;

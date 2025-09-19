@@ -28,6 +28,8 @@ namespace Berty.Gameplay.Managers
         public event EventHandler OnCharacterDeath;
         public event EventHandler OnCharacterSpecialEffect;
         public event EventHandler<ValueChangeEventArgs> OnValueChange;
+        public event EventHandler OnStatusUpdated;
+        public event EventHandler<StatusEventArgs> OnStatusRemoved;
         public event EventHandler<DirectAttackEventArgs> OnHighlightStart;
         public event Action OnHighlightEnd;
 
@@ -100,6 +102,21 @@ namespace Berty.Gameplay.Managers
             OnValueChange?.Invoke(statChangedCard, args);
         }
 
+        public void RaiseOnStatusUpdated(Status status)
+        {
+            OnStatusUpdated?.Invoke(status, EventArgs.Empty);
+        }
+
+        public void RaiseOnStatusRemoved(StatusEnum name, AlignmentEnum align)
+        {
+            StatusEventArgs args = new()
+            {
+                StatusName = name,
+                Alignment = align
+            };
+            OnStatusRemoved?.Invoke(null, args);
+        }
+
         public void RaiseOnHighlightStart(BoardCardCore focusedCard)
         {
             DirectAttackEventArgs args = new()
@@ -123,5 +140,11 @@ namespace Berty.Gameplay.Managers
     public class ValueChangeEventArgs : EventArgs
     {
         public int Delta;
+    }
+
+    public class StatusEventArgs : EventArgs
+    {
+        public StatusEnum StatusName;
+        public AlignmentEnum Alignment;
     }
 }

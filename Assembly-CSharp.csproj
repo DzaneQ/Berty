@@ -110,6 +110,7 @@
     <Compile Include="Assets\Scripts\Gameplay\Entities\Game.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardMovableObject.cs" />
     <Compile Include="Assets\Scripts\Debugging\Managers\DebugManager.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Listeners\StatusListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveRight.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\PrymusBert.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />

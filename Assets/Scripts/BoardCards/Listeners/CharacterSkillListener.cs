@@ -183,9 +183,6 @@ namespace Berty.BoardCards.Listeners
             // When dying card is the character with skill
             switch (dyingCard.BoardCard.GetSkill())
             {
-                case SkillEnum.CheBert:
-                    RetrieveStatusEffect(witness);
-                    break;
                 case SkillEnum.SedziaBertt:
                     if (dyingCard.BoardCard.Align == witness.BoardCard.Align) witness.StatChange.AdvanceTempStrength(1, dyingCard);
                     return;
@@ -240,16 +237,6 @@ namespace Berty.BoardCards.Listeners
             {
                 case SkillEnum.PrezydentBert:
                     skillCard.StatChange.AdvancePower(-1, null);
-                    break;
-            }
-        }
-
-        private void RetrieveStatusEffect(BoardCardCore skillCard)
-        {
-            switch (skillCard.BoardCard.GetSkill())
-            {
-                case SkillEnum.SedziaBertt:
-                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ForceSpecialRole, skillCard.BoardCard);
                     break;
             }
         }

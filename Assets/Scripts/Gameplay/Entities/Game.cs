@@ -1,13 +1,14 @@
 using Berty.BoardCards.ConfigData;
-using Berty.UI.Card.Entities;
-using Berty.Grid.Entities;
+using Berty.BoardCards.Entities;
 using Berty.Enums;
 using Berty.Gameplay.ConfigData;
+using Berty.Grid.Entities;
+using Berty.UI.Card.Entities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.VersionControl;
 using UnityEngine;
-using Berty.BoardCards.Entities;
 
 namespace Berty.Gameplay.Entities
 {
@@ -40,21 +41,23 @@ namespace Berty.Gameplay.Entities
             return CurrentAlignment;
         }
 
-        public void AddStatusWithNameAndProvider(StatusEnum name, BoardCard provider)
+        public Status AddStatusWithNameAndProvider(StatusEnum name, BoardCard provider)
         {
-            Statuses.Add(new Status(name, provider));
+            Status newStatus = new(name, provider);
+            Statuses.Add(newStatus);
+            return newStatus;
         }
 
-        public void AddStatusWithNameAndAlignment(StatusEnum name, AlignmentEnum align)
-        {
-            Statuses.Add(new Status(name, align));
-        }
-
-        public void IncrementChargedStatusWithNameAndAlignment(StatusEnum name, AlignmentEnum align, int delta)
+        public Status IncrementChargedStatusWithNameAndAlignment(StatusEnum name, AlignmentEnum align, int delta)
         {
             Status status = Statuses.Find(x => x.Name == name && x.GetAlign() == align);
-            if (status == null) Statuses.Add(new Status(name, align, delta));
+            if (status == null)
+            {
+                status = new(name, align, delta);
+                Statuses.Add(status);
+            }
             else status.IncrementCharges(delta);
+            return status;
         }
 
         public bool HasStatusByName(StatusEnum name)

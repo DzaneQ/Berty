@@ -24,34 +24,29 @@ namespace Berty.Gameplay.Managers
         public void AddUniqueStatusWithProvider(StatusEnum name, BoardCard card)
         {
             if (game.HasStatusByName(name)) return;
-            game.AddStatusWithNameAndProvider(name, card);
-            // Event on status added
-        }
-
-        public void AddStatusWithAlignment(StatusEnum name, AlignmentEnum align)
-        {
-            // TODO: Add status by name and alignment
-            // Event on status added
+            Status status = game.AddStatusWithNameAndProvider(name, card);
+            EventManager.Instance.RaiseOnStatusUpdated(status);
         }
 
         public void IncrementChargedStatusWithAlignment(StatusEnum name, AlignmentEnum align, int charges)
         {
-            game.IncrementChargedStatusWithNameAndAlignment(name, align, charges);
-            // Event on status updated
+            Status status = game.IncrementChargedStatusWithNameAndAlignment(name, align, charges);
+            EventManager.Instance.RaiseOnStatusUpdated(status);
         }
 
         public void RemoveStatusFromProvider(BoardCard card)
         {
             Status status = game.GetStatusFromProviderOrNull(card);
             if (status == null) return;
-            game.RemoveStatusByName(status.Name);
-            // Event on status removal
+            RemoveStatus(status);
         }
 
         public void RemoveStatus(Status status)
         {
+            StatusEnum deletedStatusName = status.Name;
+            AlignmentEnum align = status.GetAlign();
             game.RemoveStatus(status);
-            // Event on status removal
+            EventManager.Instance.RaiseOnStatusRemoved(deletedStatusName, align);
         }
     }
 }
