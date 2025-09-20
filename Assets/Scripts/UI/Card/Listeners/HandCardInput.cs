@@ -1,16 +1,20 @@
 using Berty.UI.Card.Managers;
 using Berty.Display.Managers;
 using UnityEngine;
+using Berty.Gameplay.Entities;
+using Berty.Gameplay.Managers;
 
 namespace Berty.UI.Card.Listeners
 {
     public class HandCardInput : MonoBehaviour
     {
         private HandCardBehaviour behaviour;
+        private Game game;
 
         void Awake()
         {
             behaviour = GetComponent<HandCardBehaviour>();
+            game = CoreManager.Instance.Game;
         }
 
         public void CardClick()
@@ -31,7 +35,7 @@ namespace Berty.UI.Card.Listeners
 
         private void HandleLeftClick()
         {
-            if (transform.parent.name.Contains("Dead")) behaviour.ReviveCard();
+            if (transform.parent.name.Contains("Dead")) HandCardActionManager.Instance.ReviveCard(behaviour);
             else HandCardSelectManager.Instance.ChangeSelection(behaviour);
         }
     }

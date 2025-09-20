@@ -18,6 +18,7 @@ namespace Berty.UI.Card.Entities
 
         public List<CharacterConfig> PlayerCards { get; private set; }
         public List<CharacterConfig> OpponentCards { get; private set; }
+        public IReadOnlyList<CharacterConfig> DeadCards => deadCards;
 
         public void InitializeCardPile(List<CharacterConfig> characterPile)
         {
@@ -61,12 +62,6 @@ namespace Berty.UI.Card.Entities
             pileCards.Remove(takenCard);
             targetTable.Add(takenCard);
             return true;
-        }
-
-        private bool PullCard(AlignmentEnum align)
-        {
-            List<CharacterConfig> table = GetCardsFromAlign(align);
-            return PullCard(table);
         }
 
         public void RetrieveCard(CharacterConfig card, AlignmentEnum align)
@@ -118,15 +113,23 @@ namespace Berty.UI.Card.Entities
             deadCards.Add(card);
         }
 
+        public bool AreThereAnyDeadCards()
+        {
+            return deadCards.Count > 0;
+        }
+
         public void PutCardToTheBottomPile(CharacterConfig card)
         {
             if (bottomCard != null) throw new Exception("There is already a designated card at the bottom of the pile");
             bottomCard = card;
         }
 
-        private void ReviveCard(CharacterConfig card)
+        public void ReviveCard(CharacterConfig card, AlignmentEnum align)
         {
+            if (!deadCards.Contains(card)) throw new Exception($"Card {card.Name} is not dead");
+            List<CharacterConfig> table = GetCardsFromAlign(align);
             deadCards.Remove(card);
+            table.Add(card);
         }
 
         public void LeaveCard(CharacterConfig card, AlignmentEnum align)

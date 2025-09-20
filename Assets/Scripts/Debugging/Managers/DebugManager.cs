@@ -28,9 +28,9 @@ namespace Berty.Debugging
 
         public void TakeCardIfInPile(AlignmentEnum align)
         {
-            if (align == AlignmentEnum.Player) game.CardPile.PullCardIfInPile(SkillEnum.KsiezniczkaBerta, align);
-            if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(SkillEnum.Zombert, align);
-            if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(SkillEnum.BertaSJW, align);
+            if (align == AlignmentEnum.Player) game.CardPile.PullCardIfInPile(SkillEnum.GotkaBerta, align);
+            //if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(SkillEnum.Zombert, align);
+            //if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(SkillEnum.BertaSJW, align);
         }
     }
 #else

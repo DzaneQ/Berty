@@ -3,6 +3,7 @@ using Berty.Characters.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.UI.Managers;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -48,6 +49,9 @@ namespace Berty.BoardCards.Listeners
                     if (status.GetAlign() != core.BoardCard.Align)
                         StatusManager.Instance.RemoveStatusFromProvider(core.BoardCard);
                     break;
+                case StatusEnum.RevivalSelect:
+                    OverlayObjectManager.Instance.DisplayDeadCardsScreen();
+                    break;
                 case StatusEnum.Ventura:
                     if (status.Provider == core.BoardCard)
                         core.Bars.UpdateBar(StatEnum.Strength);
@@ -68,6 +72,9 @@ namespace Berty.BoardCards.Listeners
                 case StatusEnum.ForceSpecialRole:
                     if (game.HasStatusByName(StatusEnum.DisableEnemySpecialSkill))
                         TryRetrievingUniqueStatus();
+                    break;
+                case StatusEnum.RevivalSelect:
+                    OverlayObjectManager.Instance.HideDeadCardsScreen();
                     break;
                 case StatusEnum.Ventura:
                     if (args.Alignment == core.BoardCard.Align)

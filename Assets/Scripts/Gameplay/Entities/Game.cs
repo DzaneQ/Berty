@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.UIElements;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
@@ -43,9 +44,16 @@ namespace Berty.Gameplay.Entities
             return CurrentAlignment;
         }
 
-        public Status AddStatusWithNameAndProvider(StatusEnum name, BoardCard provider, AlignmentEnum targetAlignment)
+        public Status AddStatusWithNameProviderAndTargetedAlign(StatusEnum name, BoardCard provider, AlignmentEnum targetAlignment)
         {
             Status newStatus = new(name, provider, targetAlignment);
+            Statuses.Add(newStatus);
+            return newStatus;
+        }
+
+        public Status AddStatusWithNameAndAlignment(StatusEnum name, AlignmentEnum alignment)
+        {
+            Status newStatus = new(name, alignment);
             Statuses.Add(newStatus);
             return newStatus;
         }

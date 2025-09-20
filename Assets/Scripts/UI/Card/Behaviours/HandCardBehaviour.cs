@@ -1,6 +1,8 @@
 using Berty.BoardCards.ConfigData;
+using Berty.Enums;
 using Berty.Gameplay;
 using Berty.UI.Card.Animation;
+using Berty.UI.Card.Managers;
 using Berty.UI.Card.Selection;
 using System;
 using System.Collections;
@@ -72,12 +74,6 @@ namespace Berty.UI.Card
         public void ChangeSelection(bool ignoreAnimation = false)
         {
             select = select.ChangePosition(!ignoreAnimation);
-        }
-
-        public void ReviveCard()
-        {
-            //cardManager.ReviveCard(this);
-            //Turn.SetMoveTime();
         }
 
         public void ReturnCard()

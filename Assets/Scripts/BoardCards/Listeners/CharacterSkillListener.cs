@@ -229,6 +229,10 @@ namespace Berty.BoardCards.Listeners
                 case SkillEnum.CheBert:
                     StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.DisableEnemySpecialSkill, skillCard.BoardCard);
                     break;
+                case SkillEnum.GotkaBerta:
+                    if (game.CardPile.AreThereAnyDeadCards())
+                        StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.RevivalSelect, skillCard.BoardCard);
+                    break;  
                 case SkillEnum.RycerzBerti:
                     StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.TelekineticArea, skillCard.BoardCard);
                     DecreasePowerForNeighbor(skillCard);

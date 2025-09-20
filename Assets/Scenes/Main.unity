@@ -1453,6 +1453,7 @@ GameObject:
   - component: {fileID: 1414117062}
   - component: {fileID: 1414117061}
   - component: {fileID: 1414117060}
+  - component: {fileID: 1414117070}
   - component: {fileID: 1414117069}
   m_Layer: 0
   m_Name: EventSystem
@@ -1523,6 +1524,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4db960df69a766c49bf4314e83e1ef91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1414117070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414117059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1956061ed7cfc4a418f8ecc54e7e2a16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1473762349
 GameObject:
   m_ObjectHideFlags: 0
@@ -1560,6 +1573,7 @@ MonoBehaviour:
   lookupCard: {fileID: 1331529693}
   fieldBoard: {fileID: 1181834772}
   cornerButton: {fileID: 1498936183}
+  deadCardsScreen: {fileID: 470320019}
 --- !u!4 &1473762351
 Transform:
   m_ObjectHideFlags: 0
@@ -1863,7 +1877,6 @@ GameObject:
   - component: {fileID: 1498936185}
   - component: {fileID: 1498936188}
   - component: {fileID: 1498936189}
-  - component: {fileID: 1498936190}
   m_Layer: 5
   m_Name: EndTurnButton
   m_TagString: Untagged
@@ -1995,18 +2008,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ec6354e45c6f194da7283ce9265edcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1498936190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1498936183}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1956061ed7cfc4a418f8ecc54e7e2a16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1503324222

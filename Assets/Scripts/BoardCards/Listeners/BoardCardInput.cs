@@ -4,6 +4,7 @@ using Berty.BoardCards.Button;
 using Berty.BoardCards.Managers;
 using Berty.Display.Managers;
 using Berty.Enums;
+using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using System;
 using System.Collections;
@@ -15,10 +16,12 @@ namespace Berty.BoardCards.Listeners
     public class BoardCardInput : MonoBehaviour
     {
         private BoardCardCore behaviour;
+        private Game game;
 
         void Awake()
         {
             behaviour = GetComponent<BoardCardCore>();
+            game = CoreManager.Instance.Game;
         }
 
         void Start()
@@ -39,6 +42,7 @@ namespace Berty.BoardCards.Listeners
         public void OnMouseOver()
         {
             if (IsLeftClicked()) HandleLeftClick();
+            else if (IsRightClicked()) HandleSideClick();
         }
 
         public void OnMouseEnter()
@@ -57,15 +61,13 @@ namespace Berty.BoardCards.Listeners
 
         private bool IsLeftClicked()
         {
-            //Debug.Log($"Card {name} was left clicked.");
             return Input.GetMouseButtonDown(0);
         }
 
-        /*private bool IsRightClicked()
+        private bool IsRightClicked()
         {
-            if (!behaviour.IsLocked() && !behaviour.IsAnimating() && Input.GetMouseButtonDown(1)) return true;
-            else return false;
-        }*/
+            return Input.GetMouseButtonDown(1);
+        }
 
         private void HandleLeftClick()
         {
@@ -88,6 +90,20 @@ namespace Berty.BoardCards.Listeners
                     break;
                 default:
                     throw new Exception("Clicked on card of an unknown state");
+            }
+        }
+
+        private void HandleSideClick()
+        {
+            switch (behaviour.BoardCard.GetSkill())
+            {
+                case SkillEnum.GotkaBerta:
+                    if (game.CardPile.AreThereAnyDeadCards())
+                    {
+                        StatusManager.Instance.AddUniqueStatusWithAlignment(StatusEnum.RevivalSelect, behaviour.BoardCard.Align);
+                        behaviour.RemoveCard();
+                    }
+                    break;
             }
         }
 

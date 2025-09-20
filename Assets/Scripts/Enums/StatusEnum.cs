@@ -8,6 +8,7 @@ namespace Berty.Enums
         ExtraCardNextTurn,
         ExtraAttackCooldown,
         ForceSpecialRole,
+        RevivalSelect,
         TelekineticArea,
         Ventura,
     }

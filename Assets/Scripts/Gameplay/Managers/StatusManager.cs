@@ -24,7 +24,14 @@ namespace Berty.Gameplay.Managers
         public void AddUniqueStatusWithProvider(StatusEnum name, BoardCard card, AlignmentEnum targetAlign = AlignmentEnum.None)
         {
             if (game.HasStatusByName(name)) return;
-            Status status = game.AddStatusWithNameAndProvider(name, card, targetAlign);
+            Status status = game.AddStatusWithNameProviderAndTargetedAlign(name, card, targetAlign);
+            EventManager.Instance.RaiseOnStatusUpdated(status);
+        }
+
+        public void AddUniqueStatusWithAlignment(StatusEnum name, AlignmentEnum align)
+        {
+            if (game.HasStatusByName(name)) return;
+            Status status = game.AddStatusWithNameAndAlignment(name, align);
             EventManager.Instance.RaiseOnStatusUpdated(status);
         }
 

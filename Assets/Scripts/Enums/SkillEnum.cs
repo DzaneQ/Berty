@@ -24,6 +24,7 @@ namespace Berty.Enums
         BigMadB,
         CheBert,
         EBerta,
+        GotkaBerta,
         KonstablBert,
         KoszmarZBertwood,
         KowbojBert,

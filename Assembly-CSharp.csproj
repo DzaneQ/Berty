@@ -139,6 +139,7 @@
     <Compile Include="Assets\Scripts\Display\LookupCard.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\HandCardActionManager.cs" />
     <Compile Include="Assets\Scripts\Enums\StatEnum.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaSJW.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
