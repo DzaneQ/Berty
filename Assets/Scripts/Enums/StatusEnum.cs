@@ -8,5 +8,6 @@ namespace Berty.Enums
         ExtraAttackCooldown,
         ForceSpecialRole,
         TelekineticArea,
+        Ventura,
     }
 }

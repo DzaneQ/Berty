@@ -112,6 +112,7 @@ namespace Berty.BoardCards.Listeners
             {
                 case SkillEnum.BertaGejsza:
                 case SkillEnum.BertaSJW:
+                case SkillEnum.BertVentura:
                 case SkillEnum.BertWho:
                 case SkillEnum.BertZawodowiec:
                 case SkillEnum.KuglarzBert:
@@ -158,6 +159,7 @@ namespace Berty.BoardCards.Listeners
                 case SkillEnum.BertaGejsza:
                 case SkillEnum.BertaSJW:
                 case SkillEnum.BertaTrojanska:
+                case SkillEnum.BertVentura:
                 case SkillEnum.BertWho:
                 case SkillEnum.BertZawodowiec:
                 case SkillEnum.EBerta:
@@ -177,6 +179,10 @@ namespace Berty.BoardCards.Listeners
             // When witness is the character with skill
             switch (witness.BoardCard.GetSkill())
             {
+                case SkillEnum.BertVentura:
+                    if (game.Grid.AreNeighboring(witness.ParentField.BoardField, dyingCard.ParentField.BoardField))
+                        StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, witness.BoardCard, game.Grid.GetEnemyNeighborCount(core.BoardCard));
+                    break;
                 case SkillEnum.Zombert:
                     if (dyingCard.BoardCard.Align == witness.BoardCard.Align) break;
                     witness.StatChange.AdvanceHealth(1, null);
@@ -213,6 +219,9 @@ namespace Berty.BoardCards.Listeners
         {
             switch (skillCard.BoardCard.GetSkill())
             {
+                case SkillEnum.BertVentura:
+                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillCard.BoardCard, game.Grid.GetEnemyNeighborCount(core.BoardCard));
+                    break;
                 case SkillEnum.BertWho:
                     StatusManager.Instance.IncrementChargedStatusWithAlignment(StatusEnum.ExtraCardNextTurn, AlignmentEnum.Player, 2);
                     StatusManager.Instance.IncrementChargedStatusWithAlignment(StatusEnum.ExtraCardNextTurn, AlignmentEnum.Opponent, 2);
@@ -242,6 +251,9 @@ namespace Berty.BoardCards.Listeners
         {
             switch (skillCard.BoardCard.GetSkill())
             {
+                case SkillEnum.BertVentura:
+                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillCard.BoardCard, game.Grid.GetEnemyNeighborCount(core.BoardCard));
+                    break;
                 case SkillEnum.PrezydentBert:
                     skillCard.StatChange.AdvancePower(-1, null);
                     break;

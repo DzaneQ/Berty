@@ -7,6 +7,7 @@ using Berty.Grid.Field.Entities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Berty.Grid.Entities
@@ -102,6 +103,11 @@ namespace Berty.Grid.Entities
                 neighbors.Add(neighboringField.OccupantCard);
             }
             return neighbors;
+        }
+
+        public int GetEnemyNeighborCount(BoardCard card)
+        {
+            return GetAllNeighbors(card).Where(neighbor => neighbor.Align != card.Align).Count();
         }
 
         public List<BoardField> GetFieldsInRange(BoardCard card, List<Vector2Int> range)

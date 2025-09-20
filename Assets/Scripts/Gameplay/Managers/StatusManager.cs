@@ -28,6 +28,12 @@ namespace Berty.Gameplay.Managers
             EventManager.Instance.RaiseOnStatusUpdated(status);
         }
 
+        public void SetChargedStatusWithProvider(StatusEnum name, BoardCard card, int charges)
+        {
+            Status status = game.SetChargedStatusWithNameAndProvider(name, card, charges);
+            EventManager.Instance.RaiseOnStatusUpdated(status);
+        }
+
         public void IncrementChargedStatusWithAlignment(StatusEnum name, AlignmentEnum align, int charges)
         {
             Status status = game.IncrementChargedStatusWithNameAndAlignment(name, align, charges);

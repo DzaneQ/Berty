@@ -4,6 +4,7 @@ using Berty.BoardCards.Entities;
 using Berty.BoardCards.Listeners;
 using Berty.BoardCards.Managers;
 using Berty.BoardCards.State;
+using Berty.Characters.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
@@ -165,6 +166,7 @@ namespace Berty.BoardCards.Behaviours
             Status telekinesisArea = Game.GetStatusByNameOrNull(StatusEnum.TelekineticArea);
             if (telekinesisArea == null) return false;
             if (telekinesisArea.Provider.IsTired) return false;
+            if (ApplySkillEffectManager.Instance.DoesPreventEffect(BoardCard, telekinesisArea.Provider)) return false;
             return telekinesisArea.Provider.Align == Game.CurrentAlignment;
         }
 
@@ -231,6 +233,7 @@ namespace Berty.BoardCards.Behaviours
                 KillCard();
                 return;
             }
+            StatusManager.Instance.RemoveStatusFromProvider(BoardCard);
             EventManager.Instance.RaiseOnCharacterDeath(this);
             DirectionEnum direction = (DirectionEnum)BoardCard.GetAngle();
             AlignmentEnum align = BoardCard.Align;

@@ -9,6 +9,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 namespace Berty.Gameplay.Entities
 {
@@ -46,6 +48,18 @@ namespace Berty.Gameplay.Entities
             Status newStatus = new(name, provider);
             Statuses.Add(newStatus);
             return newStatus;
+        }
+
+        public Status SetChargedStatusWithNameAndProvider(StatusEnum name, BoardCard provider, int charges)
+        {
+            Status status = Statuses.Find(x => x.Name == name && x.Provider == provider);
+            if (status == null)
+            {
+                status = new(name, provider, charges);
+                Statuses.Add(status);
+            }
+            else status.SetCharges(charges);
+            return status;
         }
 
         public Status IncrementChargedStatusWithNameAndAlignment(StatusEnum name, AlignmentEnum align, int delta)

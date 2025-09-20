@@ -6,18 +6,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Berty.BoardCards.Entities;
+using Berty.Gameplay.Entities;
 
 namespace Berty.BoardCards
 {
     public class CardStats
     {
+        private BoardCard BoardCard { get; }
         private Dictionary<StatEnum, int> baseStat;
         private Dictionary<StatEnum, int> currentTempStat;
         private Dictionary<StatEnum, int> nextTempStat;
 
         public int Strength 
         { 
-            get => GetStat(baseStat[StatEnum.Strength] + TempStrength); 
+            get => GetStat(baseStat[StatEnum.Strength] + TempStrength + StrengthBonus()); 
             set { baseStat[StatEnum.Strength] = GetStat(value); } 
         }
         public int Power
@@ -57,59 +60,21 @@ namespace Berty.BoardCards
             set { nextTempStat[StatEnum.Health] = value; }
         }
 
-        public CardStats(CharacterConfig character)
+        public CardStats(BoardCard card)
         {
+            BoardCard = card;
+
             baseStat = new Dictionary<StatEnum, int>
             {
-                { StatEnum.Strength, character.Strength },
-                { StatEnum.Power, character.Power },
-                { StatEnum.Dexterity, character.Dexterity },
-                { StatEnum.Health, character.Health }
+                { StatEnum.Strength, card.CharacterConfig.Strength },
+                { StatEnum.Power, card.CharacterConfig.Power },
+                { StatEnum.Dexterity, card.CharacterConfig.Dexterity },
+                { StatEnum.Health, card.CharacterConfig.Health }
             };
 
             currentTempStat = InitZeroStat();
             nextTempStat = InitZeroStat();
         }
-
-        /*public void AdvanceStrength(int value)
-        {
-            Strength += value;
-        }
-
-        public void AdvanceTempStrength(int value)
-        {
-            TempStrength += value;
-        }
-
-        public void AdvancePower(int value)
-        {
-            Power += value;
-        }
-
-        public void AdvanceTempPower(int value)
-        {
-            TempPower += value;
-        }
-
-        public void AdvanceDexterity(int value)
-        {
-            Dexterity += value;
-        }
-
-        public void AdvanceTempDexterity(int value)
-        {
-            TempDexterity += value;
-        }
-
-        public void AdvanceHealth(int value)
-        {
-            Health += value;
-        }
-
-        public void AdvanceTempHealth(int value)
-        {
-            TempHealth += value;
-        }*/
 
         public void ProgressTempStats()
         {
@@ -136,6 +101,13 @@ namespace Berty.BoardCards
                 { StatEnum.Dexterity, 0 },
                 { StatEnum.Health, 0 }
             };
+        }
+
+        private int StrengthBonus()
+        {
+            Status ownedStatus = BoardCard.OccupiedField.Grid.Game.GetStatusFromProviderOrNull(BoardCard);
+            if (ownedStatus?.Name == StatusEnum.Ventura) return ownedStatus.Charges / 2;
+            return 0;
         }
     }
 }

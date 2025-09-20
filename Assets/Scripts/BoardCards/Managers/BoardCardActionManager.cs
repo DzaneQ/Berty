@@ -1,5 +1,6 @@
 using Berty.Audio.Managers;
 using Berty.BoardCards.Behaviours;
+using Berty.Characters.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
@@ -76,7 +77,7 @@ namespace Berty.BoardCards.Managers
 
         public void PrepareToAttack(BoardCardCore card)
         {
-            if (card.BoardCard.HasAttacked || card.BoardCard.IsTired) return;
+            if (!CanOrderAttack(card)) return;
             card.SetAttacking();
             PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity, card);
         }
@@ -92,6 +93,20 @@ namespace Berty.BoardCards.Managers
                 return Mathf.Min(6 - card.BoardCard.Stats.Dexterity,
                     6 - Grid.Game.GetStatusByNameOrThrow(StatusEnum.TelekineticArea).Provider.Stats.Dexterity);
             return 6 - card.BoardCard.Stats.Dexterity;
+        }
+
+        private bool CanOrderAttack(BoardCardCore card)
+        {
+            if (card.BoardCard.HasAttacked) return false;
+            if (card.BoardCard.IsTired) return false;
+            // Ventura check
+            Status venturaStatus = Grid.Game.GetStatusByNameOrNull(StatusEnum.Ventura);
+            if (venturaStatus == null) return true;
+            if (ApplySkillEffectManager.Instance.DoesPreventEffect(card.BoardCard, venturaStatus.Provider)) return true;
+            if (!Grid.AreNeighboring(card.ParentField.BoardField, venturaStatus.Provider.OccupiedField)) return true;
+            if (Grid.AreAligned(card.ParentField.BoardField, venturaStatus.Provider.OccupiedField)) return true;
+            if (card.BoardCard.CanAttackCard(venturaStatus.Provider)) return true;
+            return false;
         }
     }
 }

@@ -71,6 +71,8 @@ namespace Berty.Characters.Managers
                     break;
             }
 
+            if (source == null) return shouldPreventStatChange;
+
             switch (source.BoardCard.GetSkill())
             {
                 case SkillEnum.BertkaSerferka:

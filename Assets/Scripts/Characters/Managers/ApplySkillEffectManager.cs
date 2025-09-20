@@ -11,6 +11,7 @@ using Berty.Utility;
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 namespace Berty.Characters.Managers
 {
@@ -72,6 +73,9 @@ namespace Berty.Characters.Managers
                 case SkillEnum.BertaTrojanska:
                     if (AreAllied(target, skillOwner)) target.StatChange.AdvancePower(1, skillOwner);
                     else target.StatChange.AdvanceStrength(-1, skillOwner);
+                    break;
+                case SkillEnum.BertVentura:
+                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillOwner.BoardCard, game.Grid.GetEnemyNeighborCount(skillOwner.BoardCard));
                     break;
                 case SkillEnum.BertWho:
                     target.StatChange.AdvancePower(-1, skillOwner);

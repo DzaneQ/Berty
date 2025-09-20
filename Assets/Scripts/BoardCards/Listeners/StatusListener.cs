@@ -4,7 +4,9 @@ using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using System;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 namespace Berty.BoardCards.Listeners
 {
@@ -35,12 +37,15 @@ namespace Berty.BoardCards.Listeners
         private void HandleStatusUpdated(object sender, EventArgs args)
         {
             Status status = (Status)sender;
-
             switch (status.Name)
             {
                 case StatusEnum.DisableEnemySpecialSkill:
                     if (status.GetAlign() != core.BoardCard.Align)
                         StatusManager.Instance.RemoveStatusFromProvider(core.BoardCard);
+                    break;
+                case StatusEnum.Ventura:
+                    if (status.Provider == core.BoardCard)
+                        core.Bars.UpdateBar(StatEnum.Strength);
                     break;
             }
         }
@@ -56,6 +61,10 @@ namespace Berty.BoardCards.Listeners
                     if (game.HasStatusByName(StatusEnum.DisableEnemySpecialSkill))
                         TryRetrievingUniqueStatus();
                     break;
+                case StatusEnum.Ventura:
+                    if (args.Alignment == core.BoardCard.Align)
+                        core.Bars.UpdateBar(StatEnum.Strength);
+                    break;
             }
         }
 
@@ -63,6 +72,9 @@ namespace Berty.BoardCards.Listeners
         {
             switch (core.BoardCard.GetSkill())
             {
+                case SkillEnum.BertVentura:
+                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, core.BoardCard, game.Grid.GetEnemyNeighborCount(core.BoardCard));
+                    break;
                 case SkillEnum.RycerzBerti:
                     StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.TelekineticArea, core.BoardCard);
                     break;

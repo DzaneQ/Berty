@@ -18,20 +18,15 @@ namespace Berty.Gameplay.Entities
         private AlignmentEnum Align { get; }
         public int Charges { get; private set; }
 
-        public Status(StatusEnum name, BoardCard provider)
+        public Status(StatusEnum name, BoardCard provider, int charges = 0)
         {
             Name = name;
             Provider = provider;
             Align = AlignmentEnum.None;
+            Charges = charges;
         }
 
-        public Status(StatusEnum name, AlignmentEnum align)
-        {
-            Name = name;
-            Align = align;
-        }
-
-        public Status(StatusEnum name, AlignmentEnum align, int charges)
+        public Status(StatusEnum name, AlignmentEnum align, int charges = 0)
         {
             Name = name;
             Align = align;

@@ -17,6 +17,7 @@ namespace Berty.Enums
         Bertolaj,
         Bertonator,
         BertPogromca,
+        BertVentura,
         BertWho,
         BertWick,
         BertZawodowiec,

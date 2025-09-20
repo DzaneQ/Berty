@@ -46,7 +46,7 @@ namespace Berty.BoardCards.Entities
         {
             CharacterConfig = character;
             OccupiedField = field;
-            Stats = new CardStats(character);
+            Stats = new CardStats(this);
             HasAttacked = false;
             IsTired = false;
             resistance = new List<CharacterConfig>();
