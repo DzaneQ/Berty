@@ -58,8 +58,8 @@ namespace Berty.BoardCards.Listeners
             else if (core.CardState == CardStateEnum.NewCard)
             {
                 SoundManager.Instance.ConfirmSound(core.SoundSource);
-                EventManager.Instance.RaiseOnNewCharacter(core);
                 EventManager.Instance.RaiseOnAttackNewStand(core);
+                EventManager.Instance.RaiseOnNewCharacter(core);
             }
             else if (core.IsOnNewMove())
             {

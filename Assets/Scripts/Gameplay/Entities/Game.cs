@@ -43,9 +43,9 @@ namespace Berty.Gameplay.Entities
             return CurrentAlignment;
         }
 
-        public Status AddStatusWithNameAndProvider(StatusEnum name, BoardCard provider)
+        public Status AddStatusWithNameAndProvider(StatusEnum name, BoardCard provider, AlignmentEnum targetAlignment)
         {
-            Status newStatus = new(name, provider);
+            Status newStatus = new(name, provider, targetAlignment);
             Statuses.Add(newStatus);
             return newStatus;
         }

@@ -21,10 +21,10 @@ namespace Berty.Gameplay.Managers
             game = CoreManager.Instance.Game;
         }
 
-        public void AddUniqueStatusWithProvider(StatusEnum name, BoardCard card)
+        public void AddUniqueStatusWithProvider(StatusEnum name, BoardCard card, AlignmentEnum targetAlign = AlignmentEnum.None)
         {
             if (game.HasStatusByName(name)) return;
-            Status status = game.AddStatusWithNameAndProvider(name, card);
+            Status status = game.AddStatusWithNameAndProvider(name, card, targetAlign);
             EventManager.Instance.RaiseOnStatusUpdated(status);
         }
 

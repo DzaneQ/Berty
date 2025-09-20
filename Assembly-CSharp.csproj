@@ -179,6 +179,7 @@
     <Compile Include="Assets\Scripts\BoardCards\Animation\IBarWidth.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\TargetState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
+    <Compile Include="Assets\Scripts\UI\Listeners\StatusListener.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertWho.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\MisiekBert.cs" />

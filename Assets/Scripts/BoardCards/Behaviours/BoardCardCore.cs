@@ -153,6 +153,11 @@ namespace Berty.BoardCards.Behaviours
             CardState = CardStateEnum.Attacking;
         }
 
+        public void SetEffectable()
+        {
+            CardState = CardStateEnum.Effectable;
+        }
+
         public bool IsForPay()
         {
             if (CardState == CardStateEnum.NewCard) return true;

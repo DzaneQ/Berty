@@ -100,6 +100,10 @@ namespace Berty.Characters.Managers
                     if (target.BoardCard.Stats.Power <= 0) 
                         StatusManager.Instance.IncrementChargedStatusWithAlignment(StatusEnum.ExtraCardNextTurn, source.BoardCard.Align, 1);
                     break;
+                case SkillEnum.KsiezniczkaBerta:
+                    if (target.BoardCard.Stats.Power <= 0 && source != null && source.BoardCard?.Stats.Health > 0)
+                        StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ClickToApplyEffect, target.BoardCard, source.BoardCard.Align);
+                    break;
             }
         }
 

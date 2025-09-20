@@ -54,6 +54,7 @@ namespace Berty.BoardCards.Behaviours
             {
                 case CardStateEnum.Idle:
                 case CardStateEnum.Attacking:
+                case CardStateEnum.Effectable:
                     DeactivateAllButtons();
                     break;
                 case CardStateEnum.Active:

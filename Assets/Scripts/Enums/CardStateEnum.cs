@@ -12,5 +12,6 @@ namespace Berty.Enums
         NewTransform,
         Telekinetic,
         Attacking,
+        Effectable,
     }
 }

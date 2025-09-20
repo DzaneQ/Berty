@@ -8,6 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public KsiezniczkaBerta()
         {
             AddName("ksiezniczka berta");
+            AddSkill(SkillEnum.KsiezniczkaBerta);
             AddProperties(GenderEnum.Female, RoleEnum.Support);
             AddStats(1, 4, 4, 6);
             AddRange(1, 1, attackRange);

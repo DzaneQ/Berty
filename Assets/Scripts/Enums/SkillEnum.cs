@@ -29,6 +29,7 @@ namespace Berty.Enums
         KowbojBert,
         KrolPopuBert,
         KrzyzowiecBert,
+        KsiezniczkaBerta,
         KuglarzBert,
         MisiekBert,
         PapiezBertII,

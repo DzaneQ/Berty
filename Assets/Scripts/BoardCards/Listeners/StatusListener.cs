@@ -39,6 +39,11 @@ namespace Berty.BoardCards.Listeners
             Status status = (Status)sender;
             switch (status.Name)
             {
+                case StatusEnum.ClickToApplyEffect:
+                    if (status.GetTargetAlign() == core.BoardCard.Align && !ApplySkillEffectManager.Instance.DoesPreventEffect(core.BoardCard, status.Provider))
+                        core.SetEffectable();
+                    else core.SetIdle();
+                    break;
                 case StatusEnum.DisableEnemySpecialSkill:
                     if (status.GetAlign() != core.BoardCard.Align)
                         StatusManager.Instance.RemoveStatusFromProvider(core.BoardCard);
@@ -47,13 +52,16 @@ namespace Berty.BoardCards.Listeners
                     if (status.Provider == core.BoardCard)
                         core.Bars.UpdateBar(StatEnum.Strength);
                     break;
-            }
+                }
         }
 
         private void HandleStatusRemoved(object sender, StatusEventArgs args)
         {
             switch (args.StatusName)
             {
+                case StatusEnum.ClickToApplyEffect:
+                    core.SetMainState();
+                    break;
                 case StatusEnum.DisableEnemySpecialSkill:
                     TryRetrievingUniqueStatus();
                     break;

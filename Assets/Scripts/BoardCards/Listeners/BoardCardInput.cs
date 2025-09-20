@@ -83,6 +83,9 @@ namespace Berty.BoardCards.Listeners
                 case CardStateEnum.Idle:
                 case CardStateEnum.Telekinetic:
                     break;
+                case CardStateEnum.Effectable:
+                    BoardCardActionManager.Instance.ApplySpecialEffect(behaviour);
+                    break;
                 default:
                     throw new Exception("Clicked on card of an unknown state");
             }

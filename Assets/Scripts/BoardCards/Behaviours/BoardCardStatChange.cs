@@ -13,6 +13,7 @@ using Berty.UI.Card.Managers;
 using System;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using static UnityEngine.CullingGroup;
 
 namespace Berty.BoardCards.Behaviours
 {
@@ -137,6 +138,9 @@ namespace Berty.BoardCards.Behaviours
             {
                 case SkillEnum.AstronautaBert:
                     core.KillCard();
+                    break;
+                case SkillEnum.KsiezniczkaBerta:
+                    SetPower(core.BoardCard.CharacterConfig.Power, core);
                     break;
                 default:
                     core.SwitchSides();

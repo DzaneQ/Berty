@@ -87,6 +87,15 @@ namespace Berty.BoardCards.Managers
             PaymentManager.Instance.ConfirmPayment();
         }
 
+        public void ApplySpecialEffect(BoardCardCore card)
+        {
+            Status status = Grid.Game.GetStatusByNameOrThrow(StatusEnum.ClickToApplyEffect);
+            BoardCardCore source = BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(status.Provider);
+            card.StatChange.AdvanceStrength(2, source);
+            card.StatChange.AdvanceHealth(1, source);
+            StatusManager.Instance.RemoveStatus(status);
+        }
+
         private int GetPriceForMoving(BoardCardCore card)
         {
             if (card.IsEligibleForTelekineticState())

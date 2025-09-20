@@ -15,28 +15,40 @@ namespace Berty.Gameplay.Entities
     {
         public StatusEnum Name { get; }
         public BoardCard Provider { get; }
-        private AlignmentEnum Align { get; }
+        private AlignmentEnum TargetAlign { get; }
         public int Charges { get; private set; }
 
         public Status(StatusEnum name, BoardCard provider, int charges = 0)
         {
             Name = name;
             Provider = provider;
-            Align = AlignmentEnum.None;
+            TargetAlign = AlignmentEnum.None;
             Charges = charges;
+        }
+
+        public Status(StatusEnum name, BoardCard provider, AlignmentEnum targetAlign)
+        {
+            Name = name;
+            Provider = provider;
+            TargetAlign = targetAlign;
         }
 
         public Status(StatusEnum name, AlignmentEnum align, int charges = 0)
         {
             Name = name;
-            Align = align;
+            TargetAlign = align;
             Charges = charges;
         }
 
         public AlignmentEnum GetAlign()
         {
             if (Provider != null) return Provider.Align;
-            return Align;
+            return TargetAlign;
+        }
+
+        public AlignmentEnum GetTargetAlign()
+        {
+            return TargetAlign;
         }
 
         public void SetCharges(int charges)
