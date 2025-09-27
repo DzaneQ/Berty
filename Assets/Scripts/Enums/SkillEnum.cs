@@ -44,6 +44,7 @@ namespace Berty.Enums
         StaryBert,
         SuperfanBert,
         Tankbert,
+        TrenerPokebertow,
         ZalobnyBert,
         Zombert,
     }

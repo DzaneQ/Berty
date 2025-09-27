@@ -268,7 +268,8 @@ namespace Berty.BoardCards.Behaviours
             BoardCard = null;
             ParentField.UpdateField();
             BoardCardCollectionManager.Instance.RemoveCardFromCollection(this);
-            Destroy(gameObject);
+            if (transform.parent.childCount <= 1) Destroy(transform.parent.gameObject); // Remove CardSetTransform that has no cards
+            else Destroy(gameObject);                                                   // Otherwise, remove only the card object itself
         }
     }
 }

@@ -43,7 +43,14 @@ namespace Berty.UI.Card.Managers
 
         public BoardCardCore SetCardOnField(FieldBehaviour field)
         {
-            BoardCardCore card = Instantiate(boardCardPrefab, field.transform).GetComponent<BoardCardCore>();
+            // Create empty child transform if field has no children
+            if (field.transform.childCount == 0)
+            {
+                GameObject fieldChild = new("CardSetTransform");
+                fieldChild.transform.SetParent(field.transform, false);
+            }
+            // Put new card on this empty child transform
+            BoardCardCore card = Instantiate(boardCardPrefab, field.transform.GetChild(0)).GetComponent<BoardCardCore>();
             field.UpdateField();
             return card;
         }

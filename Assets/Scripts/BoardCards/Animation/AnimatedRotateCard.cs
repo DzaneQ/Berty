@@ -14,6 +14,7 @@ namespace Berty.BoardCards.Animation
         private BoardCardCore card;
         private float rotatingAngle;
         private int _coroutineCount;
+        private Transform cardSetTransform;
 
         public int CoroutineCount
         {
@@ -35,12 +36,13 @@ namespace Berty.BoardCards.Animation
 
         void Start()
         {
+            cardSetTransform = transform.parent;
             card = GetComponent<BoardCardCore>();
         }
 
         public void SetAngleWithoutAnimation(Quaternion rotation)
         {
-            transform.rotation = rotation;
+            cardSetTransform.rotation = rotation;
         }
 
         public void ByAngle(int angle)
@@ -52,7 +54,7 @@ namespace Berty.BoardCards.Animation
         {
             card.CardNavigation.DisableInteraction();
             card.Bars.HideBars();
-            yield return StartCoroutine(RotateObject(-angle, durationSeconds));
+            yield return StartCoroutine(RotateObject(angle, durationSeconds));
         }
 
         private IEnumerator RotateObject(float angle, float durationSeconds)
@@ -86,14 +88,14 @@ namespace Berty.BoardCards.Animation
             if (rotatingAngle == 0) throw new Exception("Rotating angle at 0!");
             else if (frameTime + currentTime >= endTime)
             {
-                transform.Rotate(Vector3.forward, rotatingAngle);
+                cardSetTransform.Rotate(Vector3.forward, rotatingAngle);
                 rotatingAngle = 0;
             }
             else
             {
                 float step = frameTime / (endTime - currentTime);
                 float frameAngle = rotatingAngle * step;
-                transform.Rotate(Vector3.forward, frameAngle);
+                cardSetTransform.Rotate(Vector3.forward, frameAngle);
                 rotatingAngle -= frameAngle;
             }
             currentTime += frameTime;
