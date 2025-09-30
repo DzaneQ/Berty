@@ -35,7 +35,7 @@ namespace Berty.Grid.Field.Entities
             Grid = grid;
         }
 
-        public BoardCard AddCard(CharacterConfig characterConfig, AlignmentEnum newAlign)
+        public BoardCard AddNewCard(CharacterConfig characterConfig, AlignmentEnum newAlign)
         {
             if (OccupantCard == null)
             {
@@ -44,18 +44,27 @@ namespace Berty.Grid.Field.Entities
             }
             else
             {
+                if (Align != newAlign) throw new InvalidOperationException($"Putting extra card on field named {GetName()} should not change align!");
                 if (BackupCard != null) throw new InvalidOperationException($"Field named {GetName()} is full!");
                 BackupCard = OccupantCard;
                 OccupantCard = new BoardCard(characterConfig, this);
+                OccupantCard.SetDirection(BackupCard.Direction);
             }
             return OccupantCard;
         }
 
-        public void PlaceCard(BoardCard card, AlignmentEnum newAlign)
+        public void PlaceExistingCard(BoardCard card, AlignmentEnum newAlign)
         {
+            if (card == null) throw new InvalidOperationException($"Should not place null card for {GetName()}.");
             OccupantCard = card;
             card.SetField(this);
             Align = newAlign;
+        }
+
+        public void SetBackupCard(BoardCard card)
+        {
+            if (OccupantCard == null) throw new InvalidOperationException($"Field {GetName()} should be occupied before setting a backup card.");
+            BackupCard = card;
         }
 
         public void RemoveCard()
@@ -72,13 +81,6 @@ namespace Berty.Grid.Field.Entities
             Align = AlignmentEnum.None;
         }
 
-        public void PlaceBackupCard(BoardCard card)
-        {
-            BackupCard = OccupantCard;
-            OccupantCard = card;
-            card.PlaceCard(this, BackupCard.Direction);
-        }
-
         public bool AreThereTwoCards() => BackupCard != null;
 
         public void SwitchSides()
@@ -88,22 +90,15 @@ namespace Berty.Grid.Field.Entities
             else throw new Exception($"Can't switch sides for field {GetName()}");
         }
 
-        public bool IsAligned(AlignmentEnum alignment)
-        {
-            return Align == alignment;
-        }
-
-        public bool IsOpposed(AlignmentEnum alignment)
-        {
-            if (alignment == AlignmentEnum.None) return false;
-            if (Align == AlignmentEnum.None) return false;
-            return Align != alignment;
-        }
-
         public bool IsOccupied()
         {
-            if (Align != AlignmentEnum.None) return true;
-            return false;
+            return OccupantCard != null;
+        }
+
+        public void SynchronizeBackupCardRotation()
+        {
+            if (BackupCard == null) return;
+            BackupCard.SetDirection(OccupantCard.Direction);
         }
 
         private string GetName()

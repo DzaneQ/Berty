@@ -6,6 +6,7 @@ using Berty.Display.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.UI.Card.Systems;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,11 +18,13 @@ namespace Berty.BoardCards.Listeners
     {
         private BoardCardCore behaviour;
         private Game game;
+        private SelectionAndPaymentSystem selectionSystem;
 
         void Awake()
         {
             behaviour = GetComponent<BoardCardCore>();
             game = CoreManager.Instance.Game;
+            selectionSystem = CoreManager.Instance.SelectionAndPaymentSystem;
         }
 
         void Start()
@@ -72,6 +75,7 @@ namespace Berty.BoardCards.Listeners
         private void HandleLeftClick()
         {
             if (!IsLeftClicked()) return;
+            if (TryPuttingAnExtraCard()) return;
             switch (behaviour.CardState)
             {
                 case CardStateEnum.Active:
@@ -115,6 +119,21 @@ namespace Berty.BoardCards.Listeners
         private void EnableButtons()
         {
             foreach (CardButton button in behaviour.CardNavigation.Buttons) button.EnableButton();
+        }
+
+        private bool TryPuttingAnExtraCard()
+        {
+            if (selectionSystem.IsItPaymentTime()) return false;
+            if (!HasSelectedOneCard()) return false;
+            if (behaviour.BoardCard.GetSkill() != SkillEnum.TrenerPokebertow) return false;
+            if (behaviour.BoardCard.Align != game.CurrentAlignment) return false;
+            behaviour.ParentField.SendMessage("PutTheCard");
+            return true;
+        }
+
+        private bool HasSelectedOneCard()
+        {
+            return selectionSystem.GetTheOnlySelectedCardOrNull() != null;
         }
     }
 }

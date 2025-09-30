@@ -42,6 +42,7 @@ namespace Berty.BoardCards.Animation
             card = GetComponent<BoardCardCore>();
         }
 
+        // BUG: After the animation is over, the destination field is not colorized when the card is hovered over.
         public void ToField(FieldBehaviour field)
         {
             StartCoroutine(MoveCardCoroutine(field));

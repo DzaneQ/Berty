@@ -126,7 +126,7 @@ namespace Berty.Grid.Entities
             List<BoardField> alignedFields = new List<BoardField>();
             foreach (BoardField field in Fields)
             {
-                if (!field.IsAligned(alignment)) continue;
+                if (field.Align != alignment) continue;
                 alignedFields.Add(field);
                 if (countBackup && field.AreThereTwoCards()) alignedFields.Add(field);
             }

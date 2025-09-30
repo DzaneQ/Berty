@@ -25,21 +25,31 @@ namespace Berty.Grid.Field.Listeners
 
         private void OnMouseOver()
         {
-            if (HasACard()) HandleCardClick();
-            else if (Input.GetMouseButtonDown(0)) HandleLeftClick();
+            if (TryHandlingCardClick()) return; // When there's a card, handle card click instead.
+            TryPuttingCardOnField();
         }
 
-        private void HandleCardClick()
+        private bool TryHandlingCardClick()
         {
+            if (!HasACard()) return false;
             behaviour.ChildCard.SendMessage("OnMouseOver");
+            return true;
         }
 
-        private void HandleLeftClick()
+        private bool TryPuttingCardOnField()
         {
-            if (PuttingIntent()) PutTheCard();
+            if (!IsLeftClicked()) return false;
+            if (!HasSelectedOneCard()) return false;
+            PutTheCard();
+            return true;
         }
 
-        private bool PuttingIntent()
+        private bool IsLeftClicked()
+        {
+            return Input.GetMouseButtonDown(0);
+        }
+
+        private bool HasSelectedOneCard()
         {
             return selectionSystem.GetTheOnlySelectedCardOrNull() != null;
         }
@@ -47,7 +57,7 @@ namespace Berty.Grid.Field.Listeners
         private void PutTheCard()
         {
             HandToFieldManager.Instance.RemoveSelectedCardFromHand();
-            BoardCardCore newCard = HandToFieldManager.Instance.SetCardOnField(behaviour);
+            BoardCardCore newCard = HandToFieldManager.Instance.PutCardOnField(behaviour);
             PaymentManager.Instance.CallPayment(behaviour.BoardField.OccupantCard.Stats.Power, newCard);
         }
 

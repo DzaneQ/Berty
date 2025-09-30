@@ -61,7 +61,7 @@ namespace Berty.BoardCards.Behaviours
                     ActivateAllDexterityButtons();
                     break;
                 case CardStateEnum.NewCard:
-                    ActivateRotateNeutralButtons();
+                    ActivateRotateNeutralButtonsIfTheOnlyCardOnField();
                     break;
                 case CardStateEnum.NewTransform:
                     // Handled from core
@@ -88,11 +88,11 @@ namespace Berty.BoardCards.Behaviours
             }
         }
 
-        private void ActivateRotateNeutralButtons()
+        private void ActivateRotateNeutralButtonsIfTheOnlyCardOnField()
         {
             foreach (CardButton button in Buttons)
             {
-                if (button.IsMoveButton()) button.DeactivateButton();
+                if (button.IsMoveButton() || transform.parent.childCount > 1) button.DeactivateButton();
                 else button.ActivateNeutralButton();
             }
         }

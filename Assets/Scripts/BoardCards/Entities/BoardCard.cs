@@ -58,12 +58,6 @@ namespace Berty.BoardCards.Entities
             OccupiedField = null;
         }
 
-        public void PlaceCard(BoardField field, DirectionEnum direction)
-        {
-            SetField(field);
-            SetDirection(direction);
-        }
-
         public void MarkAsHasAttacked()
         {
             HasAttacked = true;
@@ -89,19 +83,15 @@ namespace Berty.BoardCards.Entities
             Direction = direction;
         }
 
-        public void AdvanceAngleBy(int angle)
+        public void AdvanceCardSetAngleBy(int angle)
         {
             Direction = (DirectionEnum)(((int)Direction + angle) % 360);
+            OccupiedField.SynchronizeBackupCardRotation();
         }
 
         public void AdvanceStrength(int value)
         {
             Stats.Strength += value;
-        }
-
-        public void SetStrength(int value)
-        {
-            Stats.Strength = value;
         }
 
         public void AdvanceTempStrength(int value)
@@ -112,11 +102,6 @@ namespace Berty.BoardCards.Entities
         public void AdvancePower(int value)
         {
             Stats.Power += value;
-        }
-
-        public void SetPower(int value)
-        {
-            Stats.Power = value - Stats.TempPower;
         }
 
         public void AdvanceTempPower(int value)

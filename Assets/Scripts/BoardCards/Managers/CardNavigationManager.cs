@@ -30,32 +30,37 @@ namespace Berty.BoardCards.Managers
         public void RotateCard(BoardCardCore card, int angle)
         {
             card.CardNavigation.RotateCardObject(angle);
-            card.BoardCard.AdvanceAngleBy(angle);
+            card.BoardCard.AdvanceCardSetAngleBy(angle);
         }
 
         public void MoveCard(BoardCardCore card, BoardField targetField)
         {
             AlignmentEnum cardAlign = card.BoardCard.OccupiedField.Align;
-            card.BoardCard.OccupiedField.RemoveCard();
-            targetField.PlaceCard(card.BoardCard, cardAlign);
+            BoardCard backupCard = card.BoardCard.OccupiedField.BackupCard;
+            card.BoardCard.OccupiedField.RemoveAllCards();
+            targetField.PlaceExistingCard(card.BoardCard, cardAlign);
+            targetField.SetBackupCard(backupCard);
             card.CardNavigation.MoveCardObject(FieldCollectionManager.Instance.GetBehaviourFromEntity(targetField));
         }
 
-        // TODO: Adjust backup cards
         public void SwapCards(BoardCardCore firstCardObject, BoardCardCore secondCardObject)
         {
             // Get variables
-            BoardCard firstCard = firstCardObject.BoardCard;
-            BoardCard secondCard = secondCardObject.BoardCard;
-            BoardField firstField = firstCard.OccupiedField;
-            BoardField secondField = secondCard.OccupiedField;
+            BoardCard firstOccupantCard = firstCardObject.BoardCard;
+            BoardCard secondOccupantCard = secondCardObject.BoardCard;
+            BoardField firstField = firstOccupantCard.OccupiedField;
+            BoardField secondField = secondOccupantCard.OccupiedField;
+            BoardCard firstBackupCard = firstField.BackupCard;
+            BoardCard secondBackupCard = secondField.BackupCard;
             AlignmentEnum firstFieldAlign = firstField.Align;
             AlignmentEnum secondFieldAlign = secondField.Align;
             FieldBehaviour firstFieldObject = firstCardObject.ParentField;
             FieldBehaviour secondFieldObject = secondCardObject.ParentField;
             // Update entities
-            firstField.PlaceCard(secondCard, secondFieldAlign);
-            secondField.PlaceCard(firstCard, firstFieldAlign);
+            firstField.PlaceExistingCard(secondOccupantCard, secondFieldAlign);
+            firstField.SetBackupCard(secondBackupCard);
+            secondField.PlaceExistingCard(firstOccupantCard, firstFieldAlign);
+            secondField.SetBackupCard(firstBackupCard);
             // Move card objects
             firstCardObject.CardNavigation.MoveCardObject(secondFieldObject);
             secondCardObject.CardNavigation.MoveCardObject(firstFieldObject);

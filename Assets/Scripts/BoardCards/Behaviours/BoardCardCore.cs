@@ -65,14 +65,16 @@ namespace Berty.BoardCards.Behaviours
             StatChange = GetComponent<BoardCardStatChange>();
             ParentField = GetComponentInParent<FieldBehaviour>();
             SelectionAndPaymentSystem system = CoreManager.Instance.SelectionAndPaymentSystem;
-            BoardCard = ParentField.BoardField.AddCard(system.GetPendingCardOrThrow(), Game.CurrentAlignment);
+            BoardCard = ParentField.BoardField.AddNewCard(system.GetPendingCardOrThrow(), Game.CurrentAlignment);
         }
 
         private void Start()
         {
             SoundManager.Instance.PutSound(SoundSource);
+            DisableBackupCard();
             UpdateObjectFromCharacterConfig();
             CardState = CardStateEnum.NewCard;
+            ParentField.UpdateField();
             InitializeRigidbody();
         }
 
@@ -244,7 +246,7 @@ namespace Berty.BoardCards.Behaviours
             AlignmentEnum align = BoardCard.Align;
             Game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
             BoardCard.DeactivateCard();
-            BoardCard = ParentField.BoardField.AddCard(newCard, align);
+            BoardCard = ParentField.BoardField.AddNewCard(newCard, align);
             BoardCard.SetDirection(direction);
             UpdateObjectFromCharacterConfig();
             Bars.UpdateBars();
@@ -269,7 +271,23 @@ namespace Berty.BoardCards.Behaviours
             ParentField.UpdateField();
             BoardCardCollectionManager.Instance.RemoveCardFromCollection(this);
             if (transform.parent.childCount <= 1) Destroy(transform.parent.gameObject); // Remove CardSetTransform that has no cards
-            else Destroy(gameObject);                                                   // Otherwise, remove only the card object itself
+            else                                                                        // Otherwise, remove only the card object itself
+            {
+                EnableBackupCard();
+                Destroy(gameObject);
+            }    
         }
+
+        private void EnableBackupCard()
+        {
+            transform.parent.GetChild(0).gameObject.SetActive(true);
+        }
+
+        private void DisableBackupCard()
+        {
+            GameObject backupCard = transform.parent.GetChild(0).gameObject;
+            if (backupCard == gameObject) return;
+            backupCard.SetActive(false);
+        }    
     }
 }
