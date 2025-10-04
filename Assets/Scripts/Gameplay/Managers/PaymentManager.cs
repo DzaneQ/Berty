@@ -38,6 +38,7 @@ namespace Berty.Gameplay.Managers
             paymentSystem.SetAsNotPaymentTime();
             ButtonObjectManager.Instance.DisplayEndTurnButton();
             EventManager.Instance.RaiseOnPaymentConfirm();
+            CheckpointManager.Instance.RequestCheckpoint();
         }
     }
 }

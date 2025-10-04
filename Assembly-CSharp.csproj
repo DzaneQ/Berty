@@ -164,6 +164,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\RotateRight.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Listeners\CheckpointListener.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\AstronautaBert.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardStatChange.cs" />
     <Compile Include="Assets\Scripts\Enums\RoleEnum.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\KoszmarZBertwood.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\BackupCard.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\PaymentManager.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\CheckpointManager.cs" />
     <Compile Include="Assets\Scripts\Enums\SkillEnum.cs" />
     <Compile Include="Assets\Scripts\Grid\Managers\ColorizeObjectManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />

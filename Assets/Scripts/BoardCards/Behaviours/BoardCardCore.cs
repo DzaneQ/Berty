@@ -220,6 +220,7 @@ namespace Berty.BoardCards.Behaviours
             if (CardNavigation.IsCardAnimating()) return;
             if (!Bars.AreBarsAnimating()) CardNavigation.EnableInteraction();
             Bars.ShowBars();
+            CheckpointManager.Instance.HandleIfRequested();
         }
 
         // TODO: Handle changed side for cards that apply skills to allies
@@ -276,6 +277,15 @@ namespace Berty.BoardCards.Behaviours
                 EnableBackupCard();
                 Destroy(gameObject);
             }    
+        }
+
+        public bool IsEligibleForCheckpoint()
+        {
+            if (CardNavigation.IsCardAnimating()) return false;
+            if (BoardCard.Stats.Health <= 0) return false;
+            if (BoardCard.Stats.Power <= 0) return false;
+            if (BoardCard.GetSkill() == SkillEnum.BertWick && BoardCard.Stats.Dexterity <= 0) return false;
+            return true;
         }
 
         private void EnableBackupCard()

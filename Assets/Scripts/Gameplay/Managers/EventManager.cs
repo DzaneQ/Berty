@@ -33,6 +33,7 @@ namespace Berty.Gameplay.Managers
         public event EventHandler<StatusEventArgs> OnStatusRemoved;
         public event EventHandler<DirectAttackEventArgs> OnHighlightStart;
         public event Action OnHighlightEnd;
+        public event EventHandler<ValidateOutputEventArgs> OnCheckpointRequest;
 
         protected override void Awake()
         {
@@ -130,7 +131,17 @@ namespace Berty.Gameplay.Managers
         public void RaiseOnHighlightEnd()
         {
             OnHighlightEnd?.Invoke();
-        }    
+        }
+
+        public bool RaiseOnCheckpointRequest()
+        {
+            ValidateOutputEventArgs args = new()
+            {
+                IsRestricted = false
+            };
+            OnCheckpointRequest?.Invoke(null, args);
+            return args.IsRestricted;
+        }
     }
 
     public class DirectAttackEventArgs : EventArgs
@@ -147,5 +158,10 @@ namespace Berty.Gameplay.Managers
     {
         public StatusEnum StatusName;
         public AlignmentEnum Alignment;
+    }
+
+    public class ValidateOutputEventArgs : EventArgs
+    {
+        public bool IsRestricted;
     }
 }
