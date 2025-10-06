@@ -80,45 +80,5 @@ namespace Berty.BoardCards.ConfigData
         {
             attackSound = Resources.Load<AudioClip>("CharacterAttackSfx/" + fileName);
         }
-
-        public virtual void SkillOnSuccessfulAttack(CardSpriteBehaviour cardSprite) { }
-
-        public virtual void SkillOnNewCard(CardSpriteBehaviour cardSprite) { }
-
-        public virtual bool SkillSpecialAttack(CardSpriteBehaviour cardSprite) => false;
-
-        public virtual void SkillOnNewTurn(CardSpriteBehaviour cardSprite) { }
-
-        public virtual bool CanAffectStrength(CardSpriteBehaviour cardSprite, CardSpriteBehaviour spellSource) => true;
-
-        public virtual void SkillAdjustStrengthChange(int value, CardSpriteBehaviour cardSprite) { }
-
-        public virtual bool CanAffectPower(CardSpriteBehaviour cardSprite, CardSpriteBehaviour spellSource) => true;
-
-        public virtual void SkillAdjustPowerChange(int value, CardSpriteBehaviour cardSprite, CardSpriteBehaviour spellSource) { }
-
-        public virtual void SkillAdjustDexterityChange(int value, CardSpriteBehaviour cardSprite) { }
-
-        public virtual void SkillAdjustHealthChange(int value, CardSpriteBehaviour cardSprite) { }
-
-        public virtual void SkillOnAttack(CardSpriteBehaviour cardSprite) { }
-
-        public virtual void SkillOnMove(CardSpriteBehaviour cardSprite) { }
-
-        public virtual void SkillOnOtherCardDeath(CardSpriteBehaviour cardSprite, CardSpriteBehaviour source) { }
-
-        public virtual int SkillDefenceModifier(int damage, CardSpriteBehaviour attacker) => damage;
-
-        public virtual void SkillOnNeighbor(CardSpriteBehaviour cardSprite, CardSpriteBehaviour target) { }
-
-        public virtual int SkillAttackModifier(int damage, CardSpriteBehaviour target) => damage;
-
-        public virtual void SkillOnDeath(CardSpriteBehaviour cardSprite) { }
-
-        public virtual void SkillCardClick(CardSpriteBehaviour cardSprite) { }
-
-        public virtual void SkillSideClick(CardSpriteBehaviour cardSprite) { }
-
-        public virtual bool GlobalSkillResistance() => false;
     }
 }

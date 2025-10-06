@@ -5,11 +5,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using Berty.BoardCards.Entities;
 using Berty.Gameplay.Entities;
 
-namespace Berty.BoardCards
+namespace Berty.BoardCards.Entities
 {
     public class CardStats
     {

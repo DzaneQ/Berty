@@ -1,20 +1,8 @@
-using Berty.Grid.Entities;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.UI.Card;
 using Berty.UI.Card.Entities;
-using Berty.UI.Card.Managers;
-using Berty.UI.Card.Systems;
 using Berty.Utility;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Berty.BoardCards.ConfigData;
-using Berty.Grid.Field.Behaviour;
-using Berty.BoardCards.State;
-using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.Managers;
 
 namespace Berty.UI.Card.Managers
 {

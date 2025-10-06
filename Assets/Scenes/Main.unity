@@ -879,7 +879,6 @@ GameObject:
   m_Component:
   - component: {fileID: 762433610}
   - component: {fileID: 762433611}
-  - component: {fileID: 762433612}
   m_Layer: 5
   m_Name: DummyBttn
   m_TagString: Untagged
@@ -931,22 +930,6 @@ MonoBehaviour:
   m_Spacing: {x: 1, y: 0}
   m_Constraint: 2
   m_ConstraintCount: 1
---- !u!114 &762433612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 762433609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd3a36d22117a6f4589401427905a2fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetCard: {fileID: 0}
-  targetParent: {fileID: 0}
-  targetAlignment: 0
-  rightAngleCount: 0
 --- !u!1001 &844994466
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1734,7 +1717,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 762433612}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: DevTools, Assembly-CSharp
         m_MethodName: SetCardParent
         m_Mode: 1

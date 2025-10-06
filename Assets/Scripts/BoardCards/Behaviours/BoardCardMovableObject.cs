@@ -2,13 +2,10 @@
 using Berty.BoardCards.Button;
 using Berty.BoardCards.Entities;
 using Berty.BoardCards.Listeners;
-using Berty.BoardCards.State;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
 using System;
-using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 namespace Berty.BoardCards.Behaviours

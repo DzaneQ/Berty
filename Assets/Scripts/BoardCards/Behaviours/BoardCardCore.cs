@@ -1,27 +1,19 @@
 using Berty.Audio.Managers;
 using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
-using Berty.BoardCards.Listeners;
 using Berty.BoardCards.Managers;
-using Berty.BoardCards.State;
 using Berty.Characters.Managers;
 using Berty.Display.View;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.Grid.Entities;
 using Berty.Grid.Field.Behaviour;
-using Berty.Grid.Field.Entities;
 using Berty.Grid.Managers;
-using Berty.UI.Card;
 using Berty.UI.Card.Managers;
 using Berty.UI.Card.Systems;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.VirtualTexturing;
-using UnityEngine.SocialPlatforms.Impl;
-using static UnityEngine.CullingGroup;
 
 namespace Berty.BoardCards.Behaviours
 {
