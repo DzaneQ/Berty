@@ -7,7 +7,7 @@ namespace Berty.BoardCards.Animation
     interface IRotateCard
     {
         int CoroutineCount { get; }
-        void SetAngleWithoutAnimation(Quaternion rotation);
+        void ByAngleWithoutAnimation(int angle);
         void ByAngle(int angle);
     }
 }

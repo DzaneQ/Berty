@@ -17,6 +17,12 @@ namespace Berty.Display.View
             HandleCameraTransform();
         }
 
+        public float RightAngleValue()
+        {
+            float cameraRotation = AngleValue();
+            return Mathf.Round(cameraRotation / 90f) * 90f;
+        }
+
         private void HandleCameraTransform()
         {
             if (Input.mousePosition.x <= edgeWidth) RotateCameraCounterclockwise(rotManSpeed);
@@ -43,13 +49,6 @@ namespace Berty.Display.View
             if (Mathf.Abs(currentAngle - rightAngle) < rotManSpeed * rotAutoMultiplier) targetAngles.z = rightAngle;
             else targetAngles.z = (currentAngle - rightAngle) * (1 - rotAutoMultiplier) + rightAngle;
             transform.localEulerAngles = targetAngles;
-        }
-
-        public float RightAngleValue()
-        {
-            float cameraRotation = AngleValue();
-            //Debug.Log("Camera rotation: " + cameraRotation);
-            return Mathf.Round(cameraRotation / 90) * 90;
         }
 
         private float AngleValue() => transform.localEulerAngles.z;

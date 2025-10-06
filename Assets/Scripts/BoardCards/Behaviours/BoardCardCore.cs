@@ -5,6 +5,7 @@ using Berty.BoardCards.Listeners;
 using Berty.BoardCards.Managers;
 using Berty.BoardCards.State;
 using Berty.Characters.Managers;
+using Berty.Display.View;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
@@ -72,6 +73,7 @@ namespace Berty.BoardCards.Behaviours
         {
             SoundManager.Instance.PutSound(SoundSource);
             DisableBackupCard();
+            AdjustInitRotation();
             UpdateObjectFromCharacterConfig();
             CardState = CardStateEnum.NewCard;
             ParentField.UpdateField();
@@ -81,11 +83,6 @@ namespace Berty.BoardCards.Behaviours
         private void OnCollisionEnter(Collision collision)
         {
             ApplyPhysics(false);
-        }
-
-        public void HandleClick()
-        {
-            Debug.Log("Dummy message.");
         }
 
         private void UpdateObjectFromCharacterConfig()
@@ -298,6 +295,14 @@ namespace Berty.BoardCards.Behaviours
             GameObject backupCard = transform.parent.GetChild(0).gameObject;
             if (backupCard == gameObject) return;
             backupCard.SetActive(false);
-        }    
+        }
+        
+        private void AdjustInitRotation()
+        {
+            if (transform.parent.childCount > 1) return; // Keep the backup card's rotation.
+            int rightAngle = (180 - Mathf.RoundToInt(Camera.main.GetComponent<RotateCamera>().RightAngleValue())) % 360;
+            CardNavigation.RotateObjectWithoutAnimation(rightAngle);
+            BoardCard.AdvanceCardSetAngleBy(rightAngle);
+        }
     }
 }

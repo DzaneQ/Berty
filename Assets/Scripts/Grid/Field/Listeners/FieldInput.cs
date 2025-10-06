@@ -39,6 +39,7 @@ namespace Berty.Grid.Field.Listeners
         private bool TryPuttingCardOnField()
         {
             if (!IsLeftClicked()) return false;
+            if (selectionSystem.IsItPaymentTime()) return false;
             if (!HasSelectedOneCard()) return false;
             PutTheCard();
             return true;

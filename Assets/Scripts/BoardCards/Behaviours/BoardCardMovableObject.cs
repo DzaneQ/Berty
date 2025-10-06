@@ -125,9 +125,9 @@ namespace Berty.BoardCards.Behaviours
             rotateCard.ByAngle(angle);
         }
 
-        public void SetRotation(Quaternion rotation)
+        public void RotateObjectWithoutAnimation(int angle)
         {
-            rotateCard.SetAngleWithoutAnimation(rotation);
+            rotateCard.ByAngleWithoutAnimation(angle);
         }
 
         public void DisableInteraction()

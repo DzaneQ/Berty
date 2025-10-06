@@ -32,17 +32,17 @@ namespace Berty.BoardCards.Animation
             rotatingAngle = 0;
             _coroutineCount = 0;
             durationSeconds = CoreManager.Instance.Game.GameConfig.AnimationSeconds;
+            cardSetTransform = transform.parent;
         }
 
         void Start()
         {
-            cardSetTransform = transform.parent;
             card = GetComponent<BoardCardCore>();
         }
 
-        public void SetAngleWithoutAnimation(Quaternion rotation)
+        public void ByAngleWithoutAnimation(int angle)
         {
-            cardSetTransform.rotation = rotation;
+            cardSetTransform.Rotate(Vector3.forward, angle);
         }
 
         public void ByAngle(int angle)
