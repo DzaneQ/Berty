@@ -33,11 +33,13 @@ namespace Berty.BoardCards.Listeners
         private void HandleNewTurn()
         {
             if (core.IsForPay()) throw new Exception($"Board card {name} detected for pay when switching turns.");
-            if (game.CurrentAlignment != core.ParentField.BoardField.Align) return;
-            HandleCharacterEffect();
-            ProgressTemporaryStats();
-            RegenerateDexterity();
-            EnableAttack();
+            if (game.CurrentAlignment == core.ParentField.BoardField.Align)
+            {
+                HandleCharacterEffect();
+                ProgressTemporaryStats();
+                RegenerateDexterity();
+                EnableAttack();
+            }
             core.SetMainState();
         }
 

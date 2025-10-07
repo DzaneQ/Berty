@@ -123,8 +123,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4908300051852664394}
-        m_TargetAssemblyTypeName: Berty.Inputs.CloseGame, Assembly-CSharp
-        m_MethodName: CardClick
+        m_TargetAssemblyTypeName: Berty.UI.Listeners.CloseGameInput, Assembly-CSharp
+        m_MethodName: ScreenClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3076366674779876165}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4e580aea45d2bc469ea0431b5d16d39, type: 3}
+  m_Script: {fileID: 11500000, guid: 79c0958d7c68ed14ab73800760d2cefa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4762343594634478059
