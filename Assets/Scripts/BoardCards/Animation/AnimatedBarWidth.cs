@@ -1,13 +1,8 @@
-using Berty.BoardCards.Bar;
 using Berty.BoardCards.Behaviours;
-using Berty.Gameplay;
 using Berty.Gameplay.Managers;
-using Berty.Structs;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Berty.BoardCards.Animation
 {

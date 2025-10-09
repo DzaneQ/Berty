@@ -4,16 +4,11 @@ using Berty.Characters.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.Grid.Collection;
 using Berty.Grid.Entities;
-using Berty.Grid.Field.Behaviour;
 using Berty.Grid.Field.Entities;
-using Berty.Grid.Managers;
-using Berty.UI.Card.Collection;
 using Berty.UI.Managers;
 using Berty.Utility;
 using System;
-using UnityEditor;
 using UnityEngine;
 
 namespace Berty.BoardCards.Managers

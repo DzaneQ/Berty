@@ -66,7 +66,6 @@
     <Compile Include="Assets\Scripts\BoardCards\Animation\AnimatedRotateCard.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Scripts\Utility\RotationLocker.cs" />
-    <Compile Include="Assets\Scripts\Enums\StepEnum.cs" />
     <Compile Include="Assets\Scripts\Gameplay\ConfigData\GameConfig.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardBarsObjects.cs" />
     <Compile Include="Assets\Scripts\UI\Behaviours\CornerButton.cs" />
@@ -78,7 +77,6 @@
     <Compile Include="Assets\Scripts\Enums\CornerButtonEnum.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardCore.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\EventManager.cs" />
-    <Compile Include="Assets\Scripts\Structs\DefaultTransform.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KrolPopuBert.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Entities\BoardField.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Behaviours\HandCardBehaviour.cs" />
@@ -119,7 +117,6 @@
     <Compile Include="Assets\Scripts\UI\Card\Systems\SelectionAndPaymentSystem.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Managers\BoardCardActionManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaAmazonka.cs" />
-    <Compile Include="Assets\Scripts\Structs\NewBar.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\Zombert.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\PapiezBertII.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
@@ -127,7 +124,6 @@
     <Compile Include="Assets\Scripts\UI\Listeners\CloseGameInput.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveUp.cs" />
     <Compile Include="Assets\Scripts\Enums\NavigationEnum.cs" />
-    <Compile Include="Assets\Scripts\Grid\Collection\FieldCollection.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\AnimatedMoveCard.cs" />
@@ -203,7 +199,6 @@
     <Compile Include="Assets\Scripts\BoardCards\Managers\CardNavigationManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveDown.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IMoveCard.cs" />
-    <Compile Include="Assets\Scripts\Structs\CharacterStat.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KsiezniczkaBerta.cs" />
     <Compile Include="Assets\Scripts\Enums\DirectionEnum.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\SuperfanBert.cs" />

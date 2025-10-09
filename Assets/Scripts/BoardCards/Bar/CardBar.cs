@@ -1,8 +1,5 @@
 using Berty.BoardCards.Animation;
 using Berty.BoardCards.Behaviours;
-using Berty.Structs;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.BoardCards.Bar

@@ -1,19 +1,14 @@
-using Berty.BoardCards.Animation;
 using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
 using Berty.BoardCards.Managers;
 using Berty.Characters.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.Grid.Field.Entities;
-using Berty.Structs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Berty.BoardCards.Listeners
 {

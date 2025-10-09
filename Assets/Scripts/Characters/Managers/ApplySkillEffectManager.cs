@@ -1,17 +1,12 @@
 using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
 using Berty.BoardCards.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.Grid.Field.Entities;
-using Berty.Structs;
 using Berty.Utility;
 using System;
 using System.Linq;
-using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 namespace Berty.Characters.Managers
 {
