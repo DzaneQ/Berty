@@ -1,5 +1,7 @@
 using Berty.BoardCards.Behaviours;
+using Berty.Display.Managers;
 using Berty.Enums;
+using Berty.Gameplay.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +17,7 @@ namespace Berty.BoardCards.Button
         [SerializeField] private Material dexterityMaterial;
         private Material neutralMaterial;
         private bool isActivated;
+        private Camera cam;
 
         public bool IsActivated => isActivated;
 
@@ -25,6 +28,16 @@ namespace Berty.BoardCards.Button
             coll = GetComponent<Collider>();
             neutralMaterial = rend.material;
             isActivated = false;
+            cam = Camera.main;
+        }
+
+        public void OnMouseExit()
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit) && hit.transform == transform.parent.parent) return; // Stop running method if cursor is on the card
+            DisplayManager.Instance.HideLookupCard();
+            EventManager.Instance.RaiseOnHighlightEnd();
         }
 
         public void EnableButton()

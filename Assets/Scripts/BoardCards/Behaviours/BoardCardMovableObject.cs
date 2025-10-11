@@ -7,6 +7,7 @@ using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Berty.BoardCards.Behaviours
 {
@@ -43,6 +44,16 @@ namespace Berty.BoardCards.Behaviours
             Transform parent = transform.GetChild(0);
             Buttons = new CardButton[6];
             for (int index = 0; index < 6; index++) Buttons[index] = parent.GetChild(index + 2).GetComponent<CardButton>();
+        }
+
+        public void EnableButtons()
+        {
+            foreach (CardButton button in Buttons) button.EnableButton();
+        }
+
+        public void DisableButtons()
+        {
+            foreach (CardButton button in Buttons) button.DisableButton();
         }
 
         public void ActivateButtonsBasedOnState()

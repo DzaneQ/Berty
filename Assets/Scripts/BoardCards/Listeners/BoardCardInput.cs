@@ -16,11 +16,13 @@ namespace Berty.BoardCards.Listeners
     {
         private BoardCardCore behaviour;
         private Game game;
+        private Camera cam;
 
         void Awake()
         {
             behaviour = GetComponent<BoardCardCore>();
             game = CoreManager.Instance.Game;
+            cam = Camera.main;
         }
 
         void Start()
@@ -28,14 +30,9 @@ namespace Berty.BoardCards.Listeners
             // Enabling toggle from the inspector.
         }
 
-        void OnEnable()
-        {
-            EnableButtons();
-        }
-
         void OnDisable()
         {
-            DisableButtons();
+            behaviour.CardNavigation.DisableButtons();
         }
 
         public void OnMouseOver()
@@ -51,9 +48,11 @@ namespace Berty.BoardCards.Listeners
             EventManager.Instance.RaiseOnHighlightStart(behaviour);
         }
 
-        // NOTE: Can this not be displayed when input is disabled while mouse over?
         public void OnMouseExit()
         {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit) && hit.transform.parent.parent == transform) return; // Stop running method if cursor is on the card's button
             DisplayManager.Instance.HideLookupCard();
             EventManager.Instance.RaiseOnHighlightEnd();
         }
@@ -105,16 +104,6 @@ namespace Berty.BoardCards.Listeners
                     }
                     break;
             }
-        }
-
-        private void DisableButtons()
-        {
-            foreach (CardButton button in behaviour.CardNavigation.Buttons) button.DisableButton();
-        }
-
-        private void EnableButtons()
-        {
-            foreach (CardButton button in behaviour.CardNavigation.Buttons) button.EnableButton();
         }
 
         private bool TryPuttingAnExtraCard()
