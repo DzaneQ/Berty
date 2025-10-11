@@ -1,55 +1,53 @@
 using Berty.BoardCards.ConfigData;
-using Berty.UI.Card.Managers;
-using Berty.Enums;
+using Berty.Utility;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections;
-using UnityEngine;
 
-namespace Berty.UI.Card.Systems
+namespace Berty.UI.Card.Managers
 {
-    public class SelectionAndPaymentSystem
+    public class SelectionManager : ManagerSingleton<SelectionManager>
     {
-        public List<CharacterConfig> SelectedCards { get; }
-        public int? cardPrice;
+        private List<CharacterConfig> selectedCards;
+        private int? cardPrice;
         private CharacterConfig pendingCard;
+        public IReadOnlyList<CharacterConfig> SelectedCards => selectedCards;
 
-        public SelectionAndPaymentSystem()
+        protected override void Awake()
         {
-            SelectedCards = new List<CharacterConfig>();
+            base.Awake();
+            selectedCards = new List<CharacterConfig>();
         }
 
         public void SelectCard(CharacterConfig card)
         {
-            if (!SelectedCards.Contains(card)) SelectedCards.Add(card);
+            if (!selectedCards.Contains(card)) selectedCards.Add(card);
         }
 
         public void UnselectCard(CharacterConfig card)
         {
-            SelectedCards.Remove(card);
+            selectedCards.Remove(card);
         }
 
         public int GetSelectedCardsCount()
         {
-            return SelectedCards.Count;
+            return selectedCards.Count;
         }
 
         public CharacterConfig GetSelectedCardOrThrow()
         {
             if (GetSelectedCardsCount() != 1) throw new InvalidOperationException($"Trying to call the only selected card when the count is: {GetSelectedCardsCount()}");
-            return SelectedCards[0];
+            return selectedCards[0];
         }
 
         public bool IsSelected(CharacterConfig card)
         {
-            return SelectedCards.Contains(card);
+            return selectedCards.Contains(card);
         }
 
         public CharacterConfig GetTheOnlySelectedCardOrNull()
         {
             if (GetSelectedCardsCount() != 1) return null;
-            return SelectedCards[0];
+            return selectedCards[0];
         }
 
         public void DemandPayment(int demandedPrice)

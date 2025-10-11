@@ -1,7 +1,6 @@
 using Berty.UI.Card.Managers;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
-using Berty.UI.Card.Systems;
 using UnityEngine;
 using Berty.BoardCards.Behaviours;
 
@@ -10,12 +9,10 @@ namespace Berty.Grid.Field.Listeners
     public class FieldInput : MonoBehaviour
     {
         private FieldBehaviour behaviour;
-        private SelectionAndPaymentSystem selectionSystem;
 
         void Awake()
         {
             behaviour = GetComponent<FieldBehaviour>();
-            selectionSystem = CoreManager.Instance.SelectionAndPaymentSystem;
         }
 
         void Start()
@@ -39,7 +36,7 @@ namespace Berty.Grid.Field.Listeners
         private bool TryPuttingCardOnField()
         {
             if (!IsLeftClicked()) return false;
-            if (selectionSystem.IsItPaymentTime()) return false;
+            if (SelectionManager.Instance.IsItPaymentTime()) return false;
             if (!HasSelectedOneCard()) return false;
             PutTheCard();
             return true;
@@ -52,7 +49,7 @@ namespace Berty.Grid.Field.Listeners
 
         private bool HasSelectedOneCard()
         {
-            return selectionSystem.GetTheOnlySelectedCardOrNull() != null;
+            return SelectionManager.Instance.GetTheOnlySelectedCardOrNull() != null;
         }
 
         private void PutTheCard()
@@ -64,7 +61,6 @@ namespace Berty.Grid.Field.Listeners
 
         private bool HasACard()
         {
-            //Debug.Log("Checking for card...");
             return behaviour.ChildCard != null;
         }    
     }

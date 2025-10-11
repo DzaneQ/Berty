@@ -98,7 +98,7 @@ namespace Berty.UI.Card.Entities
             };
         }
 
-        public void DiscardCards(List<CharacterConfig> cardsToDiscard, AlignmentEnum align)
+        public void DiscardCards(IReadOnlyList<CharacterConfig> cardsToDiscard, AlignmentEnum align)
         {
             List<CharacterConfig> table = GetCardsFromAlign(align);
             int initialTableCount = table.Count;

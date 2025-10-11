@@ -1,8 +1,6 @@
-using Berty.Gameplay.ConfigData;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Managers;
-using Berty.UI.Card.Systems;
 using UnityEngine;
 
 namespace Berty.UI.Card.Listeners

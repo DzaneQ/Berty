@@ -18,7 +18,7 @@ namespace Berty.UI.Card.Collection
             handCardBehaviourCollection = collection;
         }
 
-        public List<HandCardBehaviour> GetBehavioursFromCharacterConfigs(List<CharacterConfig> characterConfigs)
+        public List<HandCardBehaviour> GetBehavioursFromCharacterConfigs(IReadOnlyList<CharacterConfig> characterConfigs)
         {
             return handCardBehaviourCollection.FindAll((HandCardBehaviour behaviour) => characterConfigs.Contains(behaviour.Character));
         }
@@ -28,7 +28,7 @@ namespace Berty.UI.Card.Collection
             return handCardBehaviourCollection.Find((HandCardBehaviour behaviour) => behaviour.Character == characterConfig);
         }
 
-        public List<Transform> GetTransformListFromCharacterConfigs(List<CharacterConfig> characterConfigs)
+        public List<Transform> GetTransformListFromCharacterConfigs(IReadOnlyList<CharacterConfig> characterConfigs)
         {
             return handCardBehaviourCollection.FindAll((HandCardBehaviour behaviour) => characterConfigs.Contains(behaviour.Character)).ConvertAll(x => x.transform);
         }

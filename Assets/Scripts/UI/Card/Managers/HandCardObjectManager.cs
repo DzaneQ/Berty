@@ -1,18 +1,12 @@
 using Berty.BoardCards.ConfigData;
 using Berty.UI.Card.Entities;
-using Berty.Grid.Entities;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Collection;
-using Berty.UI.Card.Systems;
 using Berty.UI.Managers;
-using Berty.Utility;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Berty.UI.Card.Managers
 {
@@ -66,18 +60,18 @@ namespace Berty.UI.Card.Managers
         private void AddCardObjectsForTable(AlignmentEnum alignment)
         {
             Transform table = GetTableObjectFromAlignment(alignment).transform;
-            List<CharacterConfig> ownedCards = cardPile.GetCardsFromAlign(alignment);
+            IReadOnlyList<CharacterConfig> ownedCards = cardPile.GetCardsFromAlign(alignment);
             AddCardObjectsFromPileData(table, ownedCards);
         }
 
         private void RemoveCardObjectsForTable(AlignmentEnum alignment)
         {
             Transform table = GetTableObjectFromAlignment(alignment).transform;
-            List<CharacterConfig> ownedCards = cardPile.GetCardsFromAlign(alignment);
+            IReadOnlyList<CharacterConfig> ownedCards = cardPile.GetCardsFromAlign(alignment);
             RemoveCardObjectsFromTable(table, ownedCards);
         }
 
-        private void AddCardObjectsFromPileData(Transform table, List<CharacterConfig> pileData)
+        private void AddCardObjectsFromPileData(Transform table, IReadOnlyList<CharacterConfig> pileData)
         {
             for (int i = 0; i < pileData.Count; i++)
             {
@@ -87,7 +81,7 @@ namespace Berty.UI.Card.Managers
             }
         }
 
-        private void RemoveCardObjectsFromTable(Transform table, List<CharacterConfig> pileData)
+        private void RemoveCardObjectsFromTable(Transform table, IReadOnlyList<CharacterConfig> pileData)
         {
             List<Transform> ownedCardTransforms = behaviourCollection.GetTransformListFromCharacterConfigs(pileData);
             int tableCount = table.childCount;

@@ -10,7 +10,6 @@ using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
 using Berty.Grid.Managers;
 using Berty.UI.Card.Managers;
-using Berty.UI.Card.Systems;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -57,8 +56,7 @@ namespace Berty.BoardCards.Behaviours
             CardNavigation = GetComponent<BoardCardMovableObject>();
             StatChange = GetComponent<BoardCardStatChange>();
             ParentField = GetComponentInParent<FieldBehaviour>();
-            SelectionAndPaymentSystem system = CoreManager.Instance.SelectionAndPaymentSystem;
-            BoardCard = ParentField.BoardField.AddNewCard(system.GetPendingCardOrThrow(), Game.CurrentAlignment);
+            BoardCard = ParentField.BoardField.AddNewCard(SelectionManager.Instance.GetPendingCardOrThrow(), Game.CurrentAlignment);
         }
 
         private void Start()

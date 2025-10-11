@@ -1,7 +1,6 @@
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Entities;
-using Berty.UI.Card.Systems;
 using Berty.Utility;
 using UnityEngine;
 using Berty.BoardCards.ConfigData;
@@ -13,7 +12,6 @@ namespace Berty.UI.Card.Managers
     public class HandToFieldManager : ManagerSingleton<HandToFieldManager>
     {
         private Game Game { get; set; }
-        private SelectionAndPaymentSystem SelectionSystem { get; set; }
         private CardPile CardPile => Game.CardPile;
         private GameObject boardCardPrefab;
 
@@ -21,14 +19,13 @@ namespace Berty.UI.Card.Managers
         {
             InitializeSingleton();
             Game = CoreManager.Instance.Game;
-            SelectionSystem = CoreManager.Instance.SelectionAndPaymentSystem;
             boardCardPrefab = Resources.Load<GameObject>("Prefabs/CardSquare");
         }
 
         public void RemoveSelectedCardFromHand()
         {
-            CharacterConfig selectedCard = SelectionSystem.GetSelectedCardOrThrow();
-            SelectionSystem.PutSelectedCardAsPending();
+            CharacterConfig selectedCard = SelectionManager.Instance.GetSelectedCardOrThrow();
+            SelectionManager.Instance.PutSelectedCardAsPending();
             CardPile.LeaveCard(selectedCard, Game.CurrentAlignment);
             HandCardObjectManager.Instance.RemoveCardObjects();
             HandCardSelectManager.Instance.ClearSelection();
