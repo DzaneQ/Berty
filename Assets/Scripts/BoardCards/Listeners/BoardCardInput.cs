@@ -52,9 +52,16 @@ namespace Berty.BoardCards.Listeners
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit) && hit.transform.parent.parent == transform) return; // Stop running method if cursor is on the card's button
+            if (Physics.Raycast(ray, out hit) && IsCursorOnCard(hit)) return; // Stop running method if cursor is on the card's button
             DisplayManager.Instance.HideLookupCard();
             EventManager.Instance.RaiseOnHighlightEnd();
+        }
+
+        private bool IsCursorOnCard(RaycastHit hit)
+        {
+            if (hit.collider == null) return false;
+            if (hit.transform.parent == null) return false;
+            return hit.transform.parent.parent == transform;
         }
 
         private bool IsLeftClicked()

@@ -116,7 +116,6 @@ namespace Berty.BoardCards.Behaviours
             }
             AlignmentEnum currentAlign = Game.CurrentAlignment;
             AlignmentEnum cardAlign = BoardCard.Align;
-            Debug.Log($"Setting main state for {name} that is aligned to {cardAlign} while turn belongs to {currentAlign}");
             if (currentAlign == cardAlign && !BoardCard.IsTired) SetActive();
             else if (IsEligibleForTelekineticState()) SetTelekinetic();
             else SetIdle();

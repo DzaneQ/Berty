@@ -165,8 +165,8 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\StatusListener.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\BertWho.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\SelectionManager.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\BertWho.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\MisiekBert.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandToFieldManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\Bertolaj.cs" />
