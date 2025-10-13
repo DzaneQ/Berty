@@ -207,6 +207,7 @@ namespace Berty.BoardCards.Behaviours
             if (CardNavigation.IsCardAnimating()) return;
             if (!Bars.AreBarsAnimating()) CardNavigation.EnableInteraction();
             Bars.ShowBars();
+            //HighlightIfFocused();
             CheckpointManager.Instance.HandleIfRequested();
         }
 

@@ -30,6 +30,14 @@ namespace Berty.BoardCards.Listeners
             // Enabling toggle from the inspector.
         }
 
+        void OnEnable()
+        {
+            if (!IsCursorOnCard()) return;
+            behaviour.CardNavigation.EnableButtons();
+            EventManager.Instance.RaiseOnHighlightStart(behaviour);
+
+        }
+
         void OnDisable()
         {
             behaviour.CardNavigation.DisableButtons();
@@ -50,18 +58,20 @@ namespace Berty.BoardCards.Listeners
 
         public void OnMouseExit()
         {
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit) && IsCursorOnCard(hit)) return; // Stop running method if cursor is on the card's button
+            if (IsCursorOnCard()) return;
             DisplayManager.Instance.HideLookupCard();
             EventManager.Instance.RaiseOnHighlightEnd();
         }
 
-        private bool IsCursorOnCard(RaycastHit hit)
+        private bool IsCursorOnCard() // Check if cursor is on the card or card's button
         {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (!Physics.Raycast(ray, out hit)) return false;
             if (hit.collider == null) return false;
+            if (hit.transform == transform) return true; // Is cursor on card square object?
             if (hit.transform.parent == null) return false;
-            return hit.transform.parent.parent == transform;
+            return hit.transform.parent.parent == transform; // Is cursor on card's button object?
         }
 
         private bool IsLeftClicked()

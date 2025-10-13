@@ -177,6 +177,7 @@ namespace Berty.BoardCards.Behaviours
         public void HandleAfterMoveAnimation()
         {
             if (!queuedMovementEffect) return;
+            core.ParentField.UpdateField();
             EventManager.Instance.RaiseOnMovedCharacter(core);
             queuedMovementEffect = false;
         }

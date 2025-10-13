@@ -33,11 +33,17 @@ namespace Berty.BoardCards.Button
 
         public void OnMouseExit()
         {
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit) && hit.transform == transform.parent.parent) return; // Stop running method if cursor is on the card
+            if (!IsCursorFocusedOnCard()) return; // Stop running method if cursor is on the card
             DisplayManager.Instance.HideLookupCard();
             EventManager.Instance.RaiseOnHighlightEnd();
+        }
+
+        private bool IsCursorFocusedOnCard()
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (!Physics.Raycast(ray, out hit)) return false;
+            return hit.transform == transform.parent.parent;
         }
 
         public void EnableButton()
@@ -46,6 +52,7 @@ namespace Berty.BoardCards.Button
             //Debug.Log($"Enable attempt: {name} on card: {card.name}");
             if (!card.CardNavigation.IsInteractableEnabled()) return;
             if (!CanNavigate()) return;
+            if (!IsCursorFocusedOnCard()) return;
             //if (card != card.Grid.Turn.GetFocusedCard()) return;
             //Debug.Log("Enable: " + name + " on card: " + card.name);
             rend.enabled = true;
@@ -63,14 +70,14 @@ namespace Berty.BoardCards.Button
         {
             ChangeButtonToDexterity();
             isActivated = true;
-            EnableButton(); // TODO: Change to focus only
+            EnableButton();
         }
 
         public void ActivateNeutralButton()
         {
             ChangeButtonToNeutral();
             isActivated = true;
-            EnableButton(); // TODO: Change to focus only
+            EnableButton();
         }
 
         public void DeactivateButton()
