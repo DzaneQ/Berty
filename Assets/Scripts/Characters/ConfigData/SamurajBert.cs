@@ -23,21 +23,5 @@ namespace Berty.BoardCards.ConfigData
             //AddRange(-1, 1, riposteRange);
             AddSoundEffect("456658__ethanchase7744__samurai-sword");
         }
-
-        //public override void SkillOnNewCard(CardSpriteBehaviour card)
-        //{
-        //    activeSpell = true;
-        //    SkillOnNeighbor(card, card);
-        //}
-
-        //public override void SkillOnNeighbor(CardSpriteBehaviour card, CardSpriteBehaviour target)
-        //{
-        //    if (!activeSpell || card.GetAdjacentCards().Count < 3) return;
-        //    card.AdvanceDexterity(1, card);
-        //    card.AdvancePower(1, card);
-        //    activeSpell = false;
-        //}
-
-        //public override void SkillOnMove(CardSpriteBehaviour card) => SkillOnNeighbor(card, card);
     }
 }

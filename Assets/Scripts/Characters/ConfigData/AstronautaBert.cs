@@ -25,12 +25,5 @@ namespace Berty.BoardCards.ConfigData
             //AddRange(-1, 1, riposteRange);
             AddSoundEffect("657936__matrixxx__satellite-signal-02");
         }
-
-        //public override void SkillAdjustPowerChange(int value, CardSpriteBehaviour card, CardSpriteBehaviour spellSource)
-        //{
-        //    if (card.CardStatus.Power > 0) return;
-        //    card.AdvancePower(Power, card);
-        //    card.AdvanceHealth(-6);
-        //}
     }
 }

@@ -22,19 +22,5 @@ namespace Berty.BoardCards.ConfigData
             //AddRange(-1, 1, riposteRange);
             AddSoundEffect("474266__mkzing__bell-with-crows-6.1-8.3");
         }
-
-        //public override int SkillDefenceModifier(int damage, CardSpriteBehaviour attacker)
-        //{
-        //    if (attacker.GetRole() == RoleEnum.Offensive) return 0;
-        //    return damage;
-        //}
-
-        //public override void SkillAdjustHealthChange(int value, CardSpriteBehaviour card)
-        //{
-        //    if (0 <= value) return;
-        //    foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards())
-        //        if (card.IsAllied(adjCard.OccupiedField))
-        //            adjCard.AdvanceHealth(-2 * value);
-        //}
     }
 }

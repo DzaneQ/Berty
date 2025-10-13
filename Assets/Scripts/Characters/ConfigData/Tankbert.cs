@@ -21,12 +21,5 @@ namespace Berty.BoardCards.ConfigData
             //AddRange(-1, 1, riposteRange);
             AddSoundEffect("182429__qubodup__explosion");
         }
-
-        //public override void SkillAdjustHealthChange(int value, CardSpriteBehaviour card)
-        //{
-        //    if (0 <= value) return;
-        //    card.AdvanceStrength(value, card);
-        //    card.AdvanceDexterity(-value, card);
-        //}
     }
 }

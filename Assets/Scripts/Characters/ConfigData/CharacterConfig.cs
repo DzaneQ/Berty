@@ -54,7 +54,7 @@ namespace Berty.BoardCards.ConfigData
 
         protected void AddSkill(SkillEnum character)
         {
-            this.skill = character;
+            skill = character;
         }
 
         protected void AddStats(int str, int pwr, int dex, int hp)

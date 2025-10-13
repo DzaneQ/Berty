@@ -28,22 +28,5 @@ namespace Berty.BoardCards.ConfigData
             //AddRange(-1, 1, riposteRange);
             AddSoundEffect("441649__crownieyt__open-package-box-parcel");
         }
-
-        //public override bool SkillSpecialAttack(CardSpriteBehaviour card)
-        //{
-        //    foreach (int[] distance in card.Character.AttackRange)
-        //    {
-        //        OutdatedFieldBehaviour targetField = card.GetTargetField(distance);
-        //        if (targetField == null || !targetField.IsOccupied()) continue;
-        //        if (targetField.OccupantCard.CardStatus.Power > 3) continue;
-        //        targetField.OccupantCard.TakeDamage(card.GetStrength(), card.OccupiedField);
-        //    }
-        //    return true;
-        //}
-
-        //public override void SkillAdjustPowerChange(int value, CardSpriteBehaviour card, CardSpriteBehaviour source)
-        //{
-        //    if (card.CardStatus.Power <= 0) card.Grid.AddCardIntoQueue(source.OccupiedField.Align);
-        //}
     }
 }

@@ -21,19 +21,5 @@ namespace Berty.BoardCards.ConfigData
             //AddRange(-1, 1, riposteRange);
             AddSoundEffect("706382__agglow__slap");
         }
-
-        //public override void SkillOnNewCard(CardSpriteBehaviour card)
-        //{
-        //    foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards()) SkillOnNeighbor(card, adjCard);
-        //}
-
-        //public override void SkillOnNeighbor(CardSpriteBehaviour card, CardSpriteBehaviour target)
-        //{
-        //    if (!card.IsAllied(target.OccupiedField)) target.AdvanceStrength(-1, card);
-        //    else target.AdvancePower(1, card);
-        //    target.AddResistance(this);
-        //}
-
-        //public override void SkillOnMove(CardSpriteBehaviour card) => SkillOnNewCard(card);
     }
 }

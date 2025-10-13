@@ -22,13 +22,5 @@ namespace Berty.BoardCards.ConfigData
             //AddRange(-1, 1, riposteRange);
             AddSoundEffect("182577__qubodup__whip-2.8-3.7");
         }
-
-        //public override void SkillOnSuccessfulAttack(CardSpriteBehaviour card)
-        //{
-        //    card.AdvanceDexterity(1, card);
-        //    foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards())
-        //        if (card.IsAllied(adjCard.OccupiedField))
-        //            adjCard.AdvanceDexterity(1, card);
-        //}
     }
 }

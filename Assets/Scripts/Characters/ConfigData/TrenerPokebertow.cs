@@ -18,11 +18,5 @@ namespace Berty.BoardCards.ConfigData
             //AddRange(-1, 1, riposteRange);
             AddSoundEffect("453001__breviceps__pokemon-cry-parody");
         }
-
-        //public override void SkillCardClick(CardSpriteBehaviour card)
-        //{
-        //    card.Grid.SetBackupCard(card.OccupiedField);
-        //    card.CardManager.DeselectCards();
-        //}
     }
 }

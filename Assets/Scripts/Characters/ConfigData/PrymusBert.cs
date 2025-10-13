@@ -21,24 +21,5 @@ namespace Berty.BoardCards.ConfigData
             //AddRange(-1, 1, riposteRange);
             AddSoundEffect("370814__ruviyamin__finger_snap");
         }
-
-        //public override int SkillDefenceModifier(int damage, CardSpriteBehaviour attacker)
-        //{
-        //    if (damage > 0) return damage - 1;
-        //    return damage;
-        //}
-
-        //public override void SkillOnNewCard(CardSpriteBehaviour card)
-        //{
-        //    foreach (CardSpriteBehaviour adjCard in card.GetAdjacentCards()) SkillOnNeighbor(card, adjCard);
-        //}
-
-        //public override void SkillOnNeighbor(CardSpriteBehaviour card, CardSpriteBehaviour target)
-        //{
-        //    target.AdvancePower(3, card);
-        //    target.AddResistance(this);
-        //}
-
-        //public override void SkillOnMove(CardSpriteBehaviour card) => SkillOnNewCard(card);
     }
 }
