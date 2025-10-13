@@ -26,7 +26,7 @@ namespace Berty.BoardCards.Managers
             card.BoardCard.AdvanceCardSetAngleBy(angle);
         }
 
-        public void MoveCard(BoardCardCore card, BoardField targetField)
+        public void MoveCard(BoardCardCore card, BoardField targetField, bool isOrdered = false)
         {
             AlignmentEnum cardAlign = card.BoardCard.OccupiedField.Align;
             BoardCard backupCard = card.BoardCard.OccupiedField.BackupCard;
@@ -34,6 +34,7 @@ namespace Berty.BoardCards.Managers
             targetField.PlaceExistingCard(card.BoardCard, cardAlign);
             targetField.SetBackupCard(backupCard);
             card.CardNavigation.MoveCardObject(FieldCollectionManager.Instance.GetBehaviourFromEntity(targetField));
+            if (!isOrdered) card.CardNavigation.HandleNewMovementSkillEffect();
         }
 
         public void SwapCards(BoardCardCore firstCardObject, BoardCardCore secondCardObject)

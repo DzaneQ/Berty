@@ -51,6 +51,7 @@ namespace Berty.BoardCards.Listeners
         // BUG: This method is run even when cancelling move during NewTransform.
         private void HandleMovedCharacter(object sender, EventArgs args)
         {
+            Debug.Log("Handling moved character");
             BoardCardCore movedCharacter = (BoardCardCore)sender;
             if (movedCharacter.BoardCard == null) return;
             HandleMovedCardWitness(core, movedCharacter);

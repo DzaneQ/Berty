@@ -58,7 +58,7 @@ namespace Berty.BoardCards.Managers
                 _ => throw new ArgumentException("Invalid NavigationEnum for MoveCard")
             };
             BoardField targetField = Grid.GetFieldDistancedFromCardOrThrow(distance.x, distance.y, card.BoardCard);
-            CardNavigationManager.Instance.MoveCard(card, targetField);
+            CardNavigationManager.Instance.MoveCard(card, targetField, true);
             if (card.CardState == CardStateEnum.NewTransform)
             {
                 PaymentManager.Instance.CancelPayment();

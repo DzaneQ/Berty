@@ -28,6 +28,7 @@ namespace Berty.BoardCards.Behaviours
         private IMoveCard moveCard;
         private IRotateCard rotateCard;
         private bool queuedMovementEffect;
+        private bool queuedMovementSkillEffect;
 
         private void Awake()
         {
@@ -174,11 +175,17 @@ namespace Berty.BoardCards.Behaviours
             if (!IsCardAnimating()) HandleAfterMoveAnimation();
         }
 
+        public void HandleNewMovementSkillEffect()
+        {
+            if (IsCardAnimating()) queuedMovementSkillEffect = true;
+            else EventManager.Instance.RaiseOnMovedCharacter(core);
+        }
+
         public void HandleAfterMoveAnimation()
         {
             if (!queuedMovementEffect) return;
             core.ParentField.UpdateField();
-            EventManager.Instance.RaiseOnMovedCharacter(core);
+            if (queuedMovementSkillEffect) EventManager.Instance.RaiseOnMovedCharacter(core);
             queuedMovementEffect = false;
         }
     }
