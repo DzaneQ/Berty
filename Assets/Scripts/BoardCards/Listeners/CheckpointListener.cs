@@ -1,9 +1,5 @@
 using Berty.BoardCards.Behaviours;
-using Berty.Characters.Managers;
-using Berty.Enums;
-using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using System;
 using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
@@ -11,12 +7,10 @@ namespace Berty.BoardCards.Listeners
     public class CheckpointListener : MonoBehaviour
     {
         private BoardCardCore core;
-        private Game game;
 
         private void Awake()
         {
             core = GetComponent<BoardCardCore>();
-            game = CoreManager.Instance.Game;
         }
 
         private void OnEnable()

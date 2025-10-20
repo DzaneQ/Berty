@@ -9,6 +9,7 @@ using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
 using Berty.Grid.Managers;
+using Berty.Settings;
 using Berty.UI.Card.Managers;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,7 @@ namespace Berty.BoardCards.Behaviours
             characterSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
             defaultColor = characterSprite.color;
             soundSource = GetComponent<AudioSource>();
+            soundSource.volume = SettingsManager.Instance.Volume;
             Bars = GetComponent<BoardCardBarsObjects>();
             CardNavigation = GetComponent<BoardCardMovableObject>();
             StatChange = GetComponent<BoardCardStatChange>();

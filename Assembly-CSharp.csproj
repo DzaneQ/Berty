@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\UI\Card\Behaviours\HandCardBehaviour.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaTrojanska.cs" />
+    <Compile Include="Assets\Scripts\Audio\Listeners\AudioListener.cs" />
     <Compile Include="Assets\Scripts\Menu\ButtonFunction.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertkaSerferka.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\CharacterConfig.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Assets\Scripts\UI\Card\Listeners\HandCardInput.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\OverlayObjectManager.cs" />
+    <Compile Include="Assets\Scripts\Utility\PersistentManagerSingleton.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IRotateCard.cs" />
     <Compile Include="Assets\Scripts\Enums\CardStateEnum.cs" />
     <Compile Include="Assets\Scripts\Audio\Managers\SoundManager.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="Assets\Scripts\Debugging\Managers\DebugManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveRight.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\PrymusBert.cs" />
+    <Compile Include="Assets\Scripts\Settings\Managers\SettingsManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Entities\CardStats.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
@@ -121,6 +124,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\Scripts\Display\Managers\DisplayManager.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\CloseGameInput.cs" />
+    <Compile Include="Assets\Scripts\Menu\SettingsMenu.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveUp.cs" />
     <Compile Include="Assets\Scripts\Enums\NavigationEnum.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />

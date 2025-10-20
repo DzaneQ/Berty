@@ -1532,7 +1532,7 @@ GameObject:
   - component: {fileID: 1473762352}
   - component: {fileID: 1473762353}
   m_Layer: 0
-  m_Name: ManagerSystem
+  m_Name: SceneManagerSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2387,6 +2387,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1797451268}
+  - component: {fileID: 1797451270}
   - component: {fileID: 1797451269}
   m_Layer: 0
   m_Name: SoundSource
@@ -2506,6 +2507,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1797451270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1797451266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57b65da975bc5e429030428b9440579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1821940498
 GameObject:
   m_ObjectHideFlags: 0

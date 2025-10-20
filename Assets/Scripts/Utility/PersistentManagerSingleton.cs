@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Berty.Utility
 {
 
-    public abstract class ManagerSingleton<T> : MonoBehaviour where T : MonoBehaviour
+    public abstract class PersistentManagerSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T s_instance;
 
@@ -19,10 +19,11 @@ namespace Berty.Utility
                     T[] objects = FindObjectsOfType<T>();
                     if (objects.Length == 0)
                     {
-                        GameObject managerObject = GameObject.Find("SceneManagerSystem");
-                        if (managerObject == null) managerObject = new GameObject("SceneManagerSystem");
+                        GameObject managerObject = GameObject.Find("PersistentManagerSystem");
+                        if (managerObject == null) managerObject = new GameObject("PersistentManagerSystem");
                         if (s_instance == null) s_instance = managerObject.AddComponent<T>();
                         else s_instance = managerObject.GetComponent<T>();
+                        DontDestroyOnLoad(s_instance.gameObject);
                     }
                     if (objects.Length > 1) throw new Exception($"Too many singletons of type {typeof(T).Name}");
                 }

@@ -1,3 +1,4 @@
+using Berty.Settings;
 using Berty.Utility;
 using UnityEngine;
 
@@ -23,6 +24,7 @@ namespace Berty.Audio.Managers
             base.Awake();
             soundSrc = GameObject.Find("SoundSource").GetComponent<AudioSource>();
             mainTransform = FindObjectOfType<Camera>().GetComponent<Transform>();
+            soundSrc.volume = SettingsManager.Instance.Volume;
         }
 
         public void MoveSound(AudioSource src)

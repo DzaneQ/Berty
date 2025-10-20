@@ -34,6 +34,7 @@ namespace Berty.Gameplay.Managers
         public event EventHandler<DirectAttackEventArgs> OnHighlightStart;
         public event Action OnHighlightEnd;
         public event EventHandler<ValidateOutputEventArgs> OnCheckpointRequest;
+        public event Action OnVolumeChanged;
 
         protected override void Awake()
         {
@@ -141,6 +142,11 @@ namespace Berty.Gameplay.Managers
             };
             OnCheckpointRequest?.Invoke(null, args);
             return args.IsRestricted;
+        }
+
+        public void RaiseOnVolumeChanged()
+        {
+            OnVolumeChanged?.Invoke();
         }
     }
 

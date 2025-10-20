@@ -1,3 +1,4 @@
+using Berty.Settings;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace Berty.Menu
 
         void Start()
         {
-            src = transform.parent.GetComponent<AudioSource>();
+            src = transform.parent.parent.GetComponent<AudioSource>();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
