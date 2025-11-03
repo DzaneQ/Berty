@@ -163,6 +163,7 @@
     <Compile Include="Assets\Scripts\UI\Card\Selection\UnselectedCard.cs" />
     <Compile Include="Assets\Scripts\Menu\NavigationMenu.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\CharacterSkillListener.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\State\CardState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Characters\Init\CharacterData.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IBarWidth.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KowbojBert.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Init\SceneInit.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardState.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Entities\BoardCard.cs" />
     <Compile Include="Assets\Scripts\Enums\GenderEnum.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Entities\Status.cs" />
@@ -235,6 +237,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\GotkaBerta.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardBehaviour.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\TrenerPokebertow.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />

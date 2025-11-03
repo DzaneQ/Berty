@@ -8,14 +8,13 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
 {
-    public class TurnListener : MonoBehaviour
+    public class TurnListener : BoardCardBehaviour
     {
-        private BoardCardCore core;
         private Game game;
 
-        private void Awake()
+        protected override void Awake()
         {
-            core = GetComponent<BoardCardCore>();
+            base.Awake();
             game = CoreManager.Instance.Game;
         }
 
@@ -32,47 +31,47 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleNewTurn()
         {
-            if (core.IsForPay()) throw new Exception($"Board card {name} detected for pay when switching turns.");
-            if (game.CurrentAlignment == core.ParentField.BoardField.Align)
+            if (Core.IsForPay()) throw new Exception($"Board card {name} detected for pay when switching turns.");
+            if (game.CurrentAlignment == Core.ParentField.BoardField.Align)
             {
                 HandleCharacterEffect();
                 ProgressTemporaryStats();
                 RegenerateDexterity();
                 EnableAttack();
             }
-            core.SetMainState();
+            Core.SetMainState();
         }
 
         private void ProgressTemporaryStats()
         {
-            core.StatChange.ProgressTemporaryStats();
+            Core.StatChange.ProgressTemporaryStats();
         }
 
         private void RegenerateDexterity()
         {
-            if (!core.BoardCard.IsTired) return;
-            if (core.BoardCard.Stats.Dexterity >= core.BoardCard.CharacterConfig.Dexterity)
+            if (!Core.BoardCard.IsTired) return;
+            if (Core.BoardCard.Stats.Dexterity >= Core.BoardCard.CharacterConfig.Dexterity)
             {
-                core.BoardCard.MarkAsRested();
+                Core.BoardCard.MarkAsRested();
                 return;
             }
-            core.StatChange.AdvanceDexterity(1, null);
-            if (core.BoardCard.Stats.Dexterity >= core.BoardCard.CharacterConfig.Dexterity) core.BoardCard.MarkAsRested();
+            StatChange.AdvanceDexterity(1, null);
+            if (Core.BoardCard.Stats.Dexterity >= Core.BoardCard.CharacterConfig.Dexterity) Core.BoardCard.MarkAsRested();
         }
 
         private void EnableAttack()
         {
-            Status providedStatus = game.GetStatusFromProviderOrNull(core.BoardCard);
+            Status providedStatus = game.GetStatusFromProviderOrNull(Core.BoardCard);
             if (providedStatus?.Name == StatusEnum.ExtraAttackCooldown) StatusManager.Instance.RemoveStatus(providedStatus);
-            else core.BoardCard.MarkAsHasNotAttacked();
+            else Core.BoardCard.MarkAsHasNotAttacked();
         }
 
         private void HandleCharacterEffect()
         {
-            switch (core.BoardCard.GetSkill())
+            switch (Core.BoardCard.GetSkill())
             {
                 case SkillEnum.PapiezBertII:
-                    EventManager.Instance.RaiseOnCharacterSpecialEffect(core);
+                    EventManager.Instance.RaiseOnCharacterSpecialEffect(Core);
                     break;
             }
         }

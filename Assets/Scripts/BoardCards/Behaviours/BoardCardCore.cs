@@ -17,7 +17,7 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Behaviours
 {
-    public class BoardCardCore : MonoBehaviour
+    public class BoardCardCore : BoardCardBehaviour
     {
         private Game Game;
         private CardStateEnum _cardState;
@@ -26,9 +26,6 @@ namespace Berty.BoardCards.Behaviours
         private Rigidbody cardRB;
         private AudioSource soundSource;
         private List<BoardCardCore> _attackedCards = new List<BoardCardCore>();
-        public BoardCardBarsObjects Bars { get; private set; }
-        public BoardCardMovableObject CardNavigation { get; private set; }
-        public BoardCardStatChange StatChange { get; private set; }
         public IReadOnlyList<BoardCardCore> AttackedCards => _attackedCards;
 
         public BoardCard BoardCard { get; private set; }
@@ -39,24 +36,22 @@ namespace Berty.BoardCards.Behaviours
             {
                 if (_cardState == value) return;
                 _cardState = value;
-                CardNavigation.ActivateButtonsBasedOnState();
+                Navigation.ActivateButtonsBasedOnState();
             }
         }
         public FieldBehaviour ParentField { get; private set; }
         public Sprite Sprite => characterSprite.sprite;
         public AudioSource SoundSource => soundSource;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             BoardCardCollectionManager.Instance.AddCardToCollection(this);
             Game = CoreManager.Instance.Game;
             characterSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
             defaultColor = characterSprite.color;
             soundSource = GetComponent<AudioSource>();
             soundSource.volume = SettingsManager.Instance.Volume;
-            Bars = GetComponent<BoardCardBarsObjects>();
-            CardNavigation = GetComponent<BoardCardMovableObject>();
-            StatChange = GetComponent<BoardCardStatChange>();
             ParentField = GetComponentInParent<FieldBehaviour>();
             BoardCard = ParentField.BoardField.AddNewCard(SelectionManager.Instance.GetPendingCardOrThrow(), Game.CurrentAlignment);
         }
@@ -176,7 +171,7 @@ namespace Berty.BoardCards.Behaviours
         public bool IsOnNewMove()
         {
             if (CardState != CardStateEnum.NewTransform) return false;
-            return CardNavigation.IsAnyMoveButtonActivated();
+            return Navigation.IsAnyMoveButtonActivated();
         }
 
         public void SetNewTransformFromNavigation(NavigationEnum navigation)
@@ -192,7 +187,7 @@ namespace Berty.BoardCards.Behaviours
                 NavigationEnum.RotateRight => NavigationEnum.RotateLeft,
                 _ => throw new ArgumentException("Invalid navigation for new transform.")
             };
-            CardNavigation.ActivateNeutralButton(oppositeNavigation);
+            Navigation.ActivateNeutralButton(oppositeNavigation);
             CardState = CardStateEnum.NewTransform;
         }
 
@@ -206,8 +201,8 @@ namespace Berty.BoardCards.Behaviours
         public void HandleAnimationEnd()
         {
             if (BoardCard == null) return;
-            if (CardNavigation.IsCardAnimating()) return;
-            if (!Bars.AreBarsAnimating()) CardNavigation.EnableInteraction();
+            if (Navigation.IsCardAnimating()) return;
+            if (!Bars.AreBarsAnimating()) Navigation.EnableInteraction();
             Bars.ShowBars();
             //HighlightIfFocused();
             CheckpointManager.Instance.HandleIfRequested();
@@ -271,7 +266,7 @@ namespace Berty.BoardCards.Behaviours
 
         public bool IsEligibleForCheckpoint()
         {
-            if (CardNavigation.IsCardAnimating()) return false;
+            if (Navigation.IsCardAnimating()) return false;
             if (BoardCard.Stats.Health <= 0) return false;
             if (BoardCard.Stats.Power <= 0) return false;
             if (BoardCard.GetSkill() == SkillEnum.BertWick && BoardCard.Stats.Dexterity <= 0) return false;
@@ -294,7 +289,7 @@ namespace Berty.BoardCards.Behaviours
         {
             if (transform.parent.childCount > 1) return; // Keep the backup card's rotation.
             int rightAngle = (180 - Mathf.RoundToInt(Camera.main.GetComponent<RotateCamera>().RightAngleValue())) % 360;
-            CardNavigation.RotateObjectWithoutAnimation(rightAngle);
+            Navigation.RotateObjectWithoutAnimation(rightAngle);
             BoardCard.AdvanceCardSetAngleBy(rightAngle);
         }
     }

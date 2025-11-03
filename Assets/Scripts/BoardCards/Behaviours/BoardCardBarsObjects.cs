@@ -4,10 +4,8 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Behaviours
 {
-    public class BoardCardBarsObjects : MonoBehaviour
+    public class BoardCardBarsObjects : BoardCardBehaviour
     {
-        private BoardCardCore core;
-
         /* CardBars index:
             0 - Strength
             1 - Power
@@ -17,9 +15,9 @@ namespace Berty.BoardCards.Behaviours
         private CardBar[] CardBars { get; set; }
 
 
-        private void Awake()
+        protected override void Awake()
         {
-            core = GetComponent<BoardCardCore>();
+            base.Awake();
             CardBars = transform.GetChild(1).GetComponentsInChildren<CardBar>();
         }
 
@@ -69,7 +67,7 @@ namespace Berty.BoardCards.Behaviours
         public void HandleAfterBarChange()
         {
             if (AreBarsAnimating()) return;
-            core.StatChange.HandleAfterAnimationStatChange();
+            Core.StatChange.HandleAfterAnimationStatChange();
         }
     }
 }

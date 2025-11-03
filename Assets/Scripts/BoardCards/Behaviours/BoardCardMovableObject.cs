@@ -11,7 +11,7 @@ using UnityEngine.EventSystems;
 
 namespace Berty.BoardCards.Behaviours
 {
-    public class BoardCardMovableObject : MonoBehaviour
+    public class BoardCardMovableObject : BoardCardBehaviour
     {
         /* CardButton index:
             0 - RotateLeft
@@ -22,17 +22,16 @@ namespace Berty.BoardCards.Behaviours
             5 - MoveLeft
          */
         public CardButton[] Buttons { get; private set; }
-        public BoardCard BoardCard => core.BoardCard;
-        private BoardCardCore core;
+        public BoardCard BoardCard => Core.BoardCard;
         private BoardCardInput input;
         private IMoveCard moveCard;
         private IRotateCard rotateCard;
         private bool queuedMovementEffect;
         private bool queuedMovementSkillEffect;
 
-        private void Awake()
+        protected override void Awake()
         {
-            core = GetComponent<BoardCardCore>();
+            base.Awake();
             moveCard = GetComponent<IMoveCard>();
             rotateCard = GetComponent<IRotateCard>();
             input = GetComponent<BoardCardInput>();
@@ -59,7 +58,7 @@ namespace Berty.BoardCards.Behaviours
 
         public void ActivateButtonsBasedOnState()
         {
-            switch (core.CardState)
+            switch (Core.CardState)
             {
                 case CardStateEnum.Idle:
                 case CardStateEnum.Attacking:
@@ -123,9 +122,9 @@ namespace Berty.BoardCards.Behaviours
         public void MoveCardObject(FieldBehaviour field)
         {
             moveCard.ToField(field);
-            core.ParentField.UpdateField();
-            core.SetFieldBehaviour(field);
-            if (core.CardState == CardStateEnum.Active || core.CardState == CardStateEnum.Telekinetic) return; // Don't run before NewTransform state is set
+            Core.ParentField.UpdateField();
+            Core.SetFieldBehaviour(field);
+            if (Core.CardState == CardStateEnum.Active || Core.CardState == CardStateEnum.Telekinetic) return; // Don't run before NewTransform state is set
             HandleNewMovement();
         }
 
@@ -178,14 +177,14 @@ namespace Berty.BoardCards.Behaviours
         public void HandleNewMovementSkillEffect()
         {
             if (IsCardAnimating()) queuedMovementSkillEffect = true;
-            else EventManager.Instance.RaiseOnMovedCharacter(core);
+            else EventManager.Instance.RaiseOnMovedCharacter(Core);
         }
 
         public void HandleAfterMoveAnimation()
         {
             if (!queuedMovementEffect) return;
-            core.ParentField.UpdateField();
-            if (queuedMovementSkillEffect) EventManager.Instance.RaiseOnMovedCharacter(core);
+            Core.ParentField.UpdateField();
+            if (queuedMovementSkillEffect) EventManager.Instance.RaiseOnMovedCharacter(Core);
             queuedMovementEffect = false;
         }
     }

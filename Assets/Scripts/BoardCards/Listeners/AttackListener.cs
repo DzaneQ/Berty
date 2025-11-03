@@ -1,29 +1,21 @@
 using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Managers;
 using Berty.Characters.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Entities;
-using Berty.Grid.Managers;
-using Berty.UI.Card.Managers;
-using Newtonsoft.Json.Linq;
 using System;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Berty.BoardCards.Listeners
 {
-    public class AttackListener : MonoBehaviour
+    public class AttackListener : BoardCardBehaviour
     {
-        private BoardCardCore card;
         private Game game;
 
         private void Start()
         {
-            card = GetComponent<BoardCardCore>();
             game = CoreManager.Instance.Game;
         }
 
@@ -46,17 +38,17 @@ namespace Berty.BoardCards.Listeners
         {
             BoardCardCore attacker = (BoardCardCore)sender;
             //Debug.Log($"Handling direct attack by {card.name}");
-            if (!args.AttackedFields.Contains(card.BoardCard.OccupiedField)) return;
+            if (!args.AttackedFields.Contains(Core.BoardCard.OccupiedField)) return;
             //Debug.Log($"{card.name} is attacked");
-            Vector2Int distanceToAttacker = card.BoardCard.GetDistanceTo(attacker.BoardCard);
-            if (card.BoardCard.CharacterConfig.CanBlock(distanceToAttacker)) return; // Try blocking
+            Vector2Int distanceToAttacker = Core.BoardCard.GetDistanceTo(attacker.BoardCard);
+            if (Core.BoardCard.CharacterConfig.CanBlock(distanceToAttacker)) return; // Try blocking
             //Debug.Log($"{card.name} with {card.BoardCard.Stats.Health} health takes damage");
-            int modifiedAttackerStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(card, attacker);
-            card.StatChange.AdvanceHealth(-modifiedAttackerStrength, attacker, true); // Take damage
+            int modifiedAttackerStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(Core, attacker);
+            Core.StatChange.AdvanceHealth(-modifiedAttackerStrength, attacker, true); // Take damage
             //Debug.Log($"{card.name} has {card.BoardCard.Stats.Health} health");
-            if (!card.BoardCard.CharacterConfig.CanRiposte(distanceToAttacker)) return;
-            int modifiedRiposteStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(attacker, card);
-            attacker.StatChange.AdvanceHealth(-modifiedRiposteStrength, card, true); // Do riposte
+            if (!Core.BoardCard.CharacterConfig.CanRiposte(distanceToAttacker)) return;
+            int modifiedRiposteStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(attacker, Core);
+            attacker.StatChange.AdvanceHealth(-modifiedRiposteStrength, Core, true); // Do riposte
             //Debug.Log($"{attacker.name} has {card.BoardCard.Stats.Health} health due to riposte");
         }
 
@@ -64,22 +56,22 @@ namespace Berty.BoardCards.Listeners
         {
             BoardCardCore defender = (BoardCardCore)sender;
             //Debug.Log($"Attacking {defender.name} by {card.name}");
-            if (defender.BoardCard.Align == card.BoardCard.Align) return; // Don't attack allies
+            if (defender.BoardCard.Align == Core.BoardCard.Align) return; // Don't attack allies
             //Debug.Log($"{defender.name} is not {card.name}'s ally");
-            if (defender.BoardCard.Stats.Power >= card.BoardCard.Stats.Power) return; // Attack lower power only
+            if (defender.BoardCard.Stats.Power >= Core.BoardCard.Stats.Power) return; // Attack lower power only
             //Debug.Log($"{defender.name} has lower power than {card.name}");
-            Vector2Int distanceToDefender = card.BoardCard.GetDistanceTo(defender.BoardCard);
-            if (!card.BoardCard.CharacterConfig.CanAttack(distanceToDefender)) return; // Has to be in attack range
+            Vector2Int distanceToDefender = Core.BoardCard.GetDistanceTo(defender.BoardCard);
+            if (!Core.BoardCard.CharacterConfig.CanAttack(distanceToDefender)) return; // Has to be in attack range
             //Debug.Log($"{defender.name} with {defender.BoardCard.Stats.Health} health is attacked by {card.name}");
-            int modifiedStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(defender, card);
-            defender.StatChange.AdvanceHealth(-modifiedStrength, card, true);
+            int modifiedStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(defender, Core);
+            defender.StatChange.AdvanceHealth(-modifiedStrength, Core, true);
             //Debug.Log($"{defender.name} has {defender.BoardCard.Stats.Health} health after being attacked by {card.name}");
         }
 
         private void HandleDirectAttackWitness(object sender, EventArgs args)
         {
             BoardCardCore attacker = (BoardCardCore)sender;
-            BoardCardCore witness = card;
+            BoardCardCore witness = Core;
 
             if (witness == attacker) HandleDirectAttackSelf();
 
@@ -98,14 +90,14 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleDirectAttackSelf()
         {
-            switch (card.BoardCard.GetSkill())
+            switch (Core.BoardCard.GetSkill())
             {
                 case SkillEnum.BigMadB:
-                    card.StatChange.AdvanceDexterity(-1, null);
-                    card.StatChange.AdvanceStrength(1, null);
+                    Core.StatChange.AdvanceDexterity(-1, null);
+                    Core.StatChange.AdvanceStrength(1, null);
                     break;
                 case SkillEnum.PrezydentBert:
-                    card.StatChange.AdvancePower(-1, null);
+                    Core.StatChange.AdvancePower(-1, null);
                     break;
             }
         }

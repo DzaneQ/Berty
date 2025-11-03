@@ -52,7 +52,7 @@ namespace Berty.BoardCards.Animation
 
         private IEnumerator RotateCardCoroutine(int angle)
         {
-            card.CardNavigation.DisableInteraction();
+            card.Navigation.DisableInteraction();
             card.Bars.HideBars();
             yield return StartCoroutine(RotateObject(angle, durationSeconds));
         }

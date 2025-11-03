@@ -1,6 +1,4 @@
-using Berty.BoardCards;
 using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.Button;
 using Berty.BoardCards.Managers;
 using Berty.Display.Managers;
 using Berty.Enums;
@@ -12,15 +10,14 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
 {
-    public class BoardCardInput : MonoBehaviour
+    public class BoardCardInput : BoardCardBehaviour
     {
-        private BoardCardCore behaviour;
         private Game game;
         private Camera cam;
 
-        void Awake()
+        protected override void Awake()
         {
-            behaviour = GetComponent<BoardCardCore>();
+            base.Awake();
             game = CoreManager.Instance.Game;
             cam = Camera.main;
         }
@@ -33,14 +30,14 @@ namespace Berty.BoardCards.Listeners
         void OnEnable()
         {
             if (!IsCursorOnCard()) return;
-            behaviour.CardNavigation.EnableButtons();
-            EventManager.Instance.RaiseOnHighlightStart(behaviour);
+            Core.Navigation.EnableButtons();
+            EventManager.Instance.RaiseOnHighlightStart(Core);
 
         }
 
         void OnDisable()
         {
-            behaviour.CardNavigation.DisableButtons();
+            Core.Navigation.DisableButtons();
         }
 
         public void OnMouseOver()
@@ -51,9 +48,9 @@ namespace Berty.BoardCards.Listeners
 
         public void OnMouseEnter()
         {
-            DisplayManager.Instance.ShowLookupCard(behaviour.Sprite);
-            if (behaviour.CardNavigation.IsCardAnimating()) return;
-            EventManager.Instance.RaiseOnHighlightStart(behaviour);
+            DisplayManager.Instance.ShowLookupCard(Core.Sprite);
+            if (Core.Navigation.IsCardAnimating()) return;
+            EventManager.Instance.RaiseOnHighlightStart(Core);
         }
 
         public void OnMouseExit()
@@ -88,21 +85,21 @@ namespace Berty.BoardCards.Listeners
         {
             if (!IsLeftClicked()) return;
             if (TryPuttingAnExtraCard()) return;
-            switch (behaviour.CardState)
+            switch (Core.CardState)
             {
                 case CardStateEnum.Active:
-                    BoardCardActionManager.Instance.PrepareToAttack(behaviour);
+                    BoardCardActionManager.Instance.PrepareToAttack(Core);
                     break;
                 case CardStateEnum.NewTransform:
                 case CardStateEnum.NewCard:
                 case CardStateEnum.Attacking:
-                    BoardCardActionManager.Instance.ConfirmPayment(behaviour);
+                    BoardCardActionManager.Instance.ConfirmPayment(Core);
                     break;
                 case CardStateEnum.Idle:
                 case CardStateEnum.Telekinetic:
                     break;
                 case CardStateEnum.Effectable:
-                    BoardCardActionManager.Instance.ApplySpecialEffect(behaviour);
+                    BoardCardActionManager.Instance.ApplySpecialEffect(Core);
                     break;
                 default:
                     throw new Exception("Clicked on card of an unknown state");
@@ -111,13 +108,13 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleSideClick()
         {
-            switch (behaviour.BoardCard.GetSkill())
+            switch (Core.BoardCard.GetSkill())
             {
                 case SkillEnum.GotkaBerta:
                     if (game.CardPile.AreThereAnyDeadCards())
                     {
-                        StatusManager.Instance.AddUniqueStatusWithAlignment(StatusEnum.RevivalSelect, behaviour.BoardCard.Align);
-                        behaviour.RemoveCard();
+                        StatusManager.Instance.AddUniqueStatusWithAlignment(StatusEnum.RevivalSelect, Core.BoardCard.Align);
+                        Core.RemoveCard();
                     }
                     break;
             }
@@ -127,9 +124,9 @@ namespace Berty.BoardCards.Listeners
         {
             if (SelectionManager.Instance.IsItPaymentTime()) return false;
             if (!HasSelectedOneCard()) return false;
-            if (behaviour.BoardCard.GetSkill() != SkillEnum.TrenerPokebertow) return false;
-            if (behaviour.BoardCard.Align != game.CurrentAlignment) return false;
-            behaviour.ParentField.SendMessage("PutTheCard");
+            if (Core.BoardCard.GetSkill() != SkillEnum.TrenerPokebertow) return false;
+            if (Core.BoardCard.Align != game.CurrentAlignment) return false;
+            Core.ParentField.SendMessage("PutTheCard");
             return true;
         }
 

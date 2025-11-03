@@ -14,14 +14,13 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
 {
-    public class PaymentListener : MonoBehaviour
+    public class PaymentListener : BoardCardBehaviour
     {
-        private BoardCardCore core;
         private Game game;
 
-        private void Awake()
+        protected override void Awake()
         {
-            core = GetComponent<BoardCardCore>();
+            base.Awake();
             game = CoreManager.Instance.Game;
         }
 
@@ -42,78 +41,78 @@ namespace Berty.BoardCards.Listeners
 
         private void HandlePaymentStart(object sender, EventArgs args)
         {
-            if (sender.Equals(core)) return;
-            core.SetIdle();
+            if (sender.Equals(Core)) return;
+            Core.SetIdle();
         }
 
         private void HandlePaymentConfirm()
         {
-            if (core.CardState == CardStateEnum.Attacking)
+            if (Core.CardState == CardStateEnum.Attacking)
             {
-                SoundManager.Instance.AttackSound(core.SoundSource, core.BoardCard.CharacterConfig.AttackSound);
-                EventManager.Instance.RaiseOnDirectlyAttacked(core);
+                SoundManager.Instance.AttackSound(Core.SoundSource, Core.BoardCard.CharacterConfig.AttackSound);
+                EventManager.Instance.RaiseOnDirectlyAttacked(Core);
                 HandleAfterAttackOrder();
-                core.BoardCard.MarkAsHasAttacked();
+                Core.BoardCard.MarkAsHasAttacked();
             }
-            else if (core.CardState == CardStateEnum.NewCard)
+            else if (Core.CardState == CardStateEnum.NewCard)
             {
-                SoundManager.Instance.ConfirmSound(core.SoundSource);
-                EventManager.Instance.RaiseOnAttackNewStand(core);
-                EventManager.Instance.RaiseOnNewCharacter(core);
+                SoundManager.Instance.ConfirmSound(Core.SoundSource);
+                EventManager.Instance.RaiseOnAttackNewStand(Core);
+                EventManager.Instance.RaiseOnNewCharacter(Core);
             }
-            else if (core.IsOnNewMove())
+            else if (Core.IsOnNewMove())
             {
-                EventManager.Instance.RaiseOnMovedCharacter(core);
+                EventManager.Instance.RaiseOnMovedCharacter(Core);
             }
-            core.SetMainState();
+            Core.SetMainState();
         }
 
         private void HandlePaymentCancel()
         {
-            if (core.CardState == CardStateEnum.NewCard)
+            if (Core.CardState == CardStateEnum.NewCard)
             {
                 FieldToHandManager.Instance.RetrievePendingCard();
-                SoundManager.Instance.TakeSound(core.transform);
-                core.RemoveCard();
+                SoundManager.Instance.TakeSound(Core.transform);
+                Core.RemoveCard();
                 return;
             }
-            core.SetMainState();
+            Core.SetMainState();
         }
 
         private void HandleAfterAttackOrder()
         {
-            switch (core.BoardCard.GetSkill())
+            switch (Core.BoardCard.GetSkill())
             {
                 case SkillEnum.KoszmarZBertwood:
-                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ExtraAttackCooldown, core.BoardCard);
+                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ExtraAttackCooldown, Core.BoardCard);
                     break;
             }
 
             // Handle successful attack
-            if (core.AttackedCards.Count <= 0) return;
+            if (Core.AttackedCards.Count <= 0) return;
 
-            switch (core.BoardCard.GetSkill())
+            switch (Core.BoardCard.GetSkill())
             {
                 case SkillEnum.BertkaSerferka:
-                    BoardCardCore swapTarget = core.AttackedCards.OrderByDescending(attackedCard => core.BoardCard.GetDistanceTo(attackedCard.BoardCard).x).First();
-                    CardNavigationManager.Instance.SwapCards(core, swapTarget);
+                    BoardCardCore swapTarget = Core.AttackedCards.OrderByDescending(attackedCard => Core.BoardCard.GetDistanceTo(attackedCard.BoardCard).x).First();
+                    CardNavigationManager.Instance.SwapCards(Core, swapTarget);
                     break;
                 case SkillEnum.Bertonator:
-                    if (core.AttackedCards.Count > 1) throw new Exception($"Bertonator is targeting {core.AttackedCards.Count} cards");
-                    BoardCardCore pushedCard = core.AttackedCards[0];
-                    pushedCard.StatChange.AdvanceDexterity(-1, core);
-                    PushCardAway(pushedCard, core);
+                    if (Core.AttackedCards.Count > 1) throw new Exception($"Bertonator is targeting {Core.AttackedCards.Count} cards");
+                    BoardCardCore pushedCard = Core.AttackedCards[0];
+                    pushedCard.StatChange.AdvanceDexterity(-1, Core);
+                    PushCardAway(pushedCard, Core);
                     break;
                 case SkillEnum.KowbojBert:
-                    core.StatChange.AdvanceDexterity(1, core);
-                    EventManager.Instance.RaiseOnValueChange(core, 1);
+                    Core.StatChange.AdvanceDexterity(1, Core);
+                    EventManager.Instance.RaiseOnValueChange(Core, 1);
                     break;
                 case SkillEnum.KuglarzBert:
-                    core.StatChange.AdvanceDexterity(-1, null);
-                    core.StatChange.AdvanceHealth(1, null);
+                    Core.StatChange.AdvanceDexterity(-1, null);
+                    Core.StatChange.AdvanceHealth(1, null);
                     break;
                 case SkillEnum.RoninBert:
-                    HandleRoninBertEffect(core.AttackedCards, core);
+                    HandleRoninBertEffect(Core.AttackedCards, Core);
                     break;
             }
         }

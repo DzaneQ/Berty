@@ -11,14 +11,13 @@ using UnityEngine.PlayerLoop;
 
 namespace Berty.BoardCards.Listeners
 {
-    public class StatusListener : MonoBehaviour
+    public class StatusListener : BoardCardBehaviour
     {
-        private BoardCardCore core;
         private Game game;
 
-        private void Awake()
+        protected override void Awake()
         {
-            core = GetComponent<BoardCardCore>();
+            base.Awake();
             game = CoreManager.Instance.Game;
         }
 
@@ -41,20 +40,20 @@ namespace Berty.BoardCards.Listeners
             switch (status.Name)
             {
                 case StatusEnum.ClickToApplyEffect:
-                    if (status.GetTargetAlign() == core.BoardCard.Align && !ApplySkillEffectManager.Instance.DoesPreventEffect(core.BoardCard, status.Provider))
-                        core.SetEffectable();
-                    else core.SetIdle();
+                    if (status.GetTargetAlign() == Core.BoardCard.Align && !ApplySkillEffectManager.Instance.DoesPreventEffect(Core.BoardCard, status.Provider))
+                        Core.SetEffectable();
+                    else Core.SetIdle();
                     break;
                 case StatusEnum.DisableEnemySpecialSkill:
-                    if (status.GetAlign() != core.BoardCard.Align)
-                        StatusManager.Instance.RemoveStatusFromProvider(core.BoardCard);
+                    if (status.GetAlign() != Core.BoardCard.Align)
+                        StatusManager.Instance.RemoveStatusFromProvider(Core.BoardCard);
                     break;
                 case StatusEnum.RevivalSelect:
                     OverlayObjectManager.Instance.DisplayDeadCardsScreen();
                     break;
                 case StatusEnum.Ventura:
-                    if (status.Provider == core.BoardCard)
-                        core.Bars.UpdateBar(StatEnum.Strength);
+                    if (status.Provider == Core.BoardCard)
+                        Core.Bars.UpdateBar(StatEnum.Strength);
                     break;
                 }
         }
@@ -64,7 +63,7 @@ namespace Berty.BoardCards.Listeners
             switch (args.StatusName)
             {
                 case StatusEnum.ClickToApplyEffect:
-                    core.SetMainState();
+                    Core.SetMainState();
                     break;
                 case StatusEnum.DisableEnemySpecialSkill:
                     TryRetrievingUniqueStatus();
@@ -77,24 +76,24 @@ namespace Berty.BoardCards.Listeners
                     OverlayObjectManager.Instance.HideDeadCardsScreen();
                     break;
                 case StatusEnum.Ventura:
-                    if (args.Alignment == core.BoardCard.Align)
-                        core.Bars.UpdateBar(StatEnum.Strength);
+                    if (args.Alignment == Core.BoardCard.Align)
+                        Core.Bars.UpdateBar(StatEnum.Strength);
                     break;
             }
         }
 
         private void TryRetrievingUniqueStatus()
         {
-            switch (core.BoardCard.GetSkill())
+            switch (Core.BoardCard.GetSkill())
             {
                 case SkillEnum.BertVentura:
-                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, core.BoardCard, game.Grid.GetEnemyNeighborCount(core.BoardCard));
+                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, Core.BoardCard, game.Grid.GetEnemyNeighborCount(Core.BoardCard));
                     break;
                 case SkillEnum.RycerzBerti:
-                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.TelekineticArea, core.BoardCard);
+                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.TelekineticArea, Core.BoardCard);
                     break;
                 case SkillEnum.SedziaBertt:
-                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ForceSpecialRole, core.BoardCard);
+                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ForceSpecialRole, Core.BoardCard);
                     break;
             }
         }

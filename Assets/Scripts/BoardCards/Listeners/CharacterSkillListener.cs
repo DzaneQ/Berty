@@ -12,14 +12,13 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
 {
-    public class CharacterSkillListener : MonoBehaviour
+    public class CharacterSkillListener : BoardCardBehaviour
     {
-        private BoardCardCore core;
         private Game game;
 
-        private void Awake()
+        protected override void Awake()
         {
-            core = GetComponent<BoardCardCore>();
+            base.Awake();
             game = CoreManager.Instance.Game;
         }
 
@@ -45,7 +44,7 @@ namespace Berty.BoardCards.Listeners
         private void HandleNewCharacter(object sender, EventArgs args)
         {
             BoardCardCore newCharacter = (BoardCardCore)sender;
-            HandleNewCardWitness(core, newCharacter);
+            HandleNewCardWitness(Core, newCharacter);
         }
 
         // BUG: This method is run even when cancelling move during NewTransform.
@@ -54,26 +53,26 @@ namespace Berty.BoardCards.Listeners
             Debug.Log("Handling moved character");
             BoardCardCore movedCharacter = (BoardCardCore)sender;
             if (movedCharacter.BoardCard == null) return;
-            HandleMovedCardWitness(core, movedCharacter);
+            HandleMovedCardWitness(Core, movedCharacter);
         }
 
         private void HandleCharacterDeath(object sender, EventArgs args)
         {
             BoardCardCore dyingCharacter = (BoardCardCore)sender;
-            core.BoardCard.RemoveResistanceToCharacter(dyingCharacter.BoardCard.CharacterConfig);
-            HandleDeathWitness(core, dyingCharacter);
+            Core.BoardCard.RemoveResistanceToCharacter(dyingCharacter.BoardCard.CharacterConfig);
+            HandleDeathWitness(Core, dyingCharacter);
         }
 
         private void HandleCharacterSpecialEffect(object sender, EventArgs args)
         {
             BoardCardCore specialCharacter = (BoardCardCore)sender;
-            HandleCustomEffect(core, specialCharacter);
+            HandleCustomEffect(Core, specialCharacter);
         }
 
         private void HandleValueChange(object sender, ValueChangeEventArgs args)
         {
             BoardCardCore sourceCharacter = (BoardCardCore)sender;
-            HandleCustomEffect(core, sourceCharacter, args.Delta);
+            HandleCustomEffect(Core, sourceCharacter, args.Delta);
         }
 
         private void HandleNewCardWitness(BoardCardCore witness, BoardCardCore newCard)
@@ -177,7 +176,7 @@ namespace Berty.BoardCards.Listeners
             {
                 case SkillEnum.BertVentura:
                     if (game.Grid.AreNeighboring(witness.ParentField.BoardField, dyingCard.ParentField.BoardField))
-                        StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, witness.BoardCard, game.Grid.GetEnemyNeighborCount(core.BoardCard));
+                        StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, witness.BoardCard, game.Grid.GetEnemyNeighborCount(Core.BoardCard));
                     break;
                 case SkillEnum.Zombert:
                     if (dyingCard.BoardCard.Align == witness.BoardCard.Align) break;
@@ -216,7 +215,7 @@ namespace Berty.BoardCards.Listeners
             switch (skillCard.BoardCard.GetSkill())
             {
                 case SkillEnum.BertVentura:
-                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillCard.BoardCard, game.Grid.GetEnemyNeighborCount(core.BoardCard));
+                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillCard.BoardCard, game.Grid.GetEnemyNeighborCount(Core.BoardCard));
                     break;
                 case SkillEnum.BertWho:
                     StatusManager.Instance.IncrementChargedStatusWithAlignment(StatusEnum.ExtraCardNextTurn, AlignmentEnum.Player, 2);
@@ -252,7 +251,7 @@ namespace Berty.BoardCards.Listeners
             switch (skillCard.BoardCard.GetSkill())
             {
                 case SkillEnum.BertVentura:
-                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillCard.BoardCard, game.Grid.GetEnemyNeighborCount(core.BoardCard));
+                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillCard.BoardCard, game.Grid.GetEnemyNeighborCount(Core.BoardCard));
                     break;
                 case SkillEnum.PrezydentBert:
                     skillCard.StatChange.AdvancePower(-1, null);

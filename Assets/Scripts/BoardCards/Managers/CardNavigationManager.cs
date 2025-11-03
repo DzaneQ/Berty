@@ -22,7 +22,7 @@ namespace Berty.BoardCards.Managers
 
         public void RotateCard(BoardCardCore card, int angle)
         {
-            card.CardNavigation.RotateCardObject(angle);
+            card.Navigation.RotateCardObject(angle);
             card.BoardCard.AdvanceCardSetAngleBy(angle);
         }
 
@@ -33,8 +33,8 @@ namespace Berty.BoardCards.Managers
             card.BoardCard.OccupiedField.RemoveAllCards();
             targetField.PlaceExistingCard(card.BoardCard, cardAlign);
             targetField.SetBackupCard(backupCard);
-            card.CardNavigation.MoveCardObject(FieldCollectionManager.Instance.GetBehaviourFromEntity(targetField));
-            if (!isOrdered) card.CardNavigation.HandleNewMovementSkillEffect();
+            card.Navigation.MoveCardObject(FieldCollectionManager.Instance.GetBehaviourFromEntity(targetField));
+            if (!isOrdered) card.Navigation.HandleNewMovementSkillEffect();
         }
 
         public void SwapCards(BoardCardCore firstCardObject, BoardCardCore secondCardObject)
@@ -56,8 +56,8 @@ namespace Berty.BoardCards.Managers
             secondField.PlaceExistingCard(firstOccupantCard, firstFieldAlign);
             secondField.SetBackupCard(firstBackupCard);
             // Move card objects
-            firstCardObject.CardNavigation.MoveCardObject(secondFieldObject);
-            secondCardObject.CardNavigation.MoveCardObject(firstFieldObject);
+            firstCardObject.Navigation.MoveCardObject(secondFieldObject);
+            secondCardObject.Navigation.MoveCardObject(firstFieldObject);
             // Rotate cards
             RotateCard(firstCardObject, 180);
             RotateCard(secondCardObject, 180);

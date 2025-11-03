@@ -4,14 +4,8 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
 {
-    public class CheckpointListener : MonoBehaviour
+    public class CheckpointListener : BoardCardBehaviour
     {
-        private BoardCardCore core;
-
-        private void Awake()
-        {
-            core = GetComponent<BoardCardCore>();
-        }
 
         private void OnEnable()
         {
@@ -27,7 +21,7 @@ namespace Berty.BoardCards.Listeners
         private void HandleCheckpointRequest(object sender, ValidateOutputEventArgs args)
         {
             if (args.IsRestricted) return;
-            if (!core.IsEligibleForCheckpoint()) args.IsRestricted = true;
+            if (!Core.IsEligibleForCheckpoint()) args.IsRestricted = true;
         }
     }
 }

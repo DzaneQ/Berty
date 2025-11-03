@@ -48,7 +48,7 @@ namespace Berty.BoardCards.Animation
         {
             this.targetLocation = targetLocation;
             this.targetSize = targetSize;
-            card.CardNavigation.DisableInteraction();
+            card.Navigation.DisableInteraction();
             StartCoroutine(MoveAndScaleBar(durationSeconds));
         }
 

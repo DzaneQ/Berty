@@ -50,7 +50,7 @@ namespace Berty.BoardCards.Button
         {
             if (!isActivated) return;
             //Debug.Log($"Enable attempt: {name} on card: {card.name}");
-            if (!card.CardNavigation.IsInteractableEnabled()) return;
+            if (!card.Navigation.IsInteractableEnabled()) return;
             if (!CanNavigate()) return;
             if (!IsCursorFocusedOnCard()) return;
             //if (card != card.Grid.Turn.GetFocusedCard()) return;

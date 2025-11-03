@@ -50,9 +50,9 @@ namespace Berty.BoardCards.Animation
         private IEnumerator MoveCardCoroutine(FieldBehaviour target)
         {
             AlignmentEnum align = card.BoardCard.Align;
-            card.CardNavigation.DisableInteraction();
+            card.Navigation.DisableInteraction();
             yield return MoveToField(target, durationSeconds);
-            card.CardNavigation.HandleAfterMoveAnimation();
+            card.Navigation.HandleAfterMoveAnimation();
             yield return null;
         }
 
