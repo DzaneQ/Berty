@@ -14,14 +14,6 @@ namespace Berty.BoardCards.Listeners
 {
     public class CharacterSkillListener : BoardCardBehaviour
     {
-        private Game game;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            game = CoreManager.Instance.Game;
-        }
-
         private void OnEnable()
         {
             EventManager.Instance.OnNewCharacter += HandleNewCharacter;
@@ -43,7 +35,7 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleNewCharacter(object sender, EventArgs args)
         {
-            BoardCardCore newCharacter = (BoardCardCore)sender;
+            BoardCardBehaviour newCharacter = (BoardCardBehaviour)sender;
             HandleNewCardWitness(Core, newCharacter);
         }
 
@@ -51,31 +43,31 @@ namespace Berty.BoardCards.Listeners
         private void HandleMovedCharacter(object sender, EventArgs args)
         {
             Debug.Log("Handling moved character");
-            BoardCardCore movedCharacter = (BoardCardCore)sender;
+            BoardCardBehaviour movedCharacter = (BoardCardBehaviour)sender;
             if (movedCharacter.BoardCard == null) return;
             HandleMovedCardWitness(Core, movedCharacter);
         }
 
         private void HandleCharacterDeath(object sender, EventArgs args)
         {
-            BoardCardCore dyingCharacter = (BoardCardCore)sender;
+            BoardCardBehaviour dyingCharacter = (BoardCardBehaviour)sender;
             Core.BoardCard.RemoveResistanceToCharacter(dyingCharacter.BoardCard.CharacterConfig);
             HandleDeathWitness(Core, dyingCharacter);
         }
 
         private void HandleCharacterSpecialEffect(object sender, EventArgs args)
         {
-            BoardCardCore specialCharacter = (BoardCardCore)sender;
+            BoardCardBehaviour specialCharacter = (BoardCardBehaviour)sender;
             HandleCustomEffect(Core, specialCharacter);
         }
 
         private void HandleValueChange(object sender, ValueChangeEventArgs args)
         {
-            BoardCardCore sourceCharacter = (BoardCardCore)sender;
+            BoardCardBehaviour sourceCharacter = (BoardCardBehaviour)sender;
             HandleCustomEffect(Core, sourceCharacter, args.Delta);
         }
 
-        private void HandleNewCardWitness(BoardCardCore witness, BoardCardCore newCard)
+        private void HandleNewCardWitness(BoardCardBehaviour witness, BoardCardBehaviour newCard)
         {
             if (witness == newCard) HandleNewCardSelf(newCard);
 
@@ -125,7 +117,7 @@ namespace Berty.BoardCards.Listeners
             }
         }
 
-        private void HandleMovedCardWitness(BoardCardCore witness, BoardCardCore movedCard)
+        private void HandleMovedCardWitness(BoardCardBehaviour witness, BoardCardBehaviour movedCard)
         {
             if (witness == movedCard) HandleMovedCardSelf(movedCard);
 
@@ -167,7 +159,7 @@ namespace Berty.BoardCards.Listeners
             }
         }
 
-        private void HandleDeathWitness(BoardCardCore witness, BoardCardCore dyingCard)
+        private void HandleDeathWitness(BoardCardBehaviour witness, BoardCardBehaviour dyingCard)
         {
             if (witness == dyingCard) return;
 
@@ -193,7 +185,7 @@ namespace Berty.BoardCards.Listeners
             }
         }
 
-        private void HandleCustomEffect(BoardCardCore witness, BoardCardCore customEffectCard, int delta = 0)
+        private void HandleCustomEffect(BoardCardBehaviour witness, BoardCardBehaviour customEffectCard, int delta = 0)
         {
             // When customed effect is triggered by the character with skill
             switch (customEffectCard.BoardCard.GetSkill())
@@ -210,7 +202,7 @@ namespace Berty.BoardCards.Listeners
             }
         }
 
-        private void HandleNewCardSelf(BoardCardCore skillCard)
+        private void HandleNewCardSelf(BoardCardBehaviour skillCard)
         {
             switch (skillCard.BoardCard.GetSkill())
             {
@@ -246,7 +238,7 @@ namespace Berty.BoardCards.Listeners
             }
         }
 
-        private void HandleMovedCardSelf(BoardCardCore skillCard)
+        private void HandleMovedCardSelf(BoardCardBehaviour skillCard)
         {
             switch (skillCard.BoardCard.GetSkill())
             {
@@ -259,7 +251,7 @@ namespace Berty.BoardCards.Listeners
             }
         }
 
-        private void DecreasePowerForNeighbor(BoardCardCore skillCard)
+        private void DecreasePowerForNeighbor(BoardCardBehaviour skillCard)
         {
             // Get neighbors that do not resist the skill card
             List<BoardCard> neighbors = game.Grid.GetOccupantNeighbors(skillCard.BoardCard)

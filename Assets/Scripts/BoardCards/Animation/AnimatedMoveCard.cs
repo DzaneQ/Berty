@@ -1,12 +1,9 @@
 using Berty.BoardCards.Behaviours;
 using Berty.Enums;
-using Berty.Gameplay;
 using Berty.Gameplay.Managers;
-using Berty.Grid.Field;
 using Berty.Grid.Field.Behaviour;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.BoardCards.Animation
@@ -50,7 +47,7 @@ namespace Berty.BoardCards.Animation
         private IEnumerator MoveCardCoroutine(FieldBehaviour target)
         {
             AlignmentEnum align = card.BoardCard.Align;
-            card.Navigation.DisableInteraction();
+            card.StateMachine.DisableButtons();
             yield return MoveToField(target, durationSeconds);
             card.Navigation.HandleAfterMoveAnimation();
             yield return null;

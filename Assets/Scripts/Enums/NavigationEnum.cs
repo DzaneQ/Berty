@@ -6,11 +6,11 @@ namespace Berty.Enums
 {
     public enum NavigationEnum
     {
+        RotateLeft,
+        RotateRight,
         MoveUp,
         MoveRight,
         MoveDown,
         MoveLeft,
-        RotateLeft,
-        RotateRight,
     }
 }

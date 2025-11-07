@@ -38,7 +38,7 @@ namespace Berty.Grid.Field.Listeners
             if (!IsLeftClicked()) return false;
             if (SelectionManager.Instance.IsItPaymentTime()) return false;
             if (!HasSelectedOneCard()) return false;
-            PutTheCard();
+            behaviour.PutTheCard();
             return true;
         }
 
@@ -50,13 +50,6 @@ namespace Berty.Grid.Field.Listeners
         private bool HasSelectedOneCard()
         {
             return SelectionManager.Instance.GetTheOnlySelectedCardOrNull() != null;
-        }
-
-        private void PutTheCard()
-        {
-            HandToFieldManager.Instance.RemoveSelectedCardFromHand();
-            BoardCardCore newCard = HandToFieldManager.Instance.PutCardOnField(behaviour);
-            PaymentManager.Instance.CallPayment(behaviour.BoardField.OccupantCard.Stats.Power, newCard);
         }
 
         private bool HasACard()

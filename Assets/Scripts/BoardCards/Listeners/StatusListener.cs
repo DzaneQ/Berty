@@ -13,14 +13,6 @@ namespace Berty.BoardCards.Listeners
 {
     public class StatusListener : BoardCardBehaviour
     {
-        private Game game;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            game = CoreManager.Instance.Game;
-        }
-
         private void OnEnable()
         {
             EventManager.Instance.OnStatusUpdated += HandleStatusUpdated;
@@ -41,8 +33,8 @@ namespace Berty.BoardCards.Listeners
             {
                 case StatusEnum.ClickToApplyEffect:
                     if (status.GetTargetAlign() == Core.BoardCard.Align && !ApplySkillEffectManager.Instance.DoesPreventEffect(Core.BoardCard, status.Provider))
-                        Core.SetEffectable();
-                    else Core.SetIdle();
+                        StateMachine.SetEffectable();
+                    else StateMachine.SetIdle();
                     break;
                 case StatusEnum.DisableEnemySpecialSkill:
                     if (status.GetAlign() != Core.BoardCard.Align)
@@ -63,7 +55,7 @@ namespace Berty.BoardCards.Listeners
             switch (args.StatusName)
             {
                 case StatusEnum.ClickToApplyEffect:
-                    Core.SetMainState();
+                    StateMachine.SetMainState();
                     break;
                 case StatusEnum.DisableEnemySpecialSkill:
                     TryRetrievingUniqueStatus();

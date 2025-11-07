@@ -1,14 +1,16 @@
-using Berty.Grid.Entities;
+using Berty.BoardCards.Behaviours;
+using Berty.BoardCards.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
+using Berty.Grid.Entities;
+using Berty.Grid.Field.Entities;
+using Berty.Grid.Managers;
+using Berty.UI.Card.Managers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Berty.Grid.Field.Entities;
-using System;
-using Berty.Grid.Managers;
-using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.Managers;
+using UnityEngine.EventSystems;
 
 namespace Berty.Grid.Field.Behaviour
 {
@@ -18,7 +20,7 @@ namespace Berty.Grid.Field.Behaviour
         private HighlightEnum highlight;
 
         public BoardField BoardField { get; private set; }
-        public BoardCardCore ChildCard { get; private set; }
+        public BoardCardBehaviour ChildCard { get; private set; }
         public HighlightEnum Highlight { get => highlight;
             private set
             {
@@ -60,6 +62,13 @@ namespace Berty.Grid.Field.Behaviour
             ColorizeField();
         }
 
+        public void PutTheCard()
+        {
+            HandToFieldManager.Instance.RemoveSelectedCardFromHand();
+            BoardCardBehaviour newCard = HandToFieldManager.Instance.PutCardOnField(this);
+            PaymentManager.Instance.CallPayment(BoardField.OccupantCard.Stats.Power, newCard);
+        }
+
         private void ColorizeField()
         {
             render.material = ColorizeObjectManager.Instance.GetMaterialFromAlignment(BoardField.Align, Highlight);
@@ -83,7 +92,7 @@ namespace Berty.Grid.Field.Behaviour
         private void HighlightCard()
         {
             if (ChildCard == null) return;
-            ChildCard.HighlightAs(Highlight);
+            ChildCard.Core.HighlightAs(Highlight);
         }
     }
 }

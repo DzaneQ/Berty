@@ -12,13 +12,6 @@ namespace Berty.BoardCards.Listeners
 {
     public class AttackListener : BoardCardBehaviour
     {
-        private Game game;
-
-        private void Start()
-        {
-            game = CoreManager.Instance.Game;
-        }
-
         private void OnEnable()
         {
             EventManager.Instance.OnDirectlyAttacked += HandleDirectlyAttacked;
@@ -36,7 +29,7 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleDirectlyAttacked(object sender, DirectAttackEventArgs args)
         {
-            BoardCardCore attacker = (BoardCardCore)sender;
+            BoardCardBehaviour attacker = (BoardCardBehaviour)sender;
             //Debug.Log($"Handling direct attack by {card.name}");
             if (!args.AttackedFields.Contains(Core.BoardCard.OccupiedField)) return;
             //Debug.Log($"{card.name} is attacked");
@@ -54,7 +47,7 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleAttackNewStand(object sender, EventArgs args)
         {
-            BoardCardCore defender = (BoardCardCore)sender;
+            BoardCardBehaviour defender = (BoardCardBehaviour)sender;
             //Debug.Log($"Attacking {defender.name} by {card.name}");
             if (defender.BoardCard.Align == Core.BoardCard.Align) return; // Don't attack allies
             //Debug.Log($"{defender.name} is not {card.name}'s ally");
@@ -70,8 +63,8 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleDirectAttackWitness(object sender, EventArgs args)
         {
-            BoardCardCore attacker = (BoardCardCore)sender;
-            BoardCardCore witness = Core;
+            BoardCardBehaviour attacker = (BoardCardBehaviour)sender;
+            BoardCardBehaviour witness = Core;
 
             if (witness == attacker) HandleDirectAttackSelf();
 
@@ -102,7 +95,7 @@ namespace Berty.BoardCards.Listeners
             }
         }
 
-        private void HandleBertaAmazonkaEffect(BoardCardCore target, BoardCardCore bertaAmazonka)
+        private void HandleBertaAmazonkaEffect(BoardCardBehaviour target, BoardCardBehaviour bertaAmazonka)
         {
             if (bertaAmazonka.BoardCard.GetSkill() != SkillEnum.BertaAmazonka)
                 throw new Exception($"BertaAmazonka effect is casted by {bertaAmazonka.BoardCard.CharacterConfig.Name}");

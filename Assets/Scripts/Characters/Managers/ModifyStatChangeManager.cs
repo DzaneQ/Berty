@@ -23,7 +23,7 @@ namespace Berty.Characters.Managers
         // NOTE: Ensure that BigMadB, PogromcaBert (and other prevention skill cards) have logic applied when new stat modifier is made
 
         // output: If true, prevent stat change
-        public bool BeforeStrengthChange(BoardCardCore target, ref int value, BoardCardCore source)
+        public bool BeforeStrengthChange(BoardCardBehaviour target, ref int value, BoardCardBehaviour source)
         {
             bool shouldPreventStatChange = false;
 
@@ -37,7 +37,7 @@ namespace Berty.Characters.Managers
             return shouldPreventStatChange;
         }
 
-        public bool BeforePowerChange(BoardCardCore target, ref int value, BoardCardCore source)
+        public bool BeforePowerChange(BoardCardBehaviour target, ref int value, BoardCardBehaviour source)
         {
             bool shouldPreventStatChange = false;
 
@@ -51,7 +51,7 @@ namespace Berty.Characters.Managers
             return shouldPreventStatChange;
         }
 
-        public bool BeforeHealthChange(BoardCardCore target, ref int value, BoardCardCore source, bool isBasicAttack = false)
+        public bool BeforeHealthChange(BoardCardBehaviour target, ref int value, BoardCardBehaviour source, bool isBasicAttack = false)
         {
             bool shouldPreventStatChange = false;
 
@@ -88,7 +88,7 @@ namespace Berty.Characters.Managers
 
         // NOTE: After<stat>Change is executed during stat change animation
 
-        public void AfterPowerChange(BoardCardCore target, int value, BoardCardCore source)
+        public void AfterPowerChange(BoardCardBehaviour target, int value, BoardCardBehaviour source)
         {
             switch (target.BoardCard.GetSkill())
             {
@@ -107,7 +107,7 @@ namespace Berty.Characters.Managers
             }
         }
 
-        public void AfterHealthChange(BoardCardCore target, int value, BoardCardCore source)
+        public void AfterHealthChange(BoardCardBehaviour target, int value, BoardCardBehaviour source)
         {
             switch (target.BoardCard.GetSkill())
             {
@@ -150,7 +150,7 @@ namespace Berty.Characters.Managers
             }
         }
 
-        public int GetModifiedStrengthForAttack(BoardCardCore target, BoardCardCore source)
+        public int GetModifiedStrengthForAttack(BoardCardBehaviour target, BoardCardBehaviour source)
         {
             int strength = source.BoardCard.Stats.Strength;
 
@@ -184,7 +184,7 @@ namespace Berty.Characters.Managers
             return strength;
         }
 
-        private bool PreventDependingOnBertkaSerferkaPosition(BoardCardCore target, BoardCardCore bertkaSerferka)
+        private bool PreventDependingOnBertkaSerferkaPosition(BoardCardBehaviour target, BoardCardBehaviour bertkaSerferka)
         {
             if (bertkaSerferka.BoardCard.GetSkill() != SkillEnum.BertkaSerferka)
                 throw new Exception($"BertkaSerferka effect is casted by {bertkaSerferka.BoardCard.CharacterConfig.Name}");

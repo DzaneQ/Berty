@@ -6,7 +6,6 @@ namespace Berty.BoardCards.Listeners
 {
     public class CheckpointListener : BoardCardBehaviour
     {
-
         private void OnEnable()
         {
             EventManager.Instance.OnCheckpointRequest += HandleCheckpointRequest;

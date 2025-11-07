@@ -7,106 +7,104 @@ namespace Berty.BoardCards.Behaviours
 {
     public class BoardCardStatChange : BoardCardBehaviour
     {
-        private BoardCard Card => Core.BoardCard;
-
-        public void AdvanceStrength(int value, BoardCardCore source)
+        public void AdvanceStrength(int value, BoardCardBehaviour source)
         {
-            if (Card == null) return;
+            if (BoardCard == null) return;
             if (ModifyStatChangeManager.Instance.BeforeStrengthChange(Core, ref value, source)) return;
-            Card.AdvanceStrength(value);
+            BoardCard.AdvanceStrength(value);
             Bars.UpdateBar(StatEnum.Strength);
         }
 
-        public void SetStrength(int value, BoardCardCore source)
+        public void SetStrength(int value, BoardCardBehaviour source)
         {
-            if (Card == null) return;
-            int delta = value - Card.Stats.Strength;
+            if (BoardCard == null) return;
+            int delta = value - BoardCard.Stats.Strength;
             AdvanceStrength(delta, source);
         }
 
-        public void AdvanceTempStrength(int value, BoardCardCore source)
+        public void AdvanceTempStrength(int value, BoardCardBehaviour source)
         {
-            if (Card == null) return;
+            if (BoardCard == null) return;
             if (ModifyStatChangeManager.Instance.BeforeStrengthChange(Core, ref value, source)) return;
-            Card.AdvanceTempStrength(value);
+            BoardCard.AdvanceTempStrength(value);
             Bars.UpdateBar(StatEnum.Strength);
         }
 
-        public void SetTempStrength(int value, BoardCardCore source)
+        public void SetTempStrength(int value, BoardCardBehaviour source)
         {
-            if (Card == null) return;
-            int delta = value - Card.Stats.TempStrength;
+            if (BoardCard == null) return;
+            int delta = value - BoardCard.Stats.TempStrength;
             AdvanceTempStrength(delta, source);
             Bars.UpdateBar(StatEnum.Strength);
         }
 
-        public void AdvancePower(int value, BoardCardCore source)
+        public void AdvancePower(int value, BoardCardBehaviour source)
         {
-            if (Card == null) return;
+            if (BoardCard == null) return;
             if (ModifyStatChangeManager.Instance.BeforePowerChange(Core, ref value, source)) return;
-            Card.AdvancePower(value);
+            BoardCard.AdvancePower(value);
             Bars.UpdateBar(StatEnum.Power);
             ModifyStatChangeManager.Instance.AfterPowerChange(Core, value, source);
         }
 
-        public void SetPower(int value, BoardCardCore source)
+        public void SetPower(int value, BoardCardBehaviour source)
         {
-            if (Card == null) return;
-            int delta = value - Card.Stats.Power;
+            if (BoardCard == null) return;
+            int delta = value - BoardCard.Stats.Power;
             AdvancePower(delta, source);
         }
 
-        public void AdvanceTempPower(int value, BoardCardCore source)
+        public void AdvanceTempPower(int value, BoardCardBehaviour source)
         {
-            if (Card == null) return;
+            if (BoardCard == null) return;
             if (ModifyStatChangeManager.Instance.BeforePowerChange(Core, ref value, source)) return;
-            Card.AdvanceTempPower(value);
+            BoardCard.AdvanceTempPower(value);
             Bars.UpdateBar(StatEnum.Power);
             ModifyStatChangeManager.Instance.AfterPowerChange(Core, value, source);
         }
 
-        public void AdvanceDexterity(int value, BoardCardCore source)
+        public void AdvanceDexterity(int value, BoardCardBehaviour source)
         {
-            if (Card == null) return;
-            Card.AdvanceDexterity(value);
+            if (BoardCard == null) return;
+            BoardCard.AdvanceDexterity(value);
             Bars.UpdateBar(StatEnum.Dexterity);
         }
 
-        public void AdvanceHealth(int value, BoardCardCore source, bool isBasicAttack = false)
+        public void AdvanceHealth(int value, BoardCardBehaviour source, bool isBasicAttack = false)
         {
-            if (Card == null) return;
+            if (BoardCard == null) return;
             if (ModifyStatChangeManager.Instance.BeforeHealthChange(Core, ref value, source, isBasicAttack)) return;
-            if (isBasicAttack) source.MarkSuccessfulAttack(Core);
-            Card.AdvanceHealth(value);
+            if (isBasicAttack) source.Core.MarkSuccessfulAttack(Core);
+            BoardCard.AdvanceHealth(value);
             Bars.UpdateBar(StatEnum.Health);
             ModifyStatChangeManager.Instance.AfterHealthChange(Core, value, source);
         }
 
         public void ProgressTemporaryStats()
         {
-            if (Card.Stats.AreTempStatZeros()) return;
-            Card.Stats.ProgressTempStats();
+            if (BoardCard.Stats.AreTempStatZeros()) return;
+            BoardCard.Stats.ProgressTempStats();
             Bars.UpdateBars();
         }
 
         public void HandleAfterAnimationStatChange()
         {
-            if (Card.Stats.Health <= 0)
+            if (BoardCard.Stats.Health <= 0)
             {
                 HandleZeroHealth();
             }
-            if (Card == null) return;
-            if (Card.Stats.Dexterity <= 0)
+            if (BoardCard == null) return;
+            if (BoardCard.Stats.Dexterity <= 0)
             {
                 HandleZeroDexterity(); 
             }
-            if (Card == null) return;
-            if (Card.Stats.Dexterity >= Card.CharacterConfig.Dexterity)
+            if (BoardCard == null) return;
+            if (BoardCard.Stats.Dexterity >= BoardCard.CharacterConfig.Dexterity)
             {
-                Card.MarkAsRested();
+                BoardCard.MarkAsRested();
             }
-            if (Card == null) return;
-            if (Card.Stats.Power <= 0)
+            if (BoardCard == null) return;
+            if (BoardCard.Stats.Power <= 0)
             {
                 HandleZeroPower();
             }    
@@ -114,13 +112,13 @@ namespace Berty.BoardCards.Behaviours
 
         private void HandleZeroPower()
         {
-            switch (Core.BoardCard.GetSkill())
+            switch (BoardCard.GetSkill())
             {
                 case SkillEnum.AstronautaBert:
                     Core.KillCard();
                     break;
                 case SkillEnum.KsiezniczkaBerta:
-                    SetPower(Core.BoardCard.CharacterConfig.Power, Core);
+                    SetPower(BoardCard.CharacterConfig.Power, Core);
                     break;
                 default:
                     Core.SwitchSides();
@@ -130,20 +128,20 @@ namespace Berty.BoardCards.Behaviours
 
         private void HandleZeroDexterity()
         {
-            switch (Core.BoardCard.GetSkill())
+            switch (BoardCard.GetSkill())
             {
                 case SkillEnum.BertWick:
                     Core.KillCard();
                     break;
                 default:
-                    Card.MarkAsTired();
+                    BoardCard.MarkAsTired();
                     break;
             }
         }
 
         private void HandleZeroHealth()
         {
-            switch (Core.BoardCard.GetSkill())
+            switch (BoardCard.GetSkill())
             {
                 case SkillEnum.BertWick:
                     AdvanceHealth(2, null);

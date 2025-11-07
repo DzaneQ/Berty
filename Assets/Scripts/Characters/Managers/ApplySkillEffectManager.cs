@@ -20,13 +20,13 @@ namespace Berty.Characters.Managers
             game = CoreManager.Instance.Game;
         }
 
-        public void HandleNeighborCharacterSkill(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
+        public void HandleNeighborCharacterSkill(BoardCardBehaviour target, BoardCardBehaviour skillOwner, int delta = 0)
         {
             if (!game.Grid.AreNeighboring(target.ParentField.BoardField, skillOwner.ParentField.BoardField)) return;
             HandleCharacterSkill(target, skillOwner, delta);         
         }
 
-        public void HandleCharacterSkill(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
+        public void HandleCharacterSkill(BoardCardBehaviour target, BoardCardBehaviour skillOwner, int delta = 0)
         {
             switch (skillOwner.BoardCard.GetSkill())
             {
@@ -52,7 +52,7 @@ namespace Berty.Characters.Managers
         }
 
         // output: Has the effect been applied
-        private bool ApplyCharacterEffect(BoardCardCore target, BoardCardCore skillOwner, int delta = 0)
+        private bool ApplyCharacterEffect(BoardCardBehaviour target, BoardCardBehaviour skillOwner, int delta = 0)
         {
             if (DoesPreventEffect(target.BoardCard, skillOwner.BoardCard)) return false;
 
@@ -130,7 +130,7 @@ namespace Berty.Characters.Managers
             return true;
         }
 
-        private void ApplyEBertaEffect(BoardCardCore target, BoardCardCore eBerta)
+        private void ApplyEBertaEffect(BoardCardBehaviour target, BoardCardBehaviour eBerta)
         {
             if (eBerta.BoardCard.GetSkill() != SkillEnum.EBerta)
                 throw new Exception($"eBerta effect is casted by {eBerta.BoardCard.CharacterConfig.Name}");
@@ -147,7 +147,7 @@ namespace Berty.Characters.Managers
             if (stats[3] == minStat) target.StatChange.AdvanceHealth(1, eBerta);
         }
 
-        private bool ApplySamurajBertEffectAndResistance(BoardCardCore samurajBert)
+        private bool ApplySamurajBertEffectAndResistance(BoardCardBehaviour samurajBert)
         {
             if (samurajBert.BoardCard.GetSkill() != SkillEnum.SamurajBert)
                 throw new Exception($"SamurajBert effect is casted by {samurajBert.BoardCard.CharacterConfig.Name}");
@@ -172,7 +172,7 @@ namespace Berty.Characters.Managers
             }
         }
 
-        private bool AreAllied(BoardCardCore firstCard, BoardCardCore secondCard)
+        private bool AreAllied(BoardCardBehaviour firstCard, BoardCardBehaviour secondCard)
         {
             return game.Grid.AreAligned(firstCard.ParentField.BoardField, secondCard.ParentField.BoardField);
         }

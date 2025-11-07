@@ -1,4 +1,7 @@
 using Berty.BoardCards.Entities;
+using Berty.Gameplay.Entities;
+using Berty.Gameplay.Managers;
+using Berty.Grid.Field.Behaviour;
 using UnityEngine;
 
 namespace Berty.BoardCards.Behaviours
@@ -9,7 +12,10 @@ namespace Berty.BoardCards.Behaviours
         public BoardCardCore Core { get; private set; }
         public BoardCardMovableObject Navigation { get; private set; }
         public BoardCardStatChange StatChange { get; private set; }
-        //public BoardCardState State { get; private set; }
+        public BoardCardStateMachine StateMachine { get; private set; }
+        protected Game game;
+        public BoardCard BoardCard => Core.BoardCard;
+        public FieldBehaviour ParentField => Core.ParentField;
 
         protected virtual void Awake()
         {
@@ -17,7 +23,8 @@ namespace Berty.BoardCards.Behaviours
             Core = GetComponent<BoardCardCore>();
             Navigation = GetComponent<BoardCardMovableObject>();
             StatChange = GetComponent<BoardCardStatChange>();
-            //State = GetComponent<BoardCardState>();
+            StateMachine = GetComponent<BoardCardStateMachine>();
+            game = CoreManager.Instance.Game;
         }
     }
 }

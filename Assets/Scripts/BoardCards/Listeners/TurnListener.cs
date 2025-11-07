@@ -10,14 +10,6 @@ namespace Berty.BoardCards.Listeners
 {
     public class TurnListener : BoardCardBehaviour
     {
-        private Game game;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            game = CoreManager.Instance.Game;
-        }
-
         private void OnEnable()
         {
             EventManager.Instance.OnNewTurn += HandleNewTurn;
@@ -31,7 +23,7 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleNewTurn()
         {
-            if (Core.IsForPay()) throw new Exception($"Board card {name} detected for pay when switching turns.");
+            if (StateMachine.IsForPay()) throw new Exception($"Board card {name} detected for pay when switching turns.");
             if (game.CurrentAlignment == Core.ParentField.BoardField.Align)
             {
                 HandleCharacterEffect();
@@ -39,7 +31,7 @@ namespace Berty.BoardCards.Listeners
                 RegenerateDexterity();
                 EnableAttack();
             }
-            Core.SetMainState();
+            StateMachine.SetMainState();
         }
 
         private void ProgressTemporaryStats()

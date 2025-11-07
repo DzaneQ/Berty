@@ -16,14 +16,6 @@ namespace Berty.BoardCards.Listeners
 {
     public class PaymentListener : BoardCardBehaviour
     {
-        private Game game;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            game = CoreManager.Instance.Game;
-        }
-
         private void OnEnable()
         {
             EventManager.Instance.OnPaymentStart += HandlePaymentStart;
@@ -42,41 +34,41 @@ namespace Berty.BoardCards.Listeners
         private void HandlePaymentStart(object sender, EventArgs args)
         {
             if (sender.Equals(Core)) return;
-            Core.SetIdle();
+            StateMachine.SetIdle();
         }
 
         private void HandlePaymentConfirm()
         {
-            if (Core.CardState == CardStateEnum.Attacking)
+            if (StateMachine.HasState(CardStateEnum.Attacking))
             {
                 SoundManager.Instance.AttackSound(Core.SoundSource, Core.BoardCard.CharacterConfig.AttackSound);
                 EventManager.Instance.RaiseOnDirectlyAttacked(Core);
                 HandleAfterAttackOrder();
                 Core.BoardCard.MarkAsHasAttacked();
             }
-            else if (Core.CardState == CardStateEnum.NewCard)
+            else if (StateMachine.HasState(CardStateEnum.NewCard))
             {
                 SoundManager.Instance.ConfirmSound(Core.SoundSource);
                 EventManager.Instance.RaiseOnAttackNewStand(Core);
                 EventManager.Instance.RaiseOnNewCharacter(Core);
             }
-            else if (Core.IsOnNewMove())
+            else if (StateMachine.IsOnNewMove())
             {
                 EventManager.Instance.RaiseOnMovedCharacter(Core);
             }
-            Core.SetMainState();
+            StateMachine.SetMainState();
         }
 
         private void HandlePaymentCancel()
         {
-            if (Core.CardState == CardStateEnum.NewCard)
+            if (StateMachine.HasState(CardStateEnum.NewCard))
             {
                 FieldToHandManager.Instance.RetrievePendingCard();
                 SoundManager.Instance.TakeSound(Core.transform);
                 Core.RemoveCard();
                 return;
             }
-            Core.SetMainState();
+            StateMachine.SetMainState();
         }
 
         private void HandleAfterAttackOrder()
@@ -94,12 +86,12 @@ namespace Berty.BoardCards.Listeners
             switch (Core.BoardCard.GetSkill())
             {
                 case SkillEnum.BertkaSerferka:
-                    BoardCardCore swapTarget = Core.AttackedCards.OrderByDescending(attackedCard => Core.BoardCard.GetDistanceTo(attackedCard.BoardCard).x).First();
+                    BoardCardBehaviour swapTarget = Core.AttackedCards.OrderByDescending(attackedCard => Core.BoardCard.GetDistanceTo(attackedCard.BoardCard).x).First();
                     CardNavigationManager.Instance.SwapCards(Core, swapTarget);
                     break;
                 case SkillEnum.Bertonator:
                     if (Core.AttackedCards.Count > 1) throw new Exception($"Bertonator is targeting {Core.AttackedCards.Count} cards");
-                    BoardCardCore pushedCard = Core.AttackedCards[0];
+                    BoardCardBehaviour pushedCard = Core.AttackedCards[0];
                     pushedCard.StatChange.AdvanceDexterity(-1, Core);
                     PushCardAway(pushedCard, Core);
                     break;
@@ -117,7 +109,7 @@ namespace Berty.BoardCards.Listeners
             }
         }
 
-        private void PushCardAway(BoardCardCore target, BoardCardCore bertonator)
+        private void PushCardAway(BoardCardBehaviour target, BoardCardBehaviour bertonator)
         {
             if (bertonator.BoardCard.GetSkill() != SkillEnum.Bertonator) 
                 throw new Exception($"Bertonator effect is casted by {bertonator.BoardCard.CharacterConfig.Name}");
@@ -127,13 +119,13 @@ namespace Berty.BoardCards.Listeners
             else CardNavigationManager.Instance.MoveCard(target, targetField);
         }
 
-        private void HandleRoninBertEffect(IReadOnlyList<BoardCardCore> attackedCards, BoardCardCore roninBert)
+        private void HandleRoninBertEffect(IReadOnlyList<BoardCardBehaviour> attackedCards, BoardCardBehaviour roninBert)
         {
             if (roninBert.BoardCard.GetSkill() != SkillEnum.RoninBert)
                 throw new Exception($"RoninBert effect is casted by {roninBert.BoardCard.CharacterConfig.Name}");
             if (attackedCards.Count > 2)
                 throw new Exception($"RoninBert got {attackedCards.Count} cards attacked");
-            BoardCardCore swapTarget = attackedCards[0];
+            BoardCardBehaviour swapTarget = attackedCards[0];
             // Get further card as swap target
             if (attackedCards.Count > 1
                 && roninBert.BoardCard.GetDistanceTo(attackedCards[1].BoardCard).magnitude > roninBert.BoardCard.GetDistanceTo(swapTarget.BoardCard).magnitude)

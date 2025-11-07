@@ -20,13 +20,13 @@ namespace Berty.BoardCards.Managers
             Grid = CoreManager.Instance.Game.Grid;
         }
 
-        public void RotateCard(BoardCardCore card, int angle)
+        public void RotateCard(BoardCardBehaviour card, int angle)
         {
             card.Navigation.RotateCardObject(angle);
             card.BoardCard.AdvanceCardSetAngleBy(angle);
         }
 
-        public void MoveCard(BoardCardCore card, BoardField targetField, bool isOrdered = false)
+        public void MoveCard(BoardCardBehaviour card, BoardField targetField, bool isOrdered = false)
         {
             AlignmentEnum cardAlign = card.BoardCard.OccupiedField.Align;
             BoardCard backupCard = card.BoardCard.OccupiedField.BackupCard;
@@ -37,7 +37,7 @@ namespace Berty.BoardCards.Managers
             if (!isOrdered) card.Navigation.HandleNewMovementSkillEffect();
         }
 
-        public void SwapCards(BoardCardCore firstCardObject, BoardCardCore secondCardObject)
+        public void SwapCards(BoardCardBehaviour firstCardObject, BoardCardBehaviour secondCardObject)
         {
             // Get variables
             BoardCard firstOccupantCard = firstCardObject.BoardCard;
@@ -48,8 +48,8 @@ namespace Berty.BoardCards.Managers
             BoardCard secondBackupCard = secondField.BackupCard;
             AlignmentEnum firstFieldAlign = firstField.Align;
             AlignmentEnum secondFieldAlign = secondField.Align;
-            FieldBehaviour firstFieldObject = firstCardObject.ParentField;
-            FieldBehaviour secondFieldObject = secondCardObject.ParentField;
+            FieldBehaviour firstFieldObject = firstCardObject.Core.ParentField;
+            FieldBehaviour secondFieldObject = secondCardObject.Core.ParentField;
             // Update entities
             firstField.PlaceExistingCard(secondOccupantCard, secondFieldAlign);
             firstField.SetBackupCard(secondBackupCard);

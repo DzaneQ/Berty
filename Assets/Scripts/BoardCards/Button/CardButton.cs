@@ -16,10 +16,10 @@ namespace Berty.BoardCards.Button
         private Collider coll;
         [SerializeField] private Material dexterityMaterial;
         private Material neutralMaterial;
-        private bool isActivated;
+        private bool isActivatedByState;
         private Camera cam;
 
-        public bool IsActivated => isActivated;
+        public bool IsActivated => isActivatedByState;
 
         private void Awake()
         {
@@ -27,7 +27,7 @@ namespace Berty.BoardCards.Button
             rend = GetComponent<Renderer>();
             coll = GetComponent<Collider>();
             neutralMaterial = rend.material;
-            isActivated = false;
+            isActivatedByState = false;
             cam = Camera.main;
         }
 
@@ -46,22 +46,20 @@ namespace Berty.BoardCards.Button
             return hit.transform == transform.parent.parent;
         }
 
+        // BUG: After animating, not all buttons are enabled on focus until this method is called again.
+        // TODO: Enabling buttons should process by enabling their parent object.
         public void EnableButton()
-        {
-            if (!isActivated) return;
-            //Debug.Log($"Enable attempt: {name} on card: {card.name}");
-            if (!card.Navigation.IsInteractableEnabled()) return;
-            if (!CanNavigate()) return;
-            if (!IsCursorFocusedOnCard()) return;
-            //if (card != card.Grid.Turn.GetFocusedCard()) return;
-            //Debug.Log("Enable: " + name + " on card: " + card.name);
+        {                                                      // Depending on...
+            if (!isActivatedByState) return;                  // ...the card's state
+            if (!CanNavigate()) return;                      // ...the card's positioning
+            if (card.Navigation.IsCardAnimating()) return;  // ...whether the card is animating
+            if (!IsCursorFocusedOnCard()) return;          // ...whether the cursor is on the card
             rend.enabled = true;
             coll.enabled = true;
         }
 
         public void DisableButton()
         {
-            //Debug.Log("Disable: " + name + " on card: " + card.name);
             rend.enabled = false;
             coll.enabled = false;
         }
@@ -69,32 +67,30 @@ namespace Berty.BoardCards.Button
         public void ActivateDexterityButton()
         {
             ChangeButtonToDexterity();
-            isActivated = true;
+            isActivatedByState = true;
             EnableButton();
         }
 
         public void ActivateNeutralButton()
         {
             ChangeButtonToNeutral();
-            isActivated = true;
+            isActivatedByState = true;
             EnableButton();
         }
 
         public void DeactivateButton()
         {
-            isActivated = false;
+            isActivatedByState = false;
             DisableButton();
         }
 
         private void ChangeButtonToDexterity()
         {
-            //Debug.Log("Changed to dexterity: " + name);
             rend.material = dexterityMaterial;
         }
 
         private void ChangeButtonToNeutral()
         {
-            //Debug.Log("Changed to neutral: " + name);
             rend.material = neutralMaterial;
         }
 

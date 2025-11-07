@@ -47,7 +47,7 @@ namespace Berty.Gameplay.Managers
             OnNewTurn?.Invoke();
         }
 
-        public void RaiseOnPaymentStart(BoardCardCore card)
+        public void RaiseOnPaymentStart(BoardCardBehaviour card)
         {
             OnPaymentStart?.Invoke(card, EventArgs.Empty);
         }
@@ -62,7 +62,7 @@ namespace Berty.Gameplay.Managers
             OnPaymentCancel?.Invoke();
         }
 
-        public void RaiseOnDirectlyAttacked(BoardCardCore attacker)
+        public void RaiseOnDirectlyAttacked(BoardCardBehaviour attacker)
         {
             DirectAttackEventArgs args = new()
             {
@@ -71,32 +71,32 @@ namespace Berty.Gameplay.Managers
             OnDirectlyAttacked?.Invoke(attacker, args);
         }
 
-        public void RaiseOnAttackNewStand(BoardCardCore defender)
+        public void RaiseOnAttackNewStand(BoardCardBehaviour defender)
         {
             OnAttackNewStand?.Invoke(defender, EventArgs.Empty);
         }
 
-        public void RaiseOnNewCharacter(BoardCardCore newCard)
+        public void RaiseOnNewCharacter(BoardCardBehaviour newCard)
         {
             OnNewCharacter?.Invoke(newCard, EventArgs.Empty);
         }
 
-        public void RaiseOnMovedCharacter(BoardCardCore movedCard)
+        public void RaiseOnMovedCharacter(BoardCardBehaviour movedCard)
         {
             OnMovedCharacter?.Invoke(movedCard, EventArgs.Empty);
         }
 
-        public void RaiseOnCharacterDeath(BoardCardCore dyingCard)
+        public void RaiseOnCharacterDeath(BoardCardBehaviour dyingCard)
         {
             OnCharacterDeath?.Invoke(dyingCard, EventArgs.Empty);
         }
 
-        public void RaiseOnCharacterSpecialEffect(BoardCardCore specialCard)
+        public void RaiseOnCharacterSpecialEffect(BoardCardBehaviour specialCard)
         {
             OnCharacterSpecialEffect?.Invoke(specialCard, EventArgs.Empty);
         }
 
-        public void RaiseOnValueChange(BoardCardCore statChangedCard, int value)
+        public void RaiseOnValueChange(BoardCardBehaviour statChangedCard, int value)
         {
             ValueChangeEventArgs args = new()
             {
@@ -120,7 +120,7 @@ namespace Berty.Gameplay.Managers
             OnStatusRemoved?.Invoke(null, args);
         }
 
-        public void RaiseOnHighlightStart(BoardCardCore focusedCard)
+        public void RaiseOnHighlightStart(BoardCardBehaviour focusedCard)
         {
             DirectAttackEventArgs args = new()
             {

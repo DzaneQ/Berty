@@ -7,7 +7,7 @@ namespace Berty.Gameplay.Managers
 {
     public class PaymentManager : ManagerSingleton<PaymentManager>
     {
-        public void CallPayment(int price, BoardCardCore card)
+        public void CallPayment(int price, BoardCardBehaviour card)
         {
             SelectionManager.Instance.DemandPayment(price);
             ButtonObjectManager.Instance.DisplayUndoButton();

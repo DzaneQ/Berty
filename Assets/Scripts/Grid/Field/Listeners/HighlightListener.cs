@@ -35,14 +35,14 @@ namespace Berty.Grid.Field.Listeners
 
         private void HandleHighlightStart(object sender, DirectAttackEventArgs args)
         {
-            BoardCardCore attacker = (BoardCardCore)sender;
-            if (attacker.ParentField == field) attacker.Navigation.EnableButtons();
+            BoardCardBehaviour attacker = (BoardCardBehaviour)sender;
+            if (attacker.ParentField == field) attacker.StateMachine.EnableButtons();
             if (!args.AttackedFields.Contains(field.BoardField))
             {
                 if (attacker != field.ChildCard) field.Unhighlight();
                 return;
-            }     
-            BoardCardCore defender = field.ChildCard;
+            }
+            BoardCardBehaviour defender = field.ChildCard;
             if (defender != null)
             {
                 Vector2Int distanceToAttacker = defender.BoardCard.GetDistanceTo(attacker.BoardCard);
@@ -59,7 +59,7 @@ namespace Berty.Grid.Field.Listeners
 
         private void HandleHighlightEnd()
         {
-            if (field.ChildCard != null) field.ChildCard.Navigation.DisableButtons();
+            if (field.ChildCard != null) field.ChildCard.StateMachine.DisableButtons();
             field.Unhighlight();
         }
     }

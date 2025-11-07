@@ -12,13 +12,11 @@ namespace Berty.BoardCards.Listeners
 {
     public class BoardCardInput : BoardCardBehaviour
     {
-        private Game game;
         private Camera cam;
 
         protected override void Awake()
         {
             base.Awake();
-            game = CoreManager.Instance.Game;
             cam = Camera.main;
         }
 
@@ -27,23 +25,10 @@ namespace Berty.BoardCards.Listeners
             // Enabling toggle from the inspector.
         }
 
-        void OnEnable()
-        {
-            if (!IsCursorOnCard()) return;
-            Core.Navigation.EnableButtons();
-            EventManager.Instance.RaiseOnHighlightStart(Core);
-
-        }
-
-        void OnDisable()
-        {
-            Core.Navigation.DisableButtons();
-        }
-
         public void OnMouseOver()
         {
             if (IsLeftClicked()) HandleLeftClick();
-            else if (IsRightClicked()) HandleSideClick();
+            else if (IsRightClicked()) HandleRightClick();
         }
 
         public void OnMouseEnter()
@@ -85,29 +70,31 @@ namespace Berty.BoardCards.Listeners
         {
             if (!IsLeftClicked()) return;
             if (TryPuttingAnExtraCard()) return;
-            switch (Core.CardState)
-            {
-                case CardStateEnum.Active:
-                    BoardCardActionManager.Instance.PrepareToAttack(Core);
-                    break;
-                case CardStateEnum.NewTransform:
-                case CardStateEnum.NewCard:
-                case CardStateEnum.Attacking:
-                    BoardCardActionManager.Instance.ConfirmPayment(Core);
-                    break;
-                case CardStateEnum.Idle:
-                case CardStateEnum.Telekinetic:
-                    break;
-                case CardStateEnum.Effectable:
-                    BoardCardActionManager.Instance.ApplySpecialEffect(Core);
-                    break;
-                default:
-                    throw new Exception("Clicked on card of an unknown state");
-            }
+            StateMachine.HandleLeftClick();
+            //switch (Core.CardState)
+            //{
+            //    case CardStateEnum.Active:
+            //        BoardCardActionManager.Instance.PrepareToAttack(Core);
+            //        break;
+            //    case CardStateEnum.NewTransform:
+            //    case CardStateEnum.NewCard:
+            //    case CardStateEnum.Attacking:
+            //        BoardCardActionManager.Instance.ConfirmPayment(Core);
+            //        break;
+            //    case CardStateEnum.Idle:
+            //    case CardStateEnum.Telekinetic:
+            //        break;
+            //    case CardStateEnum.Effectable:
+            //        BoardCardActionManager.Instance.ApplySpecialEffect(Core);
+            //        break;
+            //    default:
+            //        throw new Exception("Clicked on card of an unknown state");
+            //}
         }
 
-        private void HandleSideClick()
+        private void HandleRightClick()
         {
+            if (BoardCard.Align != game.CurrentAlignment) return;
             switch (Core.BoardCard.GetSkill())
             {
                 case SkillEnum.GotkaBerta:
@@ -126,7 +113,7 @@ namespace Berty.BoardCards.Listeners
             if (!HasSelectedOneCard()) return false;
             if (Core.BoardCard.GetSkill() != SkillEnum.TrenerPokebertow) return false;
             if (Core.BoardCard.Align != game.CurrentAlignment) return false;
-            Core.ParentField.SendMessage("PutTheCard");
+            Core.ParentField.PutTheCard();
             return true;
         }
 

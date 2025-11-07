@@ -19,27 +19,14 @@ namespace Berty.BoardCards.Behaviours
 {
     public class BoardCardCore : BoardCardBehaviour
     {
-        private Game Game;
-        private CardStateEnum _cardState;
+        public new BoardCard BoardCard { get; private set; }
+        public new FieldBehaviour ParentField { get; private set; }
         private SpriteRenderer characterSprite;
         private Color defaultColor;
         private Rigidbody cardRB;
         private AudioSource soundSource;
-        private List<BoardCardCore> _attackedCards = new List<BoardCardCore>();
-        public IReadOnlyList<BoardCardCore> AttackedCards => _attackedCards;
-
-        public BoardCard BoardCard { get; private set; }
-        public CardStateEnum CardState
-        {
-            get => _cardState;
-            private set
-            {
-                if (_cardState == value) return;
-                _cardState = value;
-                Navigation.ActivateButtonsBasedOnState();
-            }
-        }
-        public FieldBehaviour ParentField { get; private set; }
+        private List<BoardCardBehaviour> _attackedCards = new List<BoardCardBehaviour>();
+        public IReadOnlyList<BoardCardBehaviour> AttackedCards => _attackedCards;
         public Sprite Sprite => characterSprite.sprite;
         public AudioSource SoundSource => soundSource;
 
@@ -47,13 +34,12 @@ namespace Berty.BoardCards.Behaviours
         {
             base.Awake();
             BoardCardCollectionManager.Instance.AddCardToCollection(this);
-            Game = CoreManager.Instance.Game;
             characterSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
             defaultColor = characterSprite.color;
             soundSource = GetComponent<AudioSource>();
             soundSource.volume = SettingsManager.Instance.Volume;
             ParentField = GetComponentInParent<FieldBehaviour>();
-            BoardCard = ParentField.BoardField.AddNewCard(SelectionManager.Instance.GetPendingCardOrThrow(), Game.CurrentAlignment);
+            BoardCard = ParentField.BoardField.AddNewCard(SelectionManager.Instance.GetPendingCardOrThrow(), game.CurrentAlignment);
         }
 
         private void Start()
@@ -62,7 +48,6 @@ namespace Berty.BoardCards.Behaviours
             DisableBackupCard();
             AdjustInitRotation();
             UpdateObjectFromCharacterConfig();
-            CardState = CardStateEnum.NewCard;
             ParentField.UpdateField();
             InitializeRigidbody();
         }
@@ -104,96 +89,14 @@ namespace Berty.BoardCards.Behaviours
             ParentField = fieldBehaviour;
         }
 
-        public void SetMainState()
-        {
-            if (BoardCard == null || BoardCard.OccupiedField == null)
-            {
-                SetIdle();
-                return;
-            }
-            AlignmentEnum currentAlign = Game.CurrentAlignment;
-            AlignmentEnum cardAlign = BoardCard.Align;
-            if (currentAlign == cardAlign && !BoardCard.IsTired) SetActive();
-            else if (IsEligibleForTelekineticState()) SetTelekinetic();
-            else SetIdle();
-        }
-
-        public void SetActive()
-        {
-            CardState = CardStateEnum.Active;
-        }
-
-        public void SetIdle()
-        {
-            CardState = CardStateEnum.Idle;
-        }
-
-        public void SetTelekinetic()
-        {
-            CardState = CardStateEnum.Telekinetic;
-        }
-
-        public void SetAttacking()
+        public void ClearAttackedCardsCache()
         {
             _attackedCards.Clear();
-            CardState = CardStateEnum.Attacking;
-        }
-
-        public void SetEffectable()
-        {
-            CardState = CardStateEnum.Effectable;
-        }
-
-        public bool IsForPay()
-        {
-            if (CardState == CardStateEnum.NewCard) return true;
-            if (CardState == CardStateEnum.NewTransform) return true;
-            if (CardState == CardStateEnum.Attacking) return true;
-            return false;
-        }
-
-        public bool IsEligibleForTelekineticState()
-        {
-            Status telekinesisArea = Game.GetStatusByNameOrNull(StatusEnum.TelekineticArea);
-            if (telekinesisArea == null) return false;
-            if (telekinesisArea.Provider.IsTired) return false;
-            if (ApplySkillEffectManager.Instance.DoesPreventEffect(BoardCard, telekinesisArea.Provider)) return false;
-            return telekinesisArea.Provider.Align == Game.CurrentAlignment;
-        }
-
-        public bool IsDexterityBased()
-        {
-            if (CardState == CardStateEnum.Active) return true;
-            if (CardState == CardStateEnum.Telekinetic) return true;
-            return false;
-        }
-
-        public bool IsOnNewMove()
-        {
-            if (CardState != CardStateEnum.NewTransform) return false;
-            return Navigation.IsAnyMoveButtonActivated();
-        }
-
-        public void SetNewTransformFromNavigation(NavigationEnum navigation)
-        {
-            if (!IsDexterityBased()) return;
-            NavigationEnum oppositeNavigation = navigation switch
-            {
-                NavigationEnum.MoveUp => NavigationEnum.MoveDown,
-                NavigationEnum.MoveRight => NavigationEnum.MoveLeft,
-                NavigationEnum.MoveDown => NavigationEnum.MoveUp,
-                NavigationEnum.MoveLeft => NavigationEnum.MoveRight,
-                NavigationEnum.RotateLeft => NavigationEnum.RotateRight,
-                NavigationEnum.RotateRight => NavigationEnum.RotateLeft,
-                _ => throw new ArgumentException("Invalid navigation for new transform.")
-            };
-            Navigation.ActivateNeutralButton(oppositeNavigation);
-            CardState = CardStateEnum.NewTransform;
         }
 
         // WARNING: The code logic applies successful attack on riposte and attack new stand as it's basic attack.
         //    But it's only used when ordered attack is applied so it doesn't matter... until there's a new code that does.
-        public void MarkSuccessfulAttack(BoardCardCore card)
+        public void MarkSuccessfulAttack(BoardCardBehaviour card)
         {
             _attackedCards.Add(card);
         }
@@ -202,9 +105,8 @@ namespace Berty.BoardCards.Behaviours
         {
             if (BoardCard == null) return;
             if (Navigation.IsCardAnimating()) return;
-            if (!Bars.AreBarsAnimating()) Navigation.EnableInteraction();
+            if (!Bars.AreBarsAnimating()) StateMachine.EnableButtons();
             Bars.ShowBars();
-            //HighlightIfFocused();
             CheckpointManager.Instance.HandleIfRequested();
         }
 
@@ -220,7 +122,7 @@ namespace Berty.BoardCards.Behaviours
         {
             if (BoardCard.GetSkill() != SkillEnum.KrolPopuBert)
                 throw new Exception($"KrolPopuBert effect is casted by {BoardCard.CharacterConfig.Name}");
-            CharacterConfig newCard = Game.CardPile.GetRandomKidFromPile();
+            CharacterConfig newCard = game.CardPile.GetRandomKidFromPile();
             if (newCard == null)
             {
                 KillCard();
@@ -230,7 +132,7 @@ namespace Berty.BoardCards.Behaviours
             EventManager.Instance.RaiseOnCharacterDeath(this);
             DirectionEnum direction = (DirectionEnum)BoardCard.GetAngle();
             AlignmentEnum align = BoardCard.Align;
-            Game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
+            game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
             BoardCard.DeactivateCard();
             BoardCard = ParentField.BoardField.AddNewCard(newCard, align);
             BoardCard.SetDirection(direction);
@@ -245,8 +147,8 @@ namespace Berty.BoardCards.Behaviours
         {
             StatusManager.Instance.RemoveStatusFromProvider(BoardCard);
             EventManager.Instance.RaiseOnCharacterDeath(this);      
-            if (BoardCard.GetSkill() == SkillEnum.BertWho) Game.CardPile.PutCardToTheBottomPile(BoardCard.CharacterConfig);
-            else Game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
+            if (BoardCard.GetSkill() == SkillEnum.BertWho) game.CardPile.PutCardToTheBottomPile(BoardCard.CharacterConfig);
+            else game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
             RemoveCard();
         }
 

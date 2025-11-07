@@ -23,10 +23,10 @@ namespace Berty.BoardCards.Managers
             Grid = CoreManager.Instance.Game.Grid;
         }
 
-        public void OrderRotateCard(BoardCardCore card, NavigationEnum navigation)
+        public void OrderRotateCard(BoardCardBehaviour card, NavigationEnum navigation)
         {
-            if (card.IsDexterityBased() && card.BoardCard.IsTired) return;
-            SoundManager.Instance.MoveSound(card.SoundSource);
+            if (card.StateMachine.IsDexterityBased() && card.BoardCard.IsTired) return;
+            SoundManager.Instance.MoveSound(card.Core.SoundSource);
             int angle = navigation switch
             {
                 NavigationEnum.RotateLeft => -90,
@@ -34,21 +34,21 @@ namespace Berty.BoardCards.Managers
                 _ => throw new ArgumentException("Invalid NavigationEnum for RotateCard")
             };
             CardNavigationManager.Instance.RotateCard(card, angle);
-            if (card.CardState == CardStateEnum.NewTransform)
+            if (card.StateMachine.HasState(CardStateEnum.NewTransform))
             {
                 PaymentManager.Instance.CancelPayment();
                 return;
             }
-            if (!card.IsDexterityBased()) return;
-            card.SetNewTransformFromNavigation(navigation);
+            if (!card.StateMachine.IsDexterityBased()) return;
+            card.StateMachine.SetNewTransformStateFromNavigation(navigation);
             PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity, card);
             ButtonObjectManager.Instance.HideCornerButton();
         }
 
-        public void OrderMoveCard(BoardCardCore card, NavigationEnum navigation)
+        public void OrderMoveCard(BoardCardBehaviour card, NavigationEnum navigation)
         {
-            if (card.IsDexterityBased() && card.BoardCard.IsTired) return;
-            SoundManager.Instance.MoveSound(card.SoundSource);
+            if (card.StateMachine.IsDexterityBased() && card.BoardCard.IsTired) return;
+            SoundManager.Instance.MoveSound(card.Core.SoundSource);
             Vector2Int distance = navigation switch
             {
                 NavigationEnum.MoveUp => new Vector2Int(0, 1),
@@ -59,47 +59,47 @@ namespace Berty.BoardCards.Managers
             };
             BoardField targetField = Grid.GetFieldDistancedFromCardOrThrow(distance.x, distance.y, card.BoardCard);
             CardNavigationManager.Instance.MoveCard(card, targetField, true);
-            if (card.CardState == CardStateEnum.NewTransform)
+            if (card.StateMachine.HasState(CardStateEnum.NewTransform))
             {
                 PaymentManager.Instance.CancelPayment();
                 return;
             }
-            if (!card.IsDexterityBased()) return;
-            card.SetNewTransformFromNavigation(navigation);
+            if (!card.StateMachine.IsDexterityBased()) return;
+            card.StateMachine.SetNewTransformStateFromNavigation(navigation);
             PaymentManager.Instance.CallPayment(GetPriceForMoving(card), card);
             ButtonObjectManager.Instance.HideCornerButton();
         }
 
-        public void PrepareToAttack(BoardCardCore card)
+        public void PrepareToAttack(BoardCardBehaviour card)
         {
             if (!CanOrderAttack(card)) return;
-            card.SetAttacking();
+            card.StateMachine.SetAttacking();
             PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity, card);
         }
 
-        public void ConfirmPayment(BoardCardCore card)
+        public void ConfirmPayment(BoardCardBehaviour card)
         {
             PaymentManager.Instance.ConfirmPayment();
         }
 
-        public void ApplySpecialEffect(BoardCardCore card)
+        public void ApplySpecialEffect(BoardCardBehaviour card)
         {
             Status status = Grid.Game.GetStatusByNameOrThrow(StatusEnum.ClickToApplyEffect);
-            BoardCardCore source = BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(status.Provider);
+            BoardCardBehaviour source = BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(status.Provider);
             card.StatChange.AdvanceStrength(2, source);
             card.StatChange.AdvanceHealth(1, source);
             StatusManager.Instance.RemoveStatus(status);
         }
 
-        private int GetPriceForMoving(BoardCardCore card)
+        private int GetPriceForMoving(BoardCardBehaviour card)
         {
-            if (card.IsEligibleForTelekineticState())
+            if (card.StateMachine.IsEligibleForTelekineticState())
                 return Mathf.Min(6 - card.BoardCard.Stats.Dexterity,
                     6 - Grid.Game.GetStatusByNameOrThrow(StatusEnum.TelekineticArea).Provider.Stats.Dexterity);
             return 6 - card.BoardCard.Stats.Dexterity;
         }
 
-        private bool CanOrderAttack(BoardCardCore card)
+        private bool CanOrderAttack(BoardCardBehaviour card)
         {
             if (card.BoardCard.HasAttacked) return false;
             if (card.BoardCard.IsTired) return false;
@@ -107,8 +107,8 @@ namespace Berty.BoardCards.Managers
             Status venturaStatus = Grid.Game.GetStatusByNameOrNull(StatusEnum.Ventura);
             if (venturaStatus == null) return true;
             if (ApplySkillEffectManager.Instance.DoesPreventEffect(card.BoardCard, venturaStatus.Provider)) return true;
-            if (!Grid.AreNeighboring(card.ParentField.BoardField, venturaStatus.Provider.OccupiedField)) return true;
-            if (Grid.AreAligned(card.ParentField.BoardField, venturaStatus.Provider.OccupiedField)) return true;
+            if (!Grid.AreNeighboring(card.Core.ParentField.BoardField, venturaStatus.Provider.OccupiedField)) return true;
+            if (Grid.AreAligned(card.Core.ParentField.BoardField, venturaStatus.Provider.OccupiedField)) return true;
             if (card.BoardCard.CanAttackCard(venturaStatus.Provider)) return true;
             return false;
         }
