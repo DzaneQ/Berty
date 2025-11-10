@@ -16,6 +16,11 @@ namespace Berty.BoardCards.State
 
         public void OnStateEnter()
         {
+            UpdateButtons();
+        }
+
+        public void UpdateButtons()
+        {
             DeactivateAllButtons();
             ActivateButtonSet();
         }

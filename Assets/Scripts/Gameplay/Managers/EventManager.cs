@@ -3,6 +3,7 @@ using Berty.BoardCards.Entities;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Grid.Entities;
+using Berty.Grid.Field.Behaviour;
 using Berty.Grid.Field.Entities;
 using Berty.Utility;
 using System;
@@ -31,6 +32,7 @@ namespace Berty.Gameplay.Managers
         public event EventHandler<ValueChangeEventArgs> OnValueChange;
         public event EventHandler OnStatusUpdated;
         public event EventHandler<StatusEventArgs> OnStatusRemoved;
+        public event EventHandler OnFieldFreed;
         public event EventHandler<DirectAttackEventArgs> OnHighlightStart;
         public event Action OnHighlightEnd;
         public event EventHandler<ValidateOutputEventArgs> OnCheckpointRequest;
@@ -118,6 +120,12 @@ namespace Berty.Gameplay.Managers
                 Alignment = align
             };
             OnStatusRemoved?.Invoke(null, args);
+        }
+
+        public void RaiseOnFieldFreed(FieldBehaviour field)
+        {
+            Debug.Log("Raising on field freed");
+            OnFieldFreed?.Invoke(field, EventArgs.Empty);
         }
 
         public void RaiseOnHighlightStart(BoardCardBehaviour focusedCard)

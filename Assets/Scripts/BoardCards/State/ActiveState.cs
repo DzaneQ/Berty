@@ -13,12 +13,12 @@ namespace Berty.BoardCards.State
 
         protected override void ActivateButtonSet()
         {
-            stateMachine.GetButton(NavigationEnum.RotateLeft).ActivateDexterityButton();
-            stateMachine.GetButton(NavigationEnum.RotateRight).ActivateDexterityButton();
-            stateMachine.GetButton(NavigationEnum.MoveUp).ActivateDexterityButton();
-            stateMachine.GetButton(NavigationEnum.MoveRight).ActivateDexterityButton();
-            stateMachine.GetButton(NavigationEnum.MoveDown).ActivateDexterityButton();
-            stateMachine.GetButton(NavigationEnum.MoveLeft).ActivateDexterityButton();
+            stateMachine.GetButton(NavigationEnum.RotateLeft).TryActivatingDexterityButton();
+            stateMachine.GetButton(NavigationEnum.RotateRight).TryActivatingDexterityButton();
+            stateMachine.GetButton(NavigationEnum.MoveUp).TryActivatingDexterityButton();
+            stateMachine.GetButton(NavigationEnum.MoveRight).TryActivatingDexterityButton();
+            stateMachine.GetButton(NavigationEnum.MoveDown).TryActivatingDexterityButton();
+            stateMachine.GetButton(NavigationEnum.MoveLeft).TryActivatingDexterityButton();
         }
 
         public override void HandleLeftClick()

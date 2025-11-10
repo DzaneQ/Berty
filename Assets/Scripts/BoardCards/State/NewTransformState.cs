@@ -17,7 +17,7 @@ namespace Berty.BoardCards.State
 
         protected override void ActivateButtonSet()
         {
-            stateMachine.GetButton(GetNavigationOppositeTo(navigation)).ActivateNeutralButton();
+            stateMachine.GetButton(GetNavigationOppositeTo(navigation)).TryActivatingNeutralButton();
         }
 
         public override void HandleLeftClick()

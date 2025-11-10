@@ -1,17 +1,7 @@
-using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.ConfigData;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.Grid.Entities;
-using Berty.Grid.Field.Entities;
 using Berty.Utility;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
-using UnityEditorInternal;
-using UnityEngine;
 
 namespace Berty.Debugging
 {
@@ -28,9 +18,9 @@ namespace Berty.Debugging
 
         public void TakeCardIfInPile(AlignmentEnum align)
         {
-            //if (align == AlignmentEnum.Player) game.CardPile.PullCardIfInPile(SkillEnum.MisiekBert, align);
-            //if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(SkillEnum.RoninBert, align);
-            //if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(SkillEnum.BertaSJW, align);
+            if (align == AlignmentEnum.Player) game.CardPile.PullCardIfInPile(SkillEnum.MisiekBert, align);
+            if (align == AlignmentEnum.Player) game.CardPile.PullCardIfInPile(SkillEnum.CheBert, align);
+            if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(SkillEnum.Zombert, align);
         }
     }
 #else

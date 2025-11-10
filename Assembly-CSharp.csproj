@@ -158,7 +158,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\RotateRight.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Listeners\CheckpointListener.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\AstronautaBert.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardStatChange.cs" />
     <Compile Include="Assets\Scripts\Enums\RoleEnum.cs" />
@@ -166,12 +165,12 @@
     <Compile Include="Assets\Scripts\Grid\Entities\BoardGrid.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\UnselectedCard.cs" />
     <Compile Include="Assets\Scripts\Menu\NavigationMenu.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Listeners\CharacterSkillListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\CardState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Characters\Init\CharacterData.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IBarWidth.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Listeners\CardWitnessListener.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\StatusListener.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\SelectionManager.cs" />
@@ -250,6 +249,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\CheBert.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Collection\HandCardCollection.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Listeners\CheckpointValidatorListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

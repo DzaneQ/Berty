@@ -13,8 +13,8 @@ namespace Berty.BoardCards.State
         protected override void ActivateButtonSet()
         {
             if (!IsTheOnlyCardOnBoard()) return;
-            stateMachine.GetButton(NavigationEnum.RotateLeft).ActivateNeutralButton();
-            stateMachine.GetButton(NavigationEnum.RotateRight).ActivateNeutralButton();
+            stateMachine.GetButton(NavigationEnum.RotateLeft).TryActivatingNeutralButton();
+            stateMachine.GetButton(NavigationEnum.RotateRight).TryActivatingNeutralButton();
         }
 
         public override void HandleLeftClick()

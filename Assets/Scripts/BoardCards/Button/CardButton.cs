@@ -16,10 +16,7 @@ namespace Berty.BoardCards.Button
         private Collider coll;
         [SerializeField] private Material dexterityMaterial;
         private Material neutralMaterial;
-        private bool isActivatedByState;
         private Camera cam;
-
-        public bool IsActivated => isActivatedByState;
 
         private void Awake()
         {
@@ -27,7 +24,6 @@ namespace Berty.BoardCards.Button
             rend = GetComponent<Renderer>();
             coll = GetComponent<Collider>();
             neutralMaterial = rend.material;
-            isActivatedByState = false;
             cam = Camera.main;
         }
 
@@ -48,40 +44,30 @@ namespace Berty.BoardCards.Button
 
         // BUG: After animating, not all buttons are enabled on focus until this method is called again.
         // TODO: Enabling buttons should process by enabling their parent object.
-        public void EnableButton()
-        {                                                      // Depending on...
-            if (!isActivatedByState) return;                  // ...the card's state
-            if (!CanNavigate()) return;                      // ...the card's positioning
-            if (card.Navigation.IsCardAnimating()) return;  // ...whether the card is animating
-            if (!IsCursorFocusedOnCard()) return;          // ...whether the cursor is on the card
+        public void ActivateButton()
+        {
             rend.enabled = true;
             coll.enabled = true;
         }
 
-        public void DisableButton()
+        public void DeactivateButton()
         {
             rend.enabled = false;
             coll.enabled = false;
         }
 
-        public void ActivateDexterityButton()
+        public void TryActivatingDexterityButton()
         {
+            if (!CanNavigate()) return;
             ChangeButtonToDexterity();
-            isActivatedByState = true;
-            EnableButton();
+            ActivateButton();
         }
 
-        public void ActivateNeutralButton()
+        public void TryActivatingNeutralButton()
         {
+            if (!CanNavigate()) return;
             ChangeButtonToNeutral();
-            isActivatedByState = true;
-            EnableButton();
-        }
-
-        public void DeactivateButton()
-        {
-            isActivatedByState = false;
-            DisableButton();
+            ActivateButton();
         }
 
         private void ChangeButtonToDexterity()

@@ -8,10 +8,9 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Animation
 {
-    public class AnimatedMoveCard : MonoBehaviour, IMoveCard
+    public class AnimatedMoveCard : BoardCardBehaviour, IMoveCard
     {
         private float durationSeconds;
-        private BoardCardCore card;
         private Vector3 targetPosition;
         private int _coroutineCount;
         private Transform cardSetTransform;
@@ -22,13 +21,14 @@ namespace Berty.BoardCards.Animation
             private set
             {
                 _coroutineCount = value;
-                if (_coroutineCount == 0) card.HandleAnimationEnd();
+                if (_coroutineCount == 0) Core.HandleAnimationEnd();
                 if (_coroutineCount < 0) throw new Exception($"Negative coroutine count for card {name}!");
             }
         }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _coroutineCount = 0;
             durationSeconds = CoreManager.Instance.Game.GameConfig.AnimationSeconds;
         }
@@ -36,7 +36,6 @@ namespace Berty.BoardCards.Animation
         void Start()
         {
             cardSetTransform = transform.parent;
-            card = GetComponent<BoardCardCore>();
         }
 
         public void ToField(FieldBehaviour field)
@@ -46,10 +45,10 @@ namespace Berty.BoardCards.Animation
 
         private IEnumerator MoveCardCoroutine(FieldBehaviour target)
         {
-            AlignmentEnum align = card.BoardCard.Align;
-            card.StateMachine.DisableButtons();
+            AlignmentEnum align = BoardCard.Align;
+            EventManager.Instance.RaiseOnHighlightEnd();
             yield return MoveToField(target, durationSeconds);
-            card.Navigation.HandleAfterMoveAnimation();
+            Navigation.HandleAfterMoveAnimation();
             yield return null;
         }
 

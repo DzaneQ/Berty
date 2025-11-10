@@ -5,6 +5,7 @@ using Berty.Characters.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.Grid.Field.Behaviour;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
 {
-    public class CharacterSkillListener : BoardCardBehaviour
+    public class CardWitnessListener : BoardCardBehaviour
     {
         private void OnEnable()
         {
@@ -21,6 +22,7 @@ namespace Berty.BoardCards.Listeners
             EventManager.Instance.OnCharacterSpecialEffect += HandleCharacterSpecialEffect;
             EventManager.Instance.OnValueChange += HandleValueChange;
             EventManager.Instance.OnCharacterDeath += HandleCharacterDeath;
+            EventManager.Instance.OnFieldFreed += HandleOnFieldFreed;
         }
 
         private void OnDisable()
@@ -31,6 +33,7 @@ namespace Berty.BoardCards.Listeners
             EventManager.Instance.OnCharacterSpecialEffect -= HandleCharacterSpecialEffect;
             EventManager.Instance.OnValueChange -= HandleValueChange;
             EventManager.Instance.OnCharacterDeath -= HandleCharacterDeath;
+            EventManager.Instance.OnFieldFreed -= HandleOnFieldFreed;
         }
 
         private void HandleNewCharacter(object sender, EventArgs args)
@@ -39,10 +42,8 @@ namespace Berty.BoardCards.Listeners
             HandleNewCardWitness(Core, newCharacter);
         }
 
-        // BUG: This method is run even when cancelling move during NewTransform.
         private void HandleMovedCharacter(object sender, EventArgs args)
         {
-            Debug.Log("Handling moved character");
             BoardCardBehaviour movedCharacter = (BoardCardBehaviour)sender;
             if (movedCharacter.BoardCard == null) return;
             HandleMovedCardWitness(Core, movedCharacter);
@@ -65,6 +66,15 @@ namespace Berty.BoardCards.Listeners
         {
             BoardCardBehaviour sourceCharacter = (BoardCardBehaviour)sender;
             HandleCustomEffect(Core, sourceCharacter, args.Delta);
+        }
+
+        private void HandleOnFieldFreed(object sender, EventArgs args)
+        {
+            Debug.Log($"Receiving on field freed for {name}");
+            FieldBehaviour field = (FieldBehaviour)sender;
+            if (!game.Grid.AreNeighboring(field.BoardField, ParentField.BoardField)) return;
+            StateMachine.UpdateButtons();
+            Debug.Log($"Updated buttons for {name}");
         }
 
         private void HandleNewCardWitness(BoardCardBehaviour witness, BoardCardBehaviour newCard)

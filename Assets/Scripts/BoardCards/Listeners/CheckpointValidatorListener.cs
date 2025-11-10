@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
 {
-    public class CheckpointListener : BoardCardBehaviour
+    public class CheckpointValidatorListener : BoardCardBehaviour
     {
         private void OnEnable()
         {

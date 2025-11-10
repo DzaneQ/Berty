@@ -107,6 +107,7 @@ namespace Berty.Characters.Managers
             }
         }
 
+        // BUG: Zombert doesn't decrease power of enemy CheBert on successful attack
         public void AfterHealthChange(BoardCardBehaviour target, int value, BoardCardBehaviour source)
         {
             switch (target.BoardCard.GetSkill())

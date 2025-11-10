@@ -29,6 +29,7 @@ namespace Berty.BoardCards.Behaviours
         public IReadOnlyList<BoardCardBehaviour> AttackedCards => _attackedCards;
         public Sprite Sprite => characterSprite.sprite;
         public AudioSource SoundSource => soundSource;
+        private Camera cam;
 
         protected override void Awake()
         {
@@ -40,6 +41,7 @@ namespace Berty.BoardCards.Behaviours
             soundSource.volume = SettingsManager.Instance.Volume;
             ParentField = GetComponentInParent<FieldBehaviour>();
             BoardCard = ParentField.BoardField.AddNewCard(SelectionManager.Instance.GetPendingCardOrThrow(), game.CurrentAlignment);
+            cam = Camera.main;
         }
 
         private void Start()
@@ -100,14 +102,25 @@ namespace Berty.BoardCards.Behaviours
         {
             _attackedCards.Add(card);
         }
+
+        public bool IsCursorFocused()
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (!Physics.Raycast(ray, out hit)) return false;
+            if (hit.transform == transform) return true; // Is cursor on card square object?
+            if (hit.transform.parent == null) return false;
+            return hit.transform.parent.parent == transform; // Is cursor on card's button object?
+        }
         
         public void HandleAnimationEnd()
         {
             if (BoardCard == null) return;
             if (Navigation.IsCardAnimating()) return;
-            if (!Bars.AreBarsAnimating()) StateMachine.EnableButtons();
             Bars.ShowBars();
             CheckpointManager.Instance.HandleIfRequested();
+            if (Bars.AreBarsAnimating()) return;
+            StateMachine.TryShowingButtons();      
         }
 
         // TODO: Handle changed side for cards that apply skills to allies
@@ -158,8 +171,12 @@ namespace Berty.BoardCards.Behaviours
             BoardCard = null;
             ParentField.UpdateField();
             BoardCardCollectionManager.Instance.RemoveCardFromCollection(this);
-            if (transform.parent.childCount <= 1) Destroy(transform.parent.gameObject); // Remove CardSetTransform that has no cards
-            else                                                                        // Otherwise, remove only the card object itself
+            if (transform.parent.childCount <= 1)  // Remove CardSetTransform that has no cards
+            {
+                EventManager.Instance.RaiseOnFieldFreed(ParentField);
+                Destroy(transform.parent.gameObject);
+            }
+            else                                   // Otherwise, remove only the card object itself
             {
                 EnableBackupCard();
                 Destroy(gameObject);

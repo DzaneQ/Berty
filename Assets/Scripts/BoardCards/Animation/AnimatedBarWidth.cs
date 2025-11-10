@@ -9,7 +9,7 @@ namespace Berty.BoardCards.Animation
     public class AnimatedBarWidth : MonoBehaviour, IBarWidth
     {
         private float durationSeconds;
-        private BoardCardCore card;
+        private BoardCardBehaviour card;
         private int _coroutineCount;
         private SpriteRenderer rend;
         private Vector3 targetLocation;
@@ -21,7 +21,7 @@ namespace Berty.BoardCards.Animation
             private set
             {
                 _coroutineCount = value;
-                if (_coroutineCount == 0) card.HandleAnimationEnd();
+                if (_coroutineCount == 0) card.Core.HandleAnimationEnd();
                 if (_coroutineCount < 0) throw new Exception($"Negative coroutine count for card {name}!");
             }
         }
@@ -30,12 +30,8 @@ namespace Berty.BoardCards.Animation
         {
             _coroutineCount = 0;
             rend = GetComponent<SpriteRenderer>();
+            card = GetComponentInParent<BoardCardBehaviour>();
             durationSeconds = CoreManager.Instance.Game.GameConfig.AnimationSeconds;
-        }
-
-        void Start()
-        {
-            card = GetComponentInParent<BoardCardCore>();
         }
 
         public void SetVectorsWithoutAnimation(Vector3 targetLocation, Vector2 targetSize)
@@ -48,7 +44,7 @@ namespace Berty.BoardCards.Animation
         {
             this.targetLocation = targetLocation;
             this.targetSize = targetSize;
-            card.StateMachine.DisableButtons();
+            card.StateMachine.HideButtons();
             StartCoroutine(MoveAndScaleBar(durationSeconds));
         }
 

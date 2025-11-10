@@ -36,7 +36,7 @@ namespace Berty.Grid.Field.Listeners
         private void HandleHighlightStart(object sender, DirectAttackEventArgs args)
         {
             BoardCardBehaviour attacker = (BoardCardBehaviour)sender;
-            if (attacker.ParentField == field) attacker.StateMachine.EnableButtons();
+            if (attacker.ParentField == field) attacker.StateMachine.TryShowingButtons();
             if (!args.AttackedFields.Contains(field.BoardField))
             {
                 if (attacker != field.ChildCard) field.Unhighlight();
@@ -59,7 +59,7 @@ namespace Berty.Grid.Field.Listeners
 
         private void HandleHighlightEnd()
         {
-            if (field.ChildCard != null) field.ChildCard.StateMachine.DisableButtons();
+            if (field.ChildCard != null) field.ChildCard.StateMachine.HideButtons();
             field.Unhighlight();
         }
     }

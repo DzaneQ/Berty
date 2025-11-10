@@ -1,11 +1,8 @@
 using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.Managers;
 using Berty.Display.Managers;
 using Berty.Enums;
-using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Managers;
-using System;
 using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
@@ -47,13 +44,7 @@ namespace Berty.BoardCards.Listeners
 
         private bool IsCursorOnCard() // Check if cursor is on the card or card's button
         {
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (!Physics.Raycast(ray, out hit)) return false;
-            if (hit.collider == null) return false;
-            if (hit.transform == transform) return true; // Is cursor on card square object?
-            if (hit.transform.parent == null) return false;
-            return hit.transform.parent.parent == transform; // Is cursor on card's button object?
+            return Core.IsCursorFocused();
         }
 
         private bool IsLeftClicked()
@@ -71,25 +62,6 @@ namespace Berty.BoardCards.Listeners
             if (!IsLeftClicked()) return;
             if (TryPuttingAnExtraCard()) return;
             StateMachine.HandleLeftClick();
-            //switch (Core.CardState)
-            //{
-            //    case CardStateEnum.Active:
-            //        BoardCardActionManager.Instance.PrepareToAttack(Core);
-            //        break;
-            //    case CardStateEnum.NewTransform:
-            //    case CardStateEnum.NewCard:
-            //    case CardStateEnum.Attacking:
-            //        BoardCardActionManager.Instance.ConfirmPayment(Core);
-            //        break;
-            //    case CardStateEnum.Idle:
-            //    case CardStateEnum.Telekinetic:
-            //        break;
-            //    case CardStateEnum.Effectable:
-            //        BoardCardActionManager.Instance.ApplySpecialEffect(Core);
-            //        break;
-            //    default:
-            //        throw new Exception("Clicked on card of an unknown state");
-            //}
         }
 
         private void HandleRightClick()

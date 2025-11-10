@@ -8,10 +8,9 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Animation
 {
-    public class AnimatedRotateCard : MonoBehaviour, IRotateCard
+    public class AnimatedRotateCard : BoardCardBehaviour, IRotateCard
     {
         private float durationSeconds;
-        private BoardCardCore card;
         private float rotatingAngle;
         private int _coroutineCount;
         private Transform cardSetTransform;
@@ -22,22 +21,18 @@ namespace Berty.BoardCards.Animation
             private set
             {
                 _coroutineCount = value;
-                if (_coroutineCount == 0) card.HandleAnimationEnd();
+                if (_coroutineCount == 0) Core.HandleAnimationEnd();
                 if (_coroutineCount < 0) throw new Exception($"Negative coroutine count for card {name}!");
             }
         }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             rotatingAngle = 0;
             _coroutineCount = 0;
             durationSeconds = CoreManager.Instance.Game.GameConfig.AnimationSeconds;
             cardSetTransform = transform.parent;
-        }
-
-        void Start()
-        {
-            card = GetComponent<BoardCardCore>();
         }
 
         public void ByAngleWithoutAnimation(int angle)
@@ -52,8 +47,8 @@ namespace Berty.BoardCards.Animation
 
         private IEnumerator RotateCardCoroutine(int angle)
         {
-            card.StateMachine.DisableButtons();
-            card.Bars.HideBars();
+            EventManager.Instance.RaiseOnHighlightEnd();
+            Bars.HideBars();
             yield return StartCoroutine(RotateObject(angle, durationSeconds));
         }
 

@@ -24,6 +24,7 @@ namespace Berty.BoardCards.Managers
         {
             card.Navigation.RotateCardObject(angle);
             card.BoardCard.AdvanceCardSetAngleBy(angle);
+            card.StateMachine.UpdateButtons();
         }
 
         public void MoveCard(BoardCardBehaviour card, BoardField targetField, bool isOrdered = false)
@@ -35,6 +36,7 @@ namespace Berty.BoardCards.Managers
             targetField.SetBackupCard(backupCard);
             card.Navigation.MoveCardObject(FieldCollectionManager.Instance.GetBehaviourFromEntity(targetField));
             if (!isOrdered) card.Navigation.HandleNewMovementSkillEffect();
+            card.StateMachine.UpdateButtons();
         }
 
         public void SwapCards(BoardCardBehaviour firstCardObject, BoardCardBehaviour secondCardObject)

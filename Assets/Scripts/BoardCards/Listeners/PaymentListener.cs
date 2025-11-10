@@ -33,7 +33,8 @@ namespace Berty.BoardCards.Listeners
 
         private void HandlePaymentStart(object sender, EventArgs args)
         {
-            if (sender.Equals(Core)) return;
+            BoardCardBehaviour card = (BoardCardBehaviour)sender;
+            if (card.gameObject == gameObject) return;
             StateMachine.SetIdle();
         }
 

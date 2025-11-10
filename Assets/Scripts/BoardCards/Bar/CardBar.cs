@@ -14,7 +14,6 @@ namespace Berty.BoardCards.Bar
         private Transform barFill;
         private SpriteRenderer fillRend;
         private SpriteRenderer outlineRend;
-        //private int statValue;
 
         void Awake()
         {
@@ -23,8 +22,6 @@ namespace Berty.BoardCards.Bar
             barWidth = barFill.GetComponent<IBarWidth>();
             fillRend = barFill.GetComponent<SpriteRenderer>();
             outlineRend = barFill.parent.GetComponent<SpriteRenderer>();
-            //statValue = ReadStat();
-            //Debug.Log("Max width value: " + maxWidth);
         }
 
         void Start()

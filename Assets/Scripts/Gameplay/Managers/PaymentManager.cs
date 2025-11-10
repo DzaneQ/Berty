@@ -2,6 +2,7 @@ using Berty.UI.Card.Managers;
 using Berty.UI.Managers;
 using Berty.Utility;
 using Berty.BoardCards.Behaviours;
+using UnityEngine;
 
 namespace Berty.Gameplay.Managers
 {
@@ -24,7 +25,9 @@ namespace Berty.Gameplay.Managers
 
         public void ConfirmPayment()
         {
+            Debug.Log("Checking payment offer...");
             if (!SelectionManager.Instance.CheckOffer()) return;
+            Debug.Log("Confirming payment.");
             HandToPileManager.Instance.DiscardSelectedCardsFromHand();
             SelectionManager.Instance.SetAsNotPaymentTime();
             ButtonObjectManager.Instance.DisplayEndTurnButton();

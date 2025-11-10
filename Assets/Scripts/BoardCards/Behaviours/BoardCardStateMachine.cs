@@ -21,6 +21,9 @@ namespace Berty.BoardCards.Behaviours
             4 - MoveDown
             5 - MoveLeft
          */
+
+        private GameObject buttonSet;
+
         public CardButton[] Buttons { get; private set; }
 
         protected override void Awake()
@@ -36,9 +39,10 @@ namespace Berty.BoardCards.Behaviours
 
         private void InitializeButtons()
         {
-            Transform parent = transform.GetChild(0);
+            Transform buttonsParentObject = transform.GetChild(2);
+            buttonSet = buttonsParentObject.gameObject;
             Buttons = new CardButton[6];
-            for (int index = 0; index < 6; index++) Buttons[index] = parent.GetChild(index + 2).GetComponent<CardButton>();
+            for (int index = 0; index < 6; index++) Buttons[index] = buttonsParentObject.GetChild(index + 2).GetComponent<CardButton>();
         }
 
         private void SetState(CardState state)
@@ -88,6 +92,7 @@ namespace Berty.BoardCards.Behaviours
 
         public void SetAttacking()
         {
+            Debug.Log("Setting attacking state.");
             Core.ClearAttackedCardsCache();
             SetState(new AttackingState(this));
         }
@@ -107,23 +112,22 @@ namespace Berty.BoardCards.Behaviours
             currentState.HandleLeftClick();
         }
 
-        public void EnableButtons()
+        public void TryShowingButtons()
         {
-            foreach (CardButton button in Buttons) button.EnableButton();
+            if (Navigation.IsCardAnimating()) return;
+            if (Bars.AreBarsAnimating()) return;
+            if (!Core.IsCursorFocused()) return;
+            buttonSet.SetActive(true);
         }
 
-        public void DisableButtons()
+        public void HideButtons()
         {
-            foreach (CardButton button in Buttons) button.DisableButton();
+            buttonSet.SetActive(false);
         }
 
-        public void ActivateNeutralButton(NavigationEnum navigation)
+        public void UpdateButtons()
         {
-            foreach (CardButton button in Buttons)
-            {
-                if (button.GetName() == navigation) button.ActivateNeutralButton();
-                else button.DeactivateButton();
-            }
+            currentState.UpdateButtons();
         }
 
         public CardButton GetButton(NavigationEnum navigation) => Buttons[(int)navigation];
