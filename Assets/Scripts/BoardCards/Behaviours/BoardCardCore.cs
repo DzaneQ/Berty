@@ -23,9 +23,8 @@ namespace Berty.BoardCards.Behaviours
         public new FieldBehaviour ParentField { get; private set; }
         private SpriteRenderer characterSprite;
         private Color defaultColor;
-        private Rigidbody cardRB;
         private AudioSource soundSource;
-        private List<BoardCardBehaviour> _attackedCards = new List<BoardCardBehaviour>();
+        private List<BoardCardBehaviour> _attackedCards = new();
         public IReadOnlyList<BoardCardBehaviour> AttackedCards => _attackedCards;
         public Sprite Sprite => characterSprite.sprite;
         public AudioSource SoundSource => soundSource;
@@ -51,12 +50,6 @@ namespace Berty.BoardCards.Behaviours
             AdjustInitRotation();
             UpdateObjectFromCharacterConfig();
             ParentField.UpdateField();
-            InitializeRigidbody();
-        }
-
-        private void OnCollisionEnter(Collision collision)
-        {
-            ApplyPhysics(false);
         }
 
         private void UpdateObjectFromCharacterConfig()
@@ -64,18 +57,6 @@ namespace Berty.BoardCards.Behaviours
             CharacterConfig character = BoardCard.CharacterConfig;
             characterSprite.sprite = HandCardObjectManager.Instance.GetSpriteFromHandCardObject(character);
             gameObject.name = character.Name;
-        }
-
-        private void InitializeRigidbody()
-        {
-            cardRB = GetComponent<Rigidbody>();
-            cardRB.detectCollisions = true;
-            ApplyPhysics(true);
-        }
-
-        public void ApplyPhysics(bool isApplied = true)
-        {
-            cardRB.isKinematic = !isApplied;
         }
 
         public void HighlightAs(HighlightEnum highlight)

@@ -93,6 +93,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Scripts\Enums\StatusEnum.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Listeners\HandCardInput.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardRigidbody.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\OverlayObjectManager.cs" />
     <Compile Include="Assets\Scripts\Utility\PersistentManagerSingleton.cs" />
