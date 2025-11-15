@@ -30,7 +30,7 @@ namespace Berty.BoardCards.Listeners
 
         public void OnMouseEnter()
         {
-            DisplayManager.Instance.ShowLookupCard(Core.Sprite);
+            DisplayManager.Instance.ShowLookupCard(Sprite.LookupSprite);
             if (Core.Navigation.IsCardAnimating()) return;
             EventManager.Instance.RaiseOnHighlightStart(Core);
         }

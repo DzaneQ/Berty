@@ -92,7 +92,7 @@ namespace Berty.Grid.Field.Behaviour
         private void HighlightCard()
         {
             if (ChildCard == null) return;
-            ChildCard.Core.HighlightAs(Highlight);
+            ChildCard.Sprite.HighlightAs(Highlight);
         }
     }
 }

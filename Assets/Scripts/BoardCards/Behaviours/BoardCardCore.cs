@@ -21,12 +21,9 @@ namespace Berty.BoardCards.Behaviours
     {
         public new BoardCard BoardCard { get; private set; }
         public new FieldBehaviour ParentField { get; private set; }
-        private SpriteRenderer characterSprite;
-        private Color defaultColor;
         private AudioSource soundSource;
         private List<BoardCardBehaviour> _attackedCards = new();
         public IReadOnlyList<BoardCardBehaviour> AttackedCards => _attackedCards;
-        public Sprite Sprite => characterSprite.sprite;
         public AudioSource SoundSource => soundSource;
         private Camera cam;
 
@@ -34,8 +31,6 @@ namespace Berty.BoardCards.Behaviours
         {
             base.Awake();
             BoardCardCollectionManager.Instance.AddCardToCollection(this);
-            characterSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
-            defaultColor = characterSprite.color;
             soundSource = GetComponent<AudioSource>();
             soundSource.volume = SettingsManager.Instance.Volume;
             ParentField = GetComponentInParent<FieldBehaviour>();
@@ -48,23 +43,7 @@ namespace Berty.BoardCards.Behaviours
             SoundManager.Instance.PutSound(SoundSource);
             DisableBackupCard();
             AdjustInitRotation();
-            UpdateObjectFromCharacterConfig();
             ParentField.UpdateField();
-        }
-
-        private void UpdateObjectFromCharacterConfig()
-        {
-            CharacterConfig character = BoardCard.CharacterConfig;
-            characterSprite.sprite = HandCardObjectManager.Instance.GetSpriteFromHandCardObject(character);
-            gameObject.name = character.Name;
-        }
-
-        public void HighlightAs(HighlightEnum highlight)
-        {
-            characterSprite.color = highlight switch { 
-                HighlightEnum.UnderAttack or HighlightEnum.UnderBlock => ColorizeObjectManager.Instance.GetColorForCard(highlight),
-                _ => defaultColor
-            };
         }
 
         public void SetFieldBehaviour(FieldBehaviour fieldBehaviour)
@@ -112,6 +91,7 @@ namespace Berty.BoardCards.Behaviours
             ParentField.UpdateField();
         }
 
+        // TODO: Refactor done. Check if color is persisted.
         public void UpdateCardWithRandomKid()
         {
             if (BoardCard.GetSkill() != SkillEnum.KrolPopuBert)
@@ -130,9 +110,8 @@ namespace Berty.BoardCards.Behaviours
             BoardCard.DeactivateCard();
             BoardCard = ParentField.BoardField.AddNewCard(newCard, align);
             BoardCard.SetDirection(direction);
-            UpdateObjectFromCharacterConfig();
+            Sprite.UpdateObjectFromCharacterConfig();
             Bars.UpdateBars();
-            characterSprite.color = defaultColor;
             ParentField.UpdateField();
             EventManager.Instance.RaiseOnNewCharacter(this);
         }

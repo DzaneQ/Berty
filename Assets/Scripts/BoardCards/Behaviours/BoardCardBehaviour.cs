@@ -10,7 +10,8 @@ namespace Berty.BoardCards.Behaviours
     {
         public BoardCardBarsObjects Bars { get; private set; }
         public BoardCardCore Core { get; private set; }
-        public BoardCardMovableObject Navigation { get; private set; }
+        public BoardCardNavigation Navigation { get; private set; }
+        public BoardCardSprite Sprite { get; private set; }
         public BoardCardStatChange StatChange { get; private set; }
         public BoardCardStateMachine StateMachine { get; private set; }
         protected Game game;
@@ -21,7 +22,8 @@ namespace Berty.BoardCards.Behaviours
         {
             Bars = GetComponent<BoardCardBarsObjects>();
             Core = GetComponent<BoardCardCore>();
-            Navigation = GetComponent<BoardCardMovableObject>();
+            Navigation = GetComponent<BoardCardNavigation>();
+            Sprite = GetComponent<BoardCardSprite>();
             StatChange = GetComponent<BoardCardStatChange>();
             StateMachine = GetComponent<BoardCardStateMachine>();
             game = CoreManager.Instance.Game;

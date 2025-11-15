@@ -106,7 +106,6 @@
     <Compile Include="Assets\Scripts\BoardCards\State\EffectableState.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\ActiveState.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Entities\Game.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardMovableObject.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\StatusListener.cs" />
     <Compile Include="Assets\Scripts\Debugging\Managers\DebugManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveRight.cs" />
@@ -190,6 +189,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\KonstablBert.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\ButtonActionManager.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardNavigation.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KowbojBert.cs" />
@@ -235,6 +235,7 @@
     <Compile Include="Assets\Scripts\BoardCards\State\IdleState.cs" />
     <Compile Include="Assets\Scripts\Grid\Managers\FieldCollectionManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Init\HandCardInitialization.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardSprite.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Behaviour\FieldBehaviour.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\ButtonObjectManager.cs" />
     <Compile Include="Assets\Scripts\Gameplay\CardInitialization.cs" />

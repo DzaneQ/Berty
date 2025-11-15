@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Behaviours
 {
-    public class BoardCardMovableObject : BoardCardBehaviour
+    public class BoardCardNavigation : BoardCardBehaviour
     {
         private IMoveCard moveCard;
         private IRotateCard rotateCard;
