@@ -15,13 +15,11 @@ namespace Berty.UI.Managers
     public class ButtonObjectManager : UIObjectManager<ButtonObjectManager>
     {
         private CornerButton cornerButton;
-        private Game game;
 
         protected override void Awake()
         {
             InitializeSingleton();
             cornerButton = ObjectReadManager.Instance.CornerButton.GetComponent<CornerButton>();
-            game = CoreManager.Instance.Game;
         }
 
         public void DisplayEndTurnButton()

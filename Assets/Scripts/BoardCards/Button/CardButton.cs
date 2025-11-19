@@ -1,6 +1,7 @@
 using Berty.BoardCards.Behaviours;
 using Berty.Display.Managers;
 using Berty.Enums;
+using Berty.Gameplay.Listeners;
 using Berty.Gameplay.Managers;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Button
 {
+    // BUG: Pointer on card when escape panel enabled -> the card is not highlighted
+    //      Pointer on button when escape panel enabled -> the card keeps being highlighted
     abstract public class CardButton : MonoBehaviour
     {
 
@@ -42,8 +45,6 @@ namespace Berty.BoardCards.Button
             return hit.transform == transform.parent.parent;
         }
 
-        // BUG: After animating, not all buttons are enabled on focus until this method is called again.
-        // TODO: Enabling buttons should process by enabling their parent object.
         public void ActivateButton()
         {
             rend.enabled = true;

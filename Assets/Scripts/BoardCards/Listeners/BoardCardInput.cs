@@ -1,22 +1,15 @@
 using Berty.BoardCards.Behaviours;
 using Berty.Display.Managers;
 using Berty.Enums;
+using Berty.Gameplay.Listeners;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Managers;
 using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
 {
-    public class BoardCardInput : BoardCardBehaviour
+    public class BoardCardInput : BoardCardBehaviour, IColliderInput
     {
-        private Camera cam;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            cam = Camera.main;
-        }
-
         void Start()
         {
             // Enabling toggle from the inspector.
@@ -30,6 +23,7 @@ namespace Berty.BoardCards.Listeners
 
         public void OnMouseEnter()
         {
+            Debug.Log("OnMouseEnter for BoardCard executed.");
             DisplayManager.Instance.ShowLookupCard(Sprite.LookupSprite);
             if (Core.Navigation.IsCardAnimating()) return;
             EventManager.Instance.RaiseOnHighlightStart(Core);

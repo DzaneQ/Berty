@@ -1,12 +1,11 @@
 using Berty.UI.Card.Managers;
-using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
 using UnityEngine;
-using Berty.BoardCards.Behaviours;
+using Berty.Gameplay.Listeners;
 
 namespace Berty.Grid.Field.Listeners
 {
-    public class FieldInput : MonoBehaviour
+    public class FieldInput : MonoBehaviour, IColliderInput
     {
         private FieldBehaviour behaviour;
 

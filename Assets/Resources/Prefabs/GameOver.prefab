@@ -124,7 +124,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4908300051852664394}
         m_TargetAssemblyTypeName: Berty.UI.Listeners.CloseGameInput, Assembly-CSharp
-        m_MethodName: ScreenClick
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -9,7 +9,7 @@ namespace Berty.UI.Listeners
 {
     public class CloseGameInput : MonoBehaviour
     {
-        public void ScreenClick()
+        public void OnClick()
         {
             SceneManager.LoadScene("Menu", LoadSceneMode.Single);
         }
