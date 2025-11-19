@@ -23,7 +23,6 @@ namespace Berty.BoardCards.Listeners
 
         public void OnMouseEnter()
         {
-            Debug.Log("OnMouseEnter for BoardCard executed.");
             DisplayManager.Instance.ShowLookupCard(Sprite.LookupSprite);
             if (Core.Navigation.IsCardAnimating()) return;
             EventManager.Instance.RaiseOnHighlightStart(Core);

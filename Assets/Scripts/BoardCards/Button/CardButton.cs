@@ -9,8 +9,6 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Button
 {
-    // BUG: Pointer on card when escape panel enabled -> the card is not highlighted
-    //      Pointer on button when escape panel enabled -> the card keeps being highlighted
     abstract public class CardButton : MonoBehaviour
     {
 
@@ -32,7 +30,7 @@ namespace Berty.BoardCards.Button
 
         public void OnMouseExit()
         {
-            if (!IsCursorFocusedOnCard()) return; // Stop running method if cursor is on the card
+            if (IsCursorFocusedOnCard()) return; // Stop running method if cursor is on the card
             DisplayManager.Instance.HideLookupCard();
             EventManager.Instance.RaiseOnHighlightEnd();
         }
@@ -40,8 +38,7 @@ namespace Berty.BoardCards.Button
         private bool IsCursorFocusedOnCard()
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (!Physics.Raycast(ray, out hit)) return false;
+            if (!Physics.Raycast(ray, out RaycastHit hit)) return false;
             return hit.transform == transform.parent.parent;
         }
 
