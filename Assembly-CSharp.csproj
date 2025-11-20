@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\Gameplay\Managers\EventManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KrolPopuBert.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Entities\BoardField.cs" />
+    <Compile Include="Assets\Scripts\Menu\SliderSoundListener.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Behaviours\HandCardBehaviour.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaTrojanska.cs" />

@@ -8,7 +8,7 @@ namespace Berty.Menu
 {
     public class ButtonFunction : MonoBehaviour, IPointerEnterHandler
     {
-        private AudioSource src;
+        [SerializeField] private AudioSource src;
         [SerializeField] private AudioClip hoverSound;
         [SerializeField] private AudioClip clickSound;
 
@@ -25,10 +25,10 @@ namespace Berty.Menu
             src.Play();
         }
 
-        /*public void OnPointerClick(PointerEventData eventData)
+        public void OnPointerClick(PointerEventData eventData)
         {
             src.clip = clickSound;
             src.Play();
-        }*/
+        }
     }
 }
