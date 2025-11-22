@@ -115,7 +115,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Entities\CardStats.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
-    <Compile Include="Assets\Scripts\UI\Listeners\DeactivateObjectInput.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\SelectedCard.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KrzyzowiecBert.cs" />
@@ -148,8 +147,10 @@
     <Compile Include="Assets\Scripts\BoardCards\State\AttackingState.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\AttackListener.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\PrezydentBert.cs" />
+    <Compile Include="Assets\Scripts\UI\Listeners\DeactivateEscapePanelInput.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Managers\BoardCardCollectionManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandCardObjectManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Managers\EscapePanelManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Animation\AnimatingCardImage.cs" />
     <Compile Include="Assets\Scripts\Display\View\RotateCamera.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\NewTransformState.cs" />
