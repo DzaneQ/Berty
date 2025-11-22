@@ -166,6 +166,7 @@
     <Compile Include="Assets\Scripts\Enums\RoleEnum.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertWick.cs" />
     <Compile Include="Assets\Scripts\Grid\Entities\BoardGrid.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\EntityLoadManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\UnselectedCard.cs" />
     <Compile Include="Assets\Scripts\Menu\NavigationMenu.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\CardState.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Assets\Scripts\BoardCards\Animation\IBarWidth.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\CardWitnessListener.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardSound.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\StatusListener.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\SelectionManager.cs" />
@@ -186,7 +188,6 @@
     <Compile Include="Assets\Scripts\Gameplay\Managers\LanguageManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\EBerta.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\StatusManager.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Managers\CoreManager.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\TurnManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\PaymentListener.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KonstablBert.cs" />

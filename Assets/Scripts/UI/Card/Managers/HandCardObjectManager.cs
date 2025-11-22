@@ -24,7 +24,7 @@ namespace Berty.UI.Card.Managers
             playerTable = ObjectReadManager.Instance.PlayerTable;
             opponentTable = ObjectReadManager.Instance.OpponentTable;
             behaviourCollection = ObjectReadManager.Instance.HandCardObjectCollection.GetComponent<HandCardCollection>();
-            cardPile = CoreManager.Instance.Game.CardPile;
+            cardPile = EntityLoadManager.Instance.Game.CardPile;
         }
 
         public void SwitchTables()

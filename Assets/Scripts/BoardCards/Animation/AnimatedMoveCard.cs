@@ -30,7 +30,7 @@ namespace Berty.BoardCards.Animation
         {
             base.Awake();
             _coroutineCount = 0;
-            durationSeconds = CoreManager.Instance.Game.GameConfig.AnimationSeconds;
+            durationSeconds = EntityLoadManager.Instance.Game.GameConfig.AnimationSeconds;
         }
 
         void Start()

@@ -11,7 +11,7 @@ namespace Berty.UI.Card.Listeners
 
         private void Awake()
         {
-            game = CoreManager.Instance.Game;
+            game = EntityLoadManager.Instance.Game;
         }
 
         private void OnEnable()

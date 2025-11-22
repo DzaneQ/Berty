@@ -18,7 +18,7 @@ namespace Berty.Gameplay.Managers
         protected override void Awake()
         {
             InitializeSingleton();
-            game = CoreManager.Instance.Game;
+            game = EntityLoadManager.Instance.Game;
         }
 
         public void EndTurn()

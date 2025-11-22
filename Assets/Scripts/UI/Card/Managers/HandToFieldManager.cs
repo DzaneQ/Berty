@@ -18,7 +18,7 @@ namespace Berty.UI.Card.Managers
         protected override void Awake()
         {
             InitializeSingleton();
-            Game = CoreManager.Instance.Game;
+            Game = EntityLoadManager.Instance.Game;
             boardCardPrefab = Resources.Load<GameObject>("Prefabs/CardSquare");
         }
 

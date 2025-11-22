@@ -15,7 +15,7 @@ namespace Berty.UI.Card.Managers
         protected override void Awake()
         {
             base.Awake();
-            game = CoreManager.Instance.Game;
+            game = EntityLoadManager.Instance.Game;
         }
 
         public void RetrievePendingCard()

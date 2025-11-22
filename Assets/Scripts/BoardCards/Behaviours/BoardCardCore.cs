@@ -2,13 +2,10 @@ using Berty.Audio.Managers;
 using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
 using Berty.BoardCards.Managers;
-using Berty.Characters.Managers;
 using Berty.Display.View;
 using Berty.Enums;
-using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
-using Berty.Grid.Managers;
 using Berty.Settings;
 using Berty.UI.Card.Managers;
 using System;
@@ -21,18 +18,14 @@ namespace Berty.BoardCards.Behaviours
     {
         public new BoardCard BoardCard { get; private set; }
         public new FieldBehaviour ParentField { get; private set; }
-        private AudioSource soundSource;
         private List<BoardCardBehaviour> _attackedCards = new();
         public IReadOnlyList<BoardCardBehaviour> AttackedCards => _attackedCards;
-        public AudioSource SoundSource => soundSource;
         private Camera cam;
 
         protected override void Awake()
         {
             base.Awake();
             BoardCardCollectionManager.Instance.AddCardToCollection(this);
-            soundSource = GetComponent<AudioSource>();
-            soundSource.volume = SettingsManager.Instance.Volume;
             ParentField = GetComponentInParent<FieldBehaviour>();
             BoardCard = ParentField.BoardField.AddNewCard(SelectionManager.Instance.GetPendingCardOrThrow(), game.CurrentAlignment);
             cam = Camera.main;
@@ -40,7 +33,6 @@ namespace Berty.BoardCards.Behaviours
 
         private void Start()
         {
-            SoundManager.Instance.PutSound(SoundSource);
             DisableBackupCard();
             AdjustInitRotation();
             ParentField.UpdateField();

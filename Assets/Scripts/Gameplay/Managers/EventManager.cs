@@ -41,7 +41,7 @@ namespace Berty.Gameplay.Managers
         protected override void Awake()
         {
             base.Awake();
-            game = CoreManager.Instance.Game;
+            game = EntityLoadManager.Instance.Game;
         }
 
         public void RaiseOnNewTurn()

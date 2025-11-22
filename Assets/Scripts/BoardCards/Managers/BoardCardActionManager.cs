@@ -20,13 +20,13 @@ namespace Berty.BoardCards.Managers
         protected override void Awake()
         {
             base.Awake();
-            Grid = CoreManager.Instance.Game.Grid;
+            Grid = EntityLoadManager.Instance.Game.Grid;
         }
 
         public void OrderRotateCard(BoardCardBehaviour card, NavigationEnum navigation)
         {
             if (card.StateMachine.IsDexterityBased() && card.BoardCard.IsTired) return;
-            SoundManager.Instance.MoveSound(card.Core.SoundSource);
+            SoundManager.Instance.MoveSound(card.Sound.Source);
             int angle = navigation switch
             {
                 NavigationEnum.RotateLeft => -90,
@@ -48,7 +48,7 @@ namespace Berty.BoardCards.Managers
         public void OrderMoveCard(BoardCardBehaviour card, NavigationEnum navigation)
         {
             if (card.StateMachine.IsDexterityBased() && card.BoardCard.IsTired) return;
-            SoundManager.Instance.MoveSound(card.Core.SoundSource);
+            SoundManager.Instance.MoveSound(card.Sound.Source);
             Vector2Int distance = navigation switch
             {
                 NavigationEnum.MoveUp => new Vector2Int(0, 1),

@@ -11,6 +11,7 @@ namespace Berty.BoardCards.Behaviours
         public BoardCardBarsObjects Bars { get; private set; }
         public BoardCardCore Core { get; private set; }
         public BoardCardNavigation Navigation { get; private set; }
+        public BoardCardSound Sound { get; private set; }
         public BoardCardSprite Sprite { get; private set; }
         public BoardCardStatChange StatChange { get; private set; }
         public BoardCardStateMachine StateMachine { get; private set; }
@@ -23,10 +24,11 @@ namespace Berty.BoardCards.Behaviours
             Bars = GetComponent<BoardCardBarsObjects>();
             Core = GetComponent<BoardCardCore>();
             Navigation = GetComponent<BoardCardNavigation>();
+            Sound = GetComponent<BoardCardSound>();
             Sprite = GetComponent<BoardCardSprite>();
             StatChange = GetComponent<BoardCardStatChange>();
             StateMachine = GetComponent<BoardCardStateMachine>();
-            game = CoreManager.Instance.Game;
+            game = EntityLoadManager.Instance.Game;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Berty.BoardCards.Animation
             base.Awake();
             rotatingAngle = 0;
             _coroutineCount = 0;
-            durationSeconds = CoreManager.Instance.Game.GameConfig.AnimationSeconds;
+            durationSeconds = EntityLoadManager.Instance.Game.GameConfig.AnimationSeconds;
             cardSetTransform = transform.parent;
         }
 

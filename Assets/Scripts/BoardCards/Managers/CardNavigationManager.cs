@@ -17,7 +17,7 @@ namespace Berty.BoardCards.Managers
         protected override void Awake()
         {
             base.Awake();
-            Grid = CoreManager.Instance.Game.Grid;
+            Grid = EntityLoadManager.Instance.Game.Grid;
         }
 
         public void RotateCard(BoardCardBehaviour card, int angle)

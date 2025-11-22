@@ -21,7 +21,7 @@ namespace Berty.UI.Managers
         protected override void Awake()
         {
             base.Awake();
-            cardPile = CoreManager.Instance.Game.CardPile;
+            cardPile = EntityLoadManager.Instance.Game.CardPile;
             behaviourCollection = ObjectReadManager.Instance.HandCardObjectCollection.GetComponent<HandCardCollection>();
         }
 

@@ -18,7 +18,7 @@ namespace Berty.Gameplay.Managers
         protected override void Awake()
         {
             base.Awake();
-            game = CoreManager.Instance.Game;
+            game = EntityLoadManager.Instance.Game;
         }
 
         public void AddUniqueStatusWithProvider(StatusEnum name, BoardCard card, AlignmentEnum targetAlign = AlignmentEnum.None)

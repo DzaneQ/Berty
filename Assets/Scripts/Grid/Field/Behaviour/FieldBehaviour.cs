@@ -37,7 +37,7 @@ namespace Berty.Grid.Field.Behaviour
 
         private void Start()
         {
-            BoardGrid grid = CoreManager.Instance.Game.Grid;
+            BoardGrid grid = EntityLoadManager.Instance.Game.Grid;
             BoardField = name switch
             {
                 "Field NW" => grid.GetFieldFromCoordsOrThrow(-1, 1),

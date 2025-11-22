@@ -17,7 +17,7 @@ namespace Berty.Characters.Managers
 
         protected override void Awake()
         {
-            grid = CoreManager.Instance.Game.Grid;
+            grid = EntityLoadManager.Instance.Game.Grid;
         }
 
         // NOTE: Ensure that BigMadB, PogromcaBert (and other prevention skill cards) have logic applied when new stat modifier is made

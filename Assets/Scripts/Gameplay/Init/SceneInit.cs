@@ -27,7 +27,7 @@ namespace Berty.Gameplay.Init
 
         private void InitializeGameEntity()
         {
-            initGame = CoreManager.Instance.Game;
+            initGame = EntityLoadManager.Instance.Game;
         }
 
         private void InitializeHandCardObjectsAndCardPileEntity()

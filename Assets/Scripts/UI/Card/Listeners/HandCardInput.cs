@@ -14,7 +14,7 @@ namespace Berty.UI.Card.Listeners
         void Awake()
         {
             behaviour = GetComponent<HandCardBehaviour>();
-            game = CoreManager.Instance.Game;
+            game = EntityLoadManager.Instance.Game;
         }
 
         public void CardClick()

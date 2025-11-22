@@ -31,7 +31,7 @@ namespace Berty.BoardCards.Animation
             _coroutineCount = 0;
             rend = GetComponent<SpriteRenderer>();
             card = GetComponentInParent<BoardCardBehaviour>();
-            durationSeconds = CoreManager.Instance.Game.GameConfig.AnimationSeconds;
+            durationSeconds = EntityLoadManager.Instance.Game.GameConfig.AnimationSeconds;
         }
 
         public void SetVectorsWithoutAnimation(Vector3 targetLocation, Vector2 targetSize)

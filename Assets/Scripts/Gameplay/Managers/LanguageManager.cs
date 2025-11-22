@@ -27,7 +27,7 @@ namespace Berty.Gameplay.Managers
 
         private void LoadLanguageDictionary()
         {
-            string languageFileName = GetFileNameFromLanguage(CoreManager.Instance.Game.GameConfig.Language);
+            string languageFileName = GetFileNameFromLanguage(EntityLoadManager.Instance.Game.GameConfig.Language);
             TextAsset textAsset = Resources.Load<TextAsset>($"Translation/{languageFileName}");
             if (textAsset == null) throw new Exception($"Undefined file of name: {languageFileName}.");
             languageDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(textAsset.text);

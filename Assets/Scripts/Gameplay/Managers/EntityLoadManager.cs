@@ -4,7 +4,7 @@ using Berty.Utility;
 
 namespace Berty.Gameplay.Managers
 {
-    public class CoreManager : ManagerSingleton<CoreManager>
+    public class EntityLoadManager : ManagerSingleton<EntityLoadManager>
     {
         private Game _game;
         public Game Game
