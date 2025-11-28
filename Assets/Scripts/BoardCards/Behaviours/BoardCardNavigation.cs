@@ -24,8 +24,8 @@ namespace Berty.BoardCards.Behaviours
         public void MoveCardObject(FieldBehaviour field)
         {
             moveCard.ToField(field);
-            Core.ParentField.UpdateField();
-            Core.SetFieldBehaviour(field);
+            ParentField.UpdateField();
+            Entity.SetFieldBehaviour(field);
             if (StateMachine.HasState(CardStateEnum.Active) || StateMachine.HasState(CardStateEnum.Telekinetic)) return; // Don't run before NewTransform state is set
             HandleNewMovement();
         }

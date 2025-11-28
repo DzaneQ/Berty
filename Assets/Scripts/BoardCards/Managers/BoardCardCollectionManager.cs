@@ -8,7 +8,7 @@ namespace Berty.BoardCards.Managers
 {
     public class BoardCardCollectionManager : ManagerSingleton<BoardCardCollectionManager>
     {
-        private List<BoardCardCore> boardCardCoreCollection;
+        private List<BoardCardBehaviour> boardCardCoreCollection;
 
         protected override void Awake()
         {
@@ -19,23 +19,23 @@ namespace Berty.BoardCards.Managers
         private void InitializeCollection()
         {
             if (boardCardCoreCollection != null) throw new Exception("Card collection is already initialized");
-            boardCardCoreCollection = new List<BoardCardCore>();
+            boardCardCoreCollection = new List<BoardCardBehaviour>();
         }
 
-        public BoardCardCore GetCoreFromEntityOrThrow(BoardCard boardCard)
+        public BoardCardBehaviour GetBehaviourFromEntityOrThrow(BoardCard boardCard)
         {
-            BoardCardCore core = boardCardCoreCollection.Find((BoardCardCore core) => core.BoardCard == boardCard);
-            if (core == null) throw new Exception($"Trying to get core from entity {boardCard.CharacterConfig.Name} that is null");
-            return core;
+            BoardCardBehaviour card = boardCardCoreCollection.Find((BoardCardBehaviour bhvr) => bhvr.BoardCard == boardCard);
+            if (card == null) throw new Exception($"Trying to get core from entity {boardCard.CharacterConfig.Name} that is null");
+            return card;
         }
 
-        public void AddCardToCollection(BoardCardCore card)
+        public void AddCardToCollection(BoardCardBehaviour card)
         {
             if (boardCardCoreCollection.Contains(card)) throw new Exception($"Card {card.name} already exists in the collection");
             boardCardCoreCollection.Add(card);
         }
 
-        public void RemoveCardFromCollection(BoardCardCore card)
+        public void RemoveCardFromCollection(BoardCardBehaviour card)
         {
             if (!boardCardCoreCollection.Contains(card)) throw new Exception($"Card {card.name} does not exist in the collection");
             boardCardCoreCollection.Remove(card);

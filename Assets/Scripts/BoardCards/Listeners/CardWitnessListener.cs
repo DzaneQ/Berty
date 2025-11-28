@@ -182,7 +182,7 @@ namespace Berty.BoardCards.Listeners
                     break;
                 case SkillEnum.Zombert:
                     if (dyingCard.BoardCard.Align == witness.BoardCard.Align) break;
-                    witness.StatChange.AdvanceHealth(1, null);
+                    witness.Entity.AdvanceHealth(1, null);
                     break;
             }
 
@@ -190,7 +190,7 @@ namespace Berty.BoardCards.Listeners
             switch (dyingCard.BoardCard.GetSkill())
             {
                 case SkillEnum.SedziaBertt:
-                    if (dyingCard.BoardCard.Align == witness.BoardCard.Align) witness.StatChange.AdvanceTempStrength(1, dyingCard);
+                    if (dyingCard.BoardCard.Align == witness.BoardCard.Align) witness.Entity.AdvanceTempStrength(1, dyingCard);
                     return;
             }
         }
@@ -241,8 +241,8 @@ namespace Berty.BoardCards.Listeners
                     int hour = DateTime.Now.Hour;
                     if (hour < 5 || 18 <= hour)
                     {
-                        skillCard.StatChange.AdvanceStrength(1, null);
-                        skillCard.StatChange.AdvancePower(2, null);
+                        skillCard.Entity.AdvanceStrength(1, null);
+                        skillCard.Entity.AdvancePower(2, null);
                     }
                     break;
             }
@@ -256,7 +256,7 @@ namespace Berty.BoardCards.Listeners
                     StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillCard.BoardCard, game.Grid.GetEnemyNeighborCount(Core.BoardCard));
                     break;
                 case SkillEnum.PrezydentBert:
-                    skillCard.StatChange.AdvancePower(-1, null);
+                    skillCard.Entity.AdvancePower(-1, null);
                     break;
             }
         }
@@ -270,7 +270,7 @@ namespace Berty.BoardCards.Listeners
             // Get enemy if possible
             BoardCard target = neighbors.Find(card => card.Align != skillCard.BoardCard.Align);
             if (target == null) target = neighbors.First();
-            BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(target).StatChange.AdvancePower(-3, skillCard);
+            BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(target).Entity.AdvancePower(-3, skillCard);
         }
     }
 }

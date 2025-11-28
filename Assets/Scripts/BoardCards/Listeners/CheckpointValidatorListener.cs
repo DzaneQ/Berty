@@ -1,4 +1,5 @@
 using Berty.BoardCards.Behaviours;
+using Berty.Enums;
 using Berty.Gameplay.Managers;
 using UnityEngine;
 
@@ -20,7 +21,16 @@ namespace Berty.BoardCards.Listeners
         private void HandleCheckpointRequest(object sender, ValidateOutputEventArgs args)
         {
             if (args.IsRestricted) return;
-            if (!Core.IsEligibleForCheckpoint()) args.IsRestricted = true;
+            if (!IsEligibleForCheckpoint()) args.IsRestricted = true;
+        }
+
+        private bool IsEligibleForCheckpoint()
+        {
+            if (Navigation.IsCardAnimating()) return false;
+            if (BoardCard.Stats.Health <= 0) return false;
+            if (BoardCard.Stats.Power <= 0) return false;
+            if (BoardCard.GetSkill() == SkillEnum.BertWick && BoardCard.Stats.Dexterity <= 0) return false;
+            return true;
         }
     }
 }

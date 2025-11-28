@@ -1,12 +1,38 @@
+using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
+using Berty.BoardCards.Managers;
 using Berty.Characters.Managers;
 using Berty.Enums;
+using Berty.Gameplay.Managers;
+using Berty.Grid.Field.Behaviour;
+using Berty.UI.Card.Managers;
+using System;
 using UnityEngine;
 
 namespace Berty.BoardCards.Behaviours
 {
-    public class BoardCardStatChange : BoardCardBehaviour
+    public class BoardCardEntity : BoardCardBehaviour
     {
+        public new BoardCard BoardCard { get; private set; }
+        public new FieldBehaviour ParentField { get; private set; }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            ParentField = GetComponentInParent<FieldBehaviour>();
+            BoardCard = ParentField.BoardField.AddNewCard(SelectionManager.Instance.GetPendingCardOrThrow(), game.CurrentAlignment);
+        }
+
+        private void Start()
+        {
+            SetFieldBehaviour(ParentField);
+        }
+
+        public void SetFieldBehaviour(FieldBehaviour fieldBehaviour)
+        {
+            ParentField = fieldBehaviour;
+        }
+
         public void AdvanceStrength(int value, BoardCardBehaviour source)
         {
             if (BoardCard == null) return;
@@ -110,18 +136,78 @@ namespace Berty.BoardCards.Behaviours
             }    
         }
 
+        // TODO: Handle changed side for cards that apply skills to allies
+        public void SwitchSides()
+        {
+            BoardCard.OccupiedField.SwitchSides();
+            Entity.SetPower(BoardCard.CharacterConfig.Power, this);
+            ParentField.UpdateField();
+        }
+
+        private void KillCard()
+        {
+            StatusManager.Instance.RemoveStatusFromProvider(BoardCard);
+            EventManager.Instance.RaiseOnCharacterDeath(this);
+            if (BoardCard.GetSkill() == SkillEnum.BertWho) game.CardPile.PutCardToTheBottomPile(BoardCard.CharacterConfig);
+            else game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
+            RemoveCard();
+        }
+
+        public void RemoveCard()
+        {
+            BoardCard.DeactivateCard(); // TODO: Prove that the BoardCard entity no longer exists.
+            BoardCard = null;
+            ParentField.UpdateField();
+            BoardCardCollectionManager.Instance.RemoveCardFromCollection(this);
+            if (transform.parent.childCount <= 1)  // Remove CardSetTransform that has no cards
+            {
+                EventManager.Instance.RaiseOnFieldFreed(ParentField);
+                Destroy(transform.parent.gameObject);
+            }
+            else                                   // Otherwise, remove only the card object itself
+            {
+                Core.EnableBackupCard();
+                Destroy(gameObject);
+            }
+        }
+
+        // TODO: Refactor done. Check if color is persisted.
+        private void UpdateCardWithRandomKid()
+        {
+            if (BoardCard.GetSkill() != SkillEnum.KrolPopuBert)
+                throw new Exception($"KrolPopuBert effect is casted by {BoardCard.CharacterConfig.Name}");
+            CharacterConfig newCard = game.CardPile.GetRandomKidFromPile();
+            if (newCard == null)
+            {
+                KillCard();
+                return;
+            }
+            StatusManager.Instance.RemoveStatusFromProvider(BoardCard);
+            EventManager.Instance.RaiseOnCharacterDeath(this);
+            DirectionEnum direction = (DirectionEnum)BoardCard.GetAngle();
+            AlignmentEnum align = BoardCard.Align;
+            game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
+            BoardCard.DeactivateCard();
+            BoardCard = ParentField.BoardField.AddNewCard(newCard, align);
+            BoardCard.SetDirection(direction);
+            Sprite.UpdateObjectFromCharacterConfig();
+            Bars.UpdateBars();
+            ParentField.UpdateField();
+            EventManager.Instance.RaiseOnNewCharacter(this);
+        }
+
         private void HandleZeroPower()
         {
             switch (BoardCard.GetSkill())
             {
                 case SkillEnum.AstronautaBert:
-                    Core.KillCard();
+                    KillCard();
                     break;
                 case SkillEnum.KsiezniczkaBerta:
                     SetPower(BoardCard.CharacterConfig.Power, Core);
                     break;
                 default:
-                    Core.SwitchSides();
+                    SwitchSides();
                     break;
             }
         }
@@ -131,7 +217,7 @@ namespace Berty.BoardCards.Behaviours
             switch (BoardCard.GetSkill())
             {
                 case SkillEnum.BertWick:
-                    Core.KillCard();
+                    KillCard();
                     break;
                 default:
                     BoardCard.MarkAsTired();
@@ -150,10 +236,10 @@ namespace Berty.BoardCards.Behaviours
                     AdvanceDexterity(-1, null);
                     break;
                 case SkillEnum.KrolPopuBert:
-                    Core.UpdateCardWithRandomKid();
+                    UpdateCardWithRandomKid();
                     break;
                 default:
-                    Core.KillCard();
+                    KillCard();
                     break;
             }
         }

@@ -93,8 +93,8 @@ namespace Berty.Characters.Managers
             switch (target.BoardCard.GetSkill())
             {
                 case SkillEnum.BertkaIdolka:
-                    target.StatChange.SetStrength(target.BoardCard.Stats.Power - target.BoardCard.Stats.TempPower, target);
-                    target.StatChange.SetTempStrength(target.BoardCard.Stats.TempPower, target);
+                    target.Entity.SetStrength(target.BoardCard.Stats.Power - target.BoardCard.Stats.TempPower, target);
+                    target.Entity.SetTempStrength(target.BoardCard.Stats.TempPower, target);
                     break;
                 case SkillEnum.Bertolaj:
                     if (target.BoardCard.Stats.Power <= 0) 
@@ -119,13 +119,13 @@ namespace Berty.Characters.Managers
                     if (source.BoardCard.GetRole() == RoleEnum.Support) return;
                     break;
                 case SkillEnum.KrzyzowiecBert:
-                    if (value < 0) target.StatChange.AdvanceStrength(-value, null);
+                    if (value < 0) target.Entity.AdvanceStrength(-value, null);
                     break;
                 case SkillEnum.Tankbert:
                     if (value < 0)
                     {
-                        target.StatChange.AdvanceStrength(value, null);
-                        target.StatChange.AdvanceDexterity(-value, null);
+                        target.Entity.AdvanceStrength(value, null);
+                        target.Entity.AdvanceDexterity(-value, null);
                     }
                     break;
                 case SkillEnum.ZalobnyBert:
@@ -140,13 +140,13 @@ namespace Berty.Characters.Managers
                 case SkillEnum.KoszmarZBertwood:
                     if (value < 0)
                     {
-                        target.StatChange.AdvanceTempStrength(1, source);
-                        target.StatChange.AdvanceTempPower(1, source);
+                        target.Entity.AdvanceTempStrength(1, source);
+                        target.Entity.AdvanceTempPower(1, source);
                     }
                     break;
                 case SkillEnum.Zombert:
                     if (target.BoardCard.Align == source.BoardCard.Align) break;
-                    if (value < 0) target.StatChange.AdvancePower(-1, source);
+                    if (value < 0) target.Entity.AdvancePower(-1, source);
                     break;
             }
         }

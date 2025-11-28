@@ -67,7 +67,7 @@ namespace Berty.BoardCards.Behaviours
         public void HandleAfterBarChange()
         {
             if (AreBarsAnimating()) return;
-            Core.StatChange.HandleAfterAnimationStatChange();
+            Core.Entity.HandleAfterAnimationStatChange();
         }
     }
 }

@@ -16,8 +16,6 @@ namespace Berty.BoardCards.Behaviours
 {
     public class BoardCardCore : BoardCardBehaviour
     {
-        public new BoardCard BoardCard { get; private set; }
-        public new FieldBehaviour ParentField { get; private set; }
         private List<BoardCardBehaviour> _attackedCards = new();
         public IReadOnlyList<BoardCardBehaviour> AttackedCards => _attackedCards;
         private Camera cam;
@@ -26,8 +24,6 @@ namespace Berty.BoardCards.Behaviours
         {
             base.Awake();
             BoardCardCollectionManager.Instance.AddCardToCollection(this);
-            ParentField = GetComponentInParent<FieldBehaviour>();
-            BoardCard = ParentField.BoardField.AddNewCard(SelectionManager.Instance.GetPendingCardOrThrow(), game.CurrentAlignment);
             cam = Camera.main;
         }
 
@@ -36,11 +32,6 @@ namespace Berty.BoardCards.Behaviours
             DisableBackupCard();
             AdjustInitRotation();
             ParentField.UpdateField();
-        }
-
-        public void SetFieldBehaviour(FieldBehaviour fieldBehaviour)
-        {
-            ParentField = fieldBehaviour;
         }
 
         public void ClearAttackedCardsCache()
@@ -74,77 +65,8 @@ namespace Berty.BoardCards.Behaviours
             if (Bars.AreBarsAnimating()) return;
             StateMachine.TryShowingButtons();      
         }
-
-        // TODO: Handle changed side for cards that apply skills to allies
-        public void SwitchSides()
-        {
-            BoardCard.OccupiedField.SwitchSides();
-            StatChange.SetPower(BoardCard.CharacterConfig.Power, this);
-            ParentField.UpdateField();
-        }
-
-        // TODO: Refactor done. Check if color is persisted.
-        public void UpdateCardWithRandomKid()
-        {
-            if (BoardCard.GetSkill() != SkillEnum.KrolPopuBert)
-                throw new Exception($"KrolPopuBert effect is casted by {BoardCard.CharacterConfig.Name}");
-            CharacterConfig newCard = game.CardPile.GetRandomKidFromPile();
-            if (newCard == null)
-            {
-                KillCard();
-                return;
-            }
-            StatusManager.Instance.RemoveStatusFromProvider(BoardCard);
-            EventManager.Instance.RaiseOnCharacterDeath(this);
-            DirectionEnum direction = (DirectionEnum)BoardCard.GetAngle();
-            AlignmentEnum align = BoardCard.Align;
-            game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
-            BoardCard.DeactivateCard();
-            BoardCard = ParentField.BoardField.AddNewCard(newCard, align);
-            BoardCard.SetDirection(direction);
-            Sprite.UpdateObjectFromCharacterConfig();
-            Bars.UpdateBars();
-            ParentField.UpdateField();
-            EventManager.Instance.RaiseOnNewCharacter(this);
-        }
-
-        public void KillCard()
-        {
-            StatusManager.Instance.RemoveStatusFromProvider(BoardCard);
-            EventManager.Instance.RaiseOnCharacterDeath(this);      
-            if (BoardCard.GetSkill() == SkillEnum.BertWho) game.CardPile.PutCardToTheBottomPile(BoardCard.CharacterConfig);
-            else game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
-            RemoveCard();
-        }
-
-        public void RemoveCard()
-        {
-            BoardCard.DeactivateCard(); // TODO: Prove that the BoardCard entity no longer exists.
-            BoardCard = null;
-            ParentField.UpdateField();
-            BoardCardCollectionManager.Instance.RemoveCardFromCollection(this);
-            if (transform.parent.childCount <= 1)  // Remove CardSetTransform that has no cards
-            {
-                EventManager.Instance.RaiseOnFieldFreed(ParentField);
-                Destroy(transform.parent.gameObject);
-            }
-            else                                   // Otherwise, remove only the card object itself
-            {
-                EnableBackupCard();
-                Destroy(gameObject);
-            }    
-        }
-
-        public bool IsEligibleForCheckpoint()
-        {
-            if (Navigation.IsCardAnimating()) return false;
-            if (BoardCard.Stats.Health <= 0) return false;
-            if (BoardCard.Stats.Power <= 0) return false;
-            if (BoardCard.GetSkill() == SkillEnum.BertWick && BoardCard.Stats.Dexterity <= 0) return false;
-            return true;
-        }
-
-        private void EnableBackupCard()
+ 
+        public void EnableBackupCard()
         {
             transform.parent.GetChild(0).gameObject.SetActive(true);
         }

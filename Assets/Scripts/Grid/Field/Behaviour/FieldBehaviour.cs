@@ -58,7 +58,7 @@ namespace Berty.Grid.Field.Behaviour
         public void UpdateField()
         {
             if (BoardField.OccupantCard == null) ChildCard = null;
-            else ChildCard = BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(BoardField.OccupantCard);  
+            else ChildCard = BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(BoardField.OccupantCard);  
             ColorizeField();
         }
 

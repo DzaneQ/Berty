@@ -1,3 +1,4 @@
+using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
@@ -10,14 +11,14 @@ namespace Berty.BoardCards.Behaviours
     {
         public BoardCardBarsObjects Bars { get; private set; }
         public BoardCardCore Core { get; private set; }
+        public BoardCardEntity Entity { get; private set; }
         public BoardCardNavigation Navigation { get; private set; }
         public BoardCardSound Sound { get; private set; }
         public BoardCardSprite Sprite { get; private set; }
-        public BoardCardStatChange StatChange { get; private set; }
         public BoardCardStateMachine StateMachine { get; private set; }
         protected Game game;
-        public BoardCard BoardCard => Core.BoardCard;
-        public FieldBehaviour ParentField => Core.ParentField;
+        public BoardCard BoardCard => Entity.BoardCard;
+        public FieldBehaviour ParentField => Entity.ParentField;
 
         protected virtual void Awake()
         {
@@ -26,7 +27,7 @@ namespace Berty.BoardCards.Behaviours
             Navigation = GetComponent<BoardCardNavigation>();
             Sound = GetComponent<BoardCardSound>();
             Sprite = GetComponent<BoardCardSprite>();
-            StatChange = GetComponent<BoardCardStatChange>();
+            Entity = GetComponent<BoardCardEntity>();
             StateMachine = GetComponent<BoardCardStateMachine>();
             game = EntityLoadManager.Instance.Game;
         }

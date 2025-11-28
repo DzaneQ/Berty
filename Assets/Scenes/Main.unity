@@ -284,7 +284,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bde98215b1dce55418ef5ee3062389f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 979650402}
 --- !u!1 &18061716
 GameObject:
   m_ObjectHideFlags: 0
@@ -4020,6 +4019,7 @@ MonoBehaviour:
   fieldBoard: {fileID: 1181834772}
   cornerButton: {fileID: 1498936183}
   deadCardsScreen: {fileID: 470320019}
+  escapeCanvas: {fileID: 0}
 --- !u!4 &1473762351
 Transform:
   m_ObjectHideFlags: 0
@@ -5927,7 +5927,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 197a5c155f589464d9806dbc96b00245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  escapePanel: {fileID: 979650402}
 --- !u!4 &621224903077810087 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4693508438237006558, guid: 46123e19c96aeb34c84bd01b22933bbd, type: 3}

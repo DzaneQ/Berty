@@ -85,9 +85,9 @@ namespace Berty.BoardCards.Managers
         public void ApplySpecialEffect(BoardCardBehaviour card)
         {
             Status status = Grid.Game.GetStatusByNameOrThrow(StatusEnum.ClickToApplyEffect);
-            BoardCardBehaviour source = BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(status.Provider);
-            card.StatChange.AdvanceStrength(2, source);
-            card.StatChange.AdvanceHealth(1, source);
+            BoardCardBehaviour source = BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(status.Provider);
+            card.Entity.AdvanceStrength(2, source);
+            card.Entity.AdvanceHealth(1, source);
             StatusManager.Instance.RemoveStatus(status);
         }
 

@@ -37,11 +37,11 @@ namespace Berty.BoardCards.Listeners
             if (Core.BoardCard.CharacterConfig.CanBlock(distanceToAttacker)) return; // Try blocking
             //Debug.Log($"{card.name} with {card.BoardCard.Stats.Health} health takes damage");
             int modifiedAttackerStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(Core, attacker);
-            Core.StatChange.AdvanceHealth(-modifiedAttackerStrength, attacker, true); // Take damage
+            Core.Entity.AdvanceHealth(-modifiedAttackerStrength, attacker, true); // Take damage
             //Debug.Log($"{card.name} has {card.BoardCard.Stats.Health} health");
             if (!Core.BoardCard.CharacterConfig.CanRiposte(distanceToAttacker)) return;
             int modifiedRiposteStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(attacker, Core);
-            attacker.StatChange.AdvanceHealth(-modifiedRiposteStrength, Core, true); // Do riposte
+            attacker.Entity.AdvanceHealth(-modifiedRiposteStrength, Core, true); // Do riposte
             //Debug.Log($"{attacker.name} has {card.BoardCard.Stats.Health} health due to riposte");
         }
 
@@ -57,7 +57,7 @@ namespace Berty.BoardCards.Listeners
             if (!Core.BoardCard.CharacterConfig.CanAttack(distanceToDefender)) return; // Has to be in attack range
             //Debug.Log($"{defender.name} with {defender.BoardCard.Stats.Health} health is attacked by {card.name}");
             int modifiedStrength = ModifyStatChangeManager.Instance.GetModifiedStrengthForAttack(defender, Core);
-            defender.StatChange.AdvanceHealth(-modifiedStrength, Core, true);
+            defender.Entity.AdvanceHealth(-modifiedStrength, Core, true);
             //Debug.Log($"{defender.name} has {defender.BoardCard.Stats.Health} health after being attacked by {card.name}");
         }
 
@@ -86,11 +86,11 @@ namespace Berty.BoardCards.Listeners
             switch (Core.BoardCard.GetSkill())
             {
                 case SkillEnum.BigMadB:
-                    Core.StatChange.AdvanceDexterity(-1, null);
-                    Core.StatChange.AdvanceStrength(1, null);
+                    Core.Entity.AdvanceDexterity(-1, null);
+                    Core.Entity.AdvanceStrength(1, null);
                     break;
                 case SkillEnum.PrezydentBert:
-                    Core.StatChange.AdvancePower(-1, null);
+                    Core.Entity.AdvancePower(-1, null);
                     break;
             }
         }
@@ -104,19 +104,19 @@ namespace Berty.BoardCards.Listeners
             {
                 BoardField neighbor = game.Grid.GetFieldDistancedFromCardOrNull(-1, 0, target.BoardCard);
                 if (neighbor != null && neighbor.IsOccupied()) 
-                    BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(neighbor.OccupantCard).StatChange.AdvanceHealth(-1, bertaAmazonka);
+                    BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(neighbor.OccupantCard).Entity.AdvanceHealth(-1, bertaAmazonka);
                 neighbor = game.Grid.GetFieldDistancedFromCardOrNull(1, 0, target.BoardCard);
                 if (neighbor != null && neighbor.IsOccupied())
-                    BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(neighbor.OccupantCard).StatChange.AdvanceHealth(-1, bertaAmazonka);
+                    BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(neighbor.OccupantCard).Entity.AdvanceHealth(-1, bertaAmazonka);
             }
             else if (distance.x != 0 && distance.y == 0)
             {
                 BoardField neighbor = game.Grid.GetFieldDistancedFromCardOrNull(0, -1, target.BoardCard);
                 if (neighbor != null && neighbor.IsOccupied())
-                    BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(neighbor.OccupantCard).StatChange.AdvanceHealth(-1, bertaAmazonka);
+                    BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(neighbor.OccupantCard).Entity.AdvanceHealth(-1, bertaAmazonka);
                 neighbor = game.Grid.GetFieldDistancedFromCardOrNull(0, 1, target.BoardCard);
                 if (neighbor != null && neighbor.IsOccupied())
-                    BoardCardCollectionManager.Instance.GetCoreFromEntityOrThrow(neighbor.OccupantCard).StatChange.AdvanceHealth(-1, bertaAmazonka);
+                    BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(neighbor.OccupantCard).Entity.AdvanceHealth(-1, bertaAmazonka);
             }
             else throw new Exception($"Target shouldn't be distanced from BertaAmazonka by: {distance.x}, {distance.y}");
         }    
