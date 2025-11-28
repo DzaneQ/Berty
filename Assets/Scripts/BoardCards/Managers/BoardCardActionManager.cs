@@ -86,8 +86,8 @@ namespace Berty.BoardCards.Managers
         {
             Status status = Grid.Game.GetStatusByNameOrThrow(StatusEnum.ClickToApplyEffect);
             BoardCardBehaviour source = BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(status.Provider);
-            card.Entity.AdvanceStrength(2, source);
-            card.Entity.AdvanceHealth(1, source);
+            card.EntityHandler.AdvanceStrength(2, source);
+            card.EntityHandler.AdvanceHealth(1, source);
             StatusManager.Instance.RemoveStatus(status);
         }
 
@@ -107,8 +107,8 @@ namespace Berty.BoardCards.Managers
             Status venturaStatus = Grid.Game.GetStatusByNameOrNull(StatusEnum.Ventura);
             if (venturaStatus == null) return true;
             if (ApplySkillEffectManager.Instance.DoesPreventEffect(card.BoardCard, venturaStatus.Provider)) return true;
-            if (!Grid.AreNeighboring(card.Core.ParentField.BoardField, venturaStatus.Provider.OccupiedField)) return true;
-            if (Grid.AreAligned(card.Core.ParentField.BoardField, venturaStatus.Provider.OccupiedField)) return true;
+            if (!Grid.AreNeighboring(card.ParentField.BoardField, venturaStatus.Provider.OccupiedField)) return true;
+            if (Grid.AreAligned(card.ParentField.BoardField, venturaStatus.Provider.OccupiedField)) return true;
             if (card.BoardCard.CanAttackCard(venturaStatus.Provider)) return true;
             return false;
         }

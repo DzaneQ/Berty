@@ -50,8 +50,8 @@ namespace Berty.BoardCards.Managers
             BoardCard secondBackupCard = secondField.BackupCard;
             AlignmentEnum firstFieldAlign = firstField.Align;
             AlignmentEnum secondFieldAlign = secondField.Align;
-            FieldBehaviour firstFieldObject = firstCardObject.Core.ParentField;
-            FieldBehaviour secondFieldObject = secondCardObject.Core.ParentField;
+            FieldBehaviour firstFieldObject = firstCardObject.ParentField;
+            FieldBehaviour secondFieldObject = secondCardObject.ParentField;
             // Update entities
             firstField.PlaceExistingCard(secondOccupantCard, secondFieldAlign);
             firstField.SetBackupCard(secondBackupCard);

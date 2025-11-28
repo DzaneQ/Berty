@@ -24,7 +24,7 @@ namespace Berty.BoardCards.Listeners
         private void HandleNewTurn()
         {
             if (StateMachine.IsForPay()) throw new Exception($"Board card {name} detected for pay when switching turns.");
-            if (game.CurrentAlignment == Core.ParentField.BoardField.Align)
+            if (game.CurrentAlignment == ParentField.BoardField.Align)
             {
                 HandleCharacterEffect();
                 ProgressTemporaryStats();
@@ -36,34 +36,34 @@ namespace Berty.BoardCards.Listeners
 
         private void ProgressTemporaryStats()
         {
-            Core.Entity.ProgressTemporaryStats();
+            EntityHandler.ProgressTemporaryStats();
         }
 
         private void RegenerateDexterity()
         {
-            if (!Core.BoardCard.IsTired) return;
-            if (Core.BoardCard.Stats.Dexterity >= Core.BoardCard.CharacterConfig.Dexterity)
+            if (!BoardCard.IsTired) return;
+            if (BoardCard.Stats.Dexterity >= BoardCard.CharacterConfig.Dexterity)
             {
-                Core.BoardCard.MarkAsRested();
+                BoardCard.MarkAsRested();
                 return;
             }
-            Entity.AdvanceDexterity(1, null);
-            if (Core.BoardCard.Stats.Dexterity >= Core.BoardCard.CharacterConfig.Dexterity) Core.BoardCard.MarkAsRested();
+            EntityHandler.AdvanceDexterity(1, null);
+            if (BoardCard.Stats.Dexterity >= BoardCard.CharacterConfig.Dexterity) BoardCard.MarkAsRested();
         }
 
         private void EnableAttack()
         {
-            Status providedStatus = game.GetStatusFromProviderOrNull(Core.BoardCard);
+            Status providedStatus = game.GetStatusFromProviderOrNull(BoardCard);
             if (providedStatus?.Name == StatusEnum.ExtraAttackCooldown) StatusManager.Instance.RemoveStatus(providedStatus);
-            else Core.BoardCard.MarkAsHasNotAttacked();
+            else BoardCard.MarkAsHasNotAttacked();
         }
 
         private void HandleCharacterEffect()
         {
-            switch (Core.BoardCard.GetSkill())
+            switch (BoardCard.GetSkill())
             {
                 case SkillEnum.PapiezBertII:
-                    EventManager.Instance.RaiseOnCharacterSpecialEffect(Core);
+                    EventManager.Instance.RaiseOnCharacterSpecialEffect(this);
                     break;
             }
         }

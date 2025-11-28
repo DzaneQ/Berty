@@ -25,7 +25,7 @@ namespace Berty.BoardCards.Behaviours
         {
             moveCard.ToField(field);
             ParentField.UpdateField();
-            Entity.SetFieldBehaviour(field);
+            EntityHandler.SetFieldBehaviour(field);
             if (StateMachine.HasState(CardStateEnum.Active) || StateMachine.HasState(CardStateEnum.Telekinetic)) return; // Don't run before NewTransform state is set
             HandleNewMovement();
         }
@@ -54,15 +54,25 @@ namespace Berty.BoardCards.Behaviours
         public void HandleNewMovementSkillEffect()
         {
             if (IsCardAnimating()) queuedMovementSkillEffect = true;
-            else EventManager.Instance.RaiseOnMovedCharacter(Core);
+            else EventManager.Instance.RaiseOnMovedCharacter(this);
         }
 
         public void HandleAfterMoveAnimation()
         {
             if (!queuedMovementEffect) return;
-            Core.ParentField.UpdateField();
-            if (queuedMovementSkillEffect) EventManager.Instance.RaiseOnMovedCharacter(Core);
+            ParentField.UpdateField();
+            if (queuedMovementSkillEffect) EventManager.Instance.RaiseOnMovedCharacter(this);
             queuedMovementEffect = false;
+        }
+
+        public void HandleAnimationEnd()
+        {
+            if (BoardCard == null) return;
+            if (Navigation.IsCardAnimating()) return;
+            Bars.ShowBars();
+            CheckpointManager.Instance.HandleIfRequested();
+            if (Bars.AreBarsAnimating()) return;
+            StateMachine.TryShowingButtons();
         }
     }
 }

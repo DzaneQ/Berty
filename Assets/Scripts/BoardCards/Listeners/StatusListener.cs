@@ -32,20 +32,20 @@ namespace Berty.BoardCards.Listeners
             switch (status.Name)
             {
                 case StatusEnum.ClickToApplyEffect:
-                    if (status.GetTargetAlign() == Core.BoardCard.Align && !ApplySkillEffectManager.Instance.DoesPreventEffect(Core.BoardCard, status.Provider))
+                    if (status.GetTargetAlign() == BoardCard.Align && !ApplySkillEffectManager.Instance.DoesPreventEffect(BoardCard, status.Provider))
                         StateMachine.SetEffectable();
                     else StateMachine.SetIdle();
                     break;
                 case StatusEnum.DisableEnemySpecialSkill:
-                    if (status.GetAlign() != Core.BoardCard.Align)
-                        StatusManager.Instance.RemoveStatusFromProvider(Core.BoardCard);
+                    if (status.GetAlign() != BoardCard.Align)
+                        StatusManager.Instance.RemoveStatusFromProvider(BoardCard);
                     break;
                 case StatusEnum.RevivalSelect:
                     OverlayObjectManager.Instance.DisplayDeadCardsScreen();
                     break;
                 case StatusEnum.Ventura:
-                    if (status.Provider == Core.BoardCard)
-                        Core.Bars.UpdateBar(StatEnum.Strength);
+                    if (status.Provider == BoardCard)
+                        Bars.UpdateBar(StatEnum.Strength);
                     break;
                 }
         }
@@ -68,24 +68,24 @@ namespace Berty.BoardCards.Listeners
                     OverlayObjectManager.Instance.HideDeadCardsScreen();
                     break;
                 case StatusEnum.Ventura:
-                    if (args.Alignment == Core.BoardCard.Align)
-                        Core.Bars.UpdateBar(StatEnum.Strength);
+                    if (args.Alignment == BoardCard.Align)
+                        Bars.UpdateBar(StatEnum.Strength);
                     break;
             }
         }
 
         private void TryRetrievingUniqueStatus()
         {
-            switch (Core.BoardCard.GetSkill())
+            switch (BoardCard.GetSkill())
             {
                 case SkillEnum.BertVentura:
-                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, Core.BoardCard, game.Grid.GetEnemyNeighborCount(Core.BoardCard));
+                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, BoardCard, game.Grid.GetEnemyNeighborCount(BoardCard));
                     break;
                 case SkillEnum.RycerzBerti:
-                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.TelekineticArea, Core.BoardCard);
+                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.TelekineticArea, BoardCard);
                     break;
                 case SkillEnum.SedziaBertt:
-                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ForceSpecialRole, Core.BoardCard);
+                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ForceSpecialRole, BoardCard);
                     break;
             }
         }

@@ -21,7 +21,7 @@ namespace Berty.BoardCards.Animation
             private set
             {
                 _coroutineCount = value;
-                if (_coroutineCount == 0) card.Core.HandleAnimationEnd();
+                if (_coroutineCount == 0) card.Navigation.HandleAnimationEnd();
                 if (_coroutineCount < 0) throw new Exception($"Negative coroutine count for card {name}!");
             }
         }

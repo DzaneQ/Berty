@@ -1,9 +1,7 @@
 using Berty.Audio.Managers;
 using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Managers;
 using Berty.Enums;
-using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Entities;
 using Berty.UI.Card.Managers;
@@ -42,20 +40,20 @@ namespace Berty.BoardCards.Listeners
         {
             if (StateMachine.HasState(CardStateEnum.Attacking))
             {
-                SoundManager.Instance.AttackSound(Sound.Source, Core.BoardCard.CharacterConfig.AttackSound);
-                EventManager.Instance.RaiseOnDirectlyAttacked(Core);
-                HandleAfterAttackOrder();
-                Core.BoardCard.MarkAsHasAttacked();
+                SoundManager.Instance.AttackSound(Sound.Source, BoardCard.CharacterConfig.AttackSound);
+                List<BoardCardBehaviour> attackedCards = EventManager.Instance.RaiseOnDirectlyAttacked(this);
+                HandleAfterAttackOrder(attackedCards);
+                BoardCard.MarkAsHasAttacked();
             }
             else if (StateMachine.HasState(CardStateEnum.NewCard))
             {
                 SoundManager.Instance.ConfirmSound(Sound.Source);
-                EventManager.Instance.RaiseOnAttackNewStand(Core);
-                EventManager.Instance.RaiseOnNewCharacter(Core);
+                EventManager.Instance.RaiseOnAttackNewStand(this);
+                EventManager.Instance.RaiseOnNewCharacter(this);
             }
             else if (StateMachine.IsOnNewMove())
             {
-                EventManager.Instance.RaiseOnMovedCharacter(Core);
+                EventManager.Instance.RaiseOnMovedCharacter(this);
             }
             StateMachine.SetMainState();
         }
@@ -65,47 +63,47 @@ namespace Berty.BoardCards.Listeners
             if (StateMachine.HasState(CardStateEnum.NewCard))
             {
                 FieldToHandManager.Instance.RetrievePendingCard();
-                SoundManager.Instance.TakeSound(Core.transform);
-                Entity.RemoveCard();
+                SoundManager.Instance.TakeSound(transform);
+                EntityHandler.RemoveCard();
                 return;
             }
             StateMachine.SetMainState();
         }
 
-        private void HandleAfterAttackOrder()
+        private void HandleAfterAttackOrder(List<BoardCardBehaviour> attackedCards)
         {
-            switch (Core.BoardCard.GetSkill())
+            switch (BoardCard.GetSkill())
             {
                 case SkillEnum.KoszmarZBertwood:
-                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ExtraAttackCooldown, Core.BoardCard);
+                    StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ExtraAttackCooldown, BoardCard);
                     break;
             }
 
             // Handle successful attack
-            if (Core.AttackedCards.Count <= 0) return;
+            if (attackedCards.Count <= 0) return;
 
-            switch (Core.BoardCard.GetSkill())
+            switch (BoardCard.GetSkill())
             {
                 case SkillEnum.BertkaSerferka:
-                    BoardCardBehaviour swapTarget = Core.AttackedCards.OrderByDescending(attackedCard => Core.BoardCard.GetDistanceTo(attackedCard.BoardCard).x).First();
-                    CardNavigationManager.Instance.SwapCards(Core, swapTarget);
+                    BoardCardBehaviour swapTarget = attackedCards.OrderByDescending(attackedCard => BoardCard.GetDistanceTo(attackedCard.BoardCard).x).First();
+                    CardNavigationManager.Instance.SwapCards(this, swapTarget);
                     break;
                 case SkillEnum.Bertonator:
-                    if (Core.AttackedCards.Count > 1) throw new Exception($"Bertonator is targeting {Core.AttackedCards.Count} cards");
-                    BoardCardBehaviour pushedCard = Core.AttackedCards[0];
-                    pushedCard.Entity.AdvanceDexterity(-1, Core);
-                    PushCardAway(pushedCard, Core);
+                    if (attackedCards.Count > 1) throw new Exception($"Bertonator is targeting {attackedCards.Count} cards");
+                    BoardCardBehaviour pushedCard = attackedCards[0];
+                    pushedCard.EntityHandler.AdvanceDexterity(-1, this);
+                    PushCardAway(pushedCard, this);
                     break;
                 case SkillEnum.KowbojBert:
-                    Core.Entity.AdvanceDexterity(1, Core);
-                    EventManager.Instance.RaiseOnValueChange(Core, 1);
+                    EntityHandler.AdvanceDexterity(1, this);
+                    EventManager.Instance.RaiseOnValueChange(this, 1);
                     break;
                 case SkillEnum.KuglarzBert:
-                    Core.Entity.AdvanceDexterity(-1, null);
-                    Core.Entity.AdvanceHealth(1, null);
+                    EntityHandler.AdvanceDexterity(-1, null);
+                    EntityHandler.AdvanceHealth(1, null);
                     break;
                 case SkillEnum.RoninBert:
-                    HandleRoninBertEffect(Core.AttackedCards, Core);
+                    HandleRoninBertEffect(attackedCards, this);
                     break;
             }
         }
@@ -116,7 +114,7 @@ namespace Berty.BoardCards.Listeners
                 throw new Exception($"Bertonator effect is casted by {bertonator.BoardCard.CharacterConfig.Name}");
             Vector2Int distance = bertonator.BoardCard.GetDistanceTo(target.BoardCard);
             BoardField targetField = game.Grid.GetFieldDistancedFromCardOrNull(distance.x * 2, distance.y * 2, bertonator.BoardCard);
-            if (targetField == null || targetField.IsOccupied()) target.Entity.AdvanceHealth(-1, bertonator);
+            if (targetField == null || targetField.IsOccupied()) target.EntityHandler.AdvanceHealth(-1, bertonator);
             else CardNavigationManager.Instance.MoveCard(target, targetField);
         }
 
@@ -133,7 +131,7 @@ namespace Berty.BoardCards.Listeners
                 swapTarget = attackedCards[1];
             // Lose health if attacking more powerful card
             if (attackedCards.Any(core => core.BoardCard.Stats.Power > roninBert.BoardCard.Stats.Power))
-                roninBert.Entity.AdvanceHealth(-1, null);
+                roninBert.EntityHandler.AdvanceHealth(-1, null);
             // Swap card positions
             CardNavigationManager.Instance.SwapCards(roninBert, swapTarget);
         }

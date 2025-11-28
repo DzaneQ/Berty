@@ -59,29 +59,29 @@ namespace Berty.Characters.Managers
             switch (skillOwner.BoardCard.GetSkill())
             {
                 case SkillEnum.BertaGejsza:
-                    if (AreAllied(target, skillOwner)) target.Entity.AdvanceDexterity(-1, skillOwner);
-                    else target.Entity.AdvanceDexterity(-3, skillOwner);
+                    if (AreAllied(target, skillOwner)) target.EntityHandler.AdvanceDexterity(-1, skillOwner);
+                    else target.EntityHandler.AdvanceDexterity(-3, skillOwner);
                     break;
                 case SkillEnum.BertaSJW:
-                    target.Entity.AdvancePower(-3, skillOwner);
+                    target.EntityHandler.AdvancePower(-3, skillOwner);
                     break;
                 case SkillEnum.BertaTrojanska:
-                    if (AreAllied(target, skillOwner)) target.Entity.AdvancePower(1, skillOwner);
-                    else target.Entity.AdvanceStrength(-1, skillOwner);
+                    if (AreAllied(target, skillOwner)) target.EntityHandler.AdvancePower(1, skillOwner);
+                    else target.EntityHandler.AdvanceStrength(-1, skillOwner);
                     break;
                 case SkillEnum.BertVentura:
                     StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillOwner.BoardCard, game.Grid.GetEnemyNeighborCount(skillOwner.BoardCard));
                     break;
                 case SkillEnum.BertWho:
-                    target.Entity.AdvancePower(-1, skillOwner);
+                    target.EntityHandler.AdvancePower(-1, skillOwner);
                     break;
                 case SkillEnum.BertZawodowiec:
-                    if (AreAllied(target, skillOwner)) target.Entity.AdvancePower(1, skillOwner);
-                    skillOwner.Entity.AdvanceStrength(1, null);
+                    if (AreAllied(target, skillOwner)) target.EntityHandler.AdvancePower(1, skillOwner);
+                    skillOwner.EntityHandler.AdvanceStrength(1, null);
                     break;
                 case SkillEnum.CheBert:
                     if (AreAllied(target, skillOwner) && target.BoardCard.GetRole() == RoleEnum.Special && target != skillOwner)
-                        target.Entity.AdvanceStrength(1, skillOwner);
+                        target.EntityHandler.AdvanceStrength(1, skillOwner);
                     break;
                 case SkillEnum.EBerta:
                     if (!AreAllied(target, skillOwner)) return false;
@@ -89,15 +89,15 @@ namespace Berty.Characters.Managers
                     break;
                 case SkillEnum.KonstablBert:
                     if (target.BoardCard.GetRole() != RoleEnum.Special) return false;
-                    target.Entity.AdvanceHealth(-1, skillOwner);
+                    target.EntityHandler.AdvanceHealth(-1, skillOwner);
                     break;
                 case SkillEnum.KowbojBert:
                     if (!AreAllied(target, skillOwner)) return false;
-                    target.Entity.AdvanceDexterity(delta, skillOwner);
+                    target.EntityHandler.AdvanceDexterity(delta, skillOwner);
                     break;
                 case SkillEnum.KuglarzBert:
                 case SkillEnum.SuperfanBert:
-                    if (AreAllied(target, skillOwner)) target.Entity.AdvancePower(1, skillOwner);
+                    if (AreAllied(target, skillOwner)) target.EntityHandler.AdvancePower(1, skillOwner);
                     else return false;
                     break;
                 case SkillEnum.MisiekBert:
@@ -105,24 +105,24 @@ namespace Berty.Characters.Managers
                     break;
                 case SkillEnum.PapiezBertII:
                     if (AreAllied(target, skillOwner)) return false;
-                    target.Entity.AdvancePower(-2, skillOwner);
+                    target.EntityHandler.AdvancePower(-2, skillOwner);
                     break;
                 case SkillEnum.PrezydentBert:
                     if (!AreAllied(target, skillOwner)) return false;
-                    target.Entity.AdvanceStrength(1, skillOwner);
+                    target.EntityHandler.AdvanceStrength(1, skillOwner);
                     break;
                 case SkillEnum.PrymusBert:
-                    target.Entity.AdvancePower(3, skillOwner);
+                    target.EntityHandler.AdvancePower(3, skillOwner);
                     break;
                 case SkillEnum.SamurajBert:
                     return ApplySamurajBertEffectAndResistance(skillOwner);
                 case SkillEnum.ShaolinBert:
                     if (AreAllied(target, skillOwner)) return false;
-                    target.Entity.AdvanceStrength(-target.BoardCard.Stats.Power / 3, skillOwner);
+                    target.EntityHandler.AdvanceStrength(-target.BoardCard.Stats.Power / 3, skillOwner);
                     break;
                 case SkillEnum.ZalobnyBert:
                     if (!AreAllied(target, skillOwner)) return false;
-                    target.Entity.AdvanceHealth(-2 * delta, skillOwner);
+                    target.EntityHandler.AdvanceHealth(-2 * delta, skillOwner);
                     break;
                 default:
                     throw new Exception($"Applying unknown effect for {target.name} from {skillOwner.name}");
@@ -141,10 +141,10 @@ namespace Berty.Characters.Managers
                 target.BoardCard.Stats.Health
             };
             int minStat = stats.Min();
-            if (stats[0] == minStat) target.Entity.AdvanceStrength(1, eBerta);
-            if (stats[1] == minStat) target.Entity.AdvancePower(1, eBerta);
-            if (stats[2] == minStat) target.Entity.AdvanceDexterity(1, eBerta);
-            if (stats[3] == minStat) target.Entity.AdvanceHealth(1, eBerta);
+            if (stats[0] == minStat) target.EntityHandler.AdvanceStrength(1, eBerta);
+            if (stats[1] == minStat) target.EntityHandler.AdvancePower(1, eBerta);
+            if (stats[2] == minStat) target.EntityHandler.AdvanceDexterity(1, eBerta);
+            if (stats[3] == minStat) target.EntityHandler.AdvanceHealth(1, eBerta);
         }
 
         private bool ApplySamurajBertEffectAndResistance(BoardCardBehaviour samurajBert)
@@ -153,8 +153,8 @@ namespace Berty.Characters.Managers
                 throw new Exception($"SamurajBert effect is casted by {samurajBert.BoardCard.CharacterConfig.Name}");
             if (samurajBert.BoardCard.IsResistantTo(samurajBert.BoardCard)) return false;
             if (game.Grid.GetAllNeighbors(samurajBert.BoardCard).Count < 3) return false;
-            samurajBert.Entity.AdvanceDexterity(1, samurajBert);
-            samurajBert.Entity.AdvancePower(1, samurajBert);
+            samurajBert.EntityHandler.AdvanceDexterity(1, samurajBert);
+            samurajBert.EntityHandler.AdvancePower(1, samurajBert);
             samurajBert.BoardCard.AddResistanceToCharacter(samurajBert.BoardCard.CharacterConfig);
             return true;
         }

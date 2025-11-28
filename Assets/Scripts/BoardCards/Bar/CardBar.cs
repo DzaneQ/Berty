@@ -9,7 +9,7 @@ namespace Berty.BoardCards.Bar
         const float startOutlineWidth = .165f;
         const float unitWidth = 2.66f;
 
-        private BoardCardCore card;
+        private BoardCardBehaviour card;
         private IBarWidth barWidth;
         private Transform barFill;
         private SpriteRenderer fillRend;
@@ -17,7 +17,7 @@ namespace Berty.BoardCards.Bar
 
         void Awake()
         {
-            card = GetComponentInParent<BoardCardCore>();
+            card = GetComponentInParent<BoardCardBehaviour>();
             barFill = transform.GetChild(0);
             barWidth = barFill.GetComponent<IBarWidth>();
             fillRend = barFill.GetComponent<SpriteRenderer>();

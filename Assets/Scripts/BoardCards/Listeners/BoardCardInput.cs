@@ -24,8 +24,8 @@ namespace Berty.BoardCards.Listeners
         public void OnMouseEnter()
         {
             DisplayManager.Instance.ShowLookupCard(Sprite.LookupSprite);
-            if (Core.Navigation.IsCardAnimating()) return;
-            EventManager.Instance.RaiseOnHighlightStart(Core);
+            if (Navigation.IsCardAnimating()) return;
+            EventManager.Instance.RaiseOnHighlightStart(this);
         }
 
         public void OnMouseExit()
@@ -37,7 +37,7 @@ namespace Berty.BoardCards.Listeners
 
         private bool IsCursorOnCard() // Check if cursor is on the card or card's button
         {
-            return Core.IsCursorFocused();
+            return StateMachine.IsCursorFocused();
         }
 
         private bool IsLeftClicked()
@@ -60,13 +60,13 @@ namespace Berty.BoardCards.Listeners
         private void HandleRightClick()
         {
             if (BoardCard.Align != game.CurrentAlignment) return;
-            switch (Core.BoardCard.GetSkill())
+            switch (BoardCard.GetSkill())
             {
                 case SkillEnum.GotkaBerta:
                     if (game.CardPile.AreThereAnyDeadCards())
                     {
-                        StatusManager.Instance.AddUniqueStatusWithAlignment(StatusEnum.RevivalSelect, Core.BoardCard.Align);
-                        Entity.RemoveCard();
+                        StatusManager.Instance.AddUniqueStatusWithAlignment(StatusEnum.RevivalSelect, BoardCard.Align);
+                        EntityHandler.RemoveCard();
                     }
                     break;
             }
@@ -76,9 +76,9 @@ namespace Berty.BoardCards.Listeners
         {
             if (SelectionManager.Instance.IsItPaymentTime()) return false;
             if (!HasSelectedOneCard()) return false;
-            if (Core.BoardCard.GetSkill() != SkillEnum.TrenerPokebertow) return false;
-            if (Core.BoardCard.Align != game.CurrentAlignment) return false;
-            Core.ParentField.PutTheCard();
+            if (BoardCard.GetSkill() != SkillEnum.TrenerPokebertow) return false;
+            if (BoardCard.Align != game.CurrentAlignment) return false;
+            ParentField.PutTheCard();
             return true;
         }
 

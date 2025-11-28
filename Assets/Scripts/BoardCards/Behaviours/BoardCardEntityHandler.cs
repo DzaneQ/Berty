@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Behaviours
 {
-    public class BoardCardEntity : BoardCardBehaviour
+    public class BoardCardEntityHandler : BoardCardBehaviour
     {
         public new BoardCard BoardCard { get; private set; }
         public new FieldBehaviour ParentField { get; private set; }
@@ -36,7 +36,7 @@ namespace Berty.BoardCards.Behaviours
         public void AdvanceStrength(int value, BoardCardBehaviour source)
         {
             if (BoardCard == null) return;
-            if (ModifyStatChangeManager.Instance.BeforeStrengthChange(Core, ref value, source)) return;
+            if (ModifyStatChangeManager.Instance.BeforeStrengthChange(this, ref value, source)) return;
             BoardCard.AdvanceStrength(value);
             Bars.UpdateBar(StatEnum.Strength);
         }
@@ -51,7 +51,7 @@ namespace Berty.BoardCards.Behaviours
         public void AdvanceTempStrength(int value, BoardCardBehaviour source)
         {
             if (BoardCard == null) return;
-            if (ModifyStatChangeManager.Instance.BeforeStrengthChange(Core, ref value, source)) return;
+            if (ModifyStatChangeManager.Instance.BeforeStrengthChange(this, ref value, source)) return;
             BoardCard.AdvanceTempStrength(value);
             Bars.UpdateBar(StatEnum.Strength);
         }
@@ -67,10 +67,10 @@ namespace Berty.BoardCards.Behaviours
         public void AdvancePower(int value, BoardCardBehaviour source)
         {
             if (BoardCard == null) return;
-            if (ModifyStatChangeManager.Instance.BeforePowerChange(Core, ref value, source)) return;
+            if (ModifyStatChangeManager.Instance.BeforePowerChange(this, ref value, source)) return;
             BoardCard.AdvancePower(value);
             Bars.UpdateBar(StatEnum.Power);
-            ModifyStatChangeManager.Instance.AfterPowerChange(Core, value, source);
+            ModifyStatChangeManager.Instance.AfterPowerChange(this, value, source);
         }
 
         public void SetPower(int value, BoardCardBehaviour source)
@@ -83,10 +83,10 @@ namespace Berty.BoardCards.Behaviours
         public void AdvanceTempPower(int value, BoardCardBehaviour source)
         {
             if (BoardCard == null) return;
-            if (ModifyStatChangeManager.Instance.BeforePowerChange(Core, ref value, source)) return;
+            if (ModifyStatChangeManager.Instance.BeforePowerChange(this, ref value, source)) return;
             BoardCard.AdvanceTempPower(value);
             Bars.UpdateBar(StatEnum.Power);
-            ModifyStatChangeManager.Instance.AfterPowerChange(Core, value, source);
+            ModifyStatChangeManager.Instance.AfterPowerChange(this, value, source);
         }
 
         public void AdvanceDexterity(int value, BoardCardBehaviour source)
@@ -99,11 +99,10 @@ namespace Berty.BoardCards.Behaviours
         public void AdvanceHealth(int value, BoardCardBehaviour source, bool isBasicAttack = false)
         {
             if (BoardCard == null) return;
-            if (ModifyStatChangeManager.Instance.BeforeHealthChange(Core, ref value, source, isBasicAttack)) return;
-            if (isBasicAttack) source.Core.MarkSuccessfulAttack(Core);
+            if (ModifyStatChangeManager.Instance.BeforeHealthChange(this, ref value, source, isBasicAttack)) return;
             BoardCard.AdvanceHealth(value);
             Bars.UpdateBar(StatEnum.Health);
-            ModifyStatChangeManager.Instance.AfterHealthChange(Core, value, source);
+            ModifyStatChangeManager.Instance.AfterHealthChange(this, value, source);
         }
 
         public void ProgressTemporaryStats()
@@ -140,7 +139,7 @@ namespace Berty.BoardCards.Behaviours
         public void SwitchSides()
         {
             BoardCard.OccupiedField.SwitchSides();
-            Entity.SetPower(BoardCard.CharacterConfig.Power, this);
+            EntityHandler.SetPower(BoardCard.CharacterConfig.Power, this);
             ParentField.UpdateField();
         }
 
@@ -166,7 +165,7 @@ namespace Berty.BoardCards.Behaviours
             }
             else                                   // Otherwise, remove only the card object itself
             {
-                Core.EnableBackupCard();
+                EnableBackupCard();
                 Destroy(gameObject);
             }
         }
@@ -204,7 +203,7 @@ namespace Berty.BoardCards.Behaviours
                     KillCard();
                     break;
                 case SkillEnum.KsiezniczkaBerta:
-                    SetPower(BoardCard.CharacterConfig.Power, Core);
+                    SetPower(BoardCard.CharacterConfig.Power, this);
                     break;
                 default:
                     SwitchSides();
@@ -242,6 +241,11 @@ namespace Berty.BoardCards.Behaviours
                     KillCard();
                     break;
             }
+        }
+
+        private void EnableBackupCard()
+        {
+            transform.parent.GetChild(0).gameObject.SetActive(true);
         }
     }
 }

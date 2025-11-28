@@ -64,13 +64,16 @@ namespace Berty.Gameplay.Managers
             OnPaymentCancel?.Invoke();
         }
 
-        public void RaiseOnDirectlyAttacked(BoardCardBehaviour attacker)
+        public List<BoardCardBehaviour> RaiseOnDirectlyAttacked(BoardCardBehaviour attacker)
         {
             DirectAttackEventArgs args = new()
             {
-                AttackedFields = game.Grid.GetFieldsInRange(attacker.BoardCard, attacker.BoardCard.CharacterConfig.AttackRange)
+                AttackedFields = game.Grid.GetFieldsInRange(attacker.BoardCard, attacker.BoardCard.CharacterConfig.AttackRange),
+                SuccessfullyAttackedCards = new()
             };
             OnDirectlyAttacked?.Invoke(attacker, args);
+
+            return args.SuccessfullyAttackedCards;
         }
 
         public void RaiseOnAttackNewStand(BoardCardBehaviour defender)
@@ -161,6 +164,7 @@ namespace Berty.Gameplay.Managers
     public class DirectAttackEventArgs : EventArgs
     {
         public List<BoardField> AttackedFields;
+        public List<BoardCardBehaviour> SuccessfullyAttackedCards;
     }
 
     public class ValueChangeEventArgs : EventArgs

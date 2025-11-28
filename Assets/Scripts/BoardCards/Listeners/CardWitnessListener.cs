@@ -39,33 +39,33 @@ namespace Berty.BoardCards.Listeners
         private void HandleNewCharacter(object sender, EventArgs args)
         {
             BoardCardBehaviour newCharacter = (BoardCardBehaviour)sender;
-            HandleNewCardWitness(Core, newCharacter);
+            HandleNewCardWitness(this, newCharacter);
         }
 
         private void HandleMovedCharacter(object sender, EventArgs args)
         {
             BoardCardBehaviour movedCharacter = (BoardCardBehaviour)sender;
             if (movedCharacter.BoardCard == null) return;
-            HandleMovedCardWitness(Core, movedCharacter);
+            HandleMovedCardWitness(this, movedCharacter);
         }
 
         private void HandleCharacterDeath(object sender, EventArgs args)
         {
             BoardCardBehaviour dyingCharacter = (BoardCardBehaviour)sender;
-            Core.BoardCard.RemoveResistanceToCharacter(dyingCharacter.BoardCard.CharacterConfig);
-            HandleDeathWitness(Core, dyingCharacter);
+            BoardCard.RemoveResistanceToCharacter(dyingCharacter.BoardCard.CharacterConfig);
+            HandleDeathWitness(this, dyingCharacter);
         }
 
         private void HandleCharacterSpecialEffect(object sender, EventArgs args)
         {
             BoardCardBehaviour specialCharacter = (BoardCardBehaviour)sender;
-            HandleCustomEffect(Core, specialCharacter);
+            HandleCustomEffect(this, specialCharacter);
         }
 
         private void HandleValueChange(object sender, ValueChangeEventArgs args)
         {
             BoardCardBehaviour sourceCharacter = (BoardCardBehaviour)sender;
-            HandleCustomEffect(Core, sourceCharacter, args.Delta);
+            HandleCustomEffect(this, sourceCharacter, args.Delta);
         }
 
         private void HandleOnFieldFreed(object sender, EventArgs args)
@@ -178,11 +178,11 @@ namespace Berty.BoardCards.Listeners
             {
                 case SkillEnum.BertVentura:
                     if (game.Grid.AreNeighboring(witness.ParentField.BoardField, dyingCard.ParentField.BoardField))
-                        StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, witness.BoardCard, game.Grid.GetEnemyNeighborCount(Core.BoardCard));
+                        StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, witness.BoardCard, game.Grid.GetEnemyNeighborCount(BoardCard));
                     break;
                 case SkillEnum.Zombert:
                     if (dyingCard.BoardCard.Align == witness.BoardCard.Align) break;
-                    witness.Entity.AdvanceHealth(1, null);
+                    witness.EntityHandler.AdvanceHealth(1, null);
                     break;
             }
 
@@ -190,7 +190,7 @@ namespace Berty.BoardCards.Listeners
             switch (dyingCard.BoardCard.GetSkill())
             {
                 case SkillEnum.SedziaBertt:
-                    if (dyingCard.BoardCard.Align == witness.BoardCard.Align) witness.Entity.AdvanceTempStrength(1, dyingCard);
+                    if (dyingCard.BoardCard.Align == witness.BoardCard.Align) witness.EntityHandler.AdvanceTempStrength(1, dyingCard);
                     return;
             }
         }
@@ -217,7 +217,7 @@ namespace Berty.BoardCards.Listeners
             switch (skillCard.BoardCard.GetSkill())
             {
                 case SkillEnum.BertVentura:
-                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillCard.BoardCard, game.Grid.GetEnemyNeighborCount(Core.BoardCard));
+                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillCard.BoardCard, game.Grid.GetEnemyNeighborCount(BoardCard));
                     break;
                 case SkillEnum.BertWho:
                     StatusManager.Instance.IncrementChargedStatusWithAlignment(StatusEnum.ExtraCardNextTurn, AlignmentEnum.Player, 2);
@@ -241,8 +241,8 @@ namespace Berty.BoardCards.Listeners
                     int hour = DateTime.Now.Hour;
                     if (hour < 5 || 18 <= hour)
                     {
-                        skillCard.Entity.AdvanceStrength(1, null);
-                        skillCard.Entity.AdvancePower(2, null);
+                        skillCard.EntityHandler.AdvanceStrength(1, null);
+                        skillCard.EntityHandler.AdvancePower(2, null);
                     }
                     break;
             }
@@ -253,10 +253,10 @@ namespace Berty.BoardCards.Listeners
             switch (skillCard.BoardCard.GetSkill())
             {
                 case SkillEnum.BertVentura:
-                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillCard.BoardCard, game.Grid.GetEnemyNeighborCount(Core.BoardCard));
+                    StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillCard.BoardCard, game.Grid.GetEnemyNeighborCount(BoardCard));
                     break;
                 case SkillEnum.PrezydentBert:
-                    skillCard.Entity.AdvancePower(-1, null);
+                    skillCard.EntityHandler.AdvancePower(-1, null);
                     break;
             }
         }
@@ -270,7 +270,7 @@ namespace Berty.BoardCards.Listeners
             // Get enemy if possible
             BoardCard target = neighbors.Find(card => card.Align != skillCard.BoardCard.Align);
             if (target == null) target = neighbors.First();
-            BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(target).Entity.AdvancePower(-3, skillCard);
+            BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(target).EntityHandler.AdvancePower(-3, skillCard);
         }
     }
 }

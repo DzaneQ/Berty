@@ -25,11 +25,13 @@ namespace Berty.BoardCards.Behaviours
         private GameObject buttonSet;
 
         public CardButton[] Buttons { get; private set; }
+        private Camera cam;
 
         protected override void Awake()
         {
             base.Awake();
             InitializeButtons();
+            cam = Camera.main;
         }
 
         private void Start()
@@ -54,14 +56,14 @@ namespace Berty.BoardCards.Behaviours
 
         public void SetMainState()
         {
-            if (Core.BoardCard == null || Core.BoardCard.OccupiedField == null)
+            if (BoardCard == null || BoardCard.OccupiedField == null)
             {
                 SetIdle();
                 return;
             }
             AlignmentEnum currentAlign = game.CurrentAlignment;
-            AlignmentEnum cardAlign = Core.BoardCard.Align;
-            if (currentAlign == cardAlign && !Core.BoardCard.IsTired) SetActive();
+            AlignmentEnum cardAlign = BoardCard.Align;
+            if (currentAlign == cardAlign && !BoardCard.IsTired) SetActive();
             else if (IsEligibleForTelekineticState()) SetTelekinetic();
             else SetIdle();
         }
@@ -71,7 +73,7 @@ namespace Berty.BoardCards.Behaviours
             Status telekinesisArea = game.GetStatusByNameOrNull(StatusEnum.TelekineticArea);
             if (telekinesisArea == null) return false;
             if (telekinesisArea.Provider.IsTired) return false;
-            if (ApplySkillEffectManager.Instance.DoesPreventEffect(Core.BoardCard, telekinesisArea.Provider)) return false;
+            if (ApplySkillEffectManager.Instance.DoesPreventEffect(BoardCard, telekinesisArea.Provider)) return false;
             return telekinesisArea.Provider.Align == game.CurrentAlignment;
         }
 
@@ -93,7 +95,6 @@ namespace Berty.BoardCards.Behaviours
         public void SetAttacking()
         {
             Debug.Log("Setting attacking state.");
-            Core.ClearAttackedCardsCache();
             SetState(new AttackingState(this));
         }
 
@@ -116,7 +117,7 @@ namespace Berty.BoardCards.Behaviours
         {
             if (Navigation.IsCardAnimating()) return;
             if (Bars.AreBarsAnimating()) return;
-            if (!Core.IsCursorFocused()) return;
+            if (!IsCursorFocused()) return;
             buttonSet.SetActive(true);
         }
 
@@ -150,6 +151,16 @@ namespace Berty.BoardCards.Behaviours
         public bool IsDexterityBased()
         {
             return currentState.IsDexterityBased();
+        }
+
+        public bool IsCursorFocused()
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (!Physics.Raycast(ray, out hit)) return false;
+            if (hit.transform == transform) return true; // Is cursor on card square object?
+            if (hit.transform.parent == null) return false;
+            return hit.transform.parent.parent == transform; // Is cursor on card's button object?
         }
     }
 }

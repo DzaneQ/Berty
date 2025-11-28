@@ -31,7 +31,7 @@ namespace Berty.UI.Card.Managers
             HandCardSelectManager.Instance.ClearSelection();
         }
 
-        public BoardCardCore PutCardOnField(FieldBehaviour field)
+        public BoardCardBehaviour PutCardOnField(FieldBehaviour field)
         {
             // Create empty child transform if field has no children
             if (field.transform.childCount == 0)
@@ -40,7 +40,7 @@ namespace Berty.UI.Card.Managers
                 fieldChild.transform.SetParent(field.transform, false);
             }
             // Put new card on this empty child transform
-            return Instantiate(boardCardPrefab, field.transform.GetChild(0)).GetComponent<BoardCardCore>();
+            return Instantiate(boardCardPrefab, field.transform.GetChild(0)).GetComponent<BoardCardBehaviour>();
         }
     }
 }
