@@ -17,14 +17,19 @@ namespace Berty.Utility
                 if (s_instance == null)
                 {
                     T[] objects = FindObjectsOfType<T>();
-                    if (objects.Length == 0)
+                    switch (objects.Length)
                     {
-                        GameObject managerObject = GameObject.Find("SceneManagerSystem");
-                        if (managerObject == null) managerObject = new GameObject("SceneManagerSystem");
-                        if (s_instance == null) s_instance = managerObject.AddComponent<T>();
-                        else s_instance = managerObject.GetComponent<T>();
+                        case 0:
+                            GameObject managerObject = new();
+                            managerObject.hideFlags = HideFlags.HideInHierarchy;
+                            s_instance = managerObject.AddComponent<T>();
+                            break;
+                        case 1:
+                            s_instance = objects[0].GetComponent<T>();
+                            break;
+                        default:
+                            throw new Exception($"There are {objects.Length} singletons of type {typeof(T).Name}");
                     }
-                    if (objects.Length > 1) throw new Exception($"Too many singletons of type {typeof(T).Name}");
                 }
                 return s_instance;
             }

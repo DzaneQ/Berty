@@ -4019,7 +4019,7 @@ MonoBehaviour:
   fieldBoard: {fileID: 1181834772}
   cornerButton: {fileID: 1498936183}
   deadCardsScreen: {fileID: 470320019}
-  escapeCanvas: {fileID: 0}
+  escapeCanvas: {fileID: 979650402}
 --- !u!4 &1473762351
 Transform:
   m_ObjectHideFlags: 0
