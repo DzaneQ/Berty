@@ -80,7 +80,7 @@ namespace Berty.Characters.Managers
                     skillOwner.EntityHandler.AdvanceStrength(1, null);
                     break;
                 case SkillEnum.CheBert:
-                    if (AreAllied(target, skillOwner) && target.BoardCard.GetRole() == RoleEnum.Special && target != skillOwner)
+                    if (AreAllied(target, skillOwner) && target.BoardCard.GetRole() == RoleEnum.Special && !target.IsEqualTo(skillOwner))
                         target.EntityHandler.AdvanceStrength(1, skillOwner);
                     break;
                 case SkillEnum.EBerta:

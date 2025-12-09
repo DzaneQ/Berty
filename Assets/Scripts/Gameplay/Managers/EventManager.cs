@@ -1,16 +1,11 @@
 using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.Entities;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
-using Berty.Grid.Entities;
 using Berty.Grid.Field.Behaviour;
 using Berty.Grid.Field.Entities;
 using Berty.Utility;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace Berty.Gameplay.Managers
@@ -27,6 +22,7 @@ namespace Berty.Gameplay.Managers
         public event EventHandler OnAttackNewStand;
         public event EventHandler OnNewCharacter;
         public event EventHandler OnMovedCharacter;
+        public event EventHandler OnSideChanged;
         public event EventHandler OnCharacterDeath;
         public event EventHandler OnCharacterSpecialEffect;
         public event EventHandler<ValueChangeEventArgs> OnValueChange;
@@ -89,6 +85,11 @@ namespace Berty.Gameplay.Managers
         public void RaiseOnMovedCharacter(BoardCardBehaviour movedCard)
         {
             OnMovedCharacter?.Invoke(movedCard, EventArgs.Empty);
+        }
+
+        public void RaiseOnSideChanged(BoardCardBehaviour convertedCard)
+        {
+            OnSideChanged?.Invoke(convertedCard, EventArgs.Empty);
         }
 
         public void RaiseOnCharacterDeath(BoardCardBehaviour dyingCard)

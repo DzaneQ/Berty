@@ -62,7 +62,7 @@ namespace Berty.BoardCards.Listeners
             BoardCardBehaviour attacker = (BoardCardBehaviour)sender;
             BoardCardBehaviour witness = this;
 
-            if (witness == attacker) HandleDirectAttackSelf();
+            if (witness.IsEqualTo(attacker)) HandleDirectAttackSelf();
 
             switch (attacker.BoardCard.GetSkill())
             {

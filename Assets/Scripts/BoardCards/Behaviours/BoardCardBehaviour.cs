@@ -29,5 +29,10 @@ namespace Berty.BoardCards.Behaviours
             StateMachine = GetComponent<BoardCardStateMachine>();
             game = EntityLoadManager.Instance.Game;
         }
+
+        public bool IsEqualTo(BoardCardBehaviour cardBehaviour)
+        {
+            return gameObject == cardBehaviour.gameObject;
+        }
     }
 }

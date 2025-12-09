@@ -1,3 +1,4 @@
+using Berty.BoardCards.Animation;
 using Berty.BoardCards.Behaviours;
 using Berty.BoardCards.Entities;
 using Berty.BoardCards.Managers;
@@ -21,6 +22,7 @@ namespace Berty.BoardCards.Listeners
             EventManager.Instance.OnMovedCharacter += HandleMovedCharacter;
             EventManager.Instance.OnCharacterSpecialEffect += HandleCharacterSpecialEffect;
             EventManager.Instance.OnValueChange += HandleValueChange;
+            EventManager.Instance.OnSideChanged += HandleSideChanged;
             EventManager.Instance.OnCharacterDeath += HandleCharacterDeath;
             EventManager.Instance.OnFieldFreed += HandleOnFieldFreed;
         }
@@ -32,6 +34,7 @@ namespace Berty.BoardCards.Listeners
             EventManager.Instance.OnMovedCharacter -= HandleMovedCharacter;
             EventManager.Instance.OnCharacterSpecialEffect -= HandleCharacterSpecialEffect;
             EventManager.Instance.OnValueChange -= HandleValueChange;
+            EventManager.Instance.OnSideChanged -= HandleSideChanged;
             EventManager.Instance.OnCharacterDeath -= HandleCharacterDeath;
             EventManager.Instance.OnFieldFreed -= HandleOnFieldFreed;
         }
@@ -62,6 +65,12 @@ namespace Berty.BoardCards.Listeners
             HandleCustomEffect(this, specialCharacter);
         }
 
+        private void HandleSideChanged(object sender, EventArgs args)
+        {
+            BoardCardBehaviour convertedCharacter = (BoardCardBehaviour)sender;
+            HandleSideChangeWitness(this, convertedCharacter);
+        }
+
         private void HandleValueChange(object sender, ValueChangeEventArgs args)
         {
             BoardCardBehaviour sourceCharacter = (BoardCardBehaviour)sender;
@@ -79,7 +88,7 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleNewCardWitness(BoardCardBehaviour witness, BoardCardBehaviour newCard)
         {
-            if (witness == newCard) HandleNewCardSelf(newCard);
+            if (witness.IsEqualTo(newCard)) HandleNewCardSelf(newCard);
 
             // When new card is the character with skill
             switch (newCard.BoardCard.GetSkill())
@@ -129,7 +138,7 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleMovedCardWitness(BoardCardBehaviour witness, BoardCardBehaviour movedCard)
         {
-            if (witness == movedCard) HandleMovedCardSelf(movedCard);
+            if (witness.IsEqualTo(movedCard)) HandleMovedCardSelf(movedCard);
 
             // When moved card is the character with skill
             switch (movedCard.BoardCard.GetSkill())
@@ -169,9 +178,42 @@ namespace Berty.BoardCards.Listeners
             }
         }
 
+        private void HandleSideChangeWitness(BoardCardBehaviour witness, BoardCardBehaviour convertedCard)
+        {
+            // When converted card is the character with skill
+            switch (convertedCard.BoardCard.GetSkill())
+            {
+                case SkillEnum.BertZawodowiec:
+                case SkillEnum.EBerta:
+                case SkillEnum.KuglarzBert:
+                case SkillEnum.SuperfanBert:
+                    ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, convertedCard);
+                    break;
+                case SkillEnum.CheBert:
+                case SkillEnum.ShaolinBert:
+                    ApplySkillEffectManager.Instance.HandleCharacterSkill(witness, convertedCard);
+                    break;
+            }
+
+            // When witness is the character with skill
+            switch (witness.BoardCard.GetSkill())
+            {
+                case SkillEnum.BertZawodowiec:
+                case SkillEnum.EBerta:
+                case SkillEnum.KuglarzBert:
+                case SkillEnum.SuperfanBert:
+                    ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(convertedCard, witness);
+                    break;
+                case SkillEnum.CheBert:
+                case SkillEnum.ShaolinBert:
+                    ApplySkillEffectManager.Instance.HandleCharacterSkill(convertedCard, witness);
+                    break;
+            }
+        }
+
         private void HandleDeathWitness(BoardCardBehaviour witness, BoardCardBehaviour dyingCard)
         {
-            if (witness == dyingCard) return;
+            if (witness.IsEqualTo(dyingCard)) return;
 
             // When witness is the character with skill
             switch (witness.BoardCard.GetSkill())

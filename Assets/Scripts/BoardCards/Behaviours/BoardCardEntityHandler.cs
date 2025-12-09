@@ -135,12 +135,12 @@ namespace Berty.BoardCards.Behaviours
             }    
         }
 
-        // TODO: Handle changed side for cards that apply skills to allies
         public void SwitchSides()
         {
             BoardCard.OccupiedField.SwitchSides();
             EntityHandler.SetPower(BoardCard.CharacterConfig.Power, this);
             ParentField.UpdateField();
+            EventManager.Instance.RaiseOnSideChanged(this);
         }
 
         private void KillCard()
