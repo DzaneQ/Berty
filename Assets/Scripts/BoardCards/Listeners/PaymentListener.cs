@@ -64,7 +64,7 @@ namespace Berty.BoardCards.Listeners
             {
                 FieldToHandManager.Instance.RetrievePendingCard();
                 SoundManager.Instance.TakeSound(transform);
-                EntityHandler.RemoveCard();
+                Activation.DeactivateCard();
                 return;
             }
             StateMachine.SetMainState();

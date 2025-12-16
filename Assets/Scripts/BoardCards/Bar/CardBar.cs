@@ -26,7 +26,7 @@ namespace Berty.BoardCards.Bar
 
         void Start()
         {
-            UpdateBarWithoutAnimation();
+            //UpdateBarWithoutAnimation();
         }
 
         private int ReadStat()

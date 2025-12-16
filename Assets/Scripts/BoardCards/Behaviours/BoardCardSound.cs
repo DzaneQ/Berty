@@ -15,7 +15,7 @@ namespace Berty.BoardCards.Behaviours
             soundSource.volume = SettingsManager.Instance.Volume;
         }
 
-        private void Start()
+        public void PlayNewCardSound()
         {
             SoundManager.Instance.PutSound(Source);
         }

@@ -1,4 +1,5 @@
 using Berty.BoardCards.Behaviours;
+using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
@@ -58,15 +59,16 @@ namespace Berty.Grid.Field.Behaviour
         public void UpdateField()
         {
             if (BoardField.OccupantCard == null) ChildCard = null;
-            else ChildCard = BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(BoardField.OccupantCard);  
+            else if (ChildCard == null || ChildCard.BoardCard != BoardField.OccupantCard)
+                ChildCard = BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(BoardField.OccupantCard);  
             ColorizeField();
         }
 
         public void PutTheCard()
         {
-            HandToFieldManager.Instance.RemoveSelectedCardFromHand();
-            BoardCardBehaviour newCard = HandToFieldManager.Instance.PutCardOnField(this);
-            PaymentManager.Instance.CallPayment(BoardField.OccupantCard.Stats.Power, newCard);
+            CharacterConfig selectedCardConfig = HandToFieldManager.Instance.RemoveSelectedCardFromHand();
+            HandToFieldManager.Instance.ActivateCardOnField(this, selectedCardConfig);
+            PaymentManager.Instance.CallPayment(selectedCardConfig.Power, ChildCard);
         }
 
         private void ColorizeField()

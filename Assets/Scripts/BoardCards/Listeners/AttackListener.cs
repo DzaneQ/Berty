@@ -100,19 +100,19 @@ namespace Berty.BoardCards.Listeners
             {
                 BoardField neighbor = game.Grid.GetFieldDistancedFromCardOrNull(-1, 0, target.BoardCard);
                 if (neighbor != null && neighbor.IsOccupied()) 
-                    BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(neighbor.OccupantCard).EntityHandler.AdvanceHealth(-1, bertaAmazonka);
+                    BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(neighbor.OccupantCard).EntityHandler.AdvanceHealth(-1, bertaAmazonka);
                 neighbor = game.Grid.GetFieldDistancedFromCardOrNull(1, 0, target.BoardCard);
                 if (neighbor != null && neighbor.IsOccupied())
-                    BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(neighbor.OccupantCard).EntityHandler.AdvanceHealth(-1, bertaAmazonka);
+                    BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(neighbor.OccupantCard).EntityHandler.AdvanceHealth(-1, bertaAmazonka);
             }
             else if (distance.x != 0 && distance.y == 0)
             {
                 BoardField neighbor = game.Grid.GetFieldDistancedFromCardOrNull(0, -1, target.BoardCard);
                 if (neighbor != null && neighbor.IsOccupied())
-                    BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(neighbor.OccupantCard).EntityHandler.AdvanceHealth(-1, bertaAmazonka);
+                    BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(neighbor.OccupantCard).EntityHandler.AdvanceHealth(-1, bertaAmazonka);
                 neighbor = game.Grid.GetFieldDistancedFromCardOrNull(0, 1, target.BoardCard);
                 if (neighbor != null && neighbor.IsOccupied())
-                    BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(neighbor.OccupantCard).EntityHandler.AdvanceHealth(-1, bertaAmazonka);
+                    BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(neighbor.OccupantCard).EntityHandler.AdvanceHealth(-1, bertaAmazonka);
             }
             else throw new Exception($"Target shouldn't be distanced from BertaAmazonka by: {distance.x}, {distance.y}");
         }    

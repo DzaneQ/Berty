@@ -19,6 +19,7 @@ namespace Berty.BoardCards.Behaviours
             moveCard = GetComponent<IMoveCard>();
             rotateCard = GetComponent<IRotateCard>();
             queuedMovementEffect = false;
+            queuedMovementSkillEffect = false;
         }
 
         public void MoveCardObject(FieldBehaviour field)

@@ -31,10 +31,17 @@ namespace Berty.BoardCards.Managers
         {
             AlignmentEnum cardAlign = card.BoardCard.OccupiedField.Align;
             BoardCard backupCard = card.BoardCard.OccupiedField.BackupCard;
+            FieldBehaviour targetFieldBehaviour = FieldCollectionManager.Instance.GetBehaviourFromEntity(targetField);
+
+            // Update entity
             card.BoardCard.OccupiedField.RemoveAllCards();
             targetField.PlaceExistingCard(card.BoardCard, cardAlign);
             targetField.SetBackupCard(backupCard);
-            card.Navigation.MoveCardObject(FieldCollectionManager.Instance.GetBehaviourFromEntity(targetField));
+
+            // Update object
+            targetFieldBehaviour.transform.GetChild(0).SetParent(card.transform.parent.parent, false);
+            card.Navigation.MoveCardObject(targetFieldBehaviour);
+
             if (!isOrdered) card.Navigation.HandleNewMovementSkillEffect();
             card.StateMachine.UpdateButtons();
         }

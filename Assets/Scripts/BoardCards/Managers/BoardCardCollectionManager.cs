@@ -3,6 +3,7 @@ using Berty.BoardCards.Entities;
 using Berty.Utility;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Berty.BoardCards.Managers
 {
@@ -22,10 +23,11 @@ namespace Berty.BoardCards.Managers
             boardCardCoreCollection = new List<BoardCardBehaviour>();
         }
 
-        public BoardCardBehaviour GetBehaviourFromEntityOrThrow(BoardCard boardCard)
+        public BoardCardBehaviour GetActiveBehaviourFromEntityOrThrow(BoardCard boardCard)
         {
             BoardCardBehaviour card = boardCardCoreCollection.Find((BoardCardBehaviour bhvr) => bhvr.BoardCard == boardCard);
-            if (card == null) throw new Exception($"Trying to get core from entity {boardCard.CharacterConfig.Name} that is null");
+            if (card == null) throw new Exception($"Trying to get behaviour from entity {boardCard.CharacterConfig.Name} that is null");
+            if (!card.isActiveAndEnabled) throw new Exception($"Trying to get behaviour {card.name} from entity {boardCard.CharacterConfig.Name} that is not active");
             return card;
         }
 

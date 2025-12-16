@@ -132,6 +132,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\AnimatedMoveCard.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardActivation.cs" />
     <Compile Include="Assets\Scripts\Display\LookupCard.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardEntityHandler.cs" />
@@ -156,7 +157,6 @@
     <Compile Include="Assets\Scripts\BoardCards\State\NewTransformState.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\Bertonator.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Listeners\HighlightListener.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardObjectInitializer.cs" />
     <Compile Include="Assets\Scripts\Utility\ManagerSingleton.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\RycerzBerti.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />

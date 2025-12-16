@@ -16,6 +16,7 @@ namespace Berty.Gameplay.Managers
         [SerializeField] private GameObject cornerButton;
         [SerializeField] private GameObject deadCardsScreen;
         [SerializeField] private GameObject escapeCanvas;
+        [SerializeField] private GameObject backupCard;
 
         public GameObject HandCardObjectCollection => handCardObjectCollection;
         public GameObject PlayerTable => playerTable;
@@ -25,5 +26,6 @@ namespace Berty.Gameplay.Managers
         public GameObject CornerButton => cornerButton;
         public GameObject DeadCardsScreen => deadCardsScreen;
         public GameObject EscapeCanvas => escapeCanvas;
+        public GameObject BackupCard => backupCard;
     }
 }

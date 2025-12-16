@@ -6,6 +6,7 @@ using UnityEngine;
 using Berty.BoardCards.ConfigData;
 using Berty.Grid.Field.Behaviour;
 using Berty.BoardCards.Behaviours;
+using System;
 
 namespace Berty.UI.Card.Managers
 {
@@ -22,25 +23,34 @@ namespace Berty.UI.Card.Managers
             boardCardPrefab = Resources.Load<GameObject>("Prefabs/CardSquare");
         }
 
-        public void RemoveSelectedCardFromHand()
+        public CharacterConfig RemoveSelectedCardFromHand()
         {
             CharacterConfig selectedCard = SelectionManager.Instance.GetSelectedCardOrThrow();
             SelectionManager.Instance.PutSelectedCardAsPending();
             CardPile.LeaveCard(selectedCard, Game.CurrentAlignment);
             HandCardObjectManager.Instance.RemoveCardObjects();
             HandCardSelectManager.Instance.ClearSelection();
+            return selectedCard;
         }
 
-        public BoardCardBehaviour PutCardOnField(FieldBehaviour field)
+        public GameObject ActivateCardOnField(FieldBehaviour field, CharacterConfig cardConfig)
         {
-            // Create empty child transform if field has no children
-            if (field.transform.childCount == 0)
+            GameObject newCardObject = GetNewCardObjectOnField(field);
+            newCardObject.SetActive(true);
+            newCardObject.GetComponent<BoardCardBehaviour>().Activation.HandleNewCardActivated(cardConfig);
+            return newCardObject;
+        }
+
+        public GameObject GetNewCardObjectOnField(FieldBehaviour field)
+        {
+            GameObject cardToActivate = field.transform.GetChild(0).GetChild(0).gameObject;
+            if (cardToActivate.activeSelf)  // If there's an active card, get a second card
             {
-                GameObject fieldChild = new("CardSetTransform");
-                fieldChild.transform.SetParent(field.transform, false);
+                cardToActivate = ObjectReadManager.Instance.BackupCard;
+                if (cardToActivate.activeSelf) throw new Exception($"Backup card named {cardToActivate.name} is already active.");
+                cardToActivate.transform.SetParent(field.transform.GetChild(0), false);
             }
-            // Put new card on this empty child transform
-            return Instantiate(boardCardPrefab, field.transform.GetChild(0)).GetComponent<BoardCardBehaviour>();
+            return cardToActivate;
         }
     }
 }

@@ -21,6 +21,11 @@ namespace Berty.BoardCards.Behaviours
             CardBars = transform.GetChild(1).GetComponentsInChildren<CardBar>();
         }
 
+        public void SetBars()
+        {
+            foreach (CardBar bar in CardBars) bar.UpdateBarWithoutAnimation();
+        }
+
         public void UpdateBars()
         {
             UpdateBar(StatEnum.Strength);

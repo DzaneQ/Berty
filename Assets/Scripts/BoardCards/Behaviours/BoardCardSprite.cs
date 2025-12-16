@@ -22,11 +22,6 @@ namespace Berty.BoardCards.Behaviours
             defaultColor = characterSprite.color;
         }
 
-        private void Start()
-        {
-            UpdateObjectFromCharacterConfig();
-        }
-
         public void UpdateObjectFromCharacterConfig()
         {
             CharacterConfig character = BoardCard.CharacterConfig;

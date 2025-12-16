@@ -66,7 +66,7 @@ namespace Berty.BoardCards.Listeners
                     if (game.CardPile.AreThereAnyDeadCards())
                     {
                         StatusManager.Instance.AddUniqueStatusWithAlignment(StatusEnum.RevivalSelect, BoardCard.Align);
-                        EntityHandler.RemoveCard();
+                        Activation.DeactivateCard();
                     }
                     break;
             }

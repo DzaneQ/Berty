@@ -312,7 +312,7 @@ namespace Berty.BoardCards.Listeners
             // Get enemy if possible
             BoardCard target = neighbors.Find(card => card.Align != skillCard.BoardCard.Align);
             if (target == null) target = neighbors.First();
-            BoardCardCollectionManager.Instance.GetBehaviourFromEntityOrThrow(target).EntityHandler.AdvancePower(-3, skillCard);
+            BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(target).EntityHandler.AdvancePower(-3, skillCard);
         }
     }
 }

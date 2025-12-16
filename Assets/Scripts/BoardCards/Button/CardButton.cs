@@ -12,7 +12,7 @@ namespace Berty.BoardCards.Button
     abstract public class CardButton : MonoBehaviour
     {
 
-        protected BoardCardObjectInitializer card;
+        protected BoardCardBehaviour card;
         private Renderer rend;
         private Collider coll;
         [SerializeField] private Material dexterityMaterial;
@@ -21,7 +21,7 @@ namespace Berty.BoardCards.Button
 
         private void Awake()
         {
-            card = GetComponentInParent<BoardCardObjectInitializer>();
+            card = GetComponentInParent<BoardCardBehaviour>();
             rend = GetComponent<Renderer>();
             coll = GetComponent<Collider>();
             neutralMaterial = rend.material;

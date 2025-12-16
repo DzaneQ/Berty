@@ -30,11 +30,21 @@ namespace Berty.BoardCards.Behaviours
         protected override void Awake()
         {
             base.Awake();
-            InitializeButtons();
             cam = Camera.main;
         }
 
-        private void Start()
+        private void OnEnable()
+        {
+            if (Buttons == null || Buttons.Length == 0) InitializeButtons(); // Handle first time activation
+            else SetMainState();
+        }
+
+        private void OnDisable()
+        {
+            SetIdle();
+        }
+
+        public void HandleStateForNewCard()
         {
             SetState(new NewCardState(this));
         }
@@ -50,6 +60,7 @@ namespace Berty.BoardCards.Behaviours
         private void SetState(CardState state)
         {
             if (currentState != null && currentState.GetNameEnum() == state.GetNameEnum()) return;
+            Debug.Log($"Setting {state.GetType().Name} for {name}");
             currentState = state;
             currentState.OnStateEnter();
         }

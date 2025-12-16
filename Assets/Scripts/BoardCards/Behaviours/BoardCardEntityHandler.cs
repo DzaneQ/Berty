@@ -20,12 +20,21 @@ namespace Berty.BoardCards.Behaviours
         {
             base.Awake();
             ParentField = GetComponentInParent<FieldBehaviour>();
-            BoardCard = ParentField.BoardField.AddNewCard(SelectionManager.Instance.GetPendingCardOrThrow(), game.CurrentAlignment);
         }
 
-        private void Start()
+        public void LoadBoardCardEntity(CharacterConfig config, AlignmentEnum align)
         {
-            SetFieldBehaviour(ParentField);
+            BoardCard = ParentField.BoardField.AddNewCard(config, align);
+            Sprite.UpdateObjectFromCharacterConfig();
+            Bars.SetBars();
+            ParentField.UpdateField();
+        }
+
+        public void DeactivateBoardCardEntity()
+        {
+            BoardCard.DeactivateCard();
+            BoardCard = null;
+            ParentField.UpdateField();
         }
 
         public void SetFieldBehaviour(FieldBehaviour fieldBehaviour)
@@ -145,29 +154,16 @@ namespace Berty.BoardCards.Behaviours
 
         private void KillCard()
         {
+            TriggerCardDeath();
+            Activation.DeactivateCard();
+        }
+
+        private void TriggerCardDeath()
+        {
             StatusManager.Instance.RemoveStatusFromProvider(BoardCard);
             EventManager.Instance.RaiseOnCharacterDeath(this);
             if (BoardCard.GetSkill() == SkillEnum.BertWho) game.CardPile.PutCardToTheBottomPile(BoardCard.CharacterConfig);
             else game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
-            RemoveCard();
-        }
-
-        public void RemoveCard()
-        {
-            BoardCard.DeactivateCard(); // TODO: Prove that the BoardCard entity no longer exists.
-            BoardCard = null;
-            ParentField.UpdateField();
-            BoardCardCollectionManager.Instance.RemoveCardFromCollection(this);
-            if (transform.parent.childCount <= 1)  // Remove CardSetTransform that has no cards
-            {
-                EventManager.Instance.RaiseOnFieldFreed(ParentField);
-                Destroy(transform.parent.gameObject);
-            }
-            else                                   // Otherwise, remove only the card object itself
-            {
-                EnableBackupCard();
-                Destroy(gameObject);
-            }
         }
 
         // TODO: Refactor done. Check if color is persisted.
@@ -176,22 +172,18 @@ namespace Berty.BoardCards.Behaviours
             if (BoardCard.GetSkill() != SkillEnum.KrolPopuBert)
                 throw new Exception($"KrolPopuBert effect is casted by {BoardCard.CharacterConfig.Name}");
             CharacterConfig newCard = game.CardPile.GetRandomKidFromPile();
-            if (newCard == null)
-            {
-                KillCard();
-                return;
-            }
-            StatusManager.Instance.RemoveStatusFromProvider(BoardCard);
-            EventManager.Instance.RaiseOnCharacterDeath(this);
             DirectionEnum direction = (DirectionEnum)BoardCard.GetAngle();
             AlignmentEnum align = BoardCard.Align;
-            game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
+            TriggerCardDeath();
+            if (newCard == null) // If no kid in the deck, deactivate the card.
+            {
+                Activation.DeactivateCard();
+                return;
+            }
             BoardCard.DeactivateCard();
-            BoardCard = ParentField.BoardField.AddNewCard(newCard, align);
+            LoadBoardCardEntity(newCard, align);
             BoardCard.SetDirection(direction);
-            Sprite.UpdateObjectFromCharacterConfig();
             Bars.UpdateBars();
-            ParentField.UpdateField();
             EventManager.Instance.RaiseOnNewCharacter(this);
         }
 

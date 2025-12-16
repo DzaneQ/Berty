@@ -9,6 +9,7 @@ namespace Berty.BoardCards.Behaviours
 {
     public abstract class BoardCardBehaviour : MonoBehaviour
     {
+        public BoardCardActivation Activation { get; private set; }
         public BoardCardBarsObjects Bars { get; private set; }
         public BoardCardEntityHandler EntityHandler { get; private set; }
         public BoardCardNavigation Navigation { get; private set; }
@@ -21,6 +22,7 @@ namespace Berty.BoardCards.Behaviours
 
         protected virtual void Awake()
         {
+            Activation = GetComponent<BoardCardActivation>();
             Bars = GetComponent<BoardCardBarsObjects>();
             EntityHandler = GetComponent<BoardCardEntityHandler>();
             Navigation = GetComponent<BoardCardNavigation>();
