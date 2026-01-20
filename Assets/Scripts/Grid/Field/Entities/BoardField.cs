@@ -3,12 +3,12 @@ using Berty.BoardCards.Entities;
 using Berty.Enums;
 using Berty.Grid.Entities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.Grid.Field.Entities
 {
+    [Serializable]
     public class BoardField
     {
         private BoardCard _occupantCard;
@@ -33,6 +33,28 @@ namespace Berty.Grid.Field.Entities
             Coordinates = new Vector2Int(x, y);
             Align = AlignmentEnum.None;
             Grid = grid;
+        }
+
+        public BoardField(BoardFieldSaveData data, List<CharacterConfig> allCharacters, BoardGrid grid)
+        {
+            Coordinates = data.Coordinates;
+            Debug.Log("Data x variable: " + data.Coordinates.x);
+            Debug.Log("Field x variable: " + Coordinates.x);
+            Align = data.Align;
+            if (data.OccupantCard.CharacterName != "") OccupantCard = new BoardCard(data.OccupantCard, allCharacters, this);
+            if (data.BackupCard.CharacterName != "") BackupCard = new BoardCard(data.BackupCard, allCharacters, this);
+            Grid = grid;
+        }
+
+        public BoardFieldSaveData SaveEntity()
+        {
+            return new()
+            {
+                OccupantCard = this.OccupantCard != null ? this.OccupantCard.SaveEntity() : new(),
+                BackupCard = this.BackupCard != null ? this.BackupCard.SaveEntity() : new(),
+                Align = this.Align,
+                Coordinates = this.Coordinates
+            };
         }
 
         public BoardCard AddNewCard(CharacterConfig characterConfig, AlignmentEnum newAlign)
@@ -105,5 +127,14 @@ namespace Berty.Grid.Field.Entities
         {
             return $"Card {Coordinates[0]}, {Coordinates[1]}";
         }
+    }
+
+    [Serializable]
+    public struct BoardFieldSaveData
+    {
+        public BoardCardSaveData OccupantCard;
+        public BoardCardSaveData BackupCard;
+        public AlignmentEnum Align;
+        public Vector2Int Coordinates;
     }
 }

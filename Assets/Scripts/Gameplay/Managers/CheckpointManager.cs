@@ -7,6 +7,9 @@ using Berty.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 namespace Berty.Gameplay.Managers
@@ -36,12 +39,12 @@ namespace Berty.Gameplay.Managers
             if (!requestedCheckpoint) return;
             Debug.Log("Handling checkpoint.");
             if (CanHandleCheckpoint()) HandleCheckpoint();
-        }   
+        }
 
         private void HandleCheckpoint()
         {
             //Debug.Log("Handling checkpoint");
-            TryEndingTheGame();
+            if (!TryEndingTheGame()) SaveTheGame();
             requestedCheckpoint = false;
         }
 
@@ -50,19 +53,29 @@ namespace Berty.Gameplay.Managers
             return !EventManager.Instance.RaiseOnCheckpointRequest();
         }
 
-        private void TryEndingTheGame()
+        private bool TryEndingTheGame()
         {
             int alignedCardsToWin = game.GameConfig.AlignedCardsToWin;
             //Debug.Log($"Player has {game.Grid.AlignedFields(AlignmentEnum.Player, true).Count} cards.");
             //Debug.Log($"Opponent has {game.Grid.AlignedFields(AlignmentEnum.Opponent, true).Count} cards.");
             if (game.Grid.AlignedFields(AlignmentEnum.Player, true).Count >= alignedCardsToWin
                 || game.Grid.AlignedFields(AlignmentEnum.Opponent, true).Count >= alignedCardsToWin)
+            {
                 EndTheGame();
+                return true;
+            }
+            return false;
         }
 
         private void EndTheGame()
         {
             TurnManager.Instance.EndTheGame();
+            //LoadSaveManager.Instance.DeleteTheSave();
+        }
+
+        private void SaveTheGame()
+        {
+            SaveLoadManager.Instance.SaveTheGame();
         }
     }
 }

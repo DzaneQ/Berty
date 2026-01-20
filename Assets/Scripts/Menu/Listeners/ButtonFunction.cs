@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Berty.Menu
+namespace Berty.Menu.Listeners
 {
     public class ButtonFunction : MonoBehaviour, IPointerEnterHandler
     {

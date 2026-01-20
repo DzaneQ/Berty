@@ -1,6 +1,8 @@
 using Berty.BoardCards.ConfigData;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.Grid.Field.Behaviour;
+using Berty.Settings;
 using Berty.UI.Card;
 using Berty.UI.Card.Collection;
 using Berty.UI.Card.Init;
@@ -16,12 +18,13 @@ namespace Berty.Gameplay.Init
         void Awake()
         {
             InitializeGameEntity();
-            InitializeHandCardObjectsAndCardPileEntity();
+            InitializeHandCardObjects();
+            //InitializeFieldBehaviours();
         }
 
         void Start()
         {
-            StartTheGame();
+            if (StartGameBufferManager.Instance.IsStartingNewGame()) StartTheGame();
             Destroy(gameObject);
         }
 
@@ -30,17 +33,16 @@ namespace Berty.Gameplay.Init
             initGame = EntityLoadManager.Instance.Game;
         }
 
-        private void InitializeHandCardObjectsAndCardPileEntity()
+        private void InitializeHandCardObjects()
         {
             HandCardInitialization init = gameObject.GetComponent<HandCardInitialization>();
             if (init == null) return;
             GameObject stackForHandCards = ObjectReadManager.Instance.HandCardObjectCollection;
-            List<CharacterConfig> initCardPile = init.InitializeAllCharacterCards(stackForHandCards, out List<HandCardBehaviour> handCardBehaviourCollection);
-            initGame.CardPile.InitializeCardPile(initCardPile);
+            List<HandCardBehaviour> handCardBehaviourCollection = init.InitializeAllCharacterCards();
             HandCardCollection collectionComponent = stackForHandCards.GetComponent<HandCardCollection>();
             collectionComponent.InitializeCollection(handCardBehaviourCollection);
             Destroy(init);
-        }
+        }   
 
         private void StartTheGame()
         {

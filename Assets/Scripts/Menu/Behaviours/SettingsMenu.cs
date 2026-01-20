@@ -1,11 +1,10 @@
 using Berty.Settings;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Berty.Menu
+namespace Berty.Menu.Behaviours
 {
     public class SettingsMenu : MonoBehaviour
     {
@@ -44,7 +43,7 @@ namespace Berty.Menu
 
         public void UpdateVolume()
         {
-            SettingsManager.Instance.SetVolume(volumeSlider.value);
+            SettingsManager.Instance.SetVolume(volumeSlider.value); 
         }
     }
 }

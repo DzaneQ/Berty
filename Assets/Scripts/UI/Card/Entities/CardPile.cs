@@ -1,10 +1,9 @@
 using Berty.BoardCards.ConfigData;
+using Berty.Characters.Init;
 using Berty.Enums;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Berty.UI.Card.Entities
@@ -18,22 +17,41 @@ namespace Berty.UI.Card.Entities
 
         public List<CharacterConfig> PlayerCards { get; private set; }
         public List<CharacterConfig> OpponentCards { get; private set; }
+        public IReadOnlyList<CharacterConfig> PileCards => pileCards;
+        public IReadOnlyList<CharacterConfig> DiscardedCards => discardedCards;
         public IReadOnlyList<CharacterConfig> DeadCards => deadCards;
 
-        public void InitializeCardPile(List<CharacterConfig> characterPile)
+        public CardPile()
         {
-            if (pileCards != null
-                || discardedCards != null
-                || deadCards != null
-                || bottomCard != null
-                || PlayerCards != null
-                || OpponentCards != null)
-                throw new Exception("Card pile is already initialized");
-            pileCards = characterPile;
+            CharacterData data = new();
+            pileCards = data.LoadCharacterData();
             discardedCards = new List<CharacterConfig>();
             deadCards = new List<CharacterConfig>();
             PlayerCards = new List<CharacterConfig>();
             OpponentCards = new List<CharacterConfig>();
+        }
+
+        public CardPile(CardPileSaveData data, IReadOnlyList<CharacterConfig> allCharacters)
+        {
+            pileCards = GetCharactersFromNames(data.PileCardNames, allCharacters);
+            discardedCards = GetCharactersFromNames(data.DiscardedCardNames, allCharacters);
+            deadCards = GetCharactersFromNames(data.DeadCardNames, allCharacters);
+            bottomCard = allCharacters.FirstOrDefault(character => character.Name == data.BottomCardName);
+            PlayerCards = GetCharactersFromNames(data.PlayerCardNames, allCharacters);
+            OpponentCards = GetCharactersFromNames(data.OpponentCardNames, allCharacters);
+        }
+
+        public CardPileSaveData SaveEntity()
+        {
+            return new()
+            {
+                PileCardNames = GetNamesFromCharacters(pileCards),
+                DiscardedCardNames = GetNamesFromCharacters(discardedCards),
+                DeadCardNames = GetNamesFromCharacters(deadCards),
+                BottomCardName = bottomCard != null ? bottomCard.Name : "",
+                PlayerCardNames = GetNamesFromCharacters(PlayerCards),
+                OpponentCardNames = GetNamesFromCharacters(OpponentCards),
+            };
         }
 
         public bool PullCardsTo(int tableCapacity, AlignmentEnum align)
@@ -149,5 +167,31 @@ namespace Berty.UI.Card.Entities
             pileCards.Remove(kids[index]);
             return kids[index];
         }
+
+        public List<CharacterConfig> GetAllCharactersOutsideField()
+        {
+            return pileCards.Union(discardedCards).Union(deadCards).Append(bottomCard).Union(PlayerCards).Union(OpponentCards).ToList();
+        }
+
+        private string[] GetNamesFromCharacters(List<CharacterConfig> configList)
+        {
+            return configList.Select(character => character.Name).ToArray();
+        }
+
+        private List<CharacterConfig> GetCharactersFromNames(string[] characterNames, IReadOnlyList<CharacterConfig> allCharacters)
+        {
+            return allCharacters.Where(character => characterNames.Contains(character.Name)).ToList();
+        }
+    }
+
+    [Serializable]
+    public struct CardPileSaveData
+    {
+        public string[] PileCardNames;
+        public string[] DiscardedCardNames;
+        public string[] DeadCardNames;
+        public string BottomCardName;
+        public string[] PlayerCardNames;
+        public string[] OpponentCardNames;
     }
 }

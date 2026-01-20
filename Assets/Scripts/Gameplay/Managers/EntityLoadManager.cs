@@ -1,5 +1,6 @@
 using Berty.Enums;
 using Berty.Gameplay.Entities;
+using Berty.Settings;
 using Berty.Utility;
 
 namespace Berty.Gameplay.Managers
@@ -11,9 +12,20 @@ namespace Berty.Gameplay.Managers
         {
             get
             {
-                if (_game == null) _game = new Game(AlignmentEnum.Player);
+                if (_game == null) _game = LoadGame();
                 return _game;
             }
+            private set
+            {
+                _game = value;
+            }
+        }
+
+        private Game LoadGame()
+        {
+            GameSaveData? data = StartGameBufferManager.Instance.Data;
+            if (data == null) return new Game(AlignmentEnum.Player);
+            return new Game((GameSaveData)data);
         }
     }
 }

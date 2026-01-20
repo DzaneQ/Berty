@@ -60,7 +60,7 @@ namespace Berty.BoardCards.Behaviours
         private void SetState(CardState state)
         {
             if (currentState != null && currentState.GetNameEnum() == state.GetNameEnum()) return;
-            Debug.Log($"Setting {state.GetType().Name} for {name}");
+            //Debug.Log($"Setting {state.GetType().Name} for {name}");
             currentState = state;
             currentState.OnStateEnter();
         }

@@ -1,18 +1,22 @@
+using Berty.Gameplay.Managers;
+using Berty.Menu.Listeners;
 using Berty.Settings;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-namespace Berty.Menu
+namespace Berty.Menu.Behaviours
 {
     public class NavigationMenu : MonoBehaviour
     {
-        [SerializeField] private GameObject GuideSheet;
+        [SerializeField] private Image GuideSheet;
         [SerializeField] private GameObject SettingsPanel;
         [SerializeField] private GameObject MenuList;
+        [SerializeField] private GameObject LoadButton;
         [SerializeField] private GameObject ExitButton;
-        [SerializeField] private AudioClip guideCloseClip;
+        [SerializeField] private AudioSource guideCloseSource;
         private AudioSource src;
         private ButtonFunction playButton;
         private ButtonFunction guideButton;
@@ -23,8 +27,13 @@ namespace Berty.Menu
             src = GetComponent<AudioSource>();
             src.volume = SettingsManager.Instance.Volume;
             playButton = MenuList.transform.GetChild(0).GetComponent<ButtonFunction>();
-            guideButton = MenuList.transform.GetChild(1).GetComponent<ButtonFunction>();
+            guideButton = MenuList.transform.GetChild(2).GetComponent<ButtonFunction>();
             exitButton = ExitButton.GetComponent<ButtonFunction>();
+
+            if (SaveLoadManager.Instance.IsSaveFileExisting())
+            {
+                //LoadButton.SetActive(true); // TODO: Unlock when loading is complete
+            }
 
             if (IsOnPlayerPlatform())
             {
@@ -35,21 +44,29 @@ namespace Berty.Menu
         public void Play()
         {
             PlaySound(playButton.ClickSound);
+            StartGameBufferManager.Instance.SetLoading(false);
+            SceneManager.LoadScene("Main", LoadSceneMode.Single);
+        }
+
+        public void Load()
+        {
+            PlaySound(playButton.ClickSound);
+            StartGameBufferManager.Instance.SetLoading(true);
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
         }
 
         public void GuideOpen()
         {
             PlaySound(guideButton.ClickSound);
-            GuideSheet.SetActive(true);
+            GuideSheet.enabled = true;
             MenuList.SetActive(false);
         }
 
         public void GuideClose()
         {
-            if (!GuideSheet.activeSelf) return;
-            PlaySound(guideCloseClip, 0.38f);
-            GuideSheet.SetActive(false);
+            if (!GuideSheet.isActiveAndEnabled) return;
+            guideCloseSource.Play();
+            GuideSheet.enabled = false;
             MenuList.SetActive(true);
         }
 

@@ -1,3 +1,4 @@
+using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
@@ -29,6 +30,24 @@ namespace Berty.Grid.Entities
                     Fields[index] = new BoardField(x, y, this);
                     index++;
                 }
+        }
+
+        public BoardGrid(BoardGridSaveData data, List<CharacterConfig> allCharacters, Game game)
+        {
+            Game = game;
+            Fields = new BoardField[9];
+            for (int index = 0; index < 9; index++)
+            {
+                Fields[index] = new BoardField(data.Fields[index], allCharacters, this);
+            }
+        }
+
+        public BoardGridSaveData SaveEntity()
+        {
+            return new()
+            {
+                Fields = this.Fields.Select(field => field.SaveEntity()).ToArray()
+            };
         }
 
         public BoardField GetFieldFromCoordsOrThrow(int x, int y)
@@ -152,6 +171,19 @@ namespace Berty.Grid.Entities
             return firstField.Align == secondField.Align;
         }
 
+        public List<CharacterConfig> GetAllCharactersOnFields()
+        {
+            return Fields.SelectMany(field => new CharacterConfig[]{ field.OccupantCard?.CharacterConfig, field.BackupCard?.CharacterConfig }).OfType<CharacterConfig>().ToList();
+        }
+
+        public BoardCard FindCardByNameOrThrow(string characterName)
+        {
+            BoardField field = Fields.First(field => field.OccupantCard?.CharacterConfig.Name == characterName || field.BackupCard?.CharacterConfig.Name == characterName);
+            if (field.OccupantCard.CharacterConfig.Name == characterName) return field.OccupantCard;
+            if (field.BackupCard.CharacterConfig.Name == characterName) return field.BackupCard;
+            throw new Exception("The code to find card by name shouldn't reach here.");
+        }
+
         private int AlignedCardCount(AlignmentEnum alignment)
         {
             return AlignedFields(alignment, true).Count;
@@ -182,5 +214,11 @@ namespace Berty.Grid.Entities
             }
             return result;
         }
+    }
+
+    [Serializable]
+    public struct BoardGridSaveData
+    {
+        public BoardFieldSaveData[] Fields;
     }
 }

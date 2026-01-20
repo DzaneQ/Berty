@@ -78,17 +78,16 @@
     <Compile Include="Assets\Scripts\Gameplay\Managers\EventManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KrolPopuBert.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Entities\BoardField.cs" />
-    <Compile Include="Assets\Scripts\Menu\SliderSoundListener.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Behaviours\HandCardBehaviour.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaTrojanska.cs" />
     <Compile Include="Assets\Scripts\Audio\Listeners\AudioListener.cs" />
-    <Compile Include="Assets\Scripts\Menu\ButtonFunction.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertkaSerferka.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\CharacterConfig.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\CardButton.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaGejsza.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandCardSelectManager.cs" />
+    <Compile Include="Assets\Scripts\Menu\Behaviours\NavigationMenu.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\RotateLeft.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Scripts\Enums\StatusEnum.cs" />
@@ -105,6 +104,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertZawodowiec.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\EffectableState.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\ActiveState.cs" />
+    <Compile Include="Assets\Scripts\Menu\Listeners\ButtonFunction.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Entities\Game.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\StatusListener.cs" />
     <Compile Include="Assets\Scripts\Debugging\Managers\DebugManager.cs" />
@@ -126,7 +126,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\Scripts\Display\Managers\DisplayManager.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\CloseGameInput.cs" />
-    <Compile Include="Assets\Scripts\Menu\SettingsMenu.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveUp.cs" />
     <Compile Include="Assets\Scripts\Enums\NavigationEnum.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
@@ -168,7 +167,6 @@
     <Compile Include="Assets\Scripts\Grid\Entities\BoardGrid.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\EntityLoadManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\UnselectedCard.cs" />
-    <Compile Include="Assets\Scripts\Menu\NavigationMenu.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\CardState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Characters\Init\CharacterData.cs" />
@@ -186,6 +184,7 @@
     <Compile Include="Assets\Scripts\BoardCards\Bar\CardBar.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\LanguageManager.cs" />
+    <Compile Include="Assets\Scripts\Settings\Managers\StartGameBufferManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\EBerta.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\StatusManager.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\TurnManager.cs" />
@@ -231,9 +230,11 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertkaIdolka.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KoszmarZBertwood.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\PaymentManager.cs" />
+    <Compile Include="Assets\Scripts\Menu\Listeners\SliderSoundListener.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\CheckpointManager.cs" />
     <Compile Include="Assets\Scripts\Enums\SkillEnum.cs" />
     <Compile Include="Assets\Scripts\Grid\Managers\ColorizeObjectManager.cs" />
+    <Compile Include="Assets\Scripts\Menu\Behaviours\SettingsMenu.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\SedziaBertt.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
@@ -244,7 +245,6 @@
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardSprite.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Behaviour\FieldBehaviour.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\ButtonObjectManager.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\CardInitialization.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\NewCardState.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\ObjectReadManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
@@ -256,6 +256,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\TrenerPokebertow.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\CheBert.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\SaveLoadManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Collection\HandCardCollection.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\CheckpointValidatorListener.cs" />
   </ItemGroup>

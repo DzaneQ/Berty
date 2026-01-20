@@ -1,17 +1,13 @@
 using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
+using Berty.Characters.Init;
 using Berty.Enums;
 using Berty.Gameplay.ConfigData;
 using Berty.Grid.Entities;
 using Berty.UI.Card.Entities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.VersionControl;
-using UnityEngine;
-using UnityEngine.Profiling;
-using UnityEngine.UIElements;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
+using System.Linq;
 
 namespace Berty.Gameplay.Entities
 {
@@ -31,6 +27,31 @@ namespace Berty.Gameplay.Entities
             Grid = new BoardGrid(this);
             CardPile = new CardPile();
             GameConfig = new GameConfig();
+        }
+
+        public Game(GameSaveData data)
+        {
+            CharacterData characterData = new();
+            List<CharacterConfig> allCharacters = characterData.LoadCharacterData();
+
+            CurrentAlignment = data.CurrentAlignment;
+            Grid = new BoardGrid(data.Grid, allCharacters, this);
+            CardPile = new CardPile(data.CardPile, allCharacters);
+            Statuses = new();
+            foreach (StatusSaveData statusData in data.Statuses) Statuses.Add(new Status(statusData, Grid));
+            GameConfig = new GameConfig();
+        }
+
+        public GameSaveData SaveEntity()
+        {
+            return new()
+            {
+                Statuses = this.Statuses.Select(status => status.SaveEntity()).ToArray(),
+                CurrentAlignment = this.CurrentAlignment,
+                Grid = this.Grid.SaveEntity(),
+                CardPile = this.CardPile.SaveEntity(),
+            };
+            
         }
 
         public AlignmentEnum SwitchAlignment()
@@ -126,5 +147,19 @@ namespace Berty.Gameplay.Entities
         {
             Statuses.Remove(status);
         }
+
+        public List<CharacterConfig> GetAllCharacterConfigs()
+        {
+            return CardPile.GetAllCharactersOutsideField().Union(Grid.GetAllCharactersOnFields()).Distinct().ToList();
+        }
+    }
+
+    [Serializable]
+    public struct GameSaveData
+    {
+        public StatusSaveData[] Statuses;
+        public AlignmentEnum CurrentAlignment;
+        public BoardGridSaveData Grid;
+        public CardPileSaveData CardPile;
     }
 }

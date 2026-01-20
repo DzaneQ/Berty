@@ -175,9 +175,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f49e36464a31b84aaefab7358a845d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  src: {fileID: 979650409}
-  hoverSound: {fileID: 8300000, guid: 811a3e8d15376794c9bb94dd375aad6d, type: 3}
-  clickSound: {fileID: 8300000, guid: 3f94611a9858f1d4ba02529f62c4f8cb, type: 3}
 --- !u!114 &15564134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1564,9 +1561,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f49e36464a31b84aaefab7358a845d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  src: {fileID: 979650409}
-  hoverSound: {fileID: 8300000, guid: 811a3e8d15376794c9bb94dd375aad6d, type: 3}
-  clickSound: {fileID: 8300000, guid: 3f94611a9858f1d4ba02529f62c4f8cb, type: 3}
 --- !u!114 &628947039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2475,8 +2469,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67a60807348b8934daf04fd81a26b30e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeSlider: {fileID: 688489819}
-  resolutionDropdown: {fileID: 2094513305}
 --- !u!114 &767148502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4894,6 +4886,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardImagePrefab: {fileID: 1148504419818202801, guid: 57eaf54574b5e934b9342b8e3da9cf6a, type: 3}
+  pileStack: {fileID: 47750409}
+  discardStack: {fileID: 47750409}
+  deadStack: {fileID: 470320019}
+  playerTable: {fileID: 1577340884}
+  opponentTable: {fileID: 1740268250}
+  theRemainder: {fileID: 47750409}
 --- !u!1 &1722526535
 GameObject:
   m_ObjectHideFlags: 0

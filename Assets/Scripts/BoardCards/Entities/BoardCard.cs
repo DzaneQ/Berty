@@ -3,6 +3,7 @@ using Berty.Enums;
 using Berty.Grid.Field.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Berty.BoardCards.Entities
@@ -50,6 +51,29 @@ namespace Berty.BoardCards.Entities
             HasAttacked = false;
             IsTired = false;
             resistance = new List<CharacterConfig>();
+        }
+
+        public BoardCard(BoardCardSaveData data, List<CharacterConfig> allCharacters, BoardField field)
+        {
+            CharacterConfig = GetCharacterFromNameOrThrow(data.CharacterName, allCharacters);
+            OccupiedField = field;
+            Stats = new CardStats(data.CardStats, this);
+            HasAttacked = data.HasAttacked;
+            IsTired = data.IsTired;
+            resistance = GetCharactersFromNames(data.ResistantCharacterNames, allCharacters);
+        }
+
+        public BoardCardSaveData SaveEntity()
+        {
+            return new()
+            {
+                Direction = this.Direction,
+                ResistantCharacterNames = GetNamesFromResistance(),
+                CharacterName = CharacterConfig.Name,
+                CardStats = Stats.SaveEntity(),
+                HasAttacked = this.HasAttacked,
+                IsTired = this.IsTired,
+            };
         }
 
         public void DeactivateCard()
@@ -182,5 +206,31 @@ namespace Berty.BoardCards.Entities
         {
             return GetCoordinatesByDirection(Direction);
         }
+
+        private string[] GetNamesFromResistance()
+        {
+            return resistance.Select(character => character.Name).ToArray();
+        }
+
+        private List<CharacterConfig> GetCharactersFromNames(string[] characterNames, IReadOnlyList<CharacterConfig> allCharacters)
+        {
+            return allCharacters.Where(character => characterNames.Contains(character.Name)).ToList();
+        }
+
+        private CharacterConfig GetCharacterFromNameOrThrow(string characterName, IReadOnlyList<CharacterConfig> allCharacters)
+        {
+            return allCharacters.First(character => character.Name == characterName);
+        }
+    }
+
+    [Serializable]
+    public struct BoardCardSaveData
+    {
+        public DirectionEnum Direction;
+        public string[] ResistantCharacterNames;
+        public string CharacterName;
+        public CardStatsSaveData CardStats;
+        public bool HasAttacked;
+        public bool IsTired;
     }
 }

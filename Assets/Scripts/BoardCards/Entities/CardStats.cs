@@ -74,6 +74,25 @@ namespace Berty.BoardCards.Entities
             nextTempStat = InitZeroStat();
         }
 
+        public CardStats(CardStatsSaveData data, BoardCard card)
+        {
+            BoardCard = card;
+
+            baseStat = GetStatDictionary(data.BaseStat);
+            currentTempStat = GetStatDictionary(data.CurrentTempStat);
+            nextTempStat = GetStatDictionary(data.NextTempStat);
+        }
+
+        public CardStatsSaveData SaveEntity()
+        {
+            return new()
+            {
+                BaseStat = GetStatArray(baseStat),
+                CurrentTempStat = GetStatArray(currentTempStat),
+                NextTempStat = GetStatArray(nextTempStat)
+            };
+        }
+
         public void ProgressTempStats()
         {
             currentTempStat = new Dictionary<StatEnum, int>(nextTempStat);
@@ -107,5 +126,34 @@ namespace Berty.BoardCards.Entities
             if (ownedStatus?.Name == StatusEnum.Ventura) return ownedStatus.Charges / 2;
             return 0;
         }
+
+        private int[] GetStatArray(Dictionary<StatEnum, int> stat)
+        {
+            return new int[4] {
+                stat[StatEnum.Strength],
+                stat[StatEnum.Power],
+                stat[StatEnum.Dexterity],
+                stat[StatEnum.Health],
+            };
+        }
+
+        private Dictionary<StatEnum, int> GetStatDictionary(int[] statData)
+        {
+            return new Dictionary<StatEnum, int>
+            {
+                { StatEnum.Strength, statData[0] },
+                { StatEnum.Power, statData[1] },
+                { StatEnum.Dexterity, statData[2] },
+                { StatEnum.Health, statData[3] }
+            };
+        }
+    }
+
+    [Serializable]
+    public struct CardStatsSaveData
+    {
+        public int[] BaseStat;
+        public int[] CurrentTempStat;
+        public int[] NextTempStat;
     }
 }

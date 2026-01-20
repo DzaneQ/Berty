@@ -40,6 +40,25 @@ namespace Berty.Gameplay.Entities
             Charges = charges;
         }
 
+        public Status(StatusSaveData data, BoardGrid grid)
+        {
+            Name = data.Name;
+            Provider = grid.FindCardByNameOrThrow(data.ProviderName);
+            TargetAlign = data.TargetAlign;
+            Charges = data.Charges;
+        }
+
+        public StatusSaveData SaveEntity()
+        {
+            return new()
+            {
+                Name = Name,
+                ProviderName = Provider.CharacterConfig.Name,
+                TargetAlign = TargetAlign,
+                Charges = Charges
+            };
+        }
+
         public AlignmentEnum GetAlign()
         {
             if (Provider != null) return Provider.Align;
@@ -60,5 +79,14 @@ namespace Berty.Gameplay.Entities
         {
             Charges += delta;
         }
+    }
+
+    [Serializable]
+    public struct StatusSaveData
+    {
+        public StatusEnum Name;
+        public string ProviderName;
+        public AlignmentEnum TargetAlign;
+        public int Charges;
     }
 }
