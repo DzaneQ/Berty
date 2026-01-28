@@ -27,6 +27,7 @@ namespace Berty.BoardCards.Managers
             card.StateMachine.UpdateButtons();
         }
 
+        // BUG: Moved cards are not highlighted when in attack range
         public void MoveCard(BoardCardBehaviour card, BoardField targetField, bool isOrdered = false)
         {
             AlignmentEnum cardAlign = card.BoardCard.OccupiedField.Align;

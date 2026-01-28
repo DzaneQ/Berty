@@ -37,6 +37,13 @@ namespace Berty.BoardCards.Behaviours
             gameObject.SetActive(false);
         }
 
+        public void LoadCard(BoardCard savedCard)
+        {
+            EntityHandler.LoadBoardCardEntityFromData(savedCard);
+            Navigation.RotateObjectWithoutAnimation((int)savedCard.Direction);
+            StateMachine.SetMainState();
+        }
+
         private void DisableTheOtherCardOnTheField()
         {
             GameObject firstCard = transform.parent.GetChild(0).gameObject;

@@ -38,8 +38,6 @@ namespace Berty.Grid.Field.Entities
         public BoardField(BoardFieldSaveData data, List<CharacterConfig> allCharacters, BoardGrid grid)
         {
             Coordinates = data.Coordinates;
-            Debug.Log("Data x variable: " + data.Coordinates.x);
-            Debug.Log("Field x variable: " + Coordinates.x);
             Align = data.Align;
             if (data.OccupantCard.CharacterName != "") OccupantCard = new BoardCard(data.OccupantCard, allCharacters, this);
             if (data.BackupCard.CharacterName != "") BackupCard = new BoardCard(data.BackupCard, allCharacters, this);

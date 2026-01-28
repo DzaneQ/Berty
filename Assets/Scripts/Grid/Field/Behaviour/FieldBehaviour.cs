@@ -1,5 +1,6 @@
 using Berty.BoardCards.Behaviours;
 using Berty.BoardCards.ConfigData;
+using Berty.BoardCards.Entities;
 using Berty.BoardCards.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
@@ -52,7 +53,7 @@ namespace Berty.Grid.Field.Behaviour
                 "Field SE" => grid.GetFieldFromCoordsOrThrow(1, -1),
                 _ => throw new Exception("Unknown field name to handle."),
             };
-            UpdateField();
+            if (!LoadTheCard()) UpdateField();
             //Debug.Log($"{name} got coordinates: ({BoardField.Coordinates.x}, {BoardField.Coordinates.y})");
         }
 
@@ -64,11 +65,41 @@ namespace Berty.Grid.Field.Behaviour
             ColorizeField();
         }
 
+        public void UpdateFieldWith(BoardCard card)
+        {
+            if (ChildCard == null || ChildCard.BoardCard != card)
+            {
+                ChildCard = BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(card);
+            }
+            ColorizeField();
+        }
+
         public void PutTheCard()
         {
             CharacterConfig selectedCardConfig = HandToFieldManager.Instance.RemoveSelectedCardFromHand();
             HandToFieldManager.Instance.ActivateCardOnField(this, selectedCardConfig);
             PaymentManager.Instance.CallPayment(selectedCardConfig.Power, ChildCard);
+        }
+        
+        // BUG: When occupant card dies showing the backup card, it throws an error on turn change
+        private bool LoadTheCard() // TODO: Handle backup card
+        {
+            if (BoardField.OccupantCard == null) return false;
+            ChildCard = transform.GetChild(0).GetChild(0).GetComponent<BoardCardBehaviour>();
+            ChildCard.gameObject.SetActive(true);
+            if (BoardField.BackupCard == null) ChildCard.Activation.LoadCard(BoardField.OccupantCard);
+            else
+            {
+                // If there's backup card, load it first then hide
+                ChildCard.Activation.LoadCard(BoardField.BackupCard);
+                ChildCard.gameObject.SetActive(false);
+                // Then load the occupant card
+                ChildCard = ObjectReadManager.Instance.BackupCard.GetComponent<BoardCardBehaviour>();
+                ChildCard.transform.SetParent(transform.GetChild(0), false);
+                ChildCard.gameObject.SetActive(true);
+                ChildCard.Activation.LoadCard(BoardField.OccupantCard);
+            }
+            return true;
         }
 
         private void ColorizeField()

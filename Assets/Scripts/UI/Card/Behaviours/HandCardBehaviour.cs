@@ -1,12 +1,7 @@
 using Berty.BoardCards.ConfigData;
-using Berty.Enums;
-using Berty.Gameplay;
 using Berty.UI.Card.Animation;
-using Berty.UI.Card.Managers;
 using Berty.UI.Card.Selection;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,28 +9,36 @@ namespace Berty.UI.Card
 {
     public class HandCardBehaviour : MonoBehaviour
     {
-        private SelectStatus select;
-        private Image imageRenderer;
-        private CharacterConfig character;
+        private SelectStatus _select;
+        private Image _imageRenderer;
+        private CharacterConfig _character;
+
+        private Image ImageRenderer
+        {
+            get
+            {
+                if (_imageRenderer == null) _imageRenderer = GetComponent<Image>();
+                return _imageRenderer;
+            }
+        }
 
         public CharacterConfig Character
         {
-            get => character;
+            get => _character;
             private set
             {
-                character = value;
-                imageRenderer.sprite = Resources.Load<Sprite>("BERTYmirrorY/" + character.Name);
+                _character = value;
+                ImageRenderer.sprite = Resources.Load<Sprite>("BERTYmirrorY/" + _character.Name);
             }
         }
         public Sprite Sprite
         {
-            get => imageRenderer.sprite;
+            get => ImageRenderer.sprite;
         }
 
         private void Awake()
         {
-            imageRenderer = GetComponent<Image>();
-            select = new UnselectedCard(GetComponent<RectTransform>(), GetComponent<AnimatingCardImage>());
+            _select = new UnselectedCard(GetComponent<RectTransform>(), GetComponent<AnimatingCardImage>());
         }
 
         public void AssignCharacter(CharacterConfig newCharacter)
@@ -45,35 +48,35 @@ namespace Berty.UI.Card
 
         public void Unselect()
         {
-            select = select.UnselectAutomatically();
+            _select = _select.UnselectAutomatically();
         }
 
         public bool IsCardSelected()
         {
-            return select.IsCardSelected;
+            return _select.IsCardSelected;
         }
 
         public void ShowObjectAsSelected()
         {
-            if (select.IsCardSelected) throw new Exception("This card is already selected!");
+            if (_select.IsCardSelected) throw new Exception("This card is already selected!");
             ChangeSelection();
         }
 
         public void ShowObjectAsUnselected()
         {
-            if (!select.IsCardSelected) throw new Exception("This card is already unselected!");
+            if (!_select.IsCardSelected) throw new Exception("This card is already unselected!");
             ChangeSelection();
         }
 
         public void MakeObjectUnselectedWithoutAnimation()
         {
-            if (!select.IsCardSelected) throw new Exception("This card is already unselected!");
+            if (!_select.IsCardSelected) throw new Exception("This card is already unselected!");
             ChangeSelection(true);
         }
 
         public void ChangeSelection(bool ignoreAnimation = false)
         {
-            select = select.ChangePosition(!ignoreAnimation);
+            _select = _select.ChangePosition(!ignoreAnimation);
         }
 
         public void ReturnCard()
@@ -83,7 +86,7 @@ namespace Berty.UI.Card
 
         public bool IsAnimating()
         {
-            return select.IsAnimating();
+            return _select.IsAnimating();
         }
     }
 }

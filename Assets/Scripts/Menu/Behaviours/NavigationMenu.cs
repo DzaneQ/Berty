@@ -1,8 +1,6 @@
 using Berty.Gameplay.Managers;
 using Berty.Menu.Listeners;
 using Berty.Settings;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -32,7 +30,7 @@ namespace Berty.Menu.Behaviours
 
             if (SaveLoadManager.Instance.IsSaveFileExisting())
             {
-                //LoadButton.SetActive(true); // TODO: Unlock when loading is complete
+                LoadButton.SetActive(true);
             }
 
             if (IsOnPlayerPlatform())

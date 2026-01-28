@@ -1,6 +1,5 @@
 using Berty.BoardCards.Button;
 using Berty.BoardCards.Entities;
-using Berty.BoardCards.Listeners;
 using Berty.BoardCards.State;
 using Berty.Characters.Managers;
 using Berty.Enums;
@@ -63,6 +62,7 @@ namespace Berty.BoardCards.Behaviours
             //Debug.Log($"Setting {state.GetType().Name} for {name}");
             currentState = state;
             currentState.OnStateEnter();
+            RefreshButtons();
         }
 
         public void SetMainState()
@@ -167,11 +167,16 @@ namespace Berty.BoardCards.Behaviours
         public bool IsCursorFocused()
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (!Physics.Raycast(ray, out hit)) return false;
+            if (!Physics.Raycast(ray, out RaycastHit hit)) return false;
             if (hit.transform == transform) return true; // Is cursor on card square object?
             if (hit.transform.parent == null) return false;
             return hit.transform.parent.parent == transform; // Is cursor on card's button object?
+        }
+
+        private void RefreshButtons()
+        {
+            HideButtons();
+            TryShowingButtons();
         }
     }
 }

@@ -27,7 +27,15 @@ namespace Berty.BoardCards.Behaviours
             BoardCard = ParentField.BoardField.AddNewCard(config, align);
             Sprite.UpdateObjectFromCharacterConfig();
             Bars.SetBars();
-            ParentField.UpdateField();
+            ParentField.UpdateFieldWith(BoardCard);
+        }
+
+        public void LoadBoardCardEntityFromData(BoardCard card)
+        {
+            BoardCard = card;
+            Sprite.UpdateObjectFromCharacterConfig();
+            Bars.SetBars();
+            ParentField.UpdateFieldWith(BoardCard);
         }
 
         public void DeactivateBoardCardEntity()
