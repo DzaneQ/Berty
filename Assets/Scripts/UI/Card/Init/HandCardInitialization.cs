@@ -61,37 +61,37 @@ namespace Berty.UI.Card.Init
 
         private void InitializeAllPileCards(IReadOnlyList<CharacterConfig> charactersInPile, ref List<HandCardBehaviour> behaviourCollection)
         {
-            Debug.Log("Initializing pile cards.");
+            //Debug.Log("Initializing pile cards.");
             AssignCharactersToStack(pileStack, charactersInPile, ref behaviourCollection);
         }
 
         private void InitializeAllDiscardedCards(IReadOnlyList<CharacterConfig> charactersDiscarded, ref List<HandCardBehaviour> behaviourCollection)
         {
-            Debug.Log("Initializing discarded cards.");
+            //Debug.Log("Initializing discarded cards.");
             AssignCharactersToStack(discardStack, charactersDiscarded, ref behaviourCollection);
         }
 
         private void InitializeAllDeadCards(IReadOnlyList<CharacterConfig> charactersDead, ref List<HandCardBehaviour> behaviourCollection)
         {
-            Debug.Log("Initializing dead cards.");
+            //Debug.Log("Initializing dead cards.");
             AssignCharactersToStack(deadStack, charactersDead, ref behaviourCollection);
         }
 
         private void InitializeAllPlayerCards(IReadOnlyList<CharacterConfig> tableCharacters, ref List<HandCardBehaviour> behaviourCollection)
         {
-            Debug.Log("Initializing player cards.");
+            //Debug.Log("Initializing player cards.");
             AssignCharactersToStack(playerTable, tableCharacters, ref behaviourCollection);
         }
 
         private void InitializeAllOpponentCards(IReadOnlyList<CharacterConfig> tableCharacters, ref List<HandCardBehaviour> behaviourCollection)
         {
-            Debug.Log("Initializing opponent cards.");
+            //Debug.Log("Initializing opponent cards.");
             AssignCharactersToStack(opponentTable, tableCharacters, ref behaviourCollection);
         }
 
         private void InitializeAllFieldCards(IReadOnlyList<CharacterConfig> tableCharacters, ref List<HandCardBehaviour> behaviourCollection)
         {
-            Debug.Log("Initializing field cards.");
+            //Debug.Log("Initializing field cards.");
             AssignCharactersToStack(theRemainder, tableCharacters, ref behaviourCollection);
         }
 
@@ -99,9 +99,9 @@ namespace Berty.UI.Card.Init
         {
             for (int i = 0; i < characters.Count; i++)
             {
-                Debug.Log("Stack card: " + (i+1));
-                Debug.Log("Total card: " + debugIndex);
-                Debug.Log("Character name: " + characters[i].Name);
+                //Debug.Log("Stack card: " + (i+1));
+                //Debug.Log("Total card: " + debugIndex);
+                //Debug.Log("Character name: " + characters[i].Name);
                 debugIndex++;
                 GameObject handCardObject = Instantiate(cardImagePrefab, stack.transform);
                 HandCardBehaviour handCardBehaviour = handCardObject.GetComponent<HandCardBehaviour>();
@@ -109,7 +109,7 @@ namespace Berty.UI.Card.Init
                 handCardBehaviour.AssignCharacter(characters[i]);
                 handCardBehaviour.name = characters[i].Name;
                 behaviourCollection.Add(handCardBehaviour);
-                Debug.Log($"Assigned {characters[i].Name} to {stack.name}.");
+                //Debug.Log($"Assigned {characters[i].Name} to {stack.name}.");
             }
         }
     }

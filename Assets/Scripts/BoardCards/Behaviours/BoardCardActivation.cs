@@ -40,6 +40,7 @@ namespace Berty.BoardCards.Behaviours
         public void LoadCard(BoardCard savedCard)
         {
             EntityHandler.LoadBoardCardEntityFromData(savedCard);
+            Debug.Log($"Rotating card with direction: {(int)savedCard.Direction}");
             Navigation.RotateObjectWithoutAnimation((int)savedCard.Direction);
             StateMachine.SetMainState();
         }

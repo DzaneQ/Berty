@@ -57,6 +57,7 @@ namespace Berty.BoardCards.Entities
         {
             CharacterConfig = GetCharacterFromNameOrThrow(data.CharacterName, allCharacters);
             OccupiedField = field;
+            Direction = data.Direction;
             Stats = new CardStats(data.CardStats, this);
             HasAttacked = data.HasAttacked;
             IsTired = data.IsTired;
