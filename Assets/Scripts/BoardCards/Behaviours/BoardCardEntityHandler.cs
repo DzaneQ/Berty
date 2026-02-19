@@ -158,12 +158,14 @@ namespace Berty.BoardCards.Behaviours
             EntityHandler.SetPower(BoardCard.CharacterConfig.Power, this);
             ParentField.UpdateField();
             EventManager.Instance.RaiseOnSideChanged(this);
+            CheckpointManager.Instance.HandleIfRequested();
         }
 
         private void KillCard()
         {
             TriggerCardDeath();
             Activation.DeactivateCard();
+            CheckpointManager.Instance.HandleIfRequested();
         }
 
         private void TriggerCardDeath()

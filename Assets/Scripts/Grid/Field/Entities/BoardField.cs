@@ -85,6 +85,7 @@ namespace Berty.Grid.Field.Entities
         {
             if (OccupantCard == null) throw new InvalidOperationException($"Field {GetName()} should be occupied before setting a backup card.");
             BackupCard = card;
+            if (BackupCard != null) card.SetField(this);
         }
 
         public void RemoveCard()

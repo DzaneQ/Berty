@@ -28,16 +28,16 @@ namespace Berty.Gameplay.Managers
         public void RequestCheckpoint()
         {
             if (requestedCheckpoint) throw new Exception("Trying to request checkpoint when the previous request has not been handled.");
-            Debug.Log("Requesting checkpoint.");
+            //Debug.Log("Requesting checkpoint.");
             if (CanHandleCheckpoint()) HandleCheckpoint();
             else requestedCheckpoint = true;
         }
 
         public void HandleIfRequested()
         {
-            Debug.Log("Checking if checkpoint was requested...");
+            //Debug.Log("Checking if checkpoint was requested...");
             if (!requestedCheckpoint) return;
-            Debug.Log("Handling checkpoint.");
+            //Debug.Log("Trying to handle checkpoint.");
             if (CanHandleCheckpoint()) HandleCheckpoint();
         }
 

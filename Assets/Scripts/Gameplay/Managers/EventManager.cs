@@ -128,7 +128,6 @@ namespace Berty.Gameplay.Managers
 
         public void RaiseOnFieldFreed(FieldBehaviour field)
         {
-            Debug.Log("Raising on field freed");
             OnFieldFreed?.Invoke(field, EventArgs.Empty);
         }
 

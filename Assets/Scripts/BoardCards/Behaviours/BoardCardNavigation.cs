@@ -71,8 +71,9 @@ namespace Berty.BoardCards.Behaviours
             if (BoardCard == null) return;
             if (Navigation.IsCardAnimating()) return;
             Bars.ShowBars();
+            bool isDeactivated = Activation.TryDeactivatingIfFlagged();
             CheckpointManager.Instance.HandleIfRequested();
-            if (Bars.AreBarsAnimating()) return;
+            if (isDeactivated || Bars.AreBarsAnimating()) return;
             StateMachine.TryShowingButtons();
         }
     }

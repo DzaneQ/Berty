@@ -79,11 +79,9 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleOnFieldFreed(object sender, EventArgs args)
         {
-            Debug.Log($"Receiving on field freed for {name}");
             FieldBehaviour field = (FieldBehaviour)sender;
             if (!game.Grid.AreNeighboring(field.BoardField, ParentField.BoardField)) return;
             StateMachine.UpdateButtons();
-            Debug.Log($"Updated buttons for {name}");
         }
 
         private void HandleNewCardWitness(BoardCardBehaviour witness, BoardCardBehaviour newCard)
@@ -232,7 +230,7 @@ namespace Berty.BoardCards.Listeners
             switch (dyingCard.BoardCard.GetSkill())
             {
                 case SkillEnum.SedziaBertt:
-                    if (dyingCard.BoardCard.Align == witness.BoardCard.Align) witness.EntityHandler.AdvanceTempStrength(1, dyingCard);
+                    if (dyingCard.BoardCard.Align == witness.BoardCard.Align) witness.EntityHandler.AdvanceTempStrength(1, dyingCard); // does not apply to backup card
                     return;
             }
         }

@@ -7,6 +7,7 @@ using Berty.Grid.Field.Behaviour;
 using Berty.Grid.Field.Entities;
 using Berty.Grid.Managers;
 using Berty.Utility;
+using UnityEngine;
 
 namespace Berty.BoardCards.Managers
 {
@@ -22,8 +23,8 @@ namespace Berty.BoardCards.Managers
 
         public void RotateCard(BoardCardBehaviour card, int angle)
         {
-            card.Navigation.RotateCardObject(angle);
             card.BoardCard.AdvanceCardSetAngleBy(angle);
+            card.Navigation.RotateCardObject(angle);
             card.StateMachine.UpdateButtons();
         }
 
@@ -60,6 +61,9 @@ namespace Berty.BoardCards.Managers
             AlignmentEnum secondFieldAlign = secondField.Align;
             FieldBehaviour firstFieldObject = firstCardObject.ParentField;
             FieldBehaviour secondFieldObject = secondCardObject.ParentField;
+            // Rotate cards
+            RotateCard(firstCardObject, 180);
+            RotateCard(secondCardObject, 180);
             // Update entities
             firstField.PlaceExistingCard(secondOccupantCard, secondFieldAlign);
             firstField.SetBackupCard(secondBackupCard);
@@ -68,9 +72,6 @@ namespace Berty.BoardCards.Managers
             // Move card objects
             firstCardObject.Navigation.MoveCardObject(secondFieldObject);
             secondCardObject.Navigation.MoveCardObject(firstFieldObject);
-            // Rotate cards
-            RotateCard(firstCardObject, 180);
-            RotateCard(secondCardObject, 180);
         }
     }
 }

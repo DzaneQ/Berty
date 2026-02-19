@@ -40,6 +40,7 @@ namespace Berty.BoardCards.Animation
 
         public void ToField(FieldBehaviour field)
         {
+            Debug.Log($"Moving {name} to {field.name}");
             StartCoroutine(MoveCardCoroutine(field));
         }
 
@@ -54,15 +55,12 @@ namespace Berty.BoardCards.Animation
 
         private IEnumerator MoveToField(FieldBehaviour target, float duration)
         {
-            //Debug.Log($"Card initial coordinates: {transform.position.x}; {transform.position.y}; {transform.position.z}");
             SetTargetField(target);
-            //Debug.Log($"Card target coordinates: {targetPosition.x}; {targetPosition.y}; {targetPosition.z}");
             yield return StartCoroutine(AnimateMove(target, duration));
         } 
 
         private void SetTargetField(FieldBehaviour target)
         {
-            //targetPosition = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z);
             targetPosition = cardSetTransform.position;
             targetPosition.x = target.transform.position.x;
             targetPosition.z = target.transform.position.z;
@@ -72,12 +70,13 @@ namespace Berty.BoardCards.Animation
         {
             CoroutineCount++;
             float currentTime = 0;
-            //Debug.Log($"Target location for {transform.name}: {targetPosition.x}, {targetPosition.y}, {targetPosition.z}");
+            Debug.Log($"Starting animated move for {name} to {target.name}");
             for (; targetPosition != cardSetTransform.position;)
             {
                 MoveFrame(ref currentTime, durationSeconds);
                 yield return null;
             }
+            Debug.Log($"Set parent for {name} to {target.name}");
             cardSetTransform.SetParent(target.transform, true);
             CoroutineCount--;
         }

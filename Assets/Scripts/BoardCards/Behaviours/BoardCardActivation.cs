@@ -11,11 +11,13 @@ namespace Berty.BoardCards.Behaviours
     public class BoardCardActivation : BoardCardBehaviour
     {
         private Vector3 defaultCardPosition;
+        private bool isDeactivating;
 
         protected override void Awake()
         {
             base.Awake();
             defaultCardPosition = transform.localPosition;
+            isDeactivating = false;
             BoardCardCollectionManager.Instance.AddCardToCollection(this);
         }
 
@@ -31,18 +33,31 @@ namespace Berty.BoardCards.Behaviours
         // The opposite of HandleNewCardActivated + default transform + deactivation
         public void DeactivateCard()
         {
-            EnableTheOtherCardOnTheFieldAndFreeSpace();
+            if (Navigation.IsCardAnimating())
+            {
+                isDeactivating = true;
+                return;
+            }
+            bool backupCardActivated = EnableTheOtherCardOnTheFieldAndFreeSpace();
             EntityHandler.DeactivateBoardCardEntity();
             SetToDefaultLocalTransform();
+            //if (backupCardActivated) ParentField.ChildCard.StateMachine.SetMainState();
             gameObject.SetActive(false);
         }
 
         public void LoadCard(BoardCard savedCard)
         {
             EntityHandler.LoadBoardCardEntityFromData(savedCard);
-            Debug.Log($"Rotating card with direction: {(int)savedCard.Direction}");
             Navigation.RotateObjectWithoutAnimation((int)savedCard.Direction);
             StateMachine.SetMainState();
+        }
+
+        public bool TryDeactivatingIfFlagged()
+        {
+            if (!isDeactivating) return false;
+            isDeactivating = false;
+            DeactivateCard();
+            return true;
         }
 
         private void DisableTheOtherCardOnTheField()
@@ -52,18 +67,20 @@ namespace Berty.BoardCards.Behaviours
             firstCard.SetActive(false);
         }
 
-        private void EnableTheOtherCardOnTheFieldAndFreeSpace()
+        private bool EnableTheOtherCardOnTheFieldAndFreeSpace()
         {
             GameObject firstCard = transform.parent.GetChild(0).gameObject;
             if (firstCard == gameObject) // If this is the only card, handle empty field
             {
                 SetDefaultRotationForCardSet();
                 EventManager.Instance.RaiseOnFieldFreed(ParentField);
+                return false;
             }
             else // Otherwise, enable the other card
             {
                 firstCard.SetActive(true);
                 transform.SetParent(null, false);
+                return true;
             }
         }
 

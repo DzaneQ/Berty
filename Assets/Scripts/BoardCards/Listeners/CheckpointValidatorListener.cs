@@ -21,7 +21,10 @@ namespace Berty.BoardCards.Listeners
         private void HandleCheckpointRequest(object sender, ValidateOutputEventArgs args)
         {
             if (args.IsRestricted) return;
-            if (!IsEligibleForCheckpoint()) args.IsRestricted = true;
+            if (IsEligibleForCheckpoint()) return;
+            args.IsRestricted = true;
+            Debug.Log(BoardCard.CharacterConfig.Name + " has restricted checkpointing.");
+
         }
 
         private bool IsEligibleForCheckpoint()
