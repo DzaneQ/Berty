@@ -31,6 +31,7 @@ namespace Berty.UI.Listeners
         {
             _buttonType = CornerButtonEnum.EndTurn;
             label = transform.GetChild(0).GetComponent<Text>();
+            UpdateButtonLabel();
         }
 
         public void DisplayButton(CornerButtonEnum buttonType)

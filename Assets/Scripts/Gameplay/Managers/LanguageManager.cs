@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Berty.Settings;
 
 namespace Berty.Gameplay.Managers
 {
@@ -27,7 +28,8 @@ namespace Berty.Gameplay.Managers
 
         private void LoadLanguageDictionary()
         {
-            string languageFileName = GetFileNameFromLanguage(EntityLoadManager.Instance.Game.GameConfig.Language);
+            string languageFileName = GetFileNameFromLanguage(SettingsManager.Instance.Language);
+            Debug.Log("Loading from: " + languageFileName);
             TextAsset textAsset = Resources.Load<TextAsset>($"Translation/{languageFileName}");
             if (textAsset == null) throw new Exception($"Undefined file of name: {languageFileName}.");
             languageDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(textAsset.text);
