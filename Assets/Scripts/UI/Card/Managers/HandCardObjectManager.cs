@@ -77,7 +77,7 @@ namespace Berty.UI.Card.Managers
             {
                 Transform card = behaviourCollection.GetBehaviourFromCharacterConfig(pileData[i]).transform;
                 if (card.parent == table) continue;
-                card.SetParent(table);
+                card.SetParent(table, false);
             }
         }
 
@@ -89,7 +89,7 @@ namespace Berty.UI.Card.Managers
             {
                 Transform card = table.GetChild(i);
                 if (ownedCardTransforms.Contains(card)) continue;
-                card.SetParent(behaviourCollection.transform);
+                card.SetParent(behaviourCollection.transform, false);
             }
         }
 
