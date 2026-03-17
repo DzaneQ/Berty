@@ -85,6 +85,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertkaSerferka.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\CharacterConfig.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\CardButton.cs" />
+    <Compile Include="Assets\Scripts\Menu\Managers\MenuLanguageManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaGejsza.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandCardSelectManager.cs" />
     <Compile Include="Assets\Scripts\Menu\Behaviours\NavigationMenu.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Characters\Init\CharacterData.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IBarWidth.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\GameLanguageManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\CardWitnessListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardSound.cs" />
@@ -183,7 +185,6 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\Bertolaj.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Bar\CardBar.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Managers\LanguageManager.cs" />
     <Compile Include="Assets\Scripts\Settings\Managers\StartGameBufferManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\EBerta.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\StatusManager.cs" />

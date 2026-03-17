@@ -43,8 +43,8 @@ namespace Berty.UI.Listeners
         {
             label.text = ButtonType switch
             {
-                CornerButtonEnum.EndTurn => LanguageManager.Instance.GetTextFromKey("end_turn"),
-                CornerButtonEnum.Undo => LanguageManager.Instance.GetTextFromKey("undo"),
+                CornerButtonEnum.EndTurn => GameLanguageManager.Instance.GetTextFromKey("end_turn"),
+                CornerButtonEnum.Undo => GameLanguageManager.Instance.GetTextFromKey("undo"),
                 _ => throw new Exception("Unknown button type.")
             };
         }

@@ -10,7 +10,7 @@ using Berty.Settings;
 
 namespace Berty.Gameplay.Managers
 {
-    public class LanguageManager : ManagerSingleton<LanguageManager>
+    public class GameLanguageManager : ManagerSingleton<GameLanguageManager>
     {
         private Dictionary<string, string> languageDictionary;
 
@@ -30,8 +30,8 @@ namespace Berty.Gameplay.Managers
         {
             string languageFileName = GetFileNameFromLanguage(SettingsManager.Instance.Language);
             Debug.Log("Loading from: " + languageFileName);
-            TextAsset textAsset = Resources.Load<TextAsset>($"Translation/{languageFileName}");
-            if (textAsset == null) throw new Exception($"Undefined file of name: {languageFileName}.");
+            TextAsset textAsset = Resources.Load<TextAsset>($"Translation/misc/{languageFileName}");
+            if (textAsset == null) throw new Exception($"Undefined file of name: /misc/{languageFileName}.");
             languageDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(textAsset.text);
         }
 

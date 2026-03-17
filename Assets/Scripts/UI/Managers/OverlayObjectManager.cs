@@ -29,8 +29,8 @@ namespace Berty.UI.Managers
         {
             GameObject prefab = Resources.Load<GameObject>("Prefabs/GameOver");
             Text endingMessage = prefab.transform.GetChild(0).gameObject.GetComponent<Text>();
-            if (winner == AlignmentEnum.Player) endingMessage.text = LanguageManager.Instance.GetTextFromKey("win");
-            else if (winner == AlignmentEnum.Opponent) endingMessage.text = LanguageManager.Instance.GetTextFromKey("lose");
+            if (winner == AlignmentEnum.Player) endingMessage.text = GameLanguageManager.Instance.GetTextFromKey("win");
+            else if (winner == AlignmentEnum.Opponent) endingMessage.text = GameLanguageManager.Instance.GetTextFromKey("lose");
             else throw new Exception("Undefined winner.");
             Instantiate(prefab, canvasObject.transform);
         }

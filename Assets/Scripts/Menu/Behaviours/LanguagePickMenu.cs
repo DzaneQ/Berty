@@ -1,4 +1,5 @@
 using Berty.Enums;
+using Berty.Menu.Managers;
 using Berty.Settings;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,5 +17,6 @@ public class LanguagePickMenu : MonoBehaviour
             _ => LanguageEnum.English
         };
         SettingsManager.Instance.SetLanguage(language);
+        MenuLanguageManager.Instance.RefreshLabels();
     }
 }
