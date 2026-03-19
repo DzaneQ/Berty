@@ -24,7 +24,6 @@ namespace Berty.Gameplay.Managers
             base.Awake();
             game = EntityLoadManager.Instance.Game;
             savePath = Application.persistentDataPath + "/save.txt"; // Change extension
-            //Debug.Log("Save path:" + savePath);
         }
 
         public GameSaveData? LoadTheSaveFile()

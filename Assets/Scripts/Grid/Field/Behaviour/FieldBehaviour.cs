@@ -54,7 +54,6 @@ namespace Berty.Grid.Field.Behaviour
                 _ => throw new Exception("Unknown field name to handle."),
             };
             if (!LoadTheCard()) UpdateField();
-            //Debug.Log($"{name} got coordinates: ({BoardField.Coordinates.x}, {BoardField.Coordinates.y})");
         }
 
         public void UpdateField()
@@ -81,8 +80,7 @@ namespace Berty.Grid.Field.Behaviour
             PaymentManager.Instance.CallPayment(selectedCardConfig.Power, ChildCard);
         }
         
-        // BUG: When occupant card dies showing the backup card, it throws an error on turn change
-        private bool LoadTheCard() // TODO: Handle backup card
+        private bool LoadTheCard()
         {
             if (BoardField.OccupantCard == null) return false;
             ChildCard = transform.GetChild(0).GetChild(0).GetComponent<BoardCardBehaviour>();

@@ -59,7 +59,6 @@ namespace Berty.BoardCards.Behaviours
         private void SetState(CardState state)
         {
             if (currentState != null && currentState.GetNameEnum() == state.GetNameEnum()) return;
-            //Debug.Log($"Setting {state.GetType().Name} for {name}");
             currentState = state;
             currentState.OnStateEnter();
             RefreshButtons();
@@ -105,7 +104,6 @@ namespace Berty.BoardCards.Behaviours
 
         public void SetAttacking()
         {
-            Debug.Log("Setting attacking state.");
             SetState(new AttackingState(this));
         }
 

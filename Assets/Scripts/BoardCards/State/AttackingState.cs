@@ -9,14 +9,10 @@ namespace Berty.BoardCards.State
     {
         public AttackingState(BoardCardStateMachine card) : base(card) { }
 
-        protected override void ActivateButtonSet()
-        {
-            Debug.Log("Executing button set activationg for attacking state.");
-        }
+        protected override void ActivateButtonSet() { }
 
         public override void HandleLeftClick()
         {
-            Debug.Log("Handling left click for attacking state");
             BoardCardActionManager.Instance.ConfirmPayment(stateMachine);
         }
 

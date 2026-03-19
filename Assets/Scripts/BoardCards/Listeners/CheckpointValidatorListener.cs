@@ -23,7 +23,6 @@ namespace Berty.BoardCards.Listeners
             if (args.IsRestricted) return;
             if (IsEligibleForCheckpoint()) return;
             args.IsRestricted = true;
-            Debug.Log(BoardCard.CharacterConfig.Name + " has restricted checkpointing.");
 
         }
 

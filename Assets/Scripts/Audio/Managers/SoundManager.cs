@@ -76,7 +76,6 @@ namespace Berty.Audio.Managers
 
         public void SelectSound(bool selecting)
         {
-            //Debug.Log("Playing cardImage sound during selecting: " + selecting);
             transform.position = mainTransform.position;
             //soundSrc.clip = selecting ? cardSelect : cardDeselect;
             soundSrc.time = 0f;

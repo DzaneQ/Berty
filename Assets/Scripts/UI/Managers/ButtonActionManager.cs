@@ -26,7 +26,6 @@ namespace Berty.UI.Managers
 
         private void HandleEndTurn()
         {
-            //Debug.Log("Handling end turn");
             TurnManager.Instance.EndTurn();
         }
 

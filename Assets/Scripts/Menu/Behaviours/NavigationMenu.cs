@@ -90,7 +90,6 @@ namespace Berty.Menu.Behaviours
 
         private void PlaySound(AudioClip clip, float delaySeconds = 0.0f)
         {
-            //Debug.Log("Clip playing: " + clip);
             src.clip = clip;
             src.time = delaySeconds;
             src.Play();

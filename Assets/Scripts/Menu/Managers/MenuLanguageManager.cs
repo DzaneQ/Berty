@@ -41,7 +41,6 @@ namespace Berty.Menu.Managers
         {
             // Get all text belonging to objects which are the first child of its parent.
             _labels = FindObjectsOfType<TMP_Text>(true).Where(text => text.transform.parent.GetChild(0) == text.transform).ToArray();
-            Debug.Log($"Loaded {_labels.Length} labels.");
         }
 
         private void LoadLanguageDictionaries()
@@ -50,7 +49,6 @@ namespace Berty.Menu.Managers
             foreach (LanguageEnum language in GetAllLanguages())
             {
                 string languageFileName = GetFileNameFromLanguage(language);
-                Debug.Log("Loading from: " + languageFileName);
                 TextAsset textAsset = Resources.Load<TextAsset>($"Translation/menu/{languageFileName}");
                 if (textAsset == null) throw new Exception($"Undefined file of name: /menu/{languageFileName}.");
                 Dictionary<string, string> dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(textAsset.text);

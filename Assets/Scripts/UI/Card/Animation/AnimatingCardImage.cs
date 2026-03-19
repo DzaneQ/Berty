@@ -37,8 +37,6 @@ namespace Berty.UI.Card.Animation
         private IEnumerator AnimateMove(bool selecting, float durationSeconds)
         {
             CoroutineCount++;
-            //Debug.Log("Is sound null when animating move? " + (sound == null));
-            //Debug.Log("Targeted rotation: " + targetRotation);
             SoundManager.Instance.SelectSound(selecting);
             float currentTime = 0;
             for (; transform.eulerAngles != targetRotation;)
@@ -46,7 +44,6 @@ namespace Berty.UI.Card.Animation
                 MoveFrame(ref currentTime, durationSeconds);
                 yield return null;
             }
-            //Debug.Log("Result rotation: " + transform.eulerAngles);
             CoroutineCount--;
         }
 
@@ -60,12 +57,9 @@ namespace Berty.UI.Card.Animation
             }
             else
             {
-                //Debug.Log($"Current location for {transform.name} before: {transform.position.x}, {transform.position.y}, {transform.position.z}");
                 float step = frameTime / (endTime - currentTime) * Vector3.Distance(transform.position, targetPosition);
-                //Debug.Log($"Step value for {transform.name}: {step}");
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
                 transform.eulerAngles = Vector3.MoveTowards(transform.eulerAngles, targetRotation, step);
-                //Debug.Log($"Current location for {transform.name} after: {transform.position.x}, {transform.position.y}, {transform.position.z}");
             }
             currentTime += frameTime;
         }

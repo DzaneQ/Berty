@@ -54,7 +54,7 @@ namespace Berty.UI.Card.Managers
         {
             Transform card = behaviourCollection.GetBehaviourFromCharacterConfig(characterConfig).transform;
             Transform table = GetTableObjectFromAlignment(alignment).transform;
-            card.SetParent(table);
+            card.SetParent(table, false);
         }
 
         private void AddCardObjectsForTable(AlignmentEnum alignment)

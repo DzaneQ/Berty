@@ -56,10 +56,8 @@ namespace Berty.Grid.Entities
             {
                 if (field.Coordinates.x != x) continue;
                 if (field.Coordinates.y != y) continue;
-                //Debug.Log("Got x=" + x + "; y=" + y);
                 return field;
             }
-            //Debug.Log("Got x=" + x + "; y=" + y + "as null!");
             throw new ArgumentException($"Invalid coordination field: ({x}, {y})");
         }
 

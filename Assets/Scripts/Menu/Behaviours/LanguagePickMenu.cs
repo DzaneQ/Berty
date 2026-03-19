@@ -9,7 +9,6 @@ public class LanguagePickMenu : MonoBehaviour
 {
     public void ChangeLanguageTo(string languageStr)
     {
-        Debug.Log("Changing language to: " + languageStr);
         LanguageEnum language = languageStr switch
         {
             "pl" => LanguageEnum.Polish,

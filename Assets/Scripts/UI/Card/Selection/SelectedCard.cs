@@ -13,7 +13,6 @@ namespace Berty.UI.Card.Selection
 
         public SelectedCard(RectTransform transform, AnimatingCardImage animating) : base(transform, animating)
         {
-            //Debug.Log("Selecting card...");
             unselectedPosition = cardTransform.position;
             unselectedRotation = cardTransform.eulerAngles;
             Vector3 posOffset = new Vector3(10f, 5f, 0f);

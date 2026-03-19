@@ -25,9 +25,7 @@ namespace Berty.Gameplay.Managers
 
         public void ConfirmPayment()
         {
-            Debug.Log("Checking payment offer...");
             if (!SelectionManager.Instance.CheckOffer()) return;
-            Debug.Log("Confirming payment.");
             HandToPileManager.Instance.DiscardSelectedCardsFromHand();
             SelectionManager.Instance.SetAsNotPaymentTime();
             ButtonObjectManager.Instance.DisplayEndTurnButton();

@@ -40,7 +40,6 @@ namespace Berty.BoardCards.Animation
 
         public void ToField(FieldBehaviour field)
         {
-            Debug.Log($"Moving {name} to {field.name}");
             StartCoroutine(MoveCardCoroutine(field));
         }
 
@@ -70,14 +69,12 @@ namespace Berty.BoardCards.Animation
         {
             CoroutineCount++;
             float currentTime = 0;
-            Debug.Log($"Starting animated move for {name} to {target.name}");
             for (; targetPosition != cardSetTransform.position;)
             {
                 MoveFrame(ref currentTime, durationSeconds);
                 yield return null;
             }
-            Debug.Log($"Set parent for {name} to {target.name}");
-            cardSetTransform.SetParent(target.transform, true);
+            SetCardParentToField(target);
             CoroutineCount--;
         }
 
@@ -87,13 +84,16 @@ namespace Berty.BoardCards.Animation
             if (currentTime + frameTime >= endTime) cardSetTransform.position = targetPosition;
             else
             {
-                //Debug.Log($"Current location for {transform.name} before: {transform.position.x}, {transform.position.y}, {transform.position.z}");
                 float step = frameTime / (endTime - currentTime) * Vector3.Distance(cardSetTransform.position, targetPosition);
-                //Debug.Log($"Step value for {transform.name}: {step}");
                 cardSetTransform.position = Vector3.MoveTowards(cardSetTransform.position, targetPosition, step);
-                //Debug.Log($"Current location for {transform.name} after: {transform.position.x}, {transform.position.y}, {transform.position.z}");
             }
             currentTime += frameTime;
+        }
+
+        private void SetCardParentToField(FieldBehaviour field)
+        {
+            cardSetTransform.SetParent(field.transform, true);
+            field.UpdateField();
         }
     }
 }
