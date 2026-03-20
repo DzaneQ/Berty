@@ -19,6 +19,7 @@ namespace Berty.Gameplay.Init
         {
             InitializeGameEntity();
             InitializeHandCardObjects();
+            InitializeLanguage();
             //InitializeFieldBehaviours();
         }
 
@@ -42,7 +43,15 @@ namespace Berty.Gameplay.Init
             HandCardCollection collectionComponent = stackForHandCards.GetComponent<HandCardCollection>();
             collectionComponent.InitializeCollection(handCardBehaviourCollection);
             Destroy(init);
-        }   
+        }
+
+        private void InitializeLanguage()
+        {
+            LanguageInit init = gameObject.GetComponent<LanguageInit>();
+            if (init == null) return;
+            init.UpdateLanguageForFixedLabels();
+            Destroy(init);
+        }
 
         private void StartTheGame()
         {

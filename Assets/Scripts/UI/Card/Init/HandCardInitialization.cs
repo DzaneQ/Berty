@@ -25,11 +25,6 @@ namespace Berty.UI.Card.Init
 
         private int debugIndex = 1;
 
-        private void Awake()
-        {
-            if (cardImagePrefab != null) cardImagePrefab = Resources.Load<GameObject>("Prefabs/CardImage");
-        }
-
         public List<HandCardBehaviour> InitializeAllCharacterCards()
         {
             Game game = EntityLoadManager.Instance.Game;

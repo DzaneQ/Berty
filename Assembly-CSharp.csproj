@@ -158,6 +158,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\Bertonator.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Listeners\HighlightListener.cs" />
     <Compile Include="Assets\Scripts\Utility\ManagerSingleton.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Init\LanguageInit.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\RycerzBerti.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\RotateRight.cs" />
