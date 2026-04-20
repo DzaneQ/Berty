@@ -3,7 +3,7 @@ using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Utility;
 
-namespace Berty.Debugging
+namespace Berty.Debugging.Managers
 {
 #if DEBUG
     public class DebugManager : ManagerSingleton<DebugManager>

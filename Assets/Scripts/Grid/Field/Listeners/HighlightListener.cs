@@ -1,12 +1,6 @@
 using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.Managers;
-using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
-using Berty.UI.Card.Managers;
-using System;
-using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Berty.Grid.Field.Listeners

@@ -1,17 +1,12 @@
 using Berty.Enums;
-using Berty.Gameplay.Managers;
 using Berty.Settings;
 using Berty.Utility;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using static UnityEditor.PlayerSettings.Switch;
 
 namespace Berty.Menu.Managers
 {
