@@ -4191,12 +4191,12 @@ GameObject:
   - component: {fileID: 1487818632}
   - component: {fileID: 1487818635}
   m_Layer: 5
-  m_Name: StartClient
+  m_Name: StartClientDbg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1487818631
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4831,8 +4831,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1693448829}
-  - component: {fileID: 1693448828}
   - component: {fileID: 1693448832}
+  - component: {fileID: 1693448833}
   m_Layer: 0
   m_Name: InitSystem
   m_TagString: Untagged
@@ -4840,18 +4840,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1693448828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1693448827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e7f6d12982a73d4d8240e521d7a8eb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1693448829
 Transform:
   m_ObjectHideFlags: 0
@@ -4876,9 +4864,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 1693448827}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4265f165555b68b4aa419d98557e4f2e, type: 3}
+  m_Script: {fileID: 11500000, guid: 5914c9b043df3a1438c1b99be8f803d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1693448833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693448827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea8a3386936d0c145b58d38ae493aeb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardImagePrefab: {fileID: 1148504419818202801, guid: 57eaf54574b5e934b9342b8e3da9cf6a, type: 3}
+  pileStack: {fileID: 1110432747}
+  discardStack: {fileID: 953259463}
+  deadStack: {fileID: 470320019}
+  playerTable: {fileID: 1577340884}
+  opponentTable: {fileID: 1740268250}
+  theRemainder: {fileID: 47750409}
 --- !u!1 &1722526535
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,11 +2,11 @@ using Berty.BoardCards.ConfigData;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
-using Berty.Network.Init;
 using Berty.Settings;
 using Berty.UI.Card;
 using Berty.UI.Card.Collection;
 using Berty.UI.Card.Init;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,38 +14,33 @@ namespace Berty.Gameplay.Init
 {
     public class SceneInit : MonoBehaviour
     {
-        private Game initGame;
-        private bool areCardsInitialized;
-
         void Awake()
         {
-            InitializeNetwork();
             InitializeGameEntity();
-            areCardsInitialized = InitializeHandCardObjects();
+            InitializeHandCardObjects();
             InitializeLanguage();
         }
 
         void Start()
         {
-            TryStartingTheGame();
-            Destroy(gameObject); // TODO: Adjust to multiplayer that it's on hold to initialize when there are not enough players
+            if (StartGameBufferManager.Instance.IsStartingNewGame()) StartTheGame();
+            Destroy(gameObject);
         }
 
         private void InitializeGameEntity()
         {
-            initGame = EntityLoadManager.Instance.Game;
+            Game _ = EntityLoadManager.Instance.Game;
         }
 
-        private bool InitializeHandCardObjects()
+        private void InitializeHandCardObjects()
         {
             HandCardInitialization init = gameObject.GetComponent<HandCardInitialization>();
-            if (init == null) return false;
+            if (init == null) throw new Exception($"HandCardInitialization component should appear in: {gameObject.name}");
             GameObject stackForHandCards = ObjectReadManager.Instance.HandCardObjectCollection;
             List<HandCardBehaviour> handCardBehaviourCollection = init.InitializeAllCharacterCards();
             HandCardCollection collectionComponent = stackForHandCards.GetComponent<HandCardCollection>();
             collectionComponent.InitializeCollection(handCardBehaviourCollection);
             Destroy(init);
-            return true;
         }
 
         private void InitializeLanguage()
@@ -56,23 +51,8 @@ namespace Berty.Gameplay.Init
             Destroy(init);
         }
 
-        private void InitializeNetwork()
+        private void StartTheGame()
         {
-            NetworkInit init = gameObject.GetComponent<NetworkInit>();
-            if (init == null) return; // should return on singleplayer mode
-            init.InitializeNetwork();
-            Destroy(init);
-        }
-
-        private bool CanStartTheGame()
-        {
-            if (!areCardsInitialized) return false;
-            return StartGameBufferManager.Instance.IsStartingNewGame();
-        }
-
-        private void TryStartingTheGame()
-        {
-            if (!CanStartTheGame()) return;
             EventManager.Instance.RaiseOnNewTurn();
         }
     }
