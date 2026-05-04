@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Berty.Network.Init
 {
-    public class NetworkSceneInit : MonoBehaviour
+    public class NetworkSceneInit : NetworkBehaviour
     {
         private void Start()
         {
@@ -21,11 +21,17 @@ namespace Berty.Network.Init
 
         private void HandleClientConnected(NetworkManager manager, ConnectionEventData data)
         {
+            if (!manager.IsServer) return; // run from server only
             if (data.EventType != ConnectionEvent.ClientConnected) return;
             int clientCount = manager.ConnectedClientsIds.Count;
             if (clientCount > 2) throw new Exception($"Too many connected clients: {clientCount}");
             if (clientCount < 2) return;
-            if (!manager.IsServer) return; // run from server only
+            InitializeSceneClientRpc();
+        }
+
+        [ClientRpc]
+        private void InitializeSceneClientRpc()
+        {
             gameObject.AddComponent<SceneInit>();
         }
     }
