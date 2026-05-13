@@ -152,7 +152,6 @@
     <Compile Include="Assets\Scripts\Menu\Behaviours\LanguagePickMenu.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Managers\SaveLoadManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\CheBert.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Collection\HandCardCollection.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\CheckpointValidatorListener.cs" />
@@ -185,6 +184,7 @@
     <Compile Include="Assets\Scripts\Characters\Managers\ModifyStatChangeManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\EffectableState.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Entities\Game.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\ProcessGameDataManager.cs" />
     <Compile Include="Assets\Scripts\Debugging\Managers\DebugManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\PrymusBert.cs" />
     <Compile Include="Assets\Scripts\Settings\Managers\SettingsManager.cs" />

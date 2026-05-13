@@ -14,15 +14,11 @@ namespace Berty.Gameplay.Init
 {
     public class SceneInit : MonoBehaviour
     {
-        void Awake()
+        void Start()
         {
             InitializeGameEntity();
             InitializeHandCardObjects();
             InitializeLanguage();
-        }
-
-        void Start()
-        {
             if (StartGameBufferManager.Instance.IsStartingNewGame()) StartTheGame();
             Destroy(gameObject);
         }

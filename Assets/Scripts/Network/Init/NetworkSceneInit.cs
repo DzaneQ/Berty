@@ -1,4 +1,9 @@
+using Berty.Gameplay.Entities;
 using Berty.Gameplay.Init;
+using Berty.Gameplay.Managers;
+using Berty.UI.Card;
+using Berty.UI.Card.Collection;
+using Berty.UI.Card.Init;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +16,7 @@ namespace Berty.Network.Init
     {
         private void Start()
         {
+            InitializeLanguage(); // initialize local scene
             NetworkManager.Singleton.OnConnectionEvent += HandleClientConnected;
 #if UNITY_EDITOR
             NetworkManager.Singleton.StartHost();
@@ -26,13 +32,50 @@ namespace Berty.Network.Init
             int clientCount = manager.ConnectedClientsIds.Count;
             if (clientCount > 2) throw new Exception($"Too many connected clients: {clientCount}");
             if (clientCount < 2) return;
-            InitializeSceneClientRpc();
+            InitializeGameEntity();
+            string dataStr = ProcessGameDataManager.Instance.GetGameEntityAsString();
+            InitializeSceneClientRpc(dataStr);
+        }
+
+        private void InitializeLanguage()
+        {
+            LanguageInit init = gameObject.GetComponent<LanguageInit>();
+            if (init == null) return;
+            init.InitializeLanguageDictionary();
+            Destroy(init);
+        }
+        private void InitializeGameEntity()
+        {
+            Game _ = EntityLoadManager.Instance.Game;
+        }
+
+        private void InitializeHandCardObjects()
+        {
+            HandCardInitialization init = gameObject.GetComponent<HandCardInitialization>();
+            if (init == null) throw new Exception($"HandCardInitialization component should appear in: {gameObject.name}");
+            GameObject stackForHandCards = ObjectReadManager.Instance.HandCardObjectCollection;
+            List<HandCardBehaviour> handCardBehaviourCollection = init.InitializeAllCharacterCards();
+            HandCardCollection collectionComponent = stackForHandCards.GetComponent<HandCardCollection>();
+            collectionComponent.InitializeCollection(handCardBehaviourCollection);
+            Destroy(init);
+        }
+
+        private void StartTheGame()
+        {
+            EventManager.Instance.RaiseOnNewTurn();
         }
 
         [ClientRpc]
-        private void InitializeSceneClientRpc()
+        private void InitializeSceneClientRpc(string gameDataStr)
         {
-            gameObject.AddComponent<SceneInit>();
+            GameSaveData gameData = ProcessGameDataManager.Instance.GetDataFromString(gameDataStr);
+            EntityLoadManager.Instance.LoadGameFromData(gameData);
+            InitializeHandCardObjects();
+            StartTheGame();
+            Game game = EntityLoadManager.Instance.Game;
+            Debug.Log("Current alignment: " + game.CurrentAlignment);
+            Debug.Log("Player card count: " + game.CardPile.PlayerCards.Count);
+            Debug.Log("Opponent card count: " + game.CardPile.OpponentCards.Count);
         }
     }
 }

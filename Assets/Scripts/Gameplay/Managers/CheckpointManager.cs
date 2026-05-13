@@ -69,7 +69,7 @@ namespace Berty.Gameplay.Managers
 
         private void SaveTheGame()
         {
-            SaveLoadManager.Instance.SaveTheGame();
+            ProcessGameDataManager.Instance.SaveTheGame();
         }
     }
 }

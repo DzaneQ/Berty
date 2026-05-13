@@ -21,6 +21,11 @@ namespace Berty.Gameplay.Managers
             }
         }
 
+        public void LoadGameFromData(GameSaveData data)
+        {
+            Game = new Game(data);
+        }
+
         private Game LoadGame()
         {
             GameSaveData? data = StartGameBufferManager.Instance.Data;

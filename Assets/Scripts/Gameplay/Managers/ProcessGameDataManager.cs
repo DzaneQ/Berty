@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace Berty.Gameplay.Managers
 {
-    public class SaveLoadManager : ManagerSingleton<SaveLoadManager>
+    public class ProcessGameDataManager : ManagerSingleton<ProcessGameDataManager>
     {
         private Game game;
         private string savePath;
@@ -38,7 +38,17 @@ namespace Berty.Gameplay.Managers
 
         public void SaveTheGame()
         {
-            File.WriteAllText(savePath, JsonUtility.ToJson(game.SaveEntity(), true));
+            File.WriteAllText(savePath, GetGameEntityAsString());
+        }
+
+        public string GetGameEntityAsString()
+        {
+            return JsonUtility.ToJson(game.SaveEntity(), true);
+        }
+
+        public GameSaveData GetDataFromString(string dataStr)
+        {
+            return JsonUtility.FromJson<GameSaveData>(dataStr);
         }
 
         public bool IsSaveFileExisting()
