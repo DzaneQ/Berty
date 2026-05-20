@@ -73,9 +73,11 @@
     <Compile Include="Assets\Scripts\Menu\Behaviours\NavigationMenu.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Scripts\Enums\StatusEnum.cs" />
+    <Compile Include="Assets\Scripts\UI\Managers\Shared\SharedButtonActionManager.cs" />
     <Compile Include="Assets\Scripts\Enums\CardStateEnum.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertZawodowiec.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\Shared\SyncGameEntityToServer.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\ActiveState.cs" />
     <Compile Include="Assets\Scripts\Menu\Listeners\ButtonFunction.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\StatusListener.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\PapiezBertII.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\Scripts\Display\Managers\DisplayManager.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\Shared\SyncGameEntityToClients.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\CloseGameInput.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveUp.cs" />
     <Compile Include="Assets\Scripts\Enums\NavigationEnum.cs" />
@@ -96,6 +99,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\AnimatedMoveCard.cs" />
     <Compile Include="Assets\Scripts\Display\LookupCard.cs" />
+    <Compile Include="Assets\Scripts\Utility\SharedManagerSingleton.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaSJW.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BigMadB.cs" />
@@ -134,6 +138,7 @@
     <Compile Include="Assets\Scripts\Enums\DirectionEnum.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\BoardCardInput.cs" />
+    <Compile Include="Assets\Scripts\Utility\ServerManagerSingleton.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveLeft.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardStateMachine.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Entities\CardPile.cs" />
@@ -226,6 +231,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Characters\Init\CharacterData.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IBarWidth.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\Server\ServerTurnManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\CardWitnessListener.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\SelectionManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\MisiekBert.cs" />
@@ -239,6 +245,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\KonstablBert.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\ButtonActionManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Listeners\Client\ClientButtonInput.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Init\SceneInit.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Entities\BoardCard.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\RoninBert.cs" />
@@ -266,6 +273,7 @@
     <Compile Include="Assets\Scripts\Gameplay\Managers\ObjectReadManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardBehaviour.cs" />
+    <Compile Include="Assets\Scripts\UI\Listeners\Client\ClientButtonTurnListener.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\TrenerPokebertow.cs" />
   </ItemGroup>
   <ItemGroup>

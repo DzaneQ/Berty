@@ -6,13 +6,13 @@ using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Berty.Gameplay.Managers
+namespace Berty.Gameplay.Managers.Client
 {
     public class PlayerReadManager : ClientManagerSingleton<PlayerReadManager>
     {
         private AlignmentEnum _myAlignment = AlignmentEnum.None;
 
-        public AlignmentEnum MyAlignment
+        private AlignmentEnum MyAlignment
         {
             get
             {
@@ -23,6 +23,11 @@ namespace Berty.Gameplay.Managers
                 }
                 return _myAlignment;
             }
+        }
+
+        public bool IsMyAlignment(AlignmentEnum align)
+        {
+            return MyAlignment == align;
         }
     }
 }

@@ -63,6 +63,7 @@ namespace Berty.Network.Init
         private void StartTheGame()
         {
             EventManager.Instance.RaiseOnNewTurn();
+            Destroy(gameObject);
         }
 
         [ClientRpc]
@@ -72,10 +73,6 @@ namespace Berty.Network.Init
             EntityLoadManager.Instance.LoadGameFromData(gameData);
             InitializeHandCardObjects();
             StartTheGame();
-            Game game = EntityLoadManager.Instance.Game;
-            Debug.Log("Current alignment: " + game.CurrentAlignment);
-            Debug.Log("Player card count: " + game.CardPile.PlayerCards.Count);
-            Debug.Log("Opponent card count: " + game.CardPile.OpponentCards.Count);
         }
     }
 }

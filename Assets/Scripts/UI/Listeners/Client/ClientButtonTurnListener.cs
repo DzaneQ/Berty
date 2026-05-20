@@ -2,11 +2,12 @@ using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Gameplay.Managers.Client;
 using Berty.UI.Card.Managers;
+using Berty.UI.Managers;
 using UnityEngine;
 
-namespace Berty.UI.Card.Listeners.Client
+namespace Berty.UI.Listeners.Client
 {
-    public class ClientTurnListener : MonoBehaviour
+    public class ClientButtonTurnListener : MonoBehaviour
     {
         private Game game;
 
@@ -28,10 +29,14 @@ namespace Berty.UI.Card.Listeners.Client
 
         private void HandleNewTurn()
         {
-            if (!PlayerReadManager.Instance.IsMyAlignment(game.CurrentAlignment)) return;
-            HandCardSelectManager.Instance.ClearSelection();
-            int totalCardCount = game.GameConfig.TableCapacity;
-            PileToHandManager.Instance.PullCardsTo(totalCardCount);
+            if (!PlayerReadManager.Instance.IsMyAlignment(game.CurrentAlignment))
+            {
+                ButtonObjectManager.Instance.HideCornerButton();
+            }
+            else
+            {
+                ButtonObjectManager.Instance.DisplayEndTurnButton();
+            }
         }
     }
 }
