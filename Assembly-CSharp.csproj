@@ -80,6 +80,7 @@
     <Compile Include="Assets\Scripts\Menu\Listeners\ButtonFunction.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\StatusListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveRight.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\Client\PlayerReadManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Entities\CardStats.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaSJW.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BigMadB.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\StaryBert.cs" />
+    <Compile Include="Assets\Scripts\Utility\ClientManagerSingleton.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Managers\BoardCardCollectionManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Animation\AnimatingCardImage.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\NewTransformState.cs" />
@@ -194,6 +196,7 @@
     <Compile Include="Assets\Scripts\UI\Card\Managers\PileToHandManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Managers\BoardCardActionManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaAmazonka.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Listeners\Client\ClientTurnListener.cs" />
     <Compile Include="Assets\Scripts\Network\Init\NetworkSceneInit.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardActivation.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardEntityHandler.cs" />
