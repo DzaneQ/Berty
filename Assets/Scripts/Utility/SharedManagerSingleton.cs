@@ -22,7 +22,7 @@ namespace Berty.Utility
                 if (s_instance == null)
                 {
                     s_instance = FindObjectOfType<NetworkObject>().gameObject.GetComponent<T>();
-                    if (s_instance != null) throw new Exception($"Shared manager {typeof(T).Name} should exist since the beginning.");
+                    if (s_instance == null) throw new Exception($"Shared manager {typeof(T).Name} should be pre-exist in SharedManagerSystem on scene.");
                 }
                 return s_instance;
             }

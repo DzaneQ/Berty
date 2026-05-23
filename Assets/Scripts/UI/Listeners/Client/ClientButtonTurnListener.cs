@@ -29,6 +29,7 @@ namespace Berty.UI.Listeners.Client
 
         private void HandleNewTurn()
         {
+            Debug.Log($"New turn for {EntityLoadManager.Instance.Game.CurrentAlignment}");
             if (!PlayerReadManager.Instance.IsMyAlignment(game.CurrentAlignment))
             {
                 ButtonObjectManager.Instance.HideCornerButton();

@@ -31,7 +31,7 @@ namespace Berty.UI.Listeners.Client
         private void HandleTheButtonClick()
         {
             SoundManager.Instance.ButtonClickSound();
-            SharedButtonActionManager.Instance.HandleCornerButtonClick(core.ButtonType);
+            ClientButtonActionManager.Instance.HandleCornerButtonClick(core.ButtonType);
         }
     }
 }

@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\Enums\AlignmentEnum.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardBarsObjects.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertPogromca.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\Shared\SharedTurnManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\Tankbert.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\EventManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KrolPopuBert.cs" />
@@ -73,7 +74,6 @@
     <Compile Include="Assets\Scripts\Menu\Behaviours\NavigationMenu.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Scripts\Enums\StatusEnum.cs" />
-    <Compile Include="Assets\Scripts\UI\Managers\Shared\SharedButtonActionManager.cs" />
     <Compile Include="Assets\Scripts\Enums\CardStateEnum.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertZawodowiec.cs" />
@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\BoardCards\Entities\CardStats.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\SamurajBert.cs" />
+    <Compile Include="Assets\Scripts\UI\Managers\Client\ClientButtonActionManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\Zombert.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\PapiezBertII.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
@@ -273,6 +274,7 @@
     <Compile Include="Assets\Scripts\Gameplay\Managers\ObjectReadManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Network\Managers\NetworkVariableManager.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\Client\ClientButtonTurnListener.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\TrenerPokebertow.cs" />
   </ItemGroup>

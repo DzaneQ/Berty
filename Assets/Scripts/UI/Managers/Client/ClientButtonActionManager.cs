@@ -8,9 +8,9 @@ using System;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Berty.UI.Managers.Shared
+namespace Berty.UI.Managers.Client
 {
-    public class SharedButtonActionManager : SharedManagerSingleton<SharedButtonActionManager>
+    public class ClientButtonActionManager : ClientManagerSingleton<ClientButtonActionManager>
     {
         public void HandleCornerButtonClick(CornerButtonEnum buttonType)
         {
@@ -29,19 +29,13 @@ namespace Berty.UI.Managers.Shared
 
         private void HandleEndTurn()
         {
-            SyncGameEntityToServer.Instance.Sync();
-            EndTurnServerRpc();
+            SyncGameEntityToServer.Instance.Sync(); // NOTE: May cause race conditions. Maybe remove.
+            SharedTurnManager.Instance.EndTurn();
         }
 
         private void HandleUndo()
         {
             PaymentManager.Instance.CancelPayment();
-        }
-
-        [ServerRpc]
-        private void EndTurnServerRpc()
-        {
-            ServerTurnManager.Instance.EndTurn();
         }
     }
 }

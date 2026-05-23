@@ -1,8 +1,9 @@
-using Berty.Enums;
+/*using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers.Shared;
 using Berty.UI.Managers;
 using Berty.Utility;
+using UnityEngine;
 
 namespace Berty.Gameplay.Managers.Server
 {
@@ -21,8 +22,7 @@ namespace Berty.Gameplay.Managers.Server
         {
             game.SwitchAlignment();
             SyncGameEntityToClients.Instance.Sync();
-            EventManager.Instance.RaiseOnNewTurn();
-            CheckpointManager.Instance.RequestCheckpoint();
+            SharedTurnManager.Instance.StartNewTurnClientRpc();
         }
 
         public void EndTheGame()
@@ -32,4 +32,4 @@ namespace Berty.Gameplay.Managers.Server
             OverlayObjectManager.Instance.DisplayGameOverScreen(winner);
         }
     }
-}
+}*/
