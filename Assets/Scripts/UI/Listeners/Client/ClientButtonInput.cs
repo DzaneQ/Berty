@@ -1,17 +1,7 @@
-using Berty.Audio;
 using Berty.Audio.Managers;
-using Berty.Enums;
-using Berty.Gameplay;
-using Berty.Gameplay.Managers;
-using Berty.UI.Card;
-using Berty.UI.Managers;
-using Berty.UI.Managers.Shared;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Berty.UI.Managers.Client;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Berty.UI.Listeners.Client
 {
