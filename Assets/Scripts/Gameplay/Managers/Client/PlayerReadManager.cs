@@ -1,4 +1,5 @@
 using Berty.Enums;
+using Berty.Gameplay.Managers.Shared;
 using Berty.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,7 +26,17 @@ namespace Berty.Gameplay.Managers.Client
             }
         }
 
-        public bool IsMyAlignment(AlignmentEnum align)
+        public bool IsItMyTurn()
+        {
+            return IsMyAlignment(SharedTurnManager.Instance.CurrentAlignment);
+        }
+
+        public bool IsItNotMyTurn()
+        {
+            return !IsItMyTurn();
+        }
+
+        private bool IsMyAlignment(AlignmentEnum align)
         {
             return MyAlignment == align;
         }

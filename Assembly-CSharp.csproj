@@ -110,6 +110,7 @@
     <Compile Include="Assets\Scripts\UI\Card\Animation\AnimatingCardImage.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\NewTransformState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
+    <Compile Include="Assets\Scripts\UI\Listeners\Client\ClientButtonDisplayListener.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\AstronautaBert.cs" />
     <Compile Include="Assets\Scripts\Enums\RoleEnum.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\EntityLoadManager.cs" />
@@ -275,7 +276,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardBehaviour.cs" />
     <Compile Include="Assets\Scripts\Network\Managers\NetworkVariableManager.cs" />
-    <Compile Include="Assets\Scripts\UI\Listeners\Client\ClientButtonTurnListener.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\TrenerPokebertow.cs" />
   </ItemGroup>
   <ItemGroup>

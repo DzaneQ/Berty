@@ -1,6 +1,7 @@
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Utility;
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -9,7 +10,9 @@ namespace Berty.Gameplay.Managers.Shared
     public class SharedTurnManager : SharedManagerSingleton<SharedTurnManager>
     {
         private Game game;
-        private NetworkVariable<AlignmentEnum> turnAlignment = new();
+        private readonly NetworkVariable<AlignmentEnum> turnAlignment = new();
+
+        public AlignmentEnum CurrentAlignment => turnAlignment.Value;
 
         private void Start()
         {
@@ -18,9 +21,9 @@ namespace Berty.Gameplay.Managers.Shared
 
         public override void OnNetworkSpawn()
         {
+            game ??= EntityLoadManager.Instance.Game;
             if (IsServer)
             {
-                game ??= EntityLoadManager.Instance.Game;
                 turnAlignment.Value = game.CurrentAlignment;
             }
             turnAlignment.OnValueChanged += OnTurnAlignmentChanged;
@@ -38,12 +41,15 @@ namespace Berty.Gameplay.Managers.Shared
 
         private void OnTurnAlignmentChanged(AlignmentEnum prv, AlignmentEnum crr)
         {
-            SyncGameEntityToClients.Instance.Sync(); // NOTE: Probably remove because potentially unstable and may cause race condtion.
-            EventManager.Instance.RaiseOnNewTurn(); // TODO: Update new alignment, either by passing it as an argument or reading NetworkVariable value.
+            if (prv == crr) throw new Exception($"Turn alignment should not be the same after change: {prv}");
+            Debug.Log($"Turn alignment changed from {prv} to {crr}");
+            if (game.CurrentAlignment != crr) game.SwitchAlignment();
+            //SyncGameEntityToClients.Instance.Sync(); // NOTE: Probably remove because potentially unstable and may cause race condtion.
+            EventManager.Instance.RaiseOnNewTurn();
             CheckpointManager.Instance.RequestCheckpoint();
         }
 
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         private void SwitchAlignmentServerRpc()
         {
             turnAlignment.Value = game.SwitchAlignment();

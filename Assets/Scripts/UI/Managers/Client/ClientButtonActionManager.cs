@@ -28,7 +28,7 @@ namespace Berty.UI.Managers.Client
 
         private void HandleEndTurn()
         {
-            SyncGameEntityToServer.Instance.Sync(); // NOTE: May cause race conditions. Maybe remove.
+            //SyncGameEntityToServer.Instance.Sync(); // NOTE: May cause race conditions. Maybe remove.
             SharedTurnManager.Instance.EndTurn();
         }
 

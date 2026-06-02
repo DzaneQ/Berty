@@ -4626,9 +4626,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1547027172}
   - component: {fileID: 1547027171}
-  - component: {fileID: 1547027175}
-  - component: {fileID: 1547027174}
-  - component: {fileID: 1547027173}
   - component: {fileID: 1547027176}
   m_Layer: 0
   m_Name: SharedManagerSystem
@@ -4673,42 +4670,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1547027173
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1547027170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42fee7f99e1cb654cab031b66bb94199, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1547027174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1547027170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c8b3d36d5cd0cb4dab4adaa358050d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1547027175
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1547027170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cf9b82d83b685e42bf58f4c91131f85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1547027176
 MonoBehaviour:
   m_ObjectHideFlags: 0
