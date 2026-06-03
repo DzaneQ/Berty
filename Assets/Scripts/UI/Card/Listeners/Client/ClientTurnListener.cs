@@ -1,7 +1,7 @@
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Gameplay.Managers.Client;
-using Berty.Gameplay.Managers.Shared;
+using Berty.Network.Managers.Shared;
 using Berty.UI.Card.Managers;
 using UnityEngine;
 

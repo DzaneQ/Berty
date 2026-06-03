@@ -1,7 +1,7 @@
 using Berty.BoardCards.Listeners;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
-using Berty.Gameplay.Managers.Shared;
+using Berty.Network.Managers.Shared;
 using Berty.Utility;
 using System;
 using Unity.Netcode;

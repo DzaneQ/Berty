@@ -1,5 +1,5 @@
 using Berty.Enums;
-using Berty.Gameplay.Managers.Shared;
+using Berty.Network.Managers.Shared;
 using Berty.Utility;
 using System.Collections;
 using System.Collections.Generic;

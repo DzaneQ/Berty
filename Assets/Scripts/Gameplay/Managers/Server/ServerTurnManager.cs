@@ -1,6 +1,6 @@
 /*using Berty.Enums;
 using Berty.Gameplay.Entities;
-using Berty.Gameplay.Managers.Shared;
+using Berty.Network.Managers.Shared;
 using Berty.UI.Managers;
 using Berty.Utility;
 using UnityEngine;

@@ -1,9 +1,10 @@
-using Berty.Gameplay.Entities;
+/*using Berty.Gameplay.Entities;
+using Berty.Gameplay.Managers;
 using Berty.Utility;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Berty.Gameplay.Managers.Shared
+namespace Berty.Network.Managers.Shared
 {
     public class SyncGameEntityToClients : SharedManagerSingleton<SyncGameEntityToClients>
     {
@@ -23,4 +24,4 @@ namespace Berty.Gameplay.Managers.Shared
             EntityLoadManager.Instance.LoadGameFromData(data);
         }
     }
-}
+}*/

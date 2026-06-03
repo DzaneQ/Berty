@@ -1,13 +1,9 @@
-using Berty.Enums;
-using Berty.Gameplay.Entities;
+/*using Berty.Gameplay.Entities;
+using Berty.Gameplay.Managers;
 using Berty.Utility;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Unity.Netcode;
-using UnityEngine;
 
-namespace Berty.Gameplay.Managers.Shared
+namespace Berty.Network.Managers.Shared
 {
     public class SyncGameEntityToServer : SharedManagerSingleton<SyncGameEntityToServer>
     {
@@ -24,4 +20,4 @@ namespace Berty.Gameplay.Managers.Shared
             EntityLoadManager.Instance.LoadGameFromData(data);
         }
     }
-}
+}*/
