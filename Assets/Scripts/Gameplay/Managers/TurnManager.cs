@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Berty.Gameplay.Managers
 {
-    public class TurnManager : ManagerSingleton<TurnManager>
+    public class TurnManager : ManagerSingleton<TurnManager>, ITurnManager
     {
         private Game game;
         

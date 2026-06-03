@@ -16,7 +16,7 @@ namespace Berty.Network.Init
     {
         private void Start()
         {
-            InitializeLanguage(); // initialize local scene
+            InitializeLocalScene(); // initialize local scene
             NetworkManager.Singleton.OnConnectionEvent += HandleClientConnected;
 #if UNITY_EDITOR
             NetworkManager.Singleton.StartHost();
@@ -35,6 +35,17 @@ namespace Berty.Network.Init
             InitializeGameEntity();
             string dataStr = ProcessGameDataManager.Instance.GetGameEntityAsString();
             InitializeSceneClientRpc(dataStr);
+        }
+
+        private void InitializeLocalScene()
+        {
+            InitializeManagers();
+            InitializeLanguage();
+        }
+
+        private void InitializeManagers()
+        {
+            // Don't initialize shared managers as they're supposed to be attached to SharedManagerSystem object
         }
 
         private void InitializeLanguage()

@@ -1,7 +1,5 @@
-using Berty.BoardCards.ConfigData;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.Grid.Field.Behaviour;
 using Berty.Settings;
 using Berty.UI.Card;
 using Berty.UI.Card.Collection;
@@ -17,10 +15,20 @@ namespace Berty.Gameplay.Init
         void Start()
         {
             InitializeGameEntity();
+            InitializeManagers();
             InitializeHandCardObjects();
             InitializeLanguage();
             if (StartGameBufferManager.Instance.IsStartingNewGame()) StartTheGame();
             Destroy(gameObject);
+        }
+
+        /// <summary>
+        /// Create managers derived from interfaces that are different for singleplayer and multiplayer.
+        /// </summary>
+        private void InitializeManagers()
+        {
+            // Equivalent of shared for multiplayer
+            ITurnManager _ = TurnManager.Instance;
         }
 
         private void InitializeGameEntity()

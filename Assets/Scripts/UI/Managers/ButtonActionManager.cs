@@ -26,7 +26,7 @@ namespace Berty.UI.Managers
 
         private void HandleEndTurn()
         {
-            TurnManager.Instance.EndTurn();
+            ITurnManager.Instance.EndTurn();
         }
 
         private void HandleUndo()
