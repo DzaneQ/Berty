@@ -4,6 +4,7 @@ using Berty.Gameplay.Managers.Client;
 using Berty.Network.Managers.Shared;
 using Berty.UI.Card.Managers;
 using Berty.UI.Managers;
+using Newtonsoft.Json.Bson;
 using UnityEngine;
 
 namespace Berty.UI.Listeners.Client
@@ -16,6 +17,11 @@ namespace Berty.UI.Listeners.Client
         {
             game = EntityLoadManager.Instance.Game;
             EventManager.Instance.OnNewTurn += HandleNewTurn; // should listen even if disabled
+        }
+
+        private void Start()
+        {
+            gameObject.SetActive(false);
         }
 
         private void OnDestroy()
