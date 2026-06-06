@@ -85,7 +85,6 @@
     <Compile Include="Assets\Scripts\BoardCards\Entities\CardStats.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\SamurajBert.cs" />
-    <Compile Include="Assets\Scripts\UI\Managers\Client\ClientButtonActionManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\Zombert.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\PapiezBertII.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
@@ -104,6 +103,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\StaryBert.cs" />
     <Compile Include="Assets\Scripts\Utility\ClientManagerSingleton.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Managers\BoardCardCollectionManager.cs" />
+    <Compile Include="Assets\Scripts\Utility\ManagerLocator.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Animation\AnimatingCardImage.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\NewTransformState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
@@ -247,7 +247,6 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\KonstablBert.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\ButtonActionManager.cs" />
-    <Compile Include="Assets\Scripts\UI\Listeners\Client\ClientButtonInput.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Init\SceneInit.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Entities\BoardCard.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\RoninBert.cs" />

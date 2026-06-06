@@ -4,6 +4,7 @@ using Berty.Settings;
 using Berty.UI.Card;
 using Berty.UI.Card.Collection;
 using Berty.UI.Card.Init;
+using Berty.Utility;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,13 +23,9 @@ namespace Berty.Gameplay.Init
             Destroy(gameObject);
         }
 
-        /// <summary>
-        /// Create managers derived from interfaces that are different for singleplayer and multiplayer.
-        /// </summary>
         private void InitializeManagers()
         {
-            // Equivalent of shared for multiplayer
-            ITurnManager _ = TurnManager.Instance;
+            ManagerLocator.InitializeSingleplayer();
         }
 
         private void InitializeGameEntity()

@@ -12,8 +12,7 @@ namespace Berty.Gameplay.Managers
 {
     public interface ITurnManager
     {
-        static ITurnManager Instance;
         void EndTurn();
-        //public void EndTheGame(); // TODO: Implement for multiplayer
+        void EndTheGame();
     }
 }

@@ -4,6 +4,7 @@ using Berty.Gameplay.Managers;
 using Berty.UI.Card;
 using Berty.UI.Card.Collection;
 using Berty.UI.Card.Init;
+using Berty.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace Berty.Network.Init
 
         private void InitializeManagers()
         {
-            // Don't initialize shared managers as they're supposed to be attached to SharedManagerSystem object
+            ManagerLocator.InitializeMultiplayer();
         }
 
         private void InitializeLanguage()

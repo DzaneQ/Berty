@@ -29,7 +29,7 @@ namespace Berty.UI.Card.Managers
                 StatusManager.Instance.RemoveStatus(extraCardStatus);
             }
             if (cardPile.PullCardsTo(capacity, align)) HandCardObjectManager.Instance.AddCardObjects();
-            else TurnManager.Instance.EndTheGame();
+            else ManagerLocator.TurnManagerInstance.EndTheGame();
         }
     }
 }

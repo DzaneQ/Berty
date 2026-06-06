@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Berty.Network.Managers.Shared
 {
-    public class SharedTurnManager : SharedManagerSingleton<SharedTurnManager>
+    public class SharedTurnManager : SharedManagerSingleton<SharedTurnManager>, ITurnManager
     {
         private Game game;
         private readonly NetworkVariable<AlignmentEnum> turnAlignment = new();
@@ -38,6 +38,11 @@ namespace Berty.Network.Managers.Shared
         public void EndTurn()
         {
             SwitchAlignmentServerRpc();
+        }
+
+        public void EndTheGame()
+        {
+            throw new NotImplementedException("EndTheGame should be implemented for multiplayer.");
         }
 
         private void OnTurnAlignmentChanged(AlignmentEnum prv, AlignmentEnum crr)
