@@ -1,5 +1,6 @@
 using Berty.Gameplay.Managers;
 using Berty.Network.Managers.Shared;
+using Berty.UI.Card.Managers;
 
 namespace Berty.Utility
 {
@@ -9,14 +10,17 @@ namespace Berty.Utility
     public static class ManagerLocator
     {
         public static ITurnManager TurnManagerInstance;
+        //public static IPileToHandManager PileToCardManagerInstance;
 
         public static void InitializeSingleplayer()
         {
             TurnManagerInstance = TurnManager.Instance;
+            //PileToCardManagerInstance = PileToHandManager.Instance;
         }
         public static void InitializeMultiplayer()
         {
             TurnManagerInstance = SharedTurnManager.Instance;
+            //PileToCardManagerInstance = ClientPileToHandManager.Instance;
         }
     }
 }

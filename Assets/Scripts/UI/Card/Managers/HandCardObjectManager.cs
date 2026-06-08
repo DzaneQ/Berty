@@ -27,12 +27,6 @@ namespace Berty.UI.Card.Managers
             cardPile = EntityLoadManager.Instance.Game.CardPile;
         }
 
-        public void SwitchTables()
-        {
-            playerTable.SetActive(!playerTable.activeSelf);
-            opponentTable.SetActive(!playerTable.activeSelf);
-        }
-
         public void AddCardObjects()
         {
             if (playerTable.activeSelf) AddCardObjectsForTable(AlignmentEnum.Player);

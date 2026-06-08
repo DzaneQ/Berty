@@ -106,6 +106,7 @@
     <Compile Include="Assets\Scripts\Utility\ManagerLocator.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Animation\AnimatingCardImage.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\NewTransformState.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\IPileToHandManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\Client\ClientButtonDisplayListener.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\AstronautaBert.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertWho.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandToFieldManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\Client\ClientPileToHandManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\PaymentListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardNavigation.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardSprite.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Behaviour\FieldBehaviour.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Listeners\TableDisplayListener.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\GotkaBerta.cs" />
     <Compile Include="Assets\Scripts\Menu\Behaviours\LanguagePickMenu.cs" />

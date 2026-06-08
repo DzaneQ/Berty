@@ -24,7 +24,6 @@ namespace Berty.Gameplay.Managers
         public void EndTurn()
         {
             game.SwitchAlignment();
-            HandCardObjectManager.Instance.SwitchTables();
             EventManager.Instance.RaiseOnNewTurn();
             CheckpointManager.Instance.RequestCheckpoint();
         }

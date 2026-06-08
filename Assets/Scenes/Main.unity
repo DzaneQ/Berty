@@ -4643,6 +4643,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1577340885}
   - component: {fileID: 1577340886}
+  - component: {fileID: 1577340887}
   m_Layer: 5
   m_Name: PlayerSide
   m_TagString: Untagged
@@ -4693,6 +4694,19 @@ MonoBehaviour:
   m_Spacing: {x: 15, y: 15}
   m_Constraint: 2
   m_ConstraintCount: 3
+--- !u!114 &1577340887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577340884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db9157cbef23be34da8cb24dac184c01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tableAlignment: 1
 --- !u!1 &1634510560
 GameObject:
   m_ObjectHideFlags: 0
@@ -4996,6 +5010,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1740268252}
   - component: {fileID: 1740268251}
+  - component: {fileID: 1740268253}
   m_Layer: 5
   m_Name: OpponentSide
   m_TagString: Untagged
@@ -5046,6 +5061,19 @@ RectTransform:
   m_AnchoredPosition: {x: 94, y: 0}
   m_SizeDelta: {x: 94, y: 140}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1740268253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1740268250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db9157cbef23be34da8cb24dac184c01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tableAlignment: 2
 --- !u!1 &1797451266
 GameObject:
   m_ObjectHideFlags: 0
