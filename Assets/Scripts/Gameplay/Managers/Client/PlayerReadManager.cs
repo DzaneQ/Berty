@@ -13,7 +13,7 @@ namespace Berty.Gameplay.Managers.Client
     {
         private AlignmentEnum _myAlignment = AlignmentEnum.None;
 
-        private AlignmentEnum MyAlignment
+        public AlignmentEnum MyAlignment
         {
             get
             {

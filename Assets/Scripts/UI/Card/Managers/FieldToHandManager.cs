@@ -23,7 +23,7 @@ namespace Berty.UI.Card.Managers
             AlignmentEnum align = game.CurrentAlignment;
             CharacterConfig pendingCard = SelectionManager.Instance.GetPendingCardOrThrow();
             cardPile.RetrieveCard(pendingCard, align);
-            HandCardObjectManager.Instance.AddCardObjectFromConfig(pendingCard);
+            ManagerLocator.HandCardObjectManagerInstance.AddCardObjectFromConfig(pendingCard);
         }
     }
 }

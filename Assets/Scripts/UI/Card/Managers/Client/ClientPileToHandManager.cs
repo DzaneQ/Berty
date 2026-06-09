@@ -6,7 +6,7 @@ using Berty.Utility;
 using Berty.Debugging.Managers;
 using Berty.Gameplay.Managers.Client;
 
-namespace Berty.UI.Card.Managers
+namespace Berty.UI.Card.Managers.Client
 {
     public class ClientPileToHandManager : ClientManagerSingleton<ClientPileToHandManager>
     {
@@ -30,7 +30,7 @@ namespace Berty.UI.Card.Managers
                 capacity += extraCardStatus.Charges;
                 StatusManager.Instance.RemoveStatus(extraCardStatus);
             }
-            if (cardPile.PullCardsTo(capacity, align)) HandCardObjectManager.Instance.AddCardObjects();
+            if (cardPile.PullCardsTo(capacity, align)) ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
             else ManagerLocator.TurnManagerInstance.EndTheGame();
         }
     }

@@ -28,7 +28,7 @@ namespace Berty.UI.Card.Managers
                 capacity += extraCardStatus.Charges;
                 StatusManager.Instance.RemoveStatus(extraCardStatus);
             }
-            if (cardPile.PullCardsTo(capacity, align)) HandCardObjectManager.Instance.AddCardObjects();
+            if (cardPile.PullCardsTo(capacity, align)) ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
             else ManagerLocator.TurnManagerInstance.EndTheGame();
         }
     }

@@ -21,7 +21,7 @@ namespace Berty.UI.Card.Managers
         {
             Status revival = Game.GetStatusByNameOrThrow(StatusEnum.RevivalSelect);
             CardPile.ReviveCard(cardObject.Character, revival.GetAlign());
-            HandCardObjectManager.Instance.AddCardObjects();
+            ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
             StatusManager.Instance.RemoveStatus(revival);
         }
     }

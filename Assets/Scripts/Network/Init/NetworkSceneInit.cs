@@ -17,13 +17,13 @@ namespace Berty.Network.Init
     {
         private void Start()
         {
-            InitializeLocalScene(); // initialize local scene
             NetworkManager.Singleton.OnConnectionEvent += HandleClientConnected;
 #if UNITY_EDITOR
             NetworkManager.Singleton.StartHost();
 #else
             NetworkManager.Singleton.StartClient();
 #endif
+            InitializeLocalScene();
         }
 
         private void HandleClientConnected(NetworkManager manager, ConnectionEventData data)
