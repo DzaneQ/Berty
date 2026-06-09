@@ -4284,7 +4284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handCardObjectCollection: {fileID: 47750409}
   playerTable: {fileID: 1577340884}
-  opponentTable: {fileID: 1740268250}
+  opponentTable: {fileID: 0}
   lookupCard: {fileID: 1331529693}
   fieldBoard: {fileID: 1181834772}
   cornerButton: {fileID: 761882536}
@@ -4916,7 +4916,7 @@ MonoBehaviour:
   discardStack: {fileID: 953259463}
   deadStack: {fileID: 470320019}
   playerTable: {fileID: 1577340884}
-  opponentTable: {fileID: 1740268250}
+  opponentTable: {fileID: 0}
   theRemainder: {fileID: 47750409}
 --- !u!114 &1693448834
 MonoBehaviour:
@@ -5044,66 +5044,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3196e0342c5c4114f82b1b85886f076d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1740268250
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1740268252}
-  - component: {fileID: 1740268251}
-  m_Layer: 5
-  m_Name: OpponentSide
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1740268251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1740268250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 3
-  m_StartCorner: 0
-  m_StartAxis: 1
-  m_CellSize: {x: 80, y: 112}
-  m_Spacing: {x: 15, y: 15}
-  m_Constraint: 2
-  m_ConstraintCount: 3
---- !u!224 &1740268252
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1740268250}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2133457462}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 94, y: 0}
-  m_SizeDelta: {x: 94, y: 140}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1797451266
 GameObject:
   m_ObjectHideFlags: 0
@@ -6137,7 +6077,6 @@ RectTransform:
   - {fileID: 470320020}
   - {fileID: 1487818631}
   - {fileID: 1577340885}
-  - {fileID: 1740268252}
   - {fileID: 1331529694}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

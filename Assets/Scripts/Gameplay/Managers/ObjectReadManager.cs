@@ -20,7 +20,7 @@ namespace Berty.Gameplay.Managers
 
         public GameObject HandCardObjectCollection => handCardObjectCollection;
         public GameObject PlayerTable => playerTable;
-        public GameObject OpponentTable => opponentTable;
+        public GameObject OpponentTable => opponentTable; // null for multiplayer
         public GameObject LookupCard => lookupCard;
         public GameObject FieldBoard => fieldBoard;
         public GameObject CornerButton => cornerButton;

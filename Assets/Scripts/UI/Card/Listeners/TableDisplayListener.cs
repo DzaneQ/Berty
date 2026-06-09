@@ -18,11 +18,6 @@ namespace Berty.UI.Card.Listeners
             EventManager.Instance.OnNewTurn += HandleNewTurn;
         }
 
-        private void Start()
-        {
-            gameObject.SetActive(false);
-        }
-
         private void OnDestroy()
         {
             if (!gameObject.scene.isLoaded) return;
