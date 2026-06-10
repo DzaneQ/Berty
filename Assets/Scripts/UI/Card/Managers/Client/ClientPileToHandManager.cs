@@ -1,4 +1,4 @@
-/*using Berty.UI.Card.Entities;
+using Berty.UI.Card.Entities;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
@@ -8,21 +8,21 @@ using Berty.Gameplay.Managers.Client;
 
 namespace Berty.UI.Card.Managers.Client
 {
-    public class ClientPileToHandManager : ClientManagerSingleton<ClientPileToHandManager>
+    public class ClientPileToHandManager : ClientManagerSingleton<ClientPileToHandManager>, IPileToHandManager
     {
-        private Game game { get; set; }
-        private CardPile cardPile => game.CardPile;
+        private Game game;
+        private CardPile CardPile => game.CardPile;
 
         protected override void Awake()
         {
             InitializeSingleton();
-            game = EntityLoadManager.Instance.Game;
+            game = EntityLoadManager.Instance.Game; // TODO: Change it so it's not used from local variable
         }
 
         public void PullCardsTo(int capacity)
         {
             if (PlayerReadManager.Instance.IsItNotMyTurn()) return;
-            AlignmentEnum align = game.CurrentAlignment;
+            AlignmentEnum align = PlayerReadManager.Instance.MyAlignment;
             DebugManager.Instance?.TakeCardIfInPile(align);
             Status extraCardStatus = game.GetStatusByNameAndAlignmentOrNull(StatusEnum.ExtraCardNextTurn, align);
             if (extraCardStatus != null)
@@ -30,8 +30,8 @@ namespace Berty.UI.Card.Managers.Client
                 capacity += extraCardStatus.Charges;
                 StatusManager.Instance.RemoveStatus(extraCardStatus);
             }
-            if (cardPile.PullCardsTo(capacity, align)) ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
+            if (CardPile.PullCardsTo(capacity, align)) ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
             else ManagerLocator.TurnManagerInstance.EndTheGame();
         }
     }
-}*/
+}

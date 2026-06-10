@@ -66,7 +66,9 @@ namespace Berty.Network.Init
             HandCardInitialization init = gameObject.GetComponent<HandCardInitialization>();
             if (init == null) throw new Exception($"HandCardInitialization component should appear in: {gameObject.name}");
             GameObject stackForHandCards = ObjectReadManager.Instance.HandCardObjectCollection;
+            Debug.Log("Children before initialization: " + stackForHandCards.transform.childCount);
             List<HandCardBehaviour> handCardBehaviourCollection = init.InitializeAllCharacterCards();
+            Debug.Log("Children after initialization: " + stackForHandCards.transform.childCount);
             HandCardCollection collectionComponent = stackForHandCards.GetComponent<HandCardCollection>();
             collectionComponent.InitializeCollection(handCardBehaviourCollection);
             Destroy(init);

@@ -21,20 +21,21 @@ namespace Berty.UI.Card.Init
         [SerializeField] private GameObject deadStack;
         [SerializeField] private GameObject playerTable;
         [SerializeField] private GameObject opponentTable;
-        [SerializeField] private GameObject theRemainder;
-
-        private int debugIndex = 1;
+        [SerializeField] private GameObject theRemainder; // BUG: Cards are not assigned to this stack, causing a throw because no cards found
 
         public List<HandCardBehaviour> InitializeAllCharacterCards()
         {
             Game game = EntityLoadManager.Instance.Game;
             List<HandCardBehaviour> behaviourCollection = new();
+            Debug.Log("Pile card count: " + game.CardPile.PileCards.Count);
+            Debug.Log("Discarded card count: " + game.CardPile.DiscardedCards.Count);
             InitializeAllPileCards(game.CardPile.PileCards, ref behaviourCollection);
             InitializeAllDiscardedCards(game.CardPile.DiscardedCards, ref behaviourCollection);
             InitializeAllDeadCards(game.CardPile.DeadCards, ref behaviourCollection);
             InitializeAllPlayerCards(game.CardPile.PlayerCards, ref behaviourCollection);
             InitializeAllOpponentCards(game.CardPile.OpponentCards, ref behaviourCollection);
             InitializeAllFieldCards(game.Grid.GetAllCharactersOnFields(), ref behaviourCollection);
+            Debug.Log("After initialization, behaviour collection count: " + behaviourCollection.Count);
             return behaviourCollection;
         }
 
@@ -72,7 +73,6 @@ namespace Berty.UI.Card.Init
         {
             for (int i = 0; i < characters.Count; i++)
             {
-                debugIndex++;
                 GameObject handCardObject = Instantiate(cardImagePrefab, stack.transform);
                 HandCardBehaviour handCardBehaviour = handCardObject.GetComponent<HandCardBehaviour>();
                 if (handCardBehaviour == null) handCardBehaviour = handCardObject.AddComponent<HandCardBehaviour>();

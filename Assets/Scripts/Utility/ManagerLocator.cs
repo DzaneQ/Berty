@@ -12,20 +12,20 @@ namespace Berty.Utility
     public static class ManagerLocator
     {
         public static ITurnManager TurnManagerInstance;
-        //public static IPileToHandManager PileToCardManagerInstance;
+        public static IPileToHandManager PileToHandManagerInstance;
         public static IHandCardObjectManager HandCardObjectManagerInstance;
 
         public static void InitializeSingleplayer()
         {
             TurnManagerInstance = TurnManager.Instance;
-            //PileToCardManagerInstance = PileToHandManager.Instance;
+            PileToHandManagerInstance = PileToHandManager.Instance;
             HandCardObjectManagerInstance = HandCardObjectManager.Instance;
         }
 
         public static void InitializeMultiplayer()
         {
             TurnManagerInstance = SharedTurnManager.Instance;
-            //PileToCardManagerInstance = ClientPileToHandManager.Instance;
+            PileToHandManagerInstance = ClientPileToHandManager.Instance;
             HandCardObjectManagerInstance = ClientHandCardObjectManager.Instance;
         }
     }

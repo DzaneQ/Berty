@@ -1,4 +1,4 @@
-using Berty.Gameplay.Entities;
+/*using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Gameplay.Managers.Client;
 using Berty.Network.Managers.Shared;
@@ -35,4 +35,4 @@ namespace Berty.UI.Card.Listeners.Client
             PileToHandManager.Instance.PullCardsTo(totalCardCount);
         }
     }
-}
+}*/

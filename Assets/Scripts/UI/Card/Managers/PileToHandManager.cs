@@ -4,10 +4,11 @@ using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Utility;
 using Berty.Debugging.Managers;
+using UnityEngine;
 
 namespace Berty.UI.Card.Managers
 {
-    public class PileToHandManager : ManagerSingleton<PileToHandManager>
+    public class PileToHandManager : ManagerSingleton<PileToHandManager>, IPileToHandManager
     {
         private Game game { get; set; }
         private CardPile cardPile => game.CardPile;
