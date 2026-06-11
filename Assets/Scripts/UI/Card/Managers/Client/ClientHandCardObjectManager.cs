@@ -26,6 +26,7 @@ namespace Berty.UI.Card.Managers.Client
             behaviourCollection = ObjectReadManager.Instance.HandCardObjectCollection.GetComponent<HandCardCollection>();
             game = EntityLoadManager.Instance.Game; // TODO: Change so it's not locally obtained
             if (behaviourCollection == null) Debug.LogWarning("Failed to get HandCardCollection.");
+            else Debug.Log("Attached HandCardCollection.");
         }
 
         public void AddCardObjects()
@@ -53,7 +54,6 @@ namespace Berty.UI.Card.Managers.Client
 
         private void AddCardObjectsFromPileData(Transform table, IReadOnlyList<CharacterConfig> pileData)
         {
-            if (behaviourCollection == null) Debug.LogWarning("Trying to add card objects without collection!");
             for (int i = 0; i < pileData.Count; i++)
             {
                 Transform card = behaviourCollection.GetBehaviourFromCharacterConfig(pileData[i]).transform;

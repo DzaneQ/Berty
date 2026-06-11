@@ -4916,7 +4916,7 @@ MonoBehaviour:
   discardStack: {fileID: 953259463}
   deadStack: {fileID: 470320019}
   playerTable: {fileID: 1577340884}
-  opponentTable: {fileID: 0}
+  opponentTable: {fileID: 47750409}
   theRemainder: {fileID: 47750409}
 --- !u!114 &1693448834
 MonoBehaviour:
