@@ -4,6 +4,7 @@ using Berty.Enums;
 using Berty.Gameplay.Listeners;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Managers;
+using Berty.Utility;
 using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
@@ -17,6 +18,7 @@ namespace Berty.BoardCards.Listeners
 
         public void OnMouseOver()
         {
+            if (ManagerLocator.TurnManagerInstance.IsItNotMyTurn()) return;
             if (IsLeftClicked()) HandleLeftClick();
             else if (IsRightClicked()) HandleRightClick();
         }

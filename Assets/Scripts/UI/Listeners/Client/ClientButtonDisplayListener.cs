@@ -32,8 +32,7 @@ namespace Berty.UI.Listeners.Client
 
         private void HandleNewTurn()
         {
-            Debug.Log($"Checking client button when new turn for {SharedTurnManager.Instance.CurrentAlignment}");
-            if (PlayerReadManager.Instance.IsItMyTurn()) ButtonObjectManager.Instance.DisplayEndTurnButton();
+            if (SharedTurnManager.Instance.IsItMyTurn()) ButtonObjectManager.Instance.DisplayEndTurnButton();
             else ButtonObjectManager.Instance.HideCornerButton();
         }
     }

@@ -1,6 +1,7 @@
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.Gameplay.Managers.Client;
 using Berty.Utility;
 using System;
 using Unity.Netcode;
@@ -43,6 +44,11 @@ namespace Berty.Network.Managers.Shared
         public void EndTheGame()
         {
             throw new NotImplementedException("EndTheGame should be implemented for multiplayer.");
+        }
+
+        public bool IsItMyTurn()
+        {
+            return PlayerReadManager.Instance.MyAlignment == CurrentAlignment;
         }
 
         private void OnTurnAlignmentChanged(AlignmentEnum prv, AlignmentEnum crr)

@@ -21,7 +21,7 @@ namespace Berty.UI.Card.Managers.Client
 
         public void PullCardsTo(int capacity)
         {
-            if (PlayerReadManager.Instance.IsItNotMyTurn()) return;
+            if (ManagerLocator.TurnManagerInstance.IsItNotMyTurn()) return;
             AlignmentEnum align = PlayerReadManager.Instance.MyAlignment;
             DebugManager.Instance?.TakeCardIfInPile(align);
             Status extraCardStatus = game.GetStatusByNameAndAlignmentOrNull(StatusEnum.ExtraCardNextTurn, align);

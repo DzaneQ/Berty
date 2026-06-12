@@ -14,5 +14,7 @@ namespace Berty.Gameplay.Managers
     {
         void EndTurn();
         void EndTheGame();
+        bool IsItMyTurn();
+        bool IsItNotMyTurn() => !IsItMyTurn();
     }
 }

@@ -1,7 +1,8 @@
-using Berty.UI.Card.Managers;
-using Berty.Grid.Field.Behaviour;
-using UnityEngine;
 using Berty.Gameplay.Listeners;
+using Berty.Grid.Field.Behaviour;
+using Berty.UI.Card.Managers;
+using Berty.Utility;
+using UnityEngine;
 
 namespace Berty.Grid.Field.Listeners
 {
@@ -21,6 +22,7 @@ namespace Berty.Grid.Field.Listeners
 
         private void OnMouseOver()
         {
+            if (ManagerLocator.TurnManagerInstance.IsItNotMyTurn()) return;
             if (TryHandlingCardClick()) return; // When there's a card, handle card click instead.
             TryPuttingCardOnField();
         }

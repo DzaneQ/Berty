@@ -3,6 +3,7 @@ using Berty.Display.Managers;
 using UnityEngine;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.Utility;
 
 namespace Berty.UI.Card.Listeners
 {
@@ -19,6 +20,7 @@ namespace Berty.UI.Card.Listeners
 
         public void CardClick()
         {
+            if (ManagerLocator.TurnManagerInstance.IsItNotMyTurn()) return;
             if (behaviour.IsAnimating()) return;
             if (Input.GetMouseButtonDown(0)) HandleLeftClick();
         }
