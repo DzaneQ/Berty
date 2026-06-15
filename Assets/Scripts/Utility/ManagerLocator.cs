@@ -1,5 +1,5 @@
 using Berty.Gameplay.Managers;
-using Berty.Network.Managers.Shared;
+using Berty.Network.Managers;
 using Berty.UI.Card.Managers;
 using Berty.UI.Card.Managers.Client;
 using UnityEngine;
@@ -24,7 +24,7 @@ namespace Berty.Utility
 
         public static void InitializeMultiplayer()
         {
-            TurnManagerInstance = SharedTurnManager.Instance;
+            TurnManagerInstance = NetworkTurnManager.Instance;
             PileToHandManagerInstance = ClientPileToHandManager.Instance;
             HandCardObjectManagerInstance = ClientHandCardObjectManager.Instance;
         }

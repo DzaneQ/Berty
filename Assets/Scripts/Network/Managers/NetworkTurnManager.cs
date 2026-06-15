@@ -7,9 +7,9 @@ using System;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Berty.Network.Managers.Shared
+namespace Berty.Network.Managers
 {
-    public class SharedTurnManager : SharedManagerSingleton<SharedTurnManager>, ITurnManager
+    public class NetworkTurnManager : SharedManagerSingleton<NetworkTurnManager>, ITurnManager
     {
         private Game game;
         private readonly NetworkVariable<AlignmentEnum> turnAlignment = new();

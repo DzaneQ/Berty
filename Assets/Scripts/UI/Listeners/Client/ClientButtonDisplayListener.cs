@@ -1,10 +1,7 @@
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.Gameplay.Managers.Client;
-using Berty.Network.Managers.Shared;
-using Berty.UI.Card.Managers;
+using Berty.Network.Managers;
 using Berty.UI.Managers;
-using Newtonsoft.Json.Bson;
 using UnityEngine;
 
 namespace Berty.UI.Listeners.Client
@@ -32,7 +29,7 @@ namespace Berty.UI.Listeners.Client
 
         private void HandleNewTurn()
         {
-            if (SharedTurnManager.Instance.IsItMyTurn()) ButtonObjectManager.Instance.DisplayEndTurnButton();
+            if (NetworkTurnManager.Instance.IsItMyTurn()) ButtonObjectManager.Instance.DisplayEndTurnButton();
             else ButtonObjectManager.Instance.HideCornerButton();
         }
     }

@@ -58,7 +58,7 @@ namespace Berty.Network.Init
         }
         private void InitializeGameEntity()
         {
-            Game _ = EntityLoadManager.Instance.Game;
+            Game _ = EntityLoadManager.Instance.Game; // TODO: Stop storing whole entities in client, especially card pile.
         }
 
         private void InitializeHandCardObjects()

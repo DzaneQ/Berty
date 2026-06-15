@@ -158,6 +158,7 @@
     <Compile Include="Assets\Scripts\Grid\Field\Behaviour\FieldBehaviour.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Listeners\TableDisplayListener.cs" />
+    <Compile Include="Assets\Scripts\Network\Managers\NetworkTurnManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\GotkaBerta.cs" />
     <Compile Include="Assets\Scripts\Menu\Behaviours\LanguagePickMenu.cs" />
@@ -173,7 +174,6 @@
     <Compile Include="Assets\Scripts\Utility\RotationLocker.cs" />
     <Compile Include="Assets\Scripts\Gameplay\ConfigData\GameConfig.cs" />
     <Compile Include="Assets\Scripts\UI\Behaviours\CornerButton.cs" />
-    <Compile Include="Assets\Scripts\Network\Managers\Shared\SyncGameEntityToClients.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Listeners\FieldInput.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
@@ -220,7 +220,6 @@
     <Compile Include="Assets\Scripts\BoardCards\Listeners\AttackListener.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\PrezydentBert.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\DeactivateEscapePanelInput.cs" />
-    <Compile Include="Assets\Scripts\Network\Managers\Shared\SharedTurnManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandCardObjectManager.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\EscapePanelManager.cs" />
     <Compile Include="Assets\Scripts\Display\View\RotateCamera.cs" />
@@ -271,7 +270,6 @@
     <Compile Include="Assets\Scripts\Characters\Managers\ApplySkillEffectManager.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\PaymentManager.cs" />
     <Compile Include="Assets\Scripts\Grid\Managers\ColorizeObjectManager.cs" />
-    <Compile Include="Assets\Scripts\Network\Managers\Shared\SyncGameEntityToServer.cs" />
     <Compile Include="Assets\Scripts\Enums\SkillEnum.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Listeners\TurnListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\IdleState.cs" />
@@ -281,7 +279,6 @@
     <Compile Include="Assets\Scripts\Gameplay\Managers\ObjectReadManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardBehaviour.cs" />
-    <Compile Include="Assets\Scripts\Network\Managers\NetworkVariableManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\TrenerPokebertow.cs" />
   </ItemGroup>
   <ItemGroup>
