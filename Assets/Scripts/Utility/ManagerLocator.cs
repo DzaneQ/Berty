@@ -25,7 +25,7 @@ namespace Berty.Utility
         public static void InitializeMultiplayer()
         {
             TurnManagerInstance = NetworkTurnManager.Instance;
-            PileToHandManagerInstance = ClientPileToHandManager.Instance;
+            PileToHandManagerInstance = ServerPileToHandManager.Instance;
             HandCardObjectManagerInstance = ClientHandCardObjectManager.Instance;
         }
     }

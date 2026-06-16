@@ -56,7 +56,6 @@ namespace Berty.Network.Managers
             if (prv == crr) throw new Exception($"Turn alignment should not be the same after change: {prv}");
             Debug.Log($"Turn alignment changed from {prv} to {crr}");
             if (game.CurrentAlignment != crr) game.SwitchAlignment();
-            //SyncGameEntityToClients.Instance.Sync(); // NOTE: Probably remove because potentially unstable and may cause race condtion.
             EventManager.Instance.RaiseOnNewTurn();
             CheckpointManager.Instance.RequestCheckpoint();
         }

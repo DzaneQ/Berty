@@ -29,8 +29,8 @@ namespace Berty.UI.Card.Listeners
         private void HandleNewTurn()
         {
             HandCardSelectManager.Instance.ClearSelection();
-            int totalCardCount = game.GameConfig.TableCapacity;
-            ManagerLocator.PileToHandManagerInstance.PullCardsTo(totalCardCount);
+            IPileToHandManager instance = ManagerLocator.PileToHandManagerInstance;
+            if (instance != null) instance.PullCards();
         }
     }
 }

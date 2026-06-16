@@ -5,7 +5,6 @@ using Berty.UI.Card.Collection;
 using System.Collections.Generic;
 using UnityEngine;
 using Berty.Gameplay.Entities;
-using Berty.Utility;
 using Berty.Gameplay.Managers.Client;
 using Berty.UI.Managers;
 

@@ -2,6 +2,6 @@ namespace Berty.UI.Card.Managers
 {
     public interface IPileToHandManager
     {
-        public void PullCardsTo(int capacity);
+        public void PullCards();
     }
 }

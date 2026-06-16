@@ -1,4 +1,4 @@
-using Berty.UI.Card.Entities;
+/*using Berty.UI.Card.Entities;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
@@ -19,9 +19,10 @@ namespace Berty.UI.Card.Managers.Client
             game = EntityLoadManager.Instance.Game; // TODO: Change it so it's not used from local variable
         }
 
-        public void PullCardsTo(int capacity)
+        public void PullCards()
         {
             if (ManagerLocator.TurnManagerInstance.IsItNotMyTurn()) return;
+            int capacity = game.GameConfig.TableCapacity;
             AlignmentEnum align = PlayerReadManager.Instance.MyAlignment;
             DebugManager.Instance?.TakeCardIfInPile(align);
             Status extraCardStatus = game.GetStatusByNameAndAlignmentOrNull(StatusEnum.ExtraCardNextTurn, align);
@@ -34,4 +35,4 @@ namespace Berty.UI.Card.Managers.Client
             else ManagerLocator.TurnManagerInstance.EndTheGame();
         }
     }
-}
+}*/

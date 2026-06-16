@@ -4,14 +4,15 @@ using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Utility;
 using Berty.Debugging.Managers;
-using UnityEngine;
+using Berty.Gameplay.Managers.Client;
+using Berty.Network.Managers;
 
-namespace Berty.UI.Card.Managers
+namespace Berty.UI.Card.Managers.Client
 {
-    public class PileToHandManager : ManagerSingleton<PileToHandManager>, IPileToHandManager
+    public class ServerPileToHandManager : ServerManagerSingleton<ServerPileToHandManager>, IPileToHandManager
     {
-        private Game game { get; set; }
-        private CardPile cardPile => game.CardPile;
+        private Game game;
+        private CardPile CardPile => game.CardPile;
 
         protected override void Awake()
         {
@@ -21,8 +22,9 @@ namespace Berty.UI.Card.Managers
 
         public void PullCards()
         {
-            AlignmentEnum align = game.CurrentAlignment;
+            if (ManagerLocator.TurnManagerInstance.IsItNotMyTurn()) return;
             int capacity = game.GameConfig.TableCapacity;
+            AlignmentEnum align = PlayerReadManager.Instance.MyAlignment;
             DebugManager instance = DebugManager.Instance;
             if (instance != null) instance.TakeCardIfInPile(align);
             Status extraCardStatus = game.GetStatusByNameAndAlignmentOrNull(StatusEnum.ExtraCardNextTurn, align);
@@ -31,7 +33,7 @@ namespace Berty.UI.Card.Managers
                 capacity += extraCardStatus.Charges;
                 StatusManager.Instance.RemoveStatus(extraCardStatus);
             }
-            if (cardPile.PullCardsTo(capacity, align)) ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
+            if (CardPile.PullCardsTo(capacity, align)) NetworkCardPileManager.Instance.AddCardObjectsClientRpc();
             else ManagerLocator.TurnManagerInstance.EndTheGame();
         }
     }

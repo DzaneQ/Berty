@@ -137,6 +137,7 @@
     <Compile Include="Assets\Scripts\UI\Card\Managers\FieldToHandManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\TelekineticState.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\SelectStatus.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\Server\ServerPileToHandManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IMoveCard.cs" />
     <Compile Include="Assets\Scripts\Enums\DirectionEnum.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\KsiezniczkaBerta.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\SuperfanBert.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\AnimatedBarWidth.cs" />
+    <Compile Include="Assets\Scripts\Network\Managers\NetworkCardPileManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KuglarzBert.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\ButtonInput.cs" />
     <Compile Include="Assets\Scripts\Enums\HighlightEnum.cs" />
