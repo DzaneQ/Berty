@@ -7,6 +7,7 @@ using UnityEngine;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers.Client;
 using Berty.UI.Managers;
+using Berty.Network.Managers;
 
 namespace Berty.UI.Card.Managers.Client
 {
@@ -15,28 +16,25 @@ namespace Berty.UI.Card.Managers.Client
         private GameObject myTable;
 
         private HandCardCollection behaviourCollection;
-        private Game game;
-        private CardPile CardPile => game.CardPile;
 
         protected override void Awake()
         {
             base.Awake();
             myTable = ObjectReadManager.Instance.PlayerTable;
             behaviourCollection = ObjectReadManager.Instance.HandCardObjectCollection.GetComponent<HandCardCollection>();
-            game = EntityLoadManager.Instance.Game; // TODO: Change so it's not locally obtained
             if (behaviourCollection == null) Debug.LogWarning("Failed to get HandCardCollection.");
             else Debug.Log("Attached HandCardCollection.");
         }
 
         public void AddCardObjects()
         {
-            IReadOnlyList<CharacterConfig> ownedCards = CardPile.GetCardsFromAlign(PlayerReadManager.Instance.MyAlignment);
+            IReadOnlyList<CharacterConfig> ownedCards = NetworkCardPileManager.Instance.MyTable;
             AddCardObjectsFromPileData(myTable.transform, ownedCards);
         }
 
         public void RemoveCardObjects()
         {
-            IReadOnlyList<CharacterConfig> ownedCards = CardPile.GetCardsFromAlign(PlayerReadManager.Instance.MyAlignment);
+            IReadOnlyList<CharacterConfig> ownedCards = NetworkCardPileManager.Instance.MyTable;
             RemoveCardObjectsFromTable(myTable.transform, ownedCards);
         }
 

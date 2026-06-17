@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public BigMadB()
         {
             AddName("big mad b");
-            AddSkill(SkillEnum.BigMadB);
+            AddSkill(CharacterEnum.BigMadB);
             AddProperties(GenderEnum.Male, RoleEnum.Special);
             AddStats(1, 3, 5, 4);
             AddRange(1, 0, attackRange);

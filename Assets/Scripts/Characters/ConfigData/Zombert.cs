@@ -9,7 +9,7 @@ namespace Berty.BoardCards.ConfigData
         public Zombert()
         {
             AddName("zombert");
-            AddSkill(SkillEnum.Zombert);
+            AddSkill(CharacterEnum.Zombert);
             AddProperties(GenderEnum.Male, RoleEnum.Offensive);
             AddStats(1, 2, 4, 3);
             AddRange(0, 1, attackRange);

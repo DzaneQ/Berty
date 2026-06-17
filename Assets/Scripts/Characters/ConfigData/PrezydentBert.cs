@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public PrezydentBert()
         {
             AddName("prezydent bert");
-            AddSkill(SkillEnum.PrezydentBert);
+            AddSkill(CharacterEnum.PrezydentBert);
             AddProperties(GenderEnum.Male, RoleEnum.Support);
             AddStats(1, 3, 5, 4);
             AddRange(0, 1, attackRange);

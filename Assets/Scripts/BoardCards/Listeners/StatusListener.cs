@@ -78,13 +78,13 @@ namespace Berty.BoardCards.Listeners
         {
             switch (BoardCard.GetSkill())
             {
-                case SkillEnum.BertVentura:
+                case CharacterEnum.BertVentura:
                     StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, BoardCard, game.Grid.GetEnemyNeighborCount(BoardCard));
                     break;
-                case SkillEnum.RycerzBerti:
+                case CharacterEnum.RycerzBerti:
                     StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.TelekineticArea, BoardCard);
                     break;
-                case SkillEnum.SedziaBertt:
+                case CharacterEnum.SedziaBertt:
                     StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ForceSpecialRole, BoardCard);
                     break;
             }

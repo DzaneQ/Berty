@@ -7,7 +7,7 @@ namespace Berty.BoardCards.ConfigData
         public SedziaBertt()
         {
             AddName("sedzia bertt");
-            AddSkill(SkillEnum.SedziaBertt);
+            AddSkill(CharacterEnum.SedziaBertt);
             AddProperties(GenderEnum.Male, RoleEnum.Special);
             AddStats(1, 4, 4, 4);
             AddRange(1, 2, attackRange);

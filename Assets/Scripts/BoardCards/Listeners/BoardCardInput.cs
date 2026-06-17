@@ -64,7 +64,7 @@ namespace Berty.BoardCards.Listeners
             if (BoardCard.Align != game.CurrentAlignment) return;
             switch (BoardCard.GetSkill())
             {
-                case SkillEnum.GotkaBerta:
+                case CharacterEnum.GotkaBerta:
                     if (game.CardPile.AreThereAnyDeadCards())
                     {
                         StatusManager.Instance.AddUniqueStatusWithAlignment(StatusEnum.RevivalSelect, BoardCard.Align);
@@ -78,7 +78,7 @@ namespace Berty.BoardCards.Listeners
         {
             if (SelectionManager.Instance.IsItPaymentTime()) return false;
             if (!HasSelectedOneCard()) return false;
-            if (BoardCard.GetSkill() != SkillEnum.TrenerPokebertow) return false;
+            if (BoardCard.GetSkill() != CharacterEnum.TrenerPokebertow) return false;
             if (BoardCard.Align != game.CurrentAlignment) return false;
             ParentField.PutTheCard();
             return true;

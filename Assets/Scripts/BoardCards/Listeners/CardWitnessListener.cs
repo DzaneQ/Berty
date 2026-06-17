@@ -91,22 +91,22 @@ namespace Berty.BoardCards.Listeners
             // When new card is the character with skill
             switch (newCard.BoardCard.GetSkill())
             {
-                case SkillEnum.BertaGejsza:
-                case SkillEnum.BertaSJW:
-                case SkillEnum.BertaTrojanska:
-                case SkillEnum.BertWho:
-                case SkillEnum.BertZawodowiec:
-                case SkillEnum.EBerta:
-                case SkillEnum.KuglarzBert:
-                case SkillEnum.MisiekBert:
-                case SkillEnum.PrymusBert:
-                case SkillEnum.SamurajBert:
-                case SkillEnum.SuperfanBert:
+                case CharacterEnum.BertaGejsza:
+                case CharacterEnum.BertaSJW:
+                case CharacterEnum.BertaTrojanska:
+                case CharacterEnum.BertWho:
+                case CharacterEnum.BertZawodowiec:
+                case CharacterEnum.EBerta:
+                case CharacterEnum.KuglarzBert:
+                case CharacterEnum.MisiekBert:
+                case CharacterEnum.PrymusBert:
+                case CharacterEnum.SamurajBert:
+                case CharacterEnum.SuperfanBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, newCard);
                     break;
-                case SkillEnum.CheBert:
-                case SkillEnum.KonstablBert:
-                case SkillEnum.ShaolinBert:
+                case CharacterEnum.CheBert:
+                case CharacterEnum.KonstablBert:
+                case CharacterEnum.ShaolinBert:
                     ApplySkillEffectManager.Instance.HandleCharacterSkill(witness, newCard);
                     break;
             }
@@ -114,21 +114,21 @@ namespace Berty.BoardCards.Listeners
             // When witness is the character with skill
             switch (witness.BoardCard.GetSkill())
             {
-                case SkillEnum.BertaGejsza:
-                case SkillEnum.BertaSJW:
-                case SkillEnum.BertVentura:
-                case SkillEnum.BertWho:
-                case SkillEnum.BertZawodowiec:
-                case SkillEnum.KuglarzBert:
-                case SkillEnum.BertaTrojanska:
-                case SkillEnum.EBerta:
-                case SkillEnum.PrymusBert:
-                case SkillEnum.SamurajBert:
-                case SkillEnum.SuperfanBert:
+                case CharacterEnum.BertaGejsza:
+                case CharacterEnum.BertaSJW:
+                case CharacterEnum.BertVentura:
+                case CharacterEnum.BertWho:
+                case CharacterEnum.BertZawodowiec:
+                case CharacterEnum.KuglarzBert:
+                case CharacterEnum.BertaTrojanska:
+                case CharacterEnum.EBerta:
+                case CharacterEnum.PrymusBert:
+                case CharacterEnum.SamurajBert:
+                case CharacterEnum.SuperfanBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(newCard, witness);
                     break;
-                case SkillEnum.CheBert:
-                case SkillEnum.ShaolinBert:
+                case CharacterEnum.CheBert:
+                case CharacterEnum.ShaolinBert:
                     ApplySkillEffectManager.Instance.HandleCharacterSkill(newCard, witness);
                     break;
             }
@@ -141,18 +141,18 @@ namespace Berty.BoardCards.Listeners
             // When moved card is the character with skill
             switch (movedCard.BoardCard.GetSkill())
             {
-                case SkillEnum.BertaGejsza:
-                case SkillEnum.BertaSJW:
-                case SkillEnum.BertaTrojanska:
-                case SkillEnum.BertWho:
-                case SkillEnum.BertZawodowiec:
-                case SkillEnum.EBerta:
-                case SkillEnum.KuglarzBert:
-                case SkillEnum.MisiekBert:
-                case SkillEnum.PrezydentBert:
-                case SkillEnum.PrymusBert:
-                case SkillEnum.SamurajBert:
-                case SkillEnum.SuperfanBert:
+                case CharacterEnum.BertaGejsza:
+                case CharacterEnum.BertaSJW:
+                case CharacterEnum.BertaTrojanska:
+                case CharacterEnum.BertWho:
+                case CharacterEnum.BertZawodowiec:
+                case CharacterEnum.EBerta:
+                case CharacterEnum.KuglarzBert:
+                case CharacterEnum.MisiekBert:
+                case CharacterEnum.PrezydentBert:
+                case CharacterEnum.PrymusBert:
+                case CharacterEnum.SamurajBert:
+                case CharacterEnum.SuperfanBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, movedCard);
                     break;
             }
@@ -160,17 +160,17 @@ namespace Berty.BoardCards.Listeners
             // When witness is the character with skill
             switch (witness.BoardCard.GetSkill())
             {
-                case SkillEnum.BertaGejsza:
-                case SkillEnum.BertaSJW:
-                case SkillEnum.BertaTrojanska:
-                case SkillEnum.BertVentura:
-                case SkillEnum.BertWho:
-                case SkillEnum.BertZawodowiec:
-                case SkillEnum.EBerta:
-                case SkillEnum.KuglarzBert:
-                case SkillEnum.PrymusBert:
-                case SkillEnum.SamurajBert:
-                case SkillEnum.SuperfanBert:
+                case CharacterEnum.BertaGejsza:
+                case CharacterEnum.BertaSJW:
+                case CharacterEnum.BertaTrojanska:
+                case CharacterEnum.BertVentura:
+                case CharacterEnum.BertWho:
+                case CharacterEnum.BertZawodowiec:
+                case CharacterEnum.EBerta:
+                case CharacterEnum.KuglarzBert:
+                case CharacterEnum.PrymusBert:
+                case CharacterEnum.SamurajBert:
+                case CharacterEnum.SuperfanBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(movedCard, witness);
                     break;
             }
@@ -181,14 +181,14 @@ namespace Berty.BoardCards.Listeners
             // When converted card is the character with skill
             switch (convertedCard.BoardCard.GetSkill())
             {
-                case SkillEnum.BertZawodowiec:
-                case SkillEnum.EBerta:
-                case SkillEnum.KuglarzBert:
-                case SkillEnum.SuperfanBert:
+                case CharacterEnum.BertZawodowiec:
+                case CharacterEnum.EBerta:
+                case CharacterEnum.KuglarzBert:
+                case CharacterEnum.SuperfanBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, convertedCard);
                     break;
-                case SkillEnum.CheBert:
-                case SkillEnum.ShaolinBert:
+                case CharacterEnum.CheBert:
+                case CharacterEnum.ShaolinBert:
                     ApplySkillEffectManager.Instance.HandleCharacterSkill(witness, convertedCard);
                     break;
             }
@@ -196,14 +196,14 @@ namespace Berty.BoardCards.Listeners
             // When witness is the character with skill
             switch (witness.BoardCard.GetSkill())
             {
-                case SkillEnum.BertZawodowiec:
-                case SkillEnum.EBerta:
-                case SkillEnum.KuglarzBert:
-                case SkillEnum.SuperfanBert:
+                case CharacterEnum.BertZawodowiec:
+                case CharacterEnum.EBerta:
+                case CharacterEnum.KuglarzBert:
+                case CharacterEnum.SuperfanBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(convertedCard, witness);
                     break;
-                case SkillEnum.CheBert:
-                case SkillEnum.ShaolinBert:
+                case CharacterEnum.CheBert:
+                case CharacterEnum.ShaolinBert:
                     ApplySkillEffectManager.Instance.HandleCharacterSkill(convertedCard, witness);
                     break;
             }
@@ -216,11 +216,11 @@ namespace Berty.BoardCards.Listeners
             // When witness is the character with skill
             switch (witness.BoardCard.GetSkill())
             {
-                case SkillEnum.BertVentura:
+                case CharacterEnum.BertVentura:
                     if (game.Grid.AreNeighboring(witness.ParentField.BoardField, dyingCard.ParentField.BoardField))
                         StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, witness.BoardCard, game.Grid.GetEnemyNeighborCount(BoardCard));
                     break;
-                case SkillEnum.Zombert:
+                case CharacterEnum.Zombert:
                     if (dyingCard.BoardCard.Align == witness.BoardCard.Align) break;
                     witness.EntityHandler.AdvanceHealth(1, null);
                     break;
@@ -229,7 +229,7 @@ namespace Berty.BoardCards.Listeners
             // When dying card is the character with skill
             switch (dyingCard.BoardCard.GetSkill())
             {
-                case SkillEnum.SedziaBertt:
+                case CharacterEnum.SedziaBertt:
                     if (dyingCard.BoardCard.Align == witness.BoardCard.Align) witness.EntityHandler.AdvanceTempStrength(1, dyingCard); // does not apply to backup card
                     return;
             }
@@ -240,13 +240,13 @@ namespace Berty.BoardCards.Listeners
             // When customed effect is triggered by the character with skill
             switch (customEffectCard.BoardCard.GetSkill())
             {
-                case SkillEnum.PapiezBertII:
+                case CharacterEnum.PapiezBertII:
                     ApplySkillEffectManager.Instance.HandleCharacterSkill(witness, customEffectCard);
                     break;
-                case SkillEnum.KowbojBert:
+                case CharacterEnum.KowbojBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, customEffectCard, delta);
                     break;
-                case SkillEnum.ZalobnyBert:
+                case CharacterEnum.ZalobnyBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, customEffectCard, delta);
                     break;
             }
@@ -256,28 +256,28 @@ namespace Berty.BoardCards.Listeners
         {
             switch (skillCard.BoardCard.GetSkill())
             {
-                case SkillEnum.BertVentura:
+                case CharacterEnum.BertVentura:
                     StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillCard.BoardCard, game.Grid.GetEnemyNeighborCount(BoardCard));
                     break;
-                case SkillEnum.BertWho:
+                case CharacterEnum.BertWho:
                     StatusManager.Instance.IncrementChargedStatusWithAlignment(StatusEnum.ExtraCardNextTurn, AlignmentEnum.Player, 2);
                     StatusManager.Instance.IncrementChargedStatusWithAlignment(StatusEnum.ExtraCardNextTurn, AlignmentEnum.Opponent, 2);
                     break;
-                case SkillEnum.CheBert:
+                case CharacterEnum.CheBert:
                     StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.DisableEnemySpecialSkill, skillCard.BoardCard);
                     break;
-                case SkillEnum.GotkaBerta:
+                case CharacterEnum.GotkaBerta:
                     if (game.CardPile.AreThereAnyDeadCards())
                         StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.RevivalSelect, skillCard.BoardCard);
                     break;  
-                case SkillEnum.RycerzBerti:
+                case CharacterEnum.RycerzBerti:
                     StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.TelekineticArea, skillCard.BoardCard);
                     DecreasePowerForNeighbor(skillCard);
                     break;
-                case SkillEnum.SedziaBertt:
+                case CharacterEnum.SedziaBertt:
                     StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ForceSpecialRole, skillCard.BoardCard);
                     break;
-                case SkillEnum.SuperfanBert:
+                case CharacterEnum.SuperfanBert:
                     int hour = DateTime.Now.Hour;
                     if (hour < 5 || 18 <= hour)
                     {
@@ -292,10 +292,10 @@ namespace Berty.BoardCards.Listeners
         {
             switch (skillCard.BoardCard.GetSkill())
             {
-                case SkillEnum.BertVentura:
+                case CharacterEnum.BertVentura:
                     StatusManager.Instance.SetChargedStatusWithProvider(StatusEnum.Ventura, skillCard.BoardCard, game.Grid.GetEnemyNeighborCount(BoardCard));
                     break;
-                case SkillEnum.PrezydentBert:
+                case CharacterEnum.PrezydentBert:
                     skillCard.EntityHandler.AdvancePower(-1, null);
                     break;
             }

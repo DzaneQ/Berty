@@ -4627,6 +4627,7 @@ GameObject:
   - component: {fileID: 1547027172}
   - component: {fileID: 1547027171}
   - component: {fileID: 1547027176}
+  - component: {fileID: 1547027177}
   m_Layer: 0
   m_Name: RpcSystem
   m_TagString: Untagged
@@ -4680,6 +4681,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3440f7bba6c13964ca707d1a224eed22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1547027177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547027170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b498a050ae1a0e4d941c7751f1fb1e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1577340884

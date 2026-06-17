@@ -150,11 +150,11 @@ namespace Berty.BoardCards.Entities
             return CharacterConfig.Role;
         }
         
-        public SkillEnum GetSkill()
+        public CharacterEnum GetSkill()
         {
-            if (CharacterConfig.Skill == SkillEnum.BertPogromca || CharacterConfig.Skill == SkillEnum.CheBert) return CharacterConfig.Skill;
-            if (OccupiedField.Grid.Game.HasStatusByNameOpposedToAlignment(StatusEnum.DisableEnemySpecialSkill, Align)) return SkillEnum.None;
-            return CharacterConfig.Skill;
+            if (CharacterConfig.CharacterName == CharacterEnum.BertPogromca || CharacterConfig.CharacterName == CharacterEnum.CheBert) return CharacterConfig.CharacterName;
+            if (OccupiedField.Grid.Game.HasStatusByNameOpposedToAlignment(StatusEnum.DisableEnemySpecialSkill, Align)) return CharacterEnum.None;
+            return CharacterConfig.CharacterName;
         }
 
         public void MarkAsTired()

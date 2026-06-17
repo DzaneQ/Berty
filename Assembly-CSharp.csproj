@@ -165,6 +165,7 @@
     <Compile Include="Assets\Scripts\Menu\Behaviours\LanguagePickMenu.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
+    <Compile Include="Assets\Scripts\Enums\CharacterEnum.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\CheBert.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Collection\HandCardCollection.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\CheckpointValidatorListener.cs" />
@@ -272,7 +273,6 @@
     <Compile Include="Assets\Scripts\Characters\Managers\ApplySkillEffectManager.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\PaymentManager.cs" />
     <Compile Include="Assets\Scripts\Grid\Managers\ColorizeObjectManager.cs" />
-    <Compile Include="Assets\Scripts\Enums\SkillEnum.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Listeners\TurnListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\IdleState.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Init\HandCardInitialization.cs" />

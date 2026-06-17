@@ -18,8 +18,8 @@ namespace Berty.Debugging.Managers
 
         public void TakeCardIfInPile(AlignmentEnum align)
         {
-            if (align == AlignmentEnum.Player) game.CardPile.PullCardIfInPile(SkillEnum.TrenerPokebertow, align);
-            if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(SkillEnum.RoninBert, align);
+            if (align == AlignmentEnum.Player) game.CardPile.PullCardIfInPile(CharacterEnum.TrenerPokebertow, align);
+            if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(CharacterEnum.RoninBert, align);
             //if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(SkillEnum.KrolPopuBert, align);
         }
     }

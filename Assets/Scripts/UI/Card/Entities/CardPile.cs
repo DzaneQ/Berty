@@ -63,9 +63,9 @@ namespace Berty.UI.Card.Entities
             return true;
         }
 
-        public void PullCardIfInPile(SkillEnum character, AlignmentEnum align)
+        public void PullCardIfInPile(CharacterEnum character, AlignmentEnum align)
         {
-            CharacterConfig takenCard = pileCards.Find(x => x.Skill == character);
+            CharacterConfig takenCard = pileCards.Find(x => x.CharacterName == character);
             if (takenCard == null) return;
             List<CharacterConfig> targetTable = GetCardsFromAlign(align);
             pileCards.Remove(takenCard);

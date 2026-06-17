@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public BertWick()
         {
             AddName("bert wick");
-            AddSkill(SkillEnum.BertWick);
+            AddSkill(CharacterEnum.BertWick);
             AddProperties(GenderEnum.Male, RoleEnum.Agile);
             AddStats(1, 3, 5, 2);
             AddRange(-1, 0, attackRange);

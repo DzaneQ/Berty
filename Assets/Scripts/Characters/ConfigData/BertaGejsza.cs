@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public BertaGejsza()
         {
             AddName("berta gejsza");
-            AddSkill(SkillEnum.BertaGejsza);
+            AddSkill(CharacterEnum.BertaGejsza);
             AddProperties(GenderEnum.Female, RoleEnum.Support);
             AddStats(1, 2, 5, 3);
             AddRange(-1, 1, attackRange);

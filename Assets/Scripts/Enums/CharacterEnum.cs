@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Berty.Enums
 {
-    public enum SkillEnum
+    public enum CharacterEnum
     {
         None = 0,
         AstronautaBert,

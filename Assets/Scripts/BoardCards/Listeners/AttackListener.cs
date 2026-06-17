@@ -66,12 +66,12 @@ namespace Berty.BoardCards.Listeners
 
             switch (attacker.BoardCard.GetSkill())
             {
-                case SkillEnum.BertaAmazonka:
+                case CharacterEnum.BertaAmazonka:
                     if (attacker.BoardCard.CanAttackCard(witness.BoardCard))
                         HandleBertaAmazonkaEffect(witness, attacker);
                     break;
-                case SkillEnum.MisiekBert:
-                case SkillEnum.PrezydentBert:
+                case CharacterEnum.MisiekBert:
+                case CharacterEnum.PrezydentBert:
                     ApplySkillEffectManager.Instance.HandleNeighborCharacterSkill(witness, attacker);
                     break;
             }
@@ -81,11 +81,11 @@ namespace Berty.BoardCards.Listeners
         {
             switch (BoardCard.GetSkill())
             {
-                case SkillEnum.BigMadB:
+                case CharacterEnum.BigMadB:
                     EntityHandler.AdvanceDexterity(-1, null);
                     EntityHandler.AdvanceStrength(1, null);
                     break;
-                case SkillEnum.PrezydentBert:
+                case CharacterEnum.PrezydentBert:
                     EntityHandler.AdvancePower(-1, null);
                     break;
             }
@@ -93,7 +93,7 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleBertaAmazonkaEffect(BoardCardBehaviour target, BoardCardBehaviour bertaAmazonka)
         {
-            if (bertaAmazonka.BoardCard.GetSkill() != SkillEnum.BertaAmazonka)
+            if (bertaAmazonka.BoardCard.GetSkill() != CharacterEnum.BertaAmazonka)
                 throw new Exception($"BertaAmazonka effect is casted by {bertaAmazonka.BoardCard.CharacterConfig.Name}");
             Vector2Int distance = target.BoardCard.GetDistanceTo(bertaAmazonka.BoardCard); // According to the target's direction, not BertaAmazonka's
             if (distance.x == 0 && distance.y != 0)
