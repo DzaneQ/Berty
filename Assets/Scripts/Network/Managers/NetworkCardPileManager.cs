@@ -1,11 +1,8 @@
 using Berty.BoardCards.ConfigData;
 using Berty.Enums;
-using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.Gameplay.Managers.Client;
 using Berty.UI.Card.Entities;
 using Berty.Utility;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
@@ -17,7 +14,7 @@ namespace Berty.Network.Managers
     {
         private List<CharacterConfig> myHandCards;
         private IReadOnlyList<CharacterConfig> allCards;
-        public IReadOnlyList<CharacterConfig> MyTable => myHandCards;
+        public IReadOnlyList<CharacterConfig> MyHandCards => myHandCards;
 
         private void Start()
         {
@@ -33,7 +30,9 @@ namespace Berty.Network.Managers
         [ClientRpc]
         public void AddCardObjectsClientRpc(CharacterEnum[] cardNames)
         {
+            Debug.Log("Attempted to add card objects.");
             if (ManagerLocator.TurnManagerInstance.IsItNotMyTurn()) return;
+            Debug.Log($"Adding card objects for {cardNames.Length} cards. First card is: {cardNames[0]}. Second card is: {cardNames[1]}.");
             UpdatePlayerHandCards(cardNames);
             ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
         }

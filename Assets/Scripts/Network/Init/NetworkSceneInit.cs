@@ -1,6 +1,8 @@
+using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Init;
 using Berty.Gameplay.Managers;
+using Berty.Network.Managers;
 using Berty.UI.Card;
 using Berty.UI.Card.Collection;
 using Berty.UI.Card.Init;
@@ -30,9 +32,11 @@ namespace Berty.Network.Init
         {
             if (!manager.IsServer) return; // run from server only
             if (data.EventType != ConnectionEvent.ClientConnected) return;
-            int clientCount = manager.ConnectedClientsIds.Count;
+            IReadOnlyList<ulong> connectedClients = manager.ConnectedClientsIds;
+            int clientCount = connectedClients.Count;
             if (clientCount > 2) throw new Exception($"Too many connected clients: {clientCount}");
             if (clientCount < 2) return;
+            InitializeAlignmentsForClients(connectedClients);
             InitializeGameEntity();
             string dataStr = ProcessGameDataManager.Instance.GetGameEntityAsString();
             InitializeSceneClientRpc(dataStr);
@@ -56,6 +60,24 @@ namespace Berty.Network.Init
             init.InitializeLanguageDictionary();
             Destroy(init);
         }
+
+        private void InitializeAlignmentsForClients(IReadOnlyList<ulong> clients)
+        {
+            if (clients.Count != 2) throw new InvalidOperationException($"Expected 2 connected client, got {clients.Count}");
+            for (int i = 0; i < 2; i++)
+            {
+                AlignmentEnum assignedAlign = i == 0 ? AlignmentEnum.Player : AlignmentEnum.Opponent;
+                ClientRpcParams rpcParams = new()
+                {
+                    Send = new ClientRpcSendParams
+                    {
+                        TargetClientIds = new ulong[] { clients[i] }
+                    }
+                };
+                PlayerReadManager.Instance.SetAlignmentClientRpc(assignedAlign, rpcParams);
+            }
+        }
+
         private void InitializeGameEntity()
         {
             Game _ = EntityLoadManager.Instance.Game; // TODO: Stop storing whole entities in client, especially card pile.

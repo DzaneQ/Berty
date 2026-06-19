@@ -1,7 +1,6 @@
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.Gameplay.Managers.Client;
 using Berty.Utility;
 using System;
 using Unity.Netcode;
@@ -11,21 +10,16 @@ namespace Berty.Network.Managers
 {
     public class NetworkTurnManager : SharedManagerSingleton<NetworkTurnManager>, ITurnManager
     {
-        private Game game;
+        private Game game; // should be used from server only
         private readonly NetworkVariable<AlignmentEnum> turnAlignment = new();
 
         public AlignmentEnum CurrentAlignment => turnAlignment.Value;
 
-        private void Start()
-        {
-            game = EntityLoadManager.Instance.Game;
-        }
-
         public override void OnNetworkSpawn()
         {
-            game ??= EntityLoadManager.Instance.Game;
             if (IsServer)
             {
+                game = EntityLoadManager.Instance.Game;
                 turnAlignment.Value = game.CurrentAlignment;
             }
             turnAlignment.OnValueChanged += OnTurnAlignmentChanged;
@@ -55,7 +49,6 @@ namespace Berty.Network.Managers
         {
             if (prv == crr) throw new Exception($"Turn alignment should not be the same after change: {prv}");
             Debug.Log($"Turn alignment changed from {prv} to {crr}");
-            if (game.CurrentAlignment != crr) game.SwitchAlignment();
             EventManager.Instance.RaiseOnNewTurn();
             CheckpointManager.Instance.RequestCheckpoint();
         }

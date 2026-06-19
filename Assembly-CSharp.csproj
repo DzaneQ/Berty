@@ -80,7 +80,6 @@
     <Compile Include="Assets\Scripts\Menu\Listeners\ButtonFunction.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\StatusListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveRight.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Managers\Client\PlayerReadManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Entities\CardStats.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
@@ -88,6 +87,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\Zombert.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\PapiezBertII.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
+    <Compile Include="Assets\Scripts\Network\Managers\PlayerReadManager.cs" />
     <Compile Include="Assets\Scripts\Display\Managers\DisplayManager.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\CloseGameInput.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveUp.cs" />

@@ -1,11 +1,8 @@
-using Berty.BoardCards.ConfigData;
-using Berty.UI.Card.Entities;
+using Berty.BoardCards.ConfigData;  
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Collection;
 using System.Collections.Generic;
 using UnityEngine;
-using Berty.Gameplay.Entities;
-using Berty.Gameplay.Managers.Client;
 using Berty.UI.Managers;
 using Berty.Network.Managers;
 
@@ -13,29 +10,27 @@ namespace Berty.UI.Card.Managers.Client
 {
     public class ClientHandCardObjectManager : ClientUIObjectManager<ClientHandCardObjectManager>, IHandCardObjectManager
     {
-        private GameObject myTable;
+        private Transform myTable;
 
         private HandCardCollection behaviourCollection;
 
         protected override void Awake()
         {
             base.Awake();
-            myTable = ObjectReadManager.Instance.PlayerTable;
+            myTable = ObjectReadManager.Instance.PlayerTable.transform;
             behaviourCollection = ObjectReadManager.Instance.HandCardObjectCollection.GetComponent<HandCardCollection>();
-            if (behaviourCollection == null) Debug.LogWarning("Failed to get HandCardCollection.");
-            else Debug.Log("Attached HandCardCollection.");
         }
 
         public void AddCardObjects()
         {
-            IReadOnlyList<CharacterConfig> ownedCards = NetworkCardPileManager.Instance.MyTable;
-            AddCardObjectsFromPileData(myTable.transform, ownedCards);
+            IReadOnlyList<CharacterConfig> ownedCards = NetworkCardPileManager.Instance.MyHandCards;
+            AddCardObjectsFromPileData(myTable, ownedCards);
         }
 
         public void RemoveCardObjects()
         {
-            IReadOnlyList<CharacterConfig> ownedCards = NetworkCardPileManager.Instance.MyTable;
-            RemoveCardObjectsFromTable(myTable.transform, ownedCards);
+            IReadOnlyList<CharacterConfig> ownedCards = NetworkCardPileManager.Instance.MyHandCards;
+            RemoveCardObjectsFromTable(myTable, ownedCards);
         }
 
         public Sprite GetSpriteFromHandCardObject(CharacterConfig characterConfig)
@@ -46,7 +41,7 @@ namespace Berty.UI.Card.Managers.Client
         public void AddCardObjectFromConfig(CharacterConfig characterConfig)
         {
             Transform card = behaviourCollection.GetBehaviourFromCharacterConfig(characterConfig).transform;
-            card.SetParent(myTable.transform, false);
+            card.SetParent(myTable, false);
         }
 
         private void AddCardObjectsFromPileData(Transform table, IReadOnlyList<CharacterConfig> pileData)
