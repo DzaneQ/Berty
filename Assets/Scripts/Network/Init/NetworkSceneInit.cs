@@ -36,7 +36,7 @@ namespace Berty.Network.Init
             int clientCount = connectedClients.Count;
             if (clientCount > 2) throw new Exception($"Too many connected clients: {clientCount}");
             if (clientCount < 2) return;
-            InitializeAlignmentsForClients(connectedClients);
+            PlayerReadManager.Instance.InitializeAlignmentsForClients(connectedClients);
             InitializeGameEntity();
             string dataStr = ProcessGameDataManager.Instance.GetGameEntityAsString();
             InitializeSceneClientRpc(dataStr);
@@ -59,23 +59,6 @@ namespace Berty.Network.Init
             if (init == null) return;
             init.InitializeLanguageDictionary();
             Destroy(init);
-        }
-
-        private void InitializeAlignmentsForClients(IReadOnlyList<ulong> clients)
-        {
-            if (clients.Count != 2) throw new InvalidOperationException($"Expected 2 connected client, got {clients.Count}");
-            for (int i = 0; i < 2; i++)
-            {
-                AlignmentEnum assignedAlign = i == 0 ? AlignmentEnum.Player : AlignmentEnum.Opponent;
-                ClientRpcParams rpcParams = new()
-                {
-                    Send = new ClientRpcSendParams
-                    {
-                        TargetClientIds = new ulong[] { clients[i] }
-                    }
-                };
-                PlayerReadManager.Instance.SetAlignmentClientRpc(assignedAlign, rpcParams);
-            }
         }
 
         private void InitializeGameEntity()

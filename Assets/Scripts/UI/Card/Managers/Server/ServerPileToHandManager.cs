@@ -1,13 +1,14 @@
-using Berty.UI.Card.Entities;
+using Berty.BoardCards.ConfigData;
+using Berty.Debugging.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.Utility;
-using Berty.Debugging.Managers;
 using Berty.Network.Managers;
-using Berty.BoardCards.ConfigData;
+using Berty.UI.Card.Entities;
+using Berty.Utility;
 using System;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Berty.UI.Card.Managers.Server
@@ -36,7 +37,7 @@ namespace Berty.UI.Card.Managers.Server
                 capacity += extraCardStatus.Charges;
                 StatusManager.Instance.RemoveStatus(extraCardStatus);
             }
-            if (CardPile.PullCardsTo(capacity, align)) NetworkCardPileManager.Instance.AddCardObjectsClientRpc(GetPlayerCardsAsCharacterNames(align)); // BUG: Second client receives the first client's batch of cards
+            if (CardPile.PullCardsTo(capacity, align)) AddCardObjectsToAlignment(align); // BUG: Second client receives the first client's batch of cards
             else ManagerLocator.TurnManagerInstance.EndTheGame();
         }
 
@@ -50,6 +51,20 @@ namespace Berty.UI.Card.Managers.Server
             };
             Debug.Log($"Player has {playerCards.Count} cards. First card is: {playerCards[0].CharacterName}. Second card is: {playerCards[1].CharacterName}.");
             return playerCards.ConvertAll(card => card.CharacterName).ToArray();
+        }
+
+        private void AddCardObjectsToAlignment(AlignmentEnum align)
+        {
+            ulong targetClientId = PlayerReadManager.Instance.GetClientIdFromAlignment(align);
+            CharacterEnum[] playerCards = GetPlayerCardsAsCharacterNames(align);
+            ClientRpcParams sendRpcParam = new()
+            {
+                Send = new ClientRpcSendParams
+                {
+                    TargetClientIds = new ulong[] { targetClientId }
+                }
+            };
+            NetworkCardPileManager.Instance.AddCardObjectsClientRpc(playerCards, sendRpcParam);
         }
     }
 }

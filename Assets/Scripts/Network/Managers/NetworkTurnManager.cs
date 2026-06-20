@@ -32,6 +32,7 @@ namespace Berty.Network.Managers
 
         public void EndTurn()
         {
+            Debug.Log("Clicked end turn");
             SwitchAlignmentServerRpc();
         }
 
