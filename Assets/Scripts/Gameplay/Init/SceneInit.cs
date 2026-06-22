@@ -13,7 +13,7 @@ namespace Berty.Gameplay.Init
 {
     public class SceneInit : MonoBehaviour
     {
-        void Start()
+        private void Start()
         {
             InitializeGameEntity();
             InitializeManagers();
