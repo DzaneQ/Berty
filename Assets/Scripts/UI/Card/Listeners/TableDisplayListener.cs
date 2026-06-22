@@ -18,6 +18,11 @@ namespace Berty.UI.Card.Listeners
             EventManager.Instance.OnNewTurn += HandleNewTurn;
         }
 
+        private void Start()
+        {
+            DisplayCurrentAlignmentTable();
+        }
+
         private void OnDestroy()
         {
             if (!gameObject.scene.isLoaded) return;
@@ -25,6 +30,11 @@ namespace Berty.UI.Card.Listeners
         }
 
         private void HandleNewTurn()
+        {
+            DisplayCurrentAlignmentTable();
+        }
+
+        private void DisplayCurrentAlignmentTable()
         {
             gameObject.SetActive(game.CurrentAlignment == tableAlignment);
         }
