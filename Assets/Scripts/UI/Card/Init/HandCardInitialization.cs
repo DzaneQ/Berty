@@ -23,13 +23,10 @@ namespace Berty.UI.Card.Init
         [SerializeField] private GameObject opponentTable;
         [SerializeField] private GameObject theRemainder;
 
-        private int debugIndex = 1;
-
         public List<HandCardBehaviour> InitializeAllCharacterCards()
         {
             Game game = EntityLoadManager.Instance.Game;
             List<HandCardBehaviour> behaviourCollection = new();
-            HideTableOpposedTo(game.CurrentAlignment);
             InitializeAllPileCards(game.CardPile.PileCards, ref behaviourCollection);
             InitializeAllDiscardedCards(game.CardPile.DiscardedCards, ref behaviourCollection);
             InitializeAllDeadCards(game.CardPile.DeadCards, ref behaviourCollection);
@@ -37,21 +34,6 @@ namespace Berty.UI.Card.Init
             InitializeAllOpponentCards(game.CardPile.OpponentCards, ref behaviourCollection);
             InitializeAllFieldCards(game.Grid.GetAllCharactersOnFields(), ref behaviourCollection);
             return behaviourCollection;
-        }
-
-        private void HideTableOpposedTo(AlignmentEnum align)
-        {
-            switch (align)
-            {
-                case AlignmentEnum.Player:
-                    opponentTable.SetActive(false);
-                    break;
-                case AlignmentEnum.Opponent:
-                    playerTable.SetActive(false);
-                    break;
-                default:
-                    throw new System.Exception("Unknown alignment to hide table");
-            }
         }
 
         private void InitializeAllPileCards(IReadOnlyList<CharacterConfig> charactersInPile, ref List<HandCardBehaviour> behaviourCollection)
@@ -88,7 +70,6 @@ namespace Berty.UI.Card.Init
         {
             for (int i = 0; i < characters.Count; i++)
             {
-                debugIndex++;
                 GameObject handCardObject = Instantiate(cardImagePrefab, stack.transform);
                 HandCardBehaviour handCardBehaviour = handCardObject.GetComponent<HandCardBehaviour>();
                 if (handCardBehaviour == null) handCardBehaviour = handCardObject.AddComponent<HandCardBehaviour>();

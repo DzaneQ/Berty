@@ -1,6 +1,7 @@
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Managers;
+using Berty.Utility;
 using UnityEngine;
 
 namespace Berty.UI.Card.Listeners
@@ -28,8 +29,8 @@ namespace Berty.UI.Card.Listeners
         private void HandleNewTurn()
         {
             HandCardSelectManager.Instance.ClearSelection();
-            int totalCardCount = game.GameConfig.TableCapacity;
-            PileToHandManager.Instance.PullCardsTo(totalCardCount);
+            IPileToHandManager instance = ManagerLocator.PileToHandManagerInstance;
+            if (instance != null) instance.PullCards();
         }
     }
 }

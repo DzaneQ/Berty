@@ -31,7 +31,7 @@ namespace Berty.BoardCards.Listeners
             if (Navigation.IsCardAnimating()) return false;
             if (BoardCard.Stats.Health <= 0) return false;
             if (BoardCard.Stats.Power <= 0) return false;
-            if (BoardCard.GetSkill() == SkillEnum.BertWick && BoardCard.Stats.Dexterity <= 0) return false;
+            if (BoardCard.GetSkill() == CharacterEnum.BertWick && BoardCard.Stats.Dexterity <= 0) return false;
             return true;
         }
     }

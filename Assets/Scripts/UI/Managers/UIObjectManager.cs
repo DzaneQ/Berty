@@ -1,11 +1,5 @@
-using Berty.Grid.Entities;
-using Berty.Enums;
 using Berty.Utility;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Berty.UI.Managers
 {

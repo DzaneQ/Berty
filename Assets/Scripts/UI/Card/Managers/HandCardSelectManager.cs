@@ -1,6 +1,7 @@
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Collection;
 using Berty.UI.Managers;
+using System.Collections.Generic;
 
 namespace Berty.UI.Card.Managers
 {

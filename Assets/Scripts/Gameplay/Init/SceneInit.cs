@@ -1,11 +1,11 @@
-using Berty.BoardCards.ConfigData;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.Grid.Field.Behaviour;
 using Berty.Settings;
 using Berty.UI.Card;
 using Berty.UI.Card.Collection;
 using Berty.UI.Card.Init;
+using Berty.Utility;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,31 +13,30 @@ namespace Berty.Gameplay.Init
 {
     public class SceneInit : MonoBehaviour
     {
-        private Game initGame;
-
-        void Awake()
+        private void Start()
         {
             InitializeGameEntity();
+            InitializeManagers();
             InitializeHandCardObjects();
             InitializeLanguage();
-            //InitializeFieldBehaviours();
-        }
-
-        void Start()
-        {
             if (StartGameBufferManager.Instance.IsStartingNewGame()) StartTheGame();
             Destroy(gameObject);
         }
 
+        private void InitializeManagers()
+        {
+            ManagerLocator.InitializeSingleplayer();
+        }
+
         private void InitializeGameEntity()
         {
-            initGame = EntityLoadManager.Instance.Game;
+            Game _ = EntityLoadManager.Instance.Game;
         }
 
         private void InitializeHandCardObjects()
         {
             HandCardInitialization init = gameObject.GetComponent<HandCardInitialization>();
-            if (init == null) return;
+            if (init == null) throw new Exception($"HandCardInitialization component should appear in: {gameObject.name}");
             GameObject stackForHandCards = ObjectReadManager.Instance.HandCardObjectCollection;
             List<HandCardBehaviour> handCardBehaviourCollection = init.InitializeAllCharacterCards();
             HandCardCollection collectionComponent = stackForHandCards.GetComponent<HandCardCollection>();
@@ -49,7 +48,7 @@ namespace Berty.Gameplay.Init
         {
             LanguageInit init = gameObject.GetComponent<LanguageInit>();
             if (init == null) return;
-            init.UpdateLanguageForFixedLabels();
+            init.InitializeLanguageDictionary();
             Destroy(init);
         }
 

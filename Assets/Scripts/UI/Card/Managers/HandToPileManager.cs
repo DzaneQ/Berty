@@ -22,7 +22,7 @@ namespace Berty.UI.Card.Managers
         {
             IReadOnlyList<CharacterConfig> selectedCards = SelectionManager.Instance.SelectedCards;
             CardPile.DiscardCards(selectedCards, Game.CurrentAlignment);
-            HandCardObjectManager.Instance.RemoveCardObjects();
+            ManagerLocator.HandCardObjectManagerInstance.RemoveCardObjects();
             HandCardSelectManager.Instance.ClearSelection();
         }
     }

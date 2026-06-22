@@ -172,14 +172,14 @@ namespace Berty.BoardCards.Behaviours
         {
             StatusManager.Instance.RemoveStatusFromProvider(BoardCard);
             EventManager.Instance.RaiseOnCharacterDeath(this);
-            if (BoardCard.GetSkill() == SkillEnum.BertWho) game.CardPile.PutCardToTheBottomPile(BoardCard.CharacterConfig);
+            if (BoardCard.GetSkill() == CharacterEnum.BertWho) game.CardPile.PutCardToTheBottomPile(BoardCard.CharacterConfig);
             else game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
         }
 
         // TODO: Refactor done. Check if color is persisted.
         private void UpdateCardWithRandomKid()
         {
-            if (BoardCard.GetSkill() != SkillEnum.KrolPopuBert)
+            if (BoardCard.GetSkill() != CharacterEnum.KrolPopuBert)
                 throw new Exception($"KrolPopuBert effect is casted by {BoardCard.CharacterConfig.Name}");
             CharacterConfig newCard = game.CardPile.GetRandomKidFromPile();
             DirectionEnum direction = (DirectionEnum)BoardCard.GetAngle();
@@ -201,10 +201,10 @@ namespace Berty.BoardCards.Behaviours
         {
             switch (BoardCard.GetSkill())
             {
-                case SkillEnum.AstronautaBert:
+                case CharacterEnum.AstronautaBert:
                     KillCard();
                     break;
-                case SkillEnum.KsiezniczkaBerta:
+                case CharacterEnum.KsiezniczkaBerta:
                     SetPower(BoardCard.CharacterConfig.Power, this);
                     break;
                 default:
@@ -217,7 +217,7 @@ namespace Berty.BoardCards.Behaviours
         {
             switch (BoardCard.GetSkill())
             {
-                case SkillEnum.BertWick:
+                case CharacterEnum.BertWick:
                     KillCard();
                     break;
                 default:
@@ -230,13 +230,13 @@ namespace Berty.BoardCards.Behaviours
         {
             switch (BoardCard.GetSkill())
             {
-                case SkillEnum.BertWick:
+                case CharacterEnum.BertWick:
                     AdvanceHealth(2, null);
                     AdvancePower(1, null);
                     AdvanceStrength(1, null);
                     AdvanceDexterity(-1, null);
                     break;
-                case SkillEnum.KrolPopuBert:
+                case CharacterEnum.KrolPopuBert:
                     UpdateCardWithRandomKid();
                     break;
                 default:

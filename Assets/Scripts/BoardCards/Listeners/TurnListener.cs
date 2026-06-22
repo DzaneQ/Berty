@@ -62,7 +62,7 @@ namespace Berty.BoardCards.Listeners
         {
             switch (BoardCard.GetSkill())
             {
-                case SkillEnum.PapiezBertII:
+                case CharacterEnum.PapiezBertII:
                     EventManager.Instance.RaiseOnCharacterSpecialEffect(this);
                     break;
             }

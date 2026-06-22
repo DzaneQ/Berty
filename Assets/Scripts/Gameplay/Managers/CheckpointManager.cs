@@ -1,16 +1,7 @@
 using Berty.Enums;
 using Berty.Gameplay.Entities;
-using Berty.Grid.Entities;
-using Berty.UI.Card.Managers;
-using Berty.UI.Managers;
 using Berty.Utility;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using UnityEngine;
 
 namespace Berty.Gameplay.Managers
 {
@@ -63,13 +54,13 @@ namespace Berty.Gameplay.Managers
 
         private void EndTheGame()
         {
-            TurnManager.Instance.EndTheGame();
+            ManagerLocator.TurnManagerInstance.EndTheGame();
             //LoadSaveManager.Instance.DeleteTheSave();
         }
 
         private void SaveTheGame()
         {
-            SaveLoadManager.Instance.SaveTheGame();
+            ProcessGameDataManager.Instance.SaveTheGame();
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Berty.Menu.Behaviours
             guideButton = MenuList.transform.GetChild(2).GetComponent<ButtonFunction>();
             exitButton = ExitButton.GetComponent<ButtonFunction>();
 
-            if (SaveLoadManager.Instance.IsSaveFileExisting())
+            if (ProcessGameDataManager.Instance.IsSaveFileExisting())
             {
                 LoadButton.SetActive(true);
             }

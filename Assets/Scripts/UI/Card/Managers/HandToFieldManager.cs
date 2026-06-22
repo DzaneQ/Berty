@@ -28,7 +28,7 @@ namespace Berty.UI.Card.Managers
             CharacterConfig selectedCard = SelectionManager.Instance.GetSelectedCardOrThrow();
             SelectionManager.Instance.PutSelectedCardAsPending();
             CardPile.LeaveCard(selectedCard, Game.CurrentAlignment);
-            HandCardObjectManager.Instance.RemoveCardObjects();
+            ManagerLocator.HandCardObjectManagerInstance.RemoveCardObjects();
             HandCardSelectManager.Instance.ClearSelection();
             return selectedCard;
         }

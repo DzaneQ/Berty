@@ -3,11 +3,12 @@ using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Utility;
-using Berty.Debugging;
+using Berty.Debugging.Managers;
+using UnityEngine;
 
 namespace Berty.UI.Card.Managers
 {
-    public class PileToHandManager : ManagerSingleton<PileToHandManager>
+    public class PileToHandManager : ManagerSingleton<PileToHandManager>, IPileToHandManager
     {
         private Game game { get; set; }
         private CardPile cardPile => game.CardPile;
@@ -18,18 +19,20 @@ namespace Berty.UI.Card.Managers
             game = EntityLoadManager.Instance.Game;
         }
 
-        public void PullCardsTo(int capacity)
+        public void PullCards()
         {
             AlignmentEnum align = game.CurrentAlignment;
-            DebugManager.Instance?.TakeCardIfInPile(align);
+            int capacity = game.GameConfig.TableCapacity;
+            DebugManager instance = DebugManager.Instance;
+            if (instance != null) instance.TakeCardIfInPile(align);
             Status extraCardStatus = game.GetStatusByNameAndAlignmentOrNull(StatusEnum.ExtraCardNextTurn, align);
             if (extraCardStatus != null)
             {
                 capacity += extraCardStatus.Charges;
                 StatusManager.Instance.RemoveStatus(extraCardStatus);
             }
-            if (cardPile.PullCardsTo(capacity, align)) HandCardObjectManager.Instance.AddCardObjects();
-            else TurnManager.Instance.EndTheGame();
+            if (cardPile.PullCardsTo(capacity, align)) ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
+            else ManagerLocator.TurnManagerInstance.EndTheGame();
         }
     }
 }

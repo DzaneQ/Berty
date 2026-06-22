@@ -7,16 +7,19 @@ using Berty.UI.Managers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Berty.Gameplay.Entities;
 
 namespace Berty.UI.Card.Managers
 {
-    public class HandCardObjectManager : UIObjectManager<HandCardObjectManager>
+    public class HandCardObjectManager : UIObjectManager<HandCardObjectManager>, IHandCardObjectManager
     {
-        [SerializeField] private GameObject playerTable;
-        [SerializeField] private GameObject opponentTable;
+        private GameObject playerTable;
+        private GameObject opponentTable;
         
         private HandCardCollection behaviourCollection;
-        private CardPile cardPile;
+        private Game game;
+        private CardPile CardPile => game.CardPile;
+        private AlignmentEnum CurrentAlignment => game.CurrentAlignment;
 
         protected override void Awake()
         {
@@ -24,25 +27,17 @@ namespace Berty.UI.Card.Managers
             playerTable = ObjectReadManager.Instance.PlayerTable;
             opponentTable = ObjectReadManager.Instance.OpponentTable;
             behaviourCollection = ObjectReadManager.Instance.HandCardObjectCollection.GetComponent<HandCardCollection>();
-            cardPile = EntityLoadManager.Instance.Game.CardPile;
-        }
-
-        public void SwitchTables()
-        {
-            playerTable.SetActive(!playerTable.activeSelf);
-            opponentTable.SetActive(!playerTable.activeSelf);
+            game = EntityLoadManager.Instance.Game;
         }
 
         public void AddCardObjects()
         {
-            if (playerTable.activeSelf) AddCardObjectsForTable(AlignmentEnum.Player);
-            if (opponentTable.activeSelf) AddCardObjectsForTable(AlignmentEnum.Opponent);
+            AddCardObjectsForTable(CurrentAlignment);
         }
 
         public void RemoveCardObjects()
         {
-            if (playerTable.activeSelf) RemoveCardObjectsForTable(AlignmentEnum.Player);
-            if (opponentTable.activeSelf) RemoveCardObjectsForTable(AlignmentEnum.Opponent);
+            RemoveCardObjectsForTable(CurrentAlignment);
         }
 
         public Sprite GetSpriteFromHandCardObject(CharacterConfig characterConfig)
@@ -50,24 +45,24 @@ namespace Berty.UI.Card.Managers
             return behaviourCollection.GetBehaviourFromCharacterConfig(characterConfig).Sprite;
         }
 
-        public void AddCardObjectFromConfigForTable(CharacterConfig characterConfig, AlignmentEnum alignment)
+        public void AddCardObjectFromConfig(CharacterConfig characterConfig)
         {
             Transform card = behaviourCollection.GetBehaviourFromCharacterConfig(characterConfig).transform;
-            Transform table = GetTableObjectFromAlignment(alignment).transform;
+            Transform table = GetTableObjectFromAlignment(CurrentAlignment).transform;
             card.SetParent(table, false);
         }
 
         private void AddCardObjectsForTable(AlignmentEnum alignment)
         {
             Transform table = GetTableObjectFromAlignment(alignment).transform;
-            IReadOnlyList<CharacterConfig> ownedCards = cardPile.GetCardsFromAlign(alignment);
+            IReadOnlyList<CharacterConfig> ownedCards = CardPile.GetCardsFromAlign(alignment);
             AddCardObjectsFromPileData(table, ownedCards);
         }
 
         private void RemoveCardObjectsForTable(AlignmentEnum alignment)
         {
             Transform table = GetTableObjectFromAlignment(alignment).transform;
-            IReadOnlyList<CharacterConfig> ownedCards = cardPile.GetCardsFromAlign(alignment);
+            IReadOnlyList<CharacterConfig> ownedCards = CardPile.GetCardsFromAlign(alignment);
             RemoveCardObjectsFromTable(table, ownedCards);
         }
 

@@ -74,7 +74,7 @@ namespace Berty.BoardCards.Listeners
         {
             switch (BoardCard.GetSkill())
             {
-                case SkillEnum.KoszmarZBertwood:
+                case CharacterEnum.KoszmarZBertwood:
                     StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.ExtraAttackCooldown, BoardCard);
                     break;
             }
@@ -84,25 +84,25 @@ namespace Berty.BoardCards.Listeners
 
             switch (BoardCard.GetSkill())
             {
-                case SkillEnum.BertkaSerferka:
+                case CharacterEnum.BertkaSerferka:
                     BoardCardBehaviour swapTarget = attackedCards.OrderByDescending(attackedCard => BoardCard.GetDistanceTo(attackedCard.BoardCard).x).First();
                     CardNavigationManager.Instance.SwapCards(this, swapTarget);
                     break;
-                case SkillEnum.Bertonator:
+                case CharacterEnum.Bertonator:
                     if (attackedCards.Count > 1) throw new Exception($"Bertonator is targeting {attackedCards.Count} cards");
                     BoardCardBehaviour pushedCard = attackedCards[0];
                     pushedCard.EntityHandler.AdvanceDexterity(-1, this);
                     PushCardAway(pushedCard, this);
                     break;
-                case SkillEnum.KowbojBert:
+                case CharacterEnum.KowbojBert:
                     EntityHandler.AdvanceDexterity(1, this);
                     EventManager.Instance.RaiseOnValueChange(this, 1);
                     break;
-                case SkillEnum.KuglarzBert:
+                case CharacterEnum.KuglarzBert:
                     EntityHandler.AdvanceDexterity(-1, null);
                     EntityHandler.AdvanceHealth(1, null);
                     break;
-                case SkillEnum.RoninBert:
+                case CharacterEnum.RoninBert:
                     HandleRoninBertEffect(attackedCards, this);
                     break;
             }
@@ -110,7 +110,7 @@ namespace Berty.BoardCards.Listeners
 
         private void PushCardAway(BoardCardBehaviour target, BoardCardBehaviour bertonator)
         {
-            if (bertonator.BoardCard.GetSkill() != SkillEnum.Bertonator) 
+            if (bertonator.BoardCard.GetSkill() != CharacterEnum.Bertonator) 
                 throw new Exception($"Bertonator effect is casted by {bertonator.BoardCard.CharacterConfig.Name}");
             Vector2Int distance = bertonator.BoardCard.GetDistanceTo(target.BoardCard);
             BoardField targetField = game.Grid.GetFieldDistancedFromCardOrNull(distance.x * 2, distance.y * 2, bertonator.BoardCard);
@@ -120,7 +120,7 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleRoninBertEffect(IReadOnlyList<BoardCardBehaviour> attackedCards, BoardCardBehaviour roninBert)
         {
-            if (roninBert.BoardCard.GetSkill() != SkillEnum.RoninBert)
+            if (roninBert.BoardCard.GetSkill() != CharacterEnum.RoninBert)
                 throw new Exception($"RoninBert effect is casted by {roninBert.BoardCard.CharacterConfig.Name}");
             if (attackedCards.Count > 2)
                 throw new Exception($"RoninBert got {attackedCards.Count} cards attacked");

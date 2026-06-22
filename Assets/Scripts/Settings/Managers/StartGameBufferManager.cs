@@ -13,7 +13,7 @@ namespace Berty.Settings
 
         public void SetLoading(bool isLoading)
         {
-            if (isLoading) Data = SaveLoadManager.Instance.LoadTheSaveFile();
+            if (isLoading) Data = ProcessGameDataManager.Instance.LoadTheSaveFile();
             else Data = null;
         }
 

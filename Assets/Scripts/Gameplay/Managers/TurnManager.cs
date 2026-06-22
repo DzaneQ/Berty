@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Berty.Gameplay.Managers
 {
-    public class TurnManager : ManagerSingleton<TurnManager>
+    public class TurnManager : ManagerSingleton<TurnManager>, ITurnManager
     {
         private Game game;
         
@@ -24,7 +24,6 @@ namespace Berty.Gameplay.Managers
         public void EndTurn()
         {
             game.SwitchAlignment();
-            HandCardObjectManager.Instance.SwitchTables();
             EventManager.Instance.RaiseOnNewTurn();
             CheckpointManager.Instance.RequestCheckpoint();
         }
@@ -34,6 +33,11 @@ namespace Berty.Gameplay.Managers
             AlignmentEnum winner = game.Grid.WinningSide();
             if (winner == AlignmentEnum.None) winner = game.CurrentAlignment;
             OverlayObjectManager.Instance.DisplayGameOverScreen(winner);
+        }
+
+        public bool IsItMyTurn()
+        {
+            return true;
         }
     }
 }

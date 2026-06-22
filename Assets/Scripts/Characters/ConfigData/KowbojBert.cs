@@ -8,7 +8,7 @@ namespace Berty.BoardCards.ConfigData
         public KowbojBert()
         {
             AddName("kowboj bert");
-            AddSkill(SkillEnum.KowbojBert);
+            AddSkill(CharacterEnum.KowbojBert);
             AddProperties(GenderEnum.Male, RoleEnum.Agile);
             AddStats(2, 3, 4, 3);
             AddRange(1, 1, attackRange);

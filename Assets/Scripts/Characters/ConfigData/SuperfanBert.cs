@@ -9,7 +9,7 @@ namespace Berty.BoardCards.ConfigData
         public SuperfanBert()
         {
             AddName("superfan bert");
-            AddSkill(SkillEnum.SuperfanBert);
+            AddSkill(CharacterEnum.SuperfanBert);
             AddProperties(GenderEnum.Kid, RoleEnum.Agile);
             AddStats(1, 2, 5, 2);
             AddRange(1, 2, attackRange);

@@ -14,7 +14,7 @@ namespace Berty.Gameplay.Init
 {
     public class LanguageInit : MonoBehaviour
     {
-        public void UpdateLanguageForFixedLabels()
+        public void InitializeLanguageDictionary()
         {
             Dictionary<string, string> dict = LoadLanguageDictionary();
             TMP_Text[] labels = GetTranslatableLabels();

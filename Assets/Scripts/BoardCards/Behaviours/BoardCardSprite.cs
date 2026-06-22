@@ -5,6 +5,7 @@ using Berty.Grid.Field.Behaviour;
 using Berty.Grid.Managers;
 using Berty.Settings;
 using Berty.UI.Card.Managers;
+using Berty.Utility;
 using UnityEngine;
 
 namespace Berty.BoardCards.Behaviours
@@ -25,7 +26,7 @@ namespace Berty.BoardCards.Behaviours
         public void UpdateObjectFromCharacterConfig()
         {
             CharacterConfig character = BoardCard.CharacterConfig;
-            characterSprite.sprite = HandCardObjectManager.Instance.GetSpriteFromHandCardObject(character);
+            characterSprite.sprite = ManagerLocator.HandCardObjectManagerInstance.GetSpriteFromHandCardObject(character);
             gameObject.name = character.Name;
         }
 
