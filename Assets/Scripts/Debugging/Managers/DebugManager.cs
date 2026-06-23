@@ -2,6 +2,7 @@ using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Utility;
+using UnityEngine;
 
 namespace Berty.Debugging.Managers
 {
@@ -16,11 +17,12 @@ namespace Berty.Debugging.Managers
             game = EntityLoadManager.Instance.Game;
         }
 
-        public void TakeCardIfInPile(AlignmentEnum align)
+        public void TakeCardIfInPile(AlignmentEnum align) // NOTE: When debugging, change so CharacterEnum is returned rather than focusing on singleplayer logic
         {
-            if (align == AlignmentEnum.Player) game.CardPile.PullCardIfInPile(CharacterEnum.TrenerPokebertow, align);
-            if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(CharacterEnum.RoninBert, align);
-            //if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(SkillEnum.KrolPopuBert, align);
+            Debug.Log("Taking debug card.");
+            //if (align == AlignmentEnum.Player) game.CardPile.PullCardIfInPile(CharacterEnum.TrenerPokebertow, align);
+            //if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(CharacterEnum.RoninBert, align);
+            //if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(CharacterEnum.KrolPopuBert, align);
         }
     }
 #else

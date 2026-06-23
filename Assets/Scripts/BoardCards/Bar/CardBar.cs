@@ -6,8 +6,8 @@ namespace Berty.BoardCards.Bar
 {
     public class CardBar : MonoBehaviour
     {
-        const float startOutlineWidth = .165f;
-        const float unitWidth = 2.66f;
+        private const float startOutlineWidth = .165f;
+        private const float unitWidth = 2.66f;
 
         private BoardCardBehaviour card;
         private IBarWidth barWidth;
@@ -15,7 +15,7 @@ namespace Berty.BoardCards.Bar
         private SpriteRenderer fillRend;
         private SpriteRenderer outlineRend;
 
-        void Awake()
+        private void Awake()
         {
             card = GetComponentInParent<BoardCardBehaviour>();
             barFill = transform.GetChild(0);
@@ -24,7 +24,7 @@ namespace Berty.BoardCards.Bar
             outlineRend = barFill.parent.GetComponent<SpriteRenderer>();
         }
 
-        void Start()
+        private void Start()
         {
             //UpdateBarWithoutAnimation();
         }

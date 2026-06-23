@@ -8,11 +8,11 @@ namespace Berty.Display.View
 {
     public class RotateCamera : MonoBehaviour
     {
-        float edgeWidth = 10f;
-        float rotManSpeed = 90f;
-        float rotAutoMultiplier = 0.25f;
+        private float edgeWidth = 10f;
+        private float rotManSpeed = 90f;
+        private float rotAutoMultiplier = 0.25f;
 
-        void Update()
+        private void Update()
         {
             HandleCameraTransform();
         }

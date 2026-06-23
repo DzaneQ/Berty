@@ -10,12 +10,12 @@ namespace Berty.Grid.Field.Listeners
     {
         private FieldBehaviour behaviour;
 
-        void Awake()
+        private void Awake()
         {
             behaviour = GetComponent<FieldBehaviour>();
         }
 
-        void Start()
+        private void Start()
         {
             // Enabling toggle from the inspector.
         }

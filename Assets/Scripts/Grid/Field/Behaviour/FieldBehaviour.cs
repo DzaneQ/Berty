@@ -8,6 +8,7 @@ using Berty.Grid.Entities;
 using Berty.Grid.Field.Entities;
 using Berty.Grid.Managers;
 using Berty.UI.Card.Managers;
+using Berty.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -75,8 +76,8 @@ namespace Berty.Grid.Field.Behaviour
 
         public void PutTheCard()
         {
-            CharacterConfig selectedCardConfig = HandToFieldManager.Instance.RemoveSelectedCardFromHand();
-            HandToFieldManager.Instance.ActivateCardOnField(this, selectedCardConfig);
+            CharacterConfig selectedCardConfig = ManagerLocator.HandToFieldManagerInstance.RemoveSelectedCardFromHand();
+            ManagerLocator.HandToFieldManagerInstance.ActivateCardOnField(this, selectedCardConfig);
             PaymentManager.Instance.CallPayment(selectedCardConfig.Power, ChildCard);
         }
         

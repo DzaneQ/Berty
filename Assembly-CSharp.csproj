@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertZawodowiec.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\ActiveState.cs" />
     <Compile Include="Assets\Scripts\Menu\Listeners\ButtonFunction.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\IHandToFieldManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\StatusListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveRight.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandToFieldManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\Client\ClientUIObjectManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\Client\ClientHandToFieldManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\Client\ClientPileToHandManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\PaymentListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardNavigation.cs" />
@@ -138,6 +140,7 @@
     <Compile Include="Assets\Scripts\BoardCards\State\TelekineticState.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\SelectStatus.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\Server\ServerPileToHandManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\IFieldToHandManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IMoveCard.cs" />
     <Compile Include="Assets\Scripts\Enums\DirectionEnum.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
@@ -261,6 +264,7 @@
     <Compile Include="Assets\Scripts\UI\Managers\UIObjectManager.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Listeners\IColliderInput.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Managers\CardNavigationManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\Client\ClientFieldToHandManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveDown.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KsiezniczkaBerta.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\SuperfanBert.cs" />

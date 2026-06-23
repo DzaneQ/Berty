@@ -10,22 +10,18 @@ using System;
 
 namespace Berty.UI.Card.Managers
 {
-    public class HandToFieldManager : ManagerSingleton<HandToFieldManager>, IHandToFieldManager
+    public class ClientHandToFieldManager : ClientManagerSingleton<ClientHandToFieldManager>, IHandToFieldManager
     {
-        private Game Game { get; set; }
-        private CardPile CardPile => Game.CardPile;
-
         protected override void Awake()
         {
             InitializeSingleton();
-            Game = EntityLoadManager.Instance.Game;
         }
 
         public CharacterConfig RemoveSelectedCardFromHand()
         {
             CharacterConfig selectedCard = SelectionManager.Instance.GetSelectedCardOrThrow();
             SelectionManager.Instance.PutSelectedCardAsPending();
-            CardPile.LeaveCard(selectedCard, Game.CurrentAlignment);
+            // NOTE: CardPile.LeaveCard is executed for singleplayer logic. Do we require it here? Maybe don't bother with manipulating card piles before confirming payment at all?
             ManagerLocator.HandCardObjectManagerInstance.RemoveCardObjects();
             HandCardSelectManager.Instance.ClearSelection();
             return selectedCard;

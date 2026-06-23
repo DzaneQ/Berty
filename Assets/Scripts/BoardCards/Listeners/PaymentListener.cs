@@ -5,6 +5,7 @@ using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Entities;
 using Berty.UI.Card.Managers;
+using Berty.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,7 +63,7 @@ namespace Berty.BoardCards.Listeners
         {
             if (StateMachine.HasState(CardStateEnum.NewCard))
             {
-                FieldToHandManager.Instance.RetrievePendingCard();
+                ManagerLocator.FieldToHandManagerInstance.RetrievePendingCard();
                 SoundManager.Instance.TakeSound(transform);
                 Activation.DeactivateCard();
                 return;

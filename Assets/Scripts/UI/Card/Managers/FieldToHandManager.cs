@@ -7,7 +7,7 @@ using Berty.BoardCards.ConfigData;
 
 namespace Berty.UI.Card.Managers
 {
-    public class FieldToHandManager : ManagerSingleton<FieldToHandManager>
+    public class FieldToHandManager : ManagerSingleton<FieldToHandManager>, IFieldToHandManager
     {
         private Game game { get; set; }
         private CardPile cardPile => game.CardPile;

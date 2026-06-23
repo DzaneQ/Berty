@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Animation
 {
-    interface IBarWidth
+    internal interface IBarWidth
     {
         int CoroutineCount { get; }
         void SetVectorsWithoutAnimation(Vector3 targetLocation, Vector2 targetSize);

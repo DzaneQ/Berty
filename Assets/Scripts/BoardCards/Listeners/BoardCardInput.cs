@@ -11,7 +11,7 @@ namespace Berty.BoardCards.Listeners
 {
     public class BoardCardInput : BoardCardBehaviour, IColliderInput
     {
-        void Start()
+        private void Start()
         {
             // Enabling toggle from the inspector.
         }

@@ -31,10 +31,8 @@ namespace Berty.Network.Managers
         [ClientRpc]
         public void AddCardObjectsClientRpc(CharacterEnum[] cardNames, ClientRpcParams rpcParams)
         {
-            Debug.Log($"Attempted to add card objects when turn is on {NetworkTurnManager.Instance.CurrentAlignment}.");
-            // NOTE: The code below causes the other client to throw on the second turn. Race condition?
+            // NOTE: This rpc is executed before TurnManagerInstance updates the alignment so it'll throw an error
             //if (ManagerLocator.TurnManagerInstance.IsItNotMyTurn()) throw new InvalidOperationException($"Client attempted to add card objects when it is not their turn.");
-            Debug.Log($"Adding card objects for {cardNames.Length} cards. First card is: {cardNames[0]}. Second card is: {cardNames[1]}.");
             UpdatePlayerHandCards(cardNames);
             ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
         }

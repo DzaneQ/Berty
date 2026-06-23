@@ -153,7 +153,7 @@ namespace Berty.UI.Card.Entities
         public void LeaveCard(CharacterConfig card, AlignmentEnum align)
         {
             List<CharacterConfig> table = GetCardsFromAlign(align);
-            if (!table.Contains(card)) throw new Exception($"Attempting to get {card.Name} from wrong table");
+            if (!table.Contains(card)) throw new Exception($"Attempting to get {card.Name} from wrong table: {align} has {table.Count} cards");
             table.Remove(card);
         }
 

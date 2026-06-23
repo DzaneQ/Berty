@@ -14,7 +14,7 @@ namespace Berty.Menu.Listeners
 
         public AudioClip ClickSound => clickSound;
 
-        void Start()
+        private void Start()
         {
             src = transform.parent.parent.GetComponent<AudioSource>();
         }
