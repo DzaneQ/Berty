@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Berty.Network.Managers
 {
-    public class NetworkTurnManager : SharedManagerSingleton<NetworkTurnManager>, ITurnManager
+    public class NetworkTurnManager : RpcManagerSingleton<NetworkTurnManager>, ITurnManager
     {
         private Game game; // should be used from server only
         private readonly NetworkVariable<AlignmentEnum> turnAlignment = new();

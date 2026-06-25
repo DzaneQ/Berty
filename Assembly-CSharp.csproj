@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\Menu\Behaviours\NavigationMenu.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Scripts\Enums\StatusEnum.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\IConfirmPaymentManager.cs" />
     <Compile Include="Assets\Scripts\Enums\CardStateEnum.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertZawodowiec.cs" />
@@ -97,7 +98,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\AnimatedMoveCard.cs" />
     <Compile Include="Assets\Scripts\Display\LookupCard.cs" />
-    <Compile Include="Assets\Scripts\Utility\SharedManagerSingleton.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaSJW.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BigMadB.cs" />
@@ -125,7 +125,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\Client\ClientUIObjectManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\Client\ClientHandToFieldManager.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Managers\Client\ClientPileToHandManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\PaymentListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardNavigation.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
@@ -139,8 +138,8 @@
     <Compile Include="Assets\Scripts\UI\Card\Managers\FieldToHandManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\TelekineticState.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\SelectStatus.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Managers\Server\ServerPileToHandManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\IFieldToHandManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\Server\ServerPileToHandManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IMoveCard.cs" />
     <Compile Include="Assets\Scripts\Enums\DirectionEnum.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
@@ -197,6 +196,7 @@
     <Compile Include="Assets\Scripts\UI\Managers\OverlayObjectManager.cs" />
     <Compile Include="Assets\Scripts\Utility\PersistentManagerSingleton.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IRotateCard.cs" />
+    <Compile Include="Assets\Scripts\Network\Managers\NetworkConfirmPaymentManager.cs" />
     <Compile Include="Assets\Scripts\Audio\Managers\SoundManager.cs" />
     <Compile Include="Assets\Scripts\Characters\Managers\ModifyStatChangeManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\EffectableState.cs" />
@@ -249,6 +249,7 @@
     <Compile Include="Assets\Scripts\UI\Card\Managers\Client\ClientHandCardObjectManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\Bertolaj.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Bar\CardBar.cs" />
+    <Compile Include="Assets\Scripts\Utility\RpcManagerSingleton.cs" />
     <Compile Include="Assets\Scripts\Settings\Managers\StartGameBufferManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\EBerta.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\StatusManager.cs" />

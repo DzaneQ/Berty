@@ -79,7 +79,7 @@ namespace Berty.BoardCards.Managers
 
         public void ConfirmPayment(BoardCardBehaviour card)
         {
-            PaymentManager.Instance.ConfirmPayment();
+            ManagerLocator.ConfirmPaymentManagerInstance.ConfirmPayment(card);
         }
 
         public void ApplySpecialEffect(BoardCardBehaviour card)

@@ -6,7 +6,7 @@ using Unity.Netcode;
 
 namespace Berty.Network.Managers
 {
-    public class PlayerReadManager : SharedManagerSingleton<PlayerReadManager>
+    public class PlayerReadManager : RpcManagerSingleton<PlayerReadManager>
     {
         private Dictionary<AlignmentEnum, ulong> alignments = new(); // Read from server only
 

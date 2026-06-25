@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Berty.Gameplay.Managers
 {
-    public class PaymentManager : ManagerSingleton<PaymentManager>
+    public class PaymentManager : ManagerSingleton<PaymentManager>, IConfirmPaymentManager
     {
         public void CallPayment(int price, BoardCardBehaviour card)
         {
@@ -23,7 +23,7 @@ namespace Berty.Gameplay.Managers
             SelectionManager.Instance.SetAsNotPaymentTime();
         }
 
-        public void ConfirmPayment()
+        public void ConfirmPayment(BoardCardBehaviour card)
         {
             if (!SelectionManager.Instance.CheckOffer()) return;
             HandToPileManager.Instance.DiscardSelectedCardsFromHand();

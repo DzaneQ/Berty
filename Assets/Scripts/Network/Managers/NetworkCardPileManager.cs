@@ -2,6 +2,8 @@ using Berty.BoardCards.ConfigData;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Entities;
+using Berty.UI.Card.Managers;
+using Berty.UI.Managers;
 using Berty.Utility;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,7 @@ using UnityEngine;
 
 namespace Berty.Network.Managers
 {
-    public class NetworkCardPileManager : SharedManagerSingleton<NetworkCardPileManager>
+    public class NetworkCardPileManager : RpcManagerSingleton<NetworkCardPileManager>
     {
         private List<CharacterConfig> myHandCards;
         private IReadOnlyList<CharacterConfig> allCards;
