@@ -128,6 +128,7 @@
     <Compile Include="Assets\Scripts\BoardCards\Listeners\PaymentListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardNavigation.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
+    <Compile Include="Assets\Scripts\Network\Managers\NetworkCardManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KowbojBert.cs" />
     <Compile Include="Assets\Scripts\Enums\GenderEnum.cs" />
@@ -270,7 +271,6 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\KsiezniczkaBerta.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\SuperfanBert.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\AnimatedBarWidth.cs" />
-    <Compile Include="Assets\Scripts\Network\Managers\NetworkCardPileManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KuglarzBert.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\ButtonInput.cs" />
     <Compile Include="Assets\Scripts\Enums\HighlightEnum.cs" />

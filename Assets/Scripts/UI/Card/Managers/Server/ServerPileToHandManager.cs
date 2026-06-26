@@ -64,7 +64,7 @@ namespace Berty.UI.Card.Managers.Server
                     TargetClientIds = new ulong[] { targetClientId }
                 }
             };
-            NetworkCardPileManager.Instance.AddCardObjectsClientRpc(playerCards, sendRpcParam);
+            NetworkCardManager.Instance.AddCardObjectsClientRpc(playerCards, sendRpcParam);
         }
     }
 }

@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Berty.Network.Managers
 {
-    public class NetworkCardPileManager : RpcManagerSingleton<NetworkCardPileManager>
+    public class NetworkCardManager : RpcManagerSingleton<NetworkCardManager>
     {
         private List<CharacterConfig> myHandCards;
         private IReadOnlyList<CharacterConfig> allCards;
@@ -23,6 +23,17 @@ namespace Berty.Network.Managers
         {
             CardPile pile = EntityLoadManager.Instance.Game.CardPile;
             allCards = pile.GetAllCharactersOutsideField(); // NOTE: Expected behavior that no cards are on the field, otherwise there might be missing cards
+        }
+
+        public CharacterConfig GetConfigFromCharacterName(CharacterEnum name)
+        {
+            return allCards.First(card => card.CharacterName == name);
+        }
+
+        public void RemoveCardFromMyHandOrThrow(CharacterConfig cardToRemove)
+        {
+            cardToRemove = myHandCards.First(card => card.CharacterName == cardToRemove.CharacterName); // NOTE: These are not the same config, it needs overwritten
+            if (!myHandCards.Remove(cardToRemove)) throw new InvalidOperationException("Cannot remove card from hand: " + cardToRemove.Name);
         }
 
         private void UpdatePlayerHandCards(CharacterEnum[] cardNames)

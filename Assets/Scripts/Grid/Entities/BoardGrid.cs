@@ -50,6 +50,7 @@ namespace Berty.Grid.Entities
             };
         }
 
+        // TODO: Refactor from 2 ints to Vector2Int
         public BoardField GetFieldFromCoordsOrThrow(int x, int y)
         {
             foreach (BoardField field in Fields)

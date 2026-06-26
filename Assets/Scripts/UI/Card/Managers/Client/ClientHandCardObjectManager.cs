@@ -23,13 +23,13 @@ namespace Berty.UI.Card.Managers.Client
 
         public void AddCardObjects()
         {
-            IReadOnlyList<CharacterConfig> ownedCards = NetworkCardPileManager.Instance.MyHandCards;
+            IReadOnlyList<CharacterConfig> ownedCards = NetworkCardManager.Instance.MyHandCards;
             AddCardObjectsFromPileData(myTable, ownedCards);
         }
 
         public void RemoveCardObjects()
         {
-            IReadOnlyList<CharacterConfig> ownedCards = NetworkCardPileManager.Instance.MyHandCards;
+            IReadOnlyList<CharacterConfig> ownedCards = NetworkCardManager.Instance.MyHandCards;
             RemoveCardObjectsFromTable(myTable, ownedCards);
         }
 

@@ -54,7 +54,7 @@ namespace Berty.Grid.Field.Behaviour
                 "Field SE" => grid.GetFieldFromCoordsOrThrow(1, -1),
                 _ => throw new Exception("Unknown field name to handle."),
             };
-            if (!LoadTheCard()) UpdateField();
+            if (LoadTheCard() == null) UpdateField();
         }
 
         public void UpdateField()
@@ -81,9 +81,9 @@ namespace Berty.Grid.Field.Behaviour
             PaymentManager.Instance.CallPayment(selectedCardConfig.Power, ChildCard);
         }
         
-        private bool LoadTheCard()
+        public BoardCardBehaviour LoadTheCard()
         {
-            if (BoardField.OccupantCard == null) return false;
+            if (BoardField.OccupantCard == null) return null;
             ChildCard = transform.GetChild(0).GetChild(0).GetComponent<BoardCardBehaviour>();
             ChildCard.gameObject.SetActive(true);
             if (BoardField.BackupCard == null) ChildCard.Activation.LoadCard(BoardField.OccupantCard);
@@ -98,7 +98,7 @@ namespace Berty.Grid.Field.Behaviour
                 ChildCard.gameObject.SetActive(true);
                 ChildCard.Activation.LoadCard(BoardField.OccupantCard);
             }
-            return true;
+            return ChildCard;
         }
 
         private void ColorizeField()

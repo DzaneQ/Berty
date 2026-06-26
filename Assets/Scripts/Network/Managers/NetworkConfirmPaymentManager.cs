@@ -1,8 +1,11 @@
 using Berty.BoardCards.Behaviours;
 using Berty.BoardCards.ConfigData;
+using Berty.BoardCards.Entities;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.Grid.Field.Entities;
+using Berty.Grid.Managers;
 using Berty.UI.Card.Entities;
 using Berty.UI.Card.Managers;
 using Berty.UI.Managers;
@@ -30,26 +33,34 @@ namespace Berty.Network.Managers
         {
             if (!SelectionManager.Instance.CheckOffer()) return;
             CharacterEnum[] selectedCardNames = SelectionManager.Instance.SelectedCards.Select(card => card.CharacterName).ToArray();
-            CharacterEnum cardFocusName = card.BoardCard.CharacterConfig.CharacterName;
-            DiscardSelectedCardsFromHandServerRpc(selectedCardNames, cardFocusName, OwnerClientId);
+            BoardCardNetworkData cardFocus = new()
+            {
+                CharacterName = card.BoardCard.CharacterConfig.CharacterName,
+                FieldCoords = card.BoardCard.OccupiedField.Coordinates,
+                Direction = card.BoardCard.Direction,
+                Alignment = card.BoardCard.Align
+            };
+            DiscardSelectedCardsFromHandServerRpc(selectedCardNames, cardFocus, OwnerClientId);
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void DiscardSelectedCardsFromHandServerRpc(CharacterEnum[] selectedCardNames, CharacterEnum cardFocusName, ulong sourceClientId)
+        public void DiscardSelectedCardsFromHandServerRpc(CharacterEnum[] selectedCardNames, BoardCardNetworkData cardFocus, ulong sourceClientId)
         {
             if (!IsServer) throw new InvalidOperationException("Discarding cards should be processed in server. server.");
             AlignmentEnum align = Game.CurrentAlignment;
             if (PlayerReadManager.Instance.GetClientIdFromAlignment(align) != sourceClientId) throw new InvalidOperationException($"Align {align} does not belong to the client.");
             IReadOnlyList<CharacterConfig> playerCards = CardPile.GetCardsFromAlign(align);
             IReadOnlyList<CharacterConfig> selectedCards = playerCards.Where(card => selectedCardNames.Contains(card.CharacterName)).ToList();
-            CharacterConfig cardFocus = playerCards.FirstOrDefault(card => card.CharacterName == cardFocusName);
-            if (cardFocus != null) CardPile.LeaveCard(cardFocus, align);
+            CharacterConfig cardFocusInHands = playerCards.FirstOrDefault(card => card.CharacterName == cardFocus.CharacterName);
+            if (cardFocusInHands != null) CardPile.LeaveCard(cardFocusInHands, align);
             CardPile.DiscardCards(selectedCards, align);
-            FinishPaymentClientRpc(sourceClientId);
+            FinishPaymentClientRpc(cardFocus, sourceClientId);
+            if (!ServerIsHost) InstantiateBoardCardEntity(cardFocus); // NOTE: Experimental
         }
 
+        // TODO: It applies only for new card. Other payment related actions should be adjusted.
         [ClientRpc]
-        public void FinishPaymentClientRpc(ulong sourceClientId)
+        public void FinishPaymentClientRpc(BoardCardNetworkData cardFocus, ulong sourceClientId)
         {
             if (OwnerClientId == sourceClientId)
             {
@@ -60,10 +71,38 @@ namespace Berty.Network.Managers
             }
             else
             {
-                // TODO: Add card on the field
+                BoardCard newCard = InstantiateBoardCardEntity(cardFocus);
+                BoardCardBehaviour newCardBehaviour = FieldCollectionManager.Instance.GetBehaviourFromEntity(newCard.OccupiedField).LoadTheCard();
+                if (newCardBehaviour == null) throw new Exception("Failed to load the new card behaviour");
+                newCardBehaviour.StateMachine.HandleStateForNewCard();
             }
             EventManager.Instance.RaiseOnPaymentConfirm();
             CheckpointManager.Instance.RequestCheckpoint();
+        }
+
+        private BoardCard InstantiateBoardCardEntity(BoardCardNetworkData cardFocus)
+        {
+            BoardField targetField = Game.Grid.GetFieldFromCoordsOrThrow(cardFocus.FieldCoords.x, cardFocus.FieldCoords.y);
+            CharacterConfig character = NetworkCardManager.Instance.GetConfigFromCharacterName(cardFocus.CharacterName);
+            BoardCard newCard = targetField.AddNewCard(character, cardFocus.Alignment);
+            if (targetField.BackupCard == null) newCard.SetDirection(cardFocus.Direction);
+            return newCard;
+        }
+    }
+
+    public struct BoardCardNetworkData : INetworkSerializable
+    {
+        public CharacterEnum CharacterName;
+        public Vector2Int FieldCoords;
+        public DirectionEnum Direction;
+        public AlignmentEnum Alignment;
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref CharacterName);
+            serializer.SerializeValue(ref FieldCoords);
+            serializer.SerializeValue(ref Direction);
+            serializer.SerializeValue(ref Alignment);
         }
     }
 }

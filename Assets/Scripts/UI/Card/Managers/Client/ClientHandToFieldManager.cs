@@ -7,6 +7,7 @@ using Berty.BoardCards.ConfigData;
 using Berty.Grid.Field.Behaviour;
 using Berty.BoardCards.Behaviours;
 using System;
+using Berty.Network.Managers;
 
 namespace Berty.UI.Card.Managers
 {
@@ -21,7 +22,7 @@ namespace Berty.UI.Card.Managers
         {
             CharacterConfig selectedCard = SelectionManager.Instance.GetSelectedCardOrThrow();
             SelectionManager.Instance.PutSelectedCardAsPending();
-            // NOTE: CardPile.LeaveCard is executed for singleplayer logic. Do we require it here? Maybe don't bother with manipulating card piles before confirming payment at all?
+            NetworkCardManager.Instance.RemoveCardFromMyHandOrThrow(selectedCard);
             ManagerLocator.HandCardObjectManagerInstance.RemoveCardObjects();
             HandCardSelectManager.Instance.ClearSelection();
             return selectedCard;
