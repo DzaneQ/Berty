@@ -30,6 +30,12 @@ namespace Berty.Network.Managers
             return allCards.First(card => card.CharacterName == name);
         }
 
+        public void RetrieveCard(CharacterConfig card)
+        {
+            if (myHandCards.Contains(card)) throw new Exception($"Card {card.Name} is already in the hand.");
+            myHandCards.Add(card);
+        }
+
         public void RemoveCardFromMyHandOrThrow(CharacterConfig cardToRemove)
         {
             cardToRemove = myHandCards.First(card => card.CharacterName == cardToRemove.CharacterName); // NOTE: These are not the same config, it needs overwritten

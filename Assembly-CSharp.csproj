@@ -127,8 +127,8 @@
     <Compile Include="Assets\Scripts\UI\Card\Managers\Client\ClientHandToFieldManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\PaymentListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardNavigation.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\Scripts\Network\Managers\NetworkCardManager.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KowbojBert.cs" />
     <Compile Include="Assets\Scripts\Enums\GenderEnum.cs" />
