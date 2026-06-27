@@ -13,7 +13,6 @@ using Berty.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Security;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -48,7 +47,7 @@ namespace Berty.Network.Managers
         public void DiscardSelectedCardsFromHandServerRpc(CharacterEnum[] selectedCardNames, BoardCardNetworkData cardFocus, ulong sourceClientId)
         {
             if (!IsServer) throw new InvalidOperationException("Discarding cards should be processed in server. server.");
-            AlignmentEnum align = Game.CurrentAlignment;
+            AlignmentEnum align = cardFocus.Alignment;
             if (PlayerReadManager.Instance.GetClientIdFromAlignment(align) != sourceClientId) throw new InvalidOperationException($"Align {align} does not belong to the client.");
             IReadOnlyList<CharacterConfig> playerCards = CardPile.GetCardsFromAlign(align);
             IReadOnlyList<CharacterConfig> selectedCards = playerCards.Where(card => selectedCardNames.Contains(card.CharacterName)).ToList();

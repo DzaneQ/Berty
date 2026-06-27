@@ -157,6 +157,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\SedziaBertt.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
+    <Compile Include="Assets\Scripts\Grid\Managers\Client\ClientColorizeObjectManager.cs" />
     <Compile Include="Assets\Scripts\Grid\Managers\FieldCollectionManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardSprite.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Behaviour\FieldBehaviour.cs" />

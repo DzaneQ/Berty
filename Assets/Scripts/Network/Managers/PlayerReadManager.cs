@@ -1,4 +1,5 @@
 using Berty.Enums;
+using Berty.Grid.Managers;
 using Berty.Utility;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,7 @@ namespace Berty.Network.Managers
         public void SetAlignmentClientRpc(AlignmentEnum alignment, ClientRpcParams rpcParams)
         {
             MyAlignment = alignment;
+            ((ClientColorizeObjectManager)ColorizeObjectManager.Instance).AdjustColorsToAlignment(alignment);
         }
     }
 }

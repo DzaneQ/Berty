@@ -11,10 +11,10 @@ namespace Berty.Grid.Managers
     public class ColorizeObjectManager : ManagerSingleton<ColorizeObjectManager>
     {
 
-        [SerializeField] private Material neutral;
-        [SerializeField] private Material player;
-        [SerializeField] private Material opponent;
-        [SerializeField] private Material attacked;
+        [SerializeField] protected Material neutral;
+        [SerializeField] protected Material player;
+        [SerializeField] protected Material opponent;
+        [SerializeField] protected Material attacked;
 
         private Color attackColor = new Color(1f, 0.55f, 0f, 1f);
         private Color blockColor = new Color(0f, 0.35f, 0.8f, 1f);
