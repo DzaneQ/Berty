@@ -13,6 +13,7 @@ using Berty.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -40,7 +41,7 @@ namespace Berty.Network.Managers
                 Direction = card.BoardCard.Direction,
                 Alignment = card.BoardCard.Align
             };
-            DiscardSelectedCardsFromHandServerRpc(selectedCardNames, cardFocus, OwnerClientId);
+            DiscardSelectedCardsFromHandServerRpc(selectedCardNames, cardFocus, NetworkManager.Singleton.LocalClientId);
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -62,7 +63,7 @@ namespace Berty.Network.Managers
         [ClientRpc]
         public void FinishPaymentClientRpc(BoardCardNetworkData cardFocus, ulong sourceClientId)
         {
-            if (OwnerClientId == sourceClientId)
+            if (NetworkManager.Singleton.LocalClientId == sourceClientId)
             {
                 ManagerLocator.HandCardObjectManagerInstance.RemoveCardObjects();
                 HandCardSelectManager.Instance.ClearSelection();
