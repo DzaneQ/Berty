@@ -9,7 +9,6 @@ namespace Berty.BoardCards.Behaviours
 {
     public abstract class BoardCardBehaviour : MonoBehaviour
     {
-        private Game _game;
         public BoardCardActivation Activation { get; private set; }
         public BoardCardBarsObjects Bars { get; private set; }
         public BoardCardEntityHandler EntityHandler { get; private set; }
@@ -17,7 +16,7 @@ namespace Berty.BoardCards.Behaviours
         public BoardCardSound Sound { get; private set; }
         public BoardCardSprite Sprite { get; private set; }
         public BoardCardStateMachine StateMachine { get; private set; }
-        protected Game game => _game;
+        protected Game game;
         public BoardCard BoardCard => EntityHandler.BoardCard;
         public FieldBehaviour ParentField => EntityHandler.ParentField;
 
