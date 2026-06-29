@@ -27,7 +27,7 @@ namespace Berty.UI.Card.Managers.Server
         public void PullCards()
         {
             int capacity = game.GameConfig.TableCapacity;
-            AlignmentEnum align = game.CurrentAlignment;
+            AlignmentEnum align = ManagerLocator.TurnManagerInstance.CurrentAlignment;
             Debug.Log($"Pulling cards for {align}");
             DebugManager instance = DebugManager.Instance;
             if (instance != null) instance.TakeCardIfInPile(align);

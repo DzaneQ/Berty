@@ -13,6 +13,7 @@ namespace Berty.Gameplay.Managers
     public class TurnManager : ManagerSingleton<TurnManager>, ITurnManager
     {
         private Game game;
+        public AlignmentEnum CurrentAlignment => game.CurrentAlignment;
         
 
         protected override void Awake()
@@ -31,7 +32,7 @@ namespace Berty.Gameplay.Managers
         public void EndTheGame()
         {
             AlignmentEnum winner = game.Grid.WinningSide();
-            if (winner == AlignmentEnum.None) winner = game.CurrentAlignment;
+            if (winner == AlignmentEnum.None) winner = CurrentAlignment;
             OverlayObjectManager.Instance.DisplayGameOverScreen(winner);
         }
 

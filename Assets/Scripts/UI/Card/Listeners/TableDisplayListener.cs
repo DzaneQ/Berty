@@ -4,6 +4,7 @@ using UnityEngine;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Enums;
+using Berty.Utility;
 
 namespace Berty.UI.Card.Listeners
 {
@@ -36,7 +37,7 @@ namespace Berty.UI.Card.Listeners
 
         private void DisplayCurrentAlignmentTable()
         {
-            gameObject.SetActive(game.CurrentAlignment == tableAlignment);
+            gameObject.SetActive(ManagerLocator.TurnManagerInstance.CurrentAlignment == tableAlignment);
         }
     }
 }

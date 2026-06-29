@@ -21,7 +21,7 @@ namespace Berty.UI.Card.Managers
         public void DiscardSelectedCardsFromHand()
         {
             IReadOnlyList<CharacterConfig> selectedCards = SelectionManager.Instance.SelectedCards;
-            CardPile.DiscardCards(selectedCards, Game.CurrentAlignment);
+            CardPile.DiscardCards(selectedCards, ManagerLocator.TurnManagerInstance.CurrentAlignment);
             ManagerLocator.HandCardObjectManagerInstance.RemoveCardObjects();
             HandCardSelectManager.Instance.ClearSelection();
         }

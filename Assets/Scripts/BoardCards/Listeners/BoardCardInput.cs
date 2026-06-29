@@ -61,7 +61,7 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleRightClick()
         {
-            if (BoardCard.Align != game.CurrentAlignment) return;
+            if (BoardCard.Align != ManagerLocator.TurnManagerInstance.CurrentAlignment) return;
             switch (BoardCard.GetSkill())
             {
                 case CharacterEnum.GotkaBerta:
@@ -79,7 +79,7 @@ namespace Berty.BoardCards.Listeners
             if (SelectionManager.Instance.IsItPaymentTime()) return false;
             if (!HasSelectedOneCard()) return false;
             if (BoardCard.GetSkill() != CharacterEnum.TrenerPokebertow) return false;
-            if (BoardCard.Align != game.CurrentAlignment) return false;
+            if (BoardCard.Align != ManagerLocator.TurnManagerInstance.CurrentAlignment) return false;
             ParentField.PutTheCard();
             return true;
         }

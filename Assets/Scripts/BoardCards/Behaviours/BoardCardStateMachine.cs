@@ -4,6 +4,7 @@ using Berty.BoardCards.State;
 using Berty.Characters.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
+using Berty.Utility;
 using System;
 using UnityEngine;
 
@@ -71,7 +72,7 @@ namespace Berty.BoardCards.Behaviours
                 SetIdle();
                 return;
             }
-            AlignmentEnum currentAlign = game.CurrentAlignment;
+            AlignmentEnum currentAlign = ManagerLocator.TurnManagerInstance.CurrentAlignment;
             AlignmentEnum cardAlign = BoardCard.Align;
             if (currentAlign == cardAlign && !BoardCard.IsTired) SetActive();
             else if (IsEligibleForTelekineticState()) SetTelekinetic();
@@ -84,7 +85,7 @@ namespace Berty.BoardCards.Behaviours
             if (telekinesisArea == null) return false;
             if (telekinesisArea.Provider.IsTired) return false;
             if (ApplySkillEffectManager.Instance.DoesPreventEffect(BoardCard, telekinesisArea.Provider)) return false;
-            return telekinesisArea.Provider.Align == game.CurrentAlignment;
+            return telekinesisArea.Provider.Align == ManagerLocator.TurnManagerInstance.CurrentAlignment;
         }
 
         public void SetActive()

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Berty.Gameplay.Entities;
+using Berty.Utility;
 
 namespace Berty.UI.Card.Managers
 {
@@ -19,7 +20,6 @@ namespace Berty.UI.Card.Managers
         private HandCardCollection behaviourCollection;
         private Game game;
         private CardPile CardPile => game.CardPile;
-        private AlignmentEnum CurrentAlignment => game.CurrentAlignment;
 
         protected override void Awake()
         {
@@ -32,12 +32,12 @@ namespace Berty.UI.Card.Managers
 
         public void AddCardObjects()
         {
-            AddCardObjectsForTable(CurrentAlignment);
+            AddCardObjectsForTable(ManagerLocator.TurnManagerInstance.CurrentAlignment);
         }
 
         public void RemoveCardObjects()
         {
-            RemoveCardObjectsForTable(CurrentAlignment);
+            RemoveCardObjectsForTable(ManagerLocator.TurnManagerInstance.CurrentAlignment);
         }
 
         public Sprite GetSpriteFromHandCardObject(CharacterConfig characterConfig)
@@ -48,7 +48,7 @@ namespace Berty.UI.Card.Managers
         public void AddCardObjectFromConfig(CharacterConfig characterConfig)
         {
             Transform card = behaviourCollection.GetBehaviourFromCharacterConfig(characterConfig).transform;
-            Transform table = GetTableObjectFromAlignment(CurrentAlignment).transform;
+            Transform table = GetTableObjectFromAlignment(ManagerLocator.TurnManagerInstance.CurrentAlignment).transform;
             card.SetParent(table, false);
         }
 
