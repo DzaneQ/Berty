@@ -173,6 +173,11 @@ namespace Berty.UI.Card.Entities
             return pileCards.Union(discardedCards).Union(deadCards).Append(bottomCard).Union(PlayerCards).Union(OpponentCards).ToList();
         }
 
+        public CharacterEnum[] GetCharacterNamesFromAlignedTable(AlignmentEnum align)
+        {
+            return GetCardsFromAlign(align).Select(character => character.CharacterName).ToArray();
+        }
+
         private string[] GetNamesFromCharacters(List<CharacterConfig> configList)
         {
             return configList.Select(character => character.Name).ToArray();

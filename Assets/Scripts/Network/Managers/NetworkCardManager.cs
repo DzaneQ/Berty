@@ -2,14 +2,11 @@ using Berty.BoardCards.ConfigData;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Entities;
-using Berty.UI.Card.Managers;
-using Berty.UI.Managers;
 using Berty.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
-using UnityEngine;
 
 namespace Berty.Network.Managers
 {
@@ -42,7 +39,7 @@ namespace Berty.Network.Managers
             if (!myHandCards.Remove(cardToRemove)) throw new InvalidOperationException("Cannot remove card from hand: " + cardToRemove.Name);
         }
 
-        private void UpdatePlayerHandCards(CharacterEnum[] cardNames)
+        public void UpdatePlayerHandCards(CharacterEnum[] cardNames)
         {
             myHandCards = cardNames.Select(name => allCards.First(card => card.CharacterName == name)).Where(card => card != null).ToList();
         }

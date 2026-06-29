@@ -54,16 +54,17 @@ namespace Berty.Network.Managers
             CharacterConfig cardFocusInHands = playerCards.FirstOrDefault(card => card.CharacterName == cardFocus.CharacterName);
             if (cardFocusInHands != null) CardPile.LeaveCard(cardFocusInHands, align);
             CardPile.DiscardCards(selectedCards, align);
-            FinishPaymentClientRpc(cardFocus, sourceClientId);
+            FinishPaymentClientRpc(cardFocus, CardPile.GetCharacterNamesFromAlignedTable(align), sourceClientId);
             if (!ServerIsHost) InstantiateBoardCardEntity(cardFocus); // NOTE: Experimental
         }
 
         // TODO: It applies only for new card. Other payment related actions should be adjusted.
         [ClientRpc]
-        public void FinishPaymentClientRpc(BoardCardNetworkData cardFocus, ulong sourceClientId)
+        public void FinishPaymentClientRpc(BoardCardNetworkData cardFocus, CharacterEnum[] playerTable, ulong sourceClientId)
         {
             if (NetworkManager.Singleton.LocalClientId == sourceClientId)
             {
+                NetworkCardManager.Instance.UpdatePlayerHandCards(playerTable);
                 ManagerLocator.HandCardObjectManagerInstance.RemoveCardObjects();
                 HandCardSelectManager.Instance.ClearSelection();
                 SelectionManager.Instance.SetAsNotPaymentTime();
