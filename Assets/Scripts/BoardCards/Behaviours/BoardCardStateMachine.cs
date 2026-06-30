@@ -25,6 +25,7 @@ namespace Berty.BoardCards.Behaviours
         private GameObject buttonSet;
 
         public CardButton[] Buttons { get; private set; }
+        public CardStateEnum StateName => currentState.GetNameEnum();
         private Camera cam;
 
         protected override void Awake()
