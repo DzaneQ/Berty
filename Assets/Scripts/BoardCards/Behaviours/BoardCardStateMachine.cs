@@ -128,6 +128,7 @@ namespace Berty.BoardCards.Behaviours
             if (Navigation.IsCardAnimating()) return;
             if (Bars.AreBarsAnimating()) return;
             if (!IsCursorFocused()) return;
+            if (ManagerLocator.TurnManagerInstance.IsItNotMyTurn()) return;
             buttonSet.SetActive(true);
         }
 
