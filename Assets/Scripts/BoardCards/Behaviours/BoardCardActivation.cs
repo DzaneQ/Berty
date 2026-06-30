@@ -28,7 +28,7 @@ namespace Berty.BoardCards.Behaviours
             EntityHandler.LoadBoardCardEntity(characterConfig, ManagerLocator.TurnManagerInstance.CurrentAlignment);
             DisableTheOtherCardOnTheField();
             AdjustInitRotation();
-            StateMachine.HandleStateForNewCard();
+            StateMachine.SetNewState();
         }
 
         // The opposite of HandleNewCardActivated + default transform + deactivation

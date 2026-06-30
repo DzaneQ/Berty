@@ -44,7 +44,7 @@ namespace Berty.BoardCards.Behaviours
             SetIdle();
         }
 
-        public void HandleStateForNewCard()
+        public void SetNewState()
         {
             SetState(new NewCardState(this));
         }

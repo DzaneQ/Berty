@@ -183,6 +183,15 @@ namespace Berty.Grid.Entities
             throw new Exception("The code to find card by name shouldn't reach here.");
         }
 
+        public BoardCard FindCardByCharacterNameOrNull(CharacterEnum characterName)
+        {
+            BoardField field = Fields.FirstOrDefault(field => field.OccupantCard?.CharacterConfig.CharacterName == characterName || field.BackupCard?.CharacterConfig.CharacterName == characterName);
+            if (field == null) return null;
+            if (field.OccupantCard.CharacterConfig.CharacterName == characterName) return field.OccupantCard;
+            if (field.BackupCard.CharacterConfig.CharacterName == characterName) return field.BackupCard;
+            throw new Exception("The code to find card by character name shouldn't reach here.");
+        }
+
         private int AlignedCardCount(AlignmentEnum alignment)
         {
             return AlignedFields(alignment, true).Count;

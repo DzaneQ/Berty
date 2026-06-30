@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Berty.Network.Managers
 {
@@ -40,22 +41,26 @@ namespace Berty.Network.Managers
                 Direction = card.BoardCard.Direction,
                 Alignment = card.BoardCard.Align
             };
-            DiscardSelectedCardsFromHandServerRpc(selectedCardNames, cardFocus, NetworkManager.Singleton.LocalClientId);
+            ProcessPaymentServerRpc(selectedCardNames, cardFocus, NetworkManager.Singleton.LocalClientId);
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void DiscardSelectedCardsFromHandServerRpc(CharacterEnum[] selectedCardNames, BoardCardNetworkData cardFocus, ulong sourceClientId)
+        public void ProcessPaymentServerRpc(CharacterEnum[] selectedCardNames, BoardCardNetworkData cardFocus, ulong sourceClientId)
         {
-            if (!IsServer) throw new InvalidOperationException("Discarding cards should be processed in server. server.");
+            if (!IsServer) throw new InvalidOperationException("Discarding cards should be processed in server.");
             AlignmentEnum align = cardFocus.Alignment;
             if (PlayerReadManager.Instance.GetClientIdFromAlignment(align) != sourceClientId) throw new InvalidOperationException($"Align {align} does not belong to the client.");
             IReadOnlyList<CharacterConfig> playerCards = CardPile.GetCardsFromAlign(align);
             IReadOnlyList<CharacterConfig> selectedCards = playerCards.Where(card => selectedCardNames.Contains(card.CharacterName)).ToList();
-            CharacterConfig cardFocusInHands = playerCards.FirstOrDefault(card => card.CharacterName == cardFocus.CharacterName);
-            if (cardFocusInHands != null) CardPile.LeaveCard(cardFocusInHands, align);
+            CardStateEnum cardFocusState = GetStateOnCardFocus(cardFocus);
+            if (cardFocusState == CardStateEnum.NewCard)
+            {
+                CharacterConfig cardFocusInHands = playerCards.First(card => card.CharacterName == cardFocus.CharacterName);
+                CardPile.LeaveCard(cardFocusInHands, align);
+            }
             CardPile.DiscardCards(selectedCards, align);
             FinishPaymentClientRpc(cardFocus, CardPile.GetCharacterNamesFromAlignedTable(align), sourceClientId);
-            if (!ServerIsHost) InstantiateBoardCardEntity(cardFocus); // NOTE: Experimental
+            if (!ServerIsHost && cardFocusState == CardStateEnum.NewCard) InstantiateBoardCardEntity(cardFocus); // NOTE: Experimental
         }
 
         // TODO: It applies only for new card. Other payment related actions should be adjusted.
@@ -75,10 +80,19 @@ namespace Berty.Network.Managers
                 BoardCard newCard = InstantiateBoardCardEntity(cardFocus);
                 BoardCardBehaviour newCardBehaviour = FieldCollectionManager.Instance.GetBehaviourFromEntity(newCard.OccupiedField).LoadTheCard();
                 if (newCardBehaviour == null) throw new Exception("Failed to load the new card behaviour");
-                newCardBehaviour.StateMachine.HandleStateForNewCard();
+                newCardBehaviour.StateMachine.SetNewState();
             }
             EventManager.Instance.RaiseOnPaymentConfirm();
             CheckpointManager.Instance.RequestCheckpoint();
+        }
+
+        private CardStateEnum GetStateOnCardFocus(BoardCardNetworkData cardFocus)
+        {
+            if (!IsServer) throw new Exception("Getting state on card focus should be processed from server.");
+            BoardCard card = Game.Grid.FindCardByCharacterNameOrNull(cardFocus.CharacterName);
+            if (card == null) return CardStateEnum.NewCard;
+            if (card.OccupiedField.Coordinates == cardFocus.FieldCoords && card.Direction == cardFocus.Direction) return CardStateEnum.Attacking;
+            return CardStateEnum.NewTransform;
         }
 
         private BoardCard InstantiateBoardCardEntity(BoardCardNetworkData cardFocus)
