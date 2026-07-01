@@ -49,6 +49,7 @@ namespace Berty.Network.Managers
         public void ProcessPaymentServerRpc(CharacterEnum[] selectedCardNames, BoardCardNetworkData cardFocus, ServerRpcParams rpcParams = default)
         {
             if (!IsServer) throw new InvalidOperationException("Discarding cards should be processed in server.");
+            
             ulong sourceClientId = rpcParams.Receive.SenderClientId;
             AlignmentEnum align = cardFocus.Alignment;
             if (PlayerReadManager.Instance.GetClientIdFromAlignment(align) != sourceClientId) throw new InvalidOperationException($"Align {align} does not belong to the client.");
@@ -56,30 +57,52 @@ namespace Berty.Network.Managers
             IReadOnlyList<CharacterConfig> playerCards = CardPile.GetCardsFromAlign(align);
             IReadOnlyList<CharacterConfig> selectedCards = playerCards.Where(card => selectedCardNames.Contains(card.CharacterName)).ToList();
             CardStateEnum cardFocusState = GetStateOnCardFocus(cardFocus, isSentByHost);
-            Debug.Log("Server reads card focus state: " + cardFocusState);
+            ulong[] otherClientIds = NetworkManager.Singleton.ConnectedClientsIds.Where(clientId => clientId != sourceClientId).ToArray();
+            ClientRpcParams sendToSourceRpcParam = new()
+            {
+                Send = new ClientRpcSendParams
+                {
+                    TargetClientIds = new ulong[] { sourceClientId }
+                }
+            };
+            ClientRpcParams sendToOtherRpcParam = new()
+            {
+                Send = new ClientRpcSendParams
+                {
+                    TargetClientIds = otherClientIds
+                }
+            };
+
+            // Discard cards from pile
             if (cardFocusState == CardStateEnum.NewCard)
             {
                 CharacterConfig cardFocusInHands = playerCards.First(card => card.CharacterName == cardFocus.CharacterName);
                 CardPile.LeaveCard(cardFocusInHands, align);
             }
             CardPile.DiscardCards(selectedCards, align);
-            FinishPaymentClientRpc(cardFocus, CardPile.GetCharacterNamesFromAlignedTable(align), sourceClientId);
+
+            FinishPaymentClientRpc(CardPile.GetCharacterNamesFromAlignedTable(align), sendToSourceRpcParam);
+            ProcessPaymentForOtherClientRpc(cardFocus, cardFocusState, sendToOtherRpcParam);
             if (!isSentByHost && cardFocusState == CardStateEnum.NewCard) InstantiateBoardCardEntity(cardFocus); // NOTE: Experimental
+        }
+
+        [ClientRpc]
+        private void FinishPaymentClientRpc(CharacterEnum[] playerTable, ClientRpcParams sourceClientRpcParams)
+        {
+            NetworkCardManager.Instance.UpdatePlayerHandCards(playerTable);
+            ManagerLocator.HandCardObjectManagerInstance.RemoveCardObjects();
+            HandCardSelectManager.Instance.ClearSelection();
+            SelectionManager.Instance.SetAsNotPaymentTime();
+            ButtonObjectManager.Instance.DisplayEndTurnButton();
+            EventManager.Instance.RaiseOnPaymentConfirm();
+            CheckpointManager.Instance.RequestCheckpoint();
         }
 
         // TODO: It applies only for new card. Other payment related actions should be adjusted.
         [ClientRpc]
-        public void FinishPaymentClientRpc(BoardCardNetworkData cardFocus, CharacterEnum[] playerTable, ulong sourceClientId)
+        private void ProcessPaymentForOtherClientRpc(BoardCardNetworkData cardFocus, CardStateEnum cardState, ClientRpcParams otherClientRpcParams)
         {
-            if (NetworkManager.Singleton.LocalClientId == sourceClientId)
-            {
-                NetworkCardManager.Instance.UpdatePlayerHandCards(playerTable);
-                ManagerLocator.HandCardObjectManagerInstance.RemoveCardObjects();
-                HandCardSelectManager.Instance.ClearSelection();
-                SelectionManager.Instance.SetAsNotPaymentTime();
-                ButtonObjectManager.Instance.DisplayEndTurnButton();
-            }
-            else
+            if (cardState == CardStateEnum.NewCard)
             {
                 BoardCard newCard = InstantiateBoardCardEntity(cardFocus);
                 BoardCardBehaviour newCardBehaviour = FieldCollectionManager.Instance.GetBehaviourFromEntity(newCard.OccupiedField).LoadTheCard();
