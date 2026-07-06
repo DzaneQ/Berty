@@ -9,6 +9,7 @@ namespace Berty.BoardCards.State
     public class NewTransformState : CardState
     {
         private NavigationEnum navigation;
+        public NavigationEnum Navigation => navigation;
 
         public NewTransformState(BoardCardStateMachine card, NavigationEnum navigatingFrom) : base(card)
         {

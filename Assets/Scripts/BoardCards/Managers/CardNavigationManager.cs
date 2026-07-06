@@ -32,7 +32,7 @@ namespace Berty.BoardCards.Managers
         {
             AlignmentEnum cardAlign = card.BoardCard.OccupiedField.Align;
             BoardCard backupCard = card.BoardCard.OccupiedField.BackupCard;
-            FieldBehaviour targetFieldBehaviour = FieldCollectionManager.Instance.GetBehaviourFromEntity(targetField);
+            FieldBehaviour targetFieldBehaviour = FieldCollectionManager.Instance.GetBehaviourFromEntityOrThrow(targetField);
 
             // Update entity
             card.BoardCard.OccupiedField.RemoveAllCards();

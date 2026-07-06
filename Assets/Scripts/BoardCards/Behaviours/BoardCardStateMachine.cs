@@ -66,6 +66,13 @@ namespace Berty.BoardCards.Behaviours
             RefreshButtons();
         }
 
+        public void SetPendingStateFromEnum(CardStateEnum stateEnum, NavigationEnum? navigation)
+        {
+            CardState pendingState = GetStateFromEnum(stateEnum, navigation);
+            if (!pendingState.IsForPay()) throw new Exception($"State {stateEnum} is not pending");
+            SetState(pendingState); // NOTE: Is it okay to execute OnStateEnter()?
+        }
+
         public void SetMainState()
         {
             if (BoardCard == null || BoardCard.OccupiedField == null)
@@ -174,10 +181,31 @@ namespace Berty.BoardCards.Behaviours
             return hit.transform.parent.parent == transform; // Is cursor on card's button object?
         }
 
+        public NavigationEnum GetNewTransformNavigation()
+        {
+            if (!HasState(CardStateEnum.NewTransform)) throw new Exception("Current state is not NewTransform");
+            return ((NewTransformState)currentState).Navigation;
+        }
+
         private void RefreshButtons()
         {
             HideButtons();
             TryShowingButtons();
+        }
+
+        private CardState GetStateFromEnum(CardStateEnum stateEnum, NavigationEnum? navigation)
+        {
+            if (stateEnum == CardStateEnum.NewTransform && navigation == null) throw new Exception("Navigation shouldn't be null for NewTransformState");
+            return stateEnum switch
+            {
+                CardStateEnum.Active => new ActiveState(this),
+                CardStateEnum.Idle => new IdleState(this),
+                CardStateEnum.Telekinetic => new TelekineticState(this),
+                CardStateEnum.Attacking => new AttackingState(this),
+                CardStateEnum.NewTransform => new NewTransformState(this, (NavigationEnum)navigation), // Default navigation, will be updated later
+                CardStateEnum.Effectable => new EffectableState(this),
+                _ => throw new Exception("Unknown state enum"),
+            };
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Berty.Network.Managers
         private Game game; // should be used from server only
         private readonly NetworkVariable<AlignmentEnum> turnAlignment = new();
 
-        public AlignmentEnum CurrentAlignment => turnAlignment.Value; // TODO: Let the whole code read ITurnManager.CurrentAlignment instead of game.CurrentAlignment
+        public AlignmentEnum CurrentAlignment => turnAlignment.Value;
 
         public override void OnNetworkSpawn()
         {

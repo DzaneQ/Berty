@@ -57,6 +57,8 @@ namespace Berty.Network.Managers
             IReadOnlyList<CharacterConfig> playerCards = CardPile.GetCardsFromAlign(align);
             IReadOnlyList<CharacterConfig> selectedCards = playerCards.Where(card => selectedCardNames.Contains(card.CharacterName)).ToList();
             CardStateEnum cardFocusState = GetStateOnCardFocus(cardFocus, isSentByHost);
+            NavigationEnum? cardFocusNavigation = null;
+            if (cardFocusState == CardStateEnum.NewTransform) cardFocusNavigation = GetNavigationOnCardFocusOrThrow(cardFocus, isSentByHost);
             ulong[] otherClientIds = NetworkManager.Singleton.ConnectedClientsIds.Where(clientId => clientId != sourceClientId).ToArray();
             ClientRpcParams sendToSourceRpcParam = new()
             {
@@ -82,8 +84,8 @@ namespace Berty.Network.Managers
             CardPile.DiscardCards(selectedCards, align);
 
             FinishPaymentClientRpc(CardPile.GetCharacterNamesFromAlignedTable(align), sendToSourceRpcParam);
-            ProcessPaymentForOtherClientRpc(cardFocus, cardFocusState, sendToOtherRpcParam);
-            if (!isSentByHost && cardFocusState == CardStateEnum.NewCard) InstantiateBoardCardEntity(cardFocus); // NOTE: Experimental
+            ProcessPaymentForOtherClientRpc(cardFocus, cardFocusState, cardFocusNavigation, sendToOtherRpcParam);
+            //if (!isSentByHost && cardFocusState == CardStateEnum.NewCard) InstantiateBoardCardEntity(cardFocus); // NOTE: Experimental
         }
 
         [ClientRpc]
@@ -100,15 +102,17 @@ namespace Berty.Network.Managers
 
         // TODO: It applies only for new card. Other payment related actions should be adjusted.
         [ClientRpc]
-        private void ProcessPaymentForOtherClientRpc(BoardCardNetworkData cardFocus, CardStateEnum cardState, ClientRpcParams otherClientRpcParams)
+        private void ProcessPaymentForOtherClientRpc(BoardCardNetworkData cardFocus, CardStateEnum cardState, NavigationEnum? cardNavigation, ClientRpcParams otherClientRpcParams)
         {
+            // TODO: Access the behaviour here.
             if (cardState == CardStateEnum.NewCard)
             {
                 BoardCard newCard = InstantiateBoardCardEntity(cardFocus);
-                BoardCardBehaviour newCardBehaviour = FieldCollectionManager.Instance.GetBehaviourFromEntity(newCard.OccupiedField).LoadTheCard();
+                BoardCardBehaviour newCardBehaviour = FieldCollectionManager.Instance.GetBehaviourFromEntityOrNull(newCard.OccupiedField).LoadTheCard();
                 if (newCardBehaviour == null) throw new Exception("Failed to load the new card behaviour");
                 newCardBehaviour.StateMachine.SetNewState();
             }
+            // TODO: Set pending state here.
             EventManager.Instance.RaiseOnPaymentConfirm();
             CheckpointManager.Instance.RequestCheckpoint();
         }
@@ -125,6 +129,45 @@ namespace Berty.Network.Managers
             }
             if (card.OccupiedField.Coordinates == cardFocus.FieldCoords && card.Direction == cardFocus.Direction) return CardStateEnum.Attacking;
             return CardStateEnum.NewTransform;
+        }
+
+        private NavigationEnum GetNavigationOnCardFocusOrThrow(BoardCardNetworkData cardFocus, bool isSentByHost)
+        {
+            if (!IsServer) throw new Exception("Getting navigation on card focus should be processed from server.");
+            BoardCard card = Game.Grid.FindCardByCharacterNameOrNull(cardFocus.CharacterName);
+            if (card == null) throw new Exception("Card should exist in the grid to get navigation.");
+            if (isSentByHost)
+            {
+                BoardCardBehaviour cardBehaviour = BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(card);
+                return cardBehaviour.StateMachine.GetNewTransformNavigation();
+            }
+
+            // Return card rotation
+            if (card.Direction != cardFocus.Direction)
+            {
+                if (card.OccupiedField.Coordinates != cardFocus.FieldCoords) throw new Exception("Card should not have different coordinates and rotation.");
+                int angleDifference = ((int)cardFocus.Direction - (int)card.Direction) % 360;
+                return angleDifference switch
+                {
+                    90 => NavigationEnum.RotateRight,
+                    270 => NavigationEnum.RotateLeft,
+                    _ => throw new Exception("The angle difference for rotated card should not be " + angleDifference),
+                };
+            }
+
+            // Return card movement
+            Vector2Int originFieldCoords = card.OccupiedField.Coordinates;
+            Vector2Int destinationFieldCoords = cardFocus.FieldCoords;
+            Vector2Int fieldDistance = destinationFieldCoords - originFieldCoords;
+            Vector2Int relativeDistance = card.OccupiedField.Grid.GetToRelativeCoordinates(fieldDistance.x, fieldDistance.y, card.GetAngle());
+            return relativeDistance switch
+            {
+                { x: 0, y: 1 } => NavigationEnum.MoveUp,
+                { x: 1, y: 0 } => NavigationEnum.MoveRight,
+                { x: 0, y: -1 } => NavigationEnum.MoveDown,
+                { x: -1, y: 0 } => NavigationEnum.MoveLeft, 
+                _ => throw new Exception("The relative distance for moved card should not be " + relativeDistance),
+            };
         }
 
         private BoardCard InstantiateBoardCardEntity(BoardCardNetworkData cardFocus)
