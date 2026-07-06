@@ -66,7 +66,7 @@ namespace Berty.BoardCards.Behaviours
             RefreshButtons();
         }
 
-        public void SetPendingStateFromEnum(CardStateEnum stateEnum, NavigationEnum? navigation)
+        public void SetPendingStateFromEnum(CardStateEnum stateEnum, NavigationEnum navigation)
         {
             CardState pendingState = GetStateFromEnum(stateEnum, navigation);
             if (!pendingState.IsForPay()) throw new Exception($"State {stateEnum} is not pending");
@@ -150,7 +150,7 @@ namespace Berty.BoardCards.Behaviours
             currentState.UpdateButtons();
         }
 
-        public CardButton GetButton(NavigationEnum navigation) => Buttons[(int)navigation];
+        public CardButton GetButton(NavigationEnum navigation) => Buttons[(int)navigation - 1];
 
         public bool HasState(CardStateEnum stateEnum)
         {
@@ -193,9 +193,9 @@ namespace Berty.BoardCards.Behaviours
             TryShowingButtons();
         }
 
-        private CardState GetStateFromEnum(CardStateEnum stateEnum, NavigationEnum? navigation)
+        private CardState GetStateFromEnum(CardStateEnum stateEnum, NavigationEnum navigation)
         {
-            if (stateEnum == CardStateEnum.NewTransform && navigation == null) throw new Exception("Navigation shouldn't be null for NewTransformState");
+            if (stateEnum == CardStateEnum.NewTransform && navigation == NavigationEnum.None) throw new Exception("Navigation shouldn't be none for NewTransformState");
             return stateEnum switch
             {
                 CardStateEnum.Active => new ActiveState(this),

@@ -57,7 +57,7 @@ namespace Berty.Network.Managers
             IReadOnlyList<CharacterConfig> playerCards = CardPile.GetCardsFromAlign(align);
             IReadOnlyList<CharacterConfig> selectedCards = playerCards.Where(card => selectedCardNames.Contains(card.CharacterName)).ToList();
             CardStateEnum cardFocusState = GetStateOnCardFocus(cardFocus, isSentByHost);
-            NavigationEnum? cardFocusNavigation = null;
+            NavigationEnum cardFocusNavigation = NavigationEnum.None;
             if (cardFocusState == CardStateEnum.NewTransform) cardFocusNavigation = GetNavigationOnCardFocusOrThrow(cardFocus, isSentByHost);
             ulong[] otherClientIds = NetworkManager.Singleton.ConnectedClientsIds.Where(clientId => clientId != sourceClientId).ToArray();
             ClientRpcParams sendToSourceRpcParam = new()
@@ -102,7 +102,7 @@ namespace Berty.Network.Managers
 
         // TODO: It applies only for new card. Other payment related actions should be adjusted.
         [ClientRpc]
-        private void ProcessPaymentForOtherClientRpc(BoardCardNetworkData cardFocus, CardStateEnum cardState, NavigationEnum? cardNavigation, ClientRpcParams otherClientRpcParams)
+        private void ProcessPaymentForOtherClientRpc(BoardCardNetworkData cardFocus, CardStateEnum cardState, NavigationEnum cardNavigation, ClientRpcParams otherClientRpcParams)
         {
             // TODO: Access the behaviour here.
             if (cardState == CardStateEnum.NewCard)
