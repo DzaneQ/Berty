@@ -192,6 +192,11 @@ namespace Berty.Grid.Entities
             throw new Exception("The code to find card by character name shouldn't reach here.");
         }
 
+        public BoardCard FindCardByCharacterNameOrThrow(CharacterEnum characterName)
+        {
+            return FindCardByCharacterNameOrNull(characterName) ?? throw new Exception($"Card {characterName} has not been found.");
+        }
+
         private int AlignedCardCount(AlignmentEnum alignment)
         {
             return AlignedFields(alignment, true).Count;

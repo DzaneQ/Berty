@@ -104,15 +104,24 @@ namespace Berty.Network.Managers
         [ClientRpc]
         private void ProcessPaymentForOtherClientRpc(BoardCardNetworkData cardFocus, CardStateEnum cardState, NavigationEnum cardNavigation, ClientRpcParams otherClientRpcParams)
         {
-            // TODO: Access the behaviour here.
+            BoardCard card;
+            BoardCardBehaviour behaviour;
             if (cardState == CardStateEnum.NewCard)
             {
-                BoardCard newCard = InstantiateBoardCardEntity(cardFocus);
-                BoardCardBehaviour newCardBehaviour = FieldCollectionManager.Instance.GetBehaviourFromEntityOrNull(newCard.OccupiedField).LoadTheCard();
-                if (newCardBehaviour == null) throw new Exception("Failed to load the new card behaviour");
-                newCardBehaviour.StateMachine.SetNewState();
+                card = InstantiateBoardCardEntity(cardFocus);
+                behaviour = FieldCollectionManager.Instance.GetBehaviourFromEntityOrNull(card.OccupiedField).LoadTheCard();
+                if (behaviour == null) throw new Exception("Failed to load the new card behaviour");
             }
-            // TODO: Set pending state here.
+            else
+            {
+                card = GetBoardCardEntity(cardFocus);
+                behaviour = BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(card);
+            }
+            
+            behaviour.StateMachine.SetPendingStateFromEnum(cardState, cardNavigation);
+
+            if (cardState == CardStateEnum.NewTransform) NavigateCard(behaviour, cardFocus);
+
             EventManager.Instance.RaiseOnPaymentConfirm();
             CheckpointManager.Instance.RequestCheckpoint();
         }
@@ -134,8 +143,7 @@ namespace Berty.Network.Managers
         private NavigationEnum GetNavigationOnCardFocusOrThrow(BoardCardNetworkData cardFocus, bool isSentByHost)
         {
             if (!IsServer) throw new Exception("Getting navigation on card focus should be processed from server.");
-            BoardCard card = Game.Grid.FindCardByCharacterNameOrNull(cardFocus.CharacterName);
-            if (card == null) throw new Exception("Card should exist in the grid to get navigation.");
+            BoardCard card = Game.Grid.FindCardByCharacterNameOrThrow(cardFocus.CharacterName);
             if (isSentByHost)
             {
                 BoardCardBehaviour cardBehaviour = BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(card);
@@ -177,6 +185,33 @@ namespace Berty.Network.Managers
             BoardCard newCard = targetField.AddNewCard(character, cardFocus.Alignment);
             if (targetField.BackupCard == null) newCard.SetDirection(cardFocus.Direction);
             return newCard;
+        }
+
+        private BoardCard GetBoardCardEntity(BoardCardNetworkData cardFocus)
+        {
+            return Game.Grid.FindCardByCharacterNameOrThrow(cardFocus.CharacterName);
+        }
+
+        private void NavigateCard(BoardCardBehaviour origin, BoardCardNetworkData destination)
+        {
+            NavigationEnum navigation = origin.StateMachine.GetNewTransformNavigation();
+            switch (navigation)             {
+                case NavigationEnum.RotateLeft:
+                    CardNavigationManager.Instance.RotateCard(origin, -90);
+                    break;
+                case NavigationEnum.RotateRight:
+                    CardNavigationManager.Instance.RotateCard(origin, 90);
+                    break;
+                case NavigationEnum.MoveUp:
+                case NavigationEnum.MoveRight:
+                case NavigationEnum.MoveDown:
+                case NavigationEnum.MoveLeft:
+                    BoardField targetField = Game.Grid.GetFieldFromCoordsOrThrow(destination.FieldCoords.x, destination.FieldCoords.y);
+                    CardNavigationManager.Instance.MoveCard(origin, targetField, true); // NOTE: Assumed that navigation is part of payment process
+                    break;
+                default:
+                    throw new Exception("Invalid navigation for card transformation: " + navigation);
+            }
         }
     }
 

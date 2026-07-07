@@ -202,6 +202,7 @@ namespace Berty.BoardCards.Behaviours
                 CardStateEnum.Idle => new IdleState(this),
                 CardStateEnum.Telekinetic => new TelekineticState(this),
                 CardStateEnum.Attacking => new AttackingState(this),
+                CardStateEnum.NewCard => new NewCardState(this),
                 CardStateEnum.NewTransform => new NewTransformState(this, (NavigationEnum)navigation), // Default navigation, will be updated later
                 CardStateEnum.Effectable => new EffectableState(this),
                 _ => throw new Exception("Unknown state enum"),
