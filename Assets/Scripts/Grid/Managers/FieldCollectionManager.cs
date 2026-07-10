@@ -31,13 +31,13 @@ namespace Berty.Grid.Managers
 
         public FieldBehaviour GetBehaviourFromEntityOrNull(BoardField boardField)
         {
-            return fieldBehaviourCollection.Find((FieldBehaviour behaviour) => behaviour.BoardField == boardField);
+            return fieldBehaviourCollection.Find((FieldBehaviour behaviour) => behaviour.BoardField.Coordinates == boardField.Coordinates);
         }
 
         public FieldBehaviour GetBehaviourFromEntityOrThrow(BoardField boardField)
         {
             FieldBehaviour behaviour = GetBehaviourFromEntityOrNull(boardField);
-            if (behaviour == null) throw new Exception($"Could not find field behaviour for board with coords: {boardField.Coordinates}"); // BUG: Error is thrown when moving a card
+            if (behaviour == null) throw new Exception($"Could not find field behaviour for board with coords: {boardField.Coordinates}");
             return behaviour;
         }
     }
