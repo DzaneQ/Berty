@@ -16,13 +16,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Berty.Network.Managers
 {
     public class NetworkConfirmPaymentManager : RpcManagerSingleton<NetworkConfirmPaymentManager>, IConfirmPaymentManager
     {
-        private Game Game { get; set; }
+        private Game Game { get; set; } // NOTE: Beware with clients accessing this variable as it has potential to be a different entity from other scripts
         private CardPile CardPile => Game.CardPile;
 
         protected override void Awake()
@@ -74,7 +73,6 @@ namespace Berty.Network.Managers
                     TargetClientIds = otherClientIds
                 }
             };
-
             // Discard cards from pile
             if (cardFocusState == CardStateEnum.NewCard)
             {
@@ -130,6 +128,7 @@ namespace Berty.Network.Managers
         {
             if (!IsServer) throw new Exception("Getting state on card focus should be processed from server.");
             BoardCard card = Game.Grid.FindCardByCharacterNameOrNull(cardFocus.CharacterName);
+            if (card == null) Debug.Log($"Card {cardFocus.CharacterName} is null");
             if (card == null) return CardStateEnum.NewCard;
             if (isSentByHost)
             {
@@ -207,7 +206,7 @@ namespace Berty.Network.Managers
                 case NavigationEnum.MoveDown:
                 case NavigationEnum.MoveLeft:
                     BoardField targetField = Game.Grid.GetFieldFromCoordsOrThrow(destination.FieldCoords.x, destination.FieldCoords.y);
-                    CardNavigationManager.Instance.MoveCard(origin, targetField, true); // NOTE: Assumed that navigation is part of payment process
+                    CardNavigationManager.Instance.MoveCard(origin, targetField);
                     break;
                 default:
                     throw new Exception("Invalid navigation for card transformation: " + navigation);

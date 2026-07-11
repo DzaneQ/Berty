@@ -48,6 +48,7 @@ namespace Berty.BoardCards.Behaviours
         public void SetFieldBehaviour(FieldBehaviour fieldBehaviour)
         {
             ParentField = fieldBehaviour;
+            Debug.Log($"Set field behaviour for {BoardCard.CharacterConfig.Name} to {ParentField.BoardField.Coordinates}");
         }
 
         public void AdvanceStrength(int value, BoardCardBehaviour source)

@@ -28,7 +28,6 @@ namespace Berty.UI.Card.Managers.Server
         {
             int capacity = game.GameConfig.TableCapacity;
             AlignmentEnum align = ManagerLocator.TurnManagerInstance.CurrentAlignment;
-            Debug.Log($"Pulling cards for {align}");
             DebugManager instance = DebugManager.Instance;
             if (instance != null) instance.TakeCardIfInPile(align);
             Status extraCardStatus = game.GetStatusByNameAndAlignmentOrNull(StatusEnum.ExtraCardNextTurn, align);
@@ -49,7 +48,6 @@ namespace Berty.UI.Card.Managers.Server
                 AlignmentEnum.Opponent => CardPile.OpponentCards,
                 _ => throw new ArgumentException($"Unknown argument to get cards: {align}"),
             };
-            Debug.Log($"Player has {playerCards.Count} cards. First card is: {playerCards[0].CharacterName}. Second card is: {playerCards[1].CharacterName}.");
             return playerCards.ConvertAll(card => card.CharacterName).ToArray();
         }
 

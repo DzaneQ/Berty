@@ -2,7 +2,6 @@ using Berty.UI.Card.Managers;
 using Berty.UI.Managers;
 using Berty.Utility;
 using Berty.BoardCards.Behaviours;
-using UnityEngine;
 
 namespace Berty.Gameplay.Managers
 {

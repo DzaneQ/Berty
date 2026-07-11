@@ -13,14 +13,6 @@ namespace Berty.BoardCards.Managers
 {
     public class CardNavigationManager : ManagerSingleton<CardNavigationManager>
     {
-        private BoardGrid Grid;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            Grid = EntityLoadManager.Instance.Game.Grid;
-        }
-
         public void RotateCard(BoardCardBehaviour card, int angle)
         {
             card.BoardCard.AdvanceCardSetAngleBy(angle);
@@ -28,11 +20,12 @@ namespace Berty.BoardCards.Managers
             card.StateMachine.UpdateButtons();
         }
 
-        public void MoveCard(BoardCardBehaviour card, BoardField targetField, bool isOrdered = false)
+        public void MoveCard(BoardCardBehaviour card, BoardField targetField, bool isOnOrderStandby = false)
         {
             AlignmentEnum cardAlign = card.BoardCard.OccupiedField.Align;
             BoardCard backupCard = card.BoardCard.OccupiedField.BackupCard;
             FieldBehaviour targetFieldBehaviour = FieldCollectionManager.Instance.GetBehaviourFromEntityOrThrow(targetField);
+            targetField = targetFieldBehaviour.BoardField; // Overwrite potential copy with an actual entity
 
             // Update entity
             card.BoardCard.OccupiedField.RemoveAllCards();
@@ -43,7 +36,7 @@ namespace Berty.BoardCards.Managers
             targetFieldBehaviour.transform.GetChild(0).SetParent(card.transform.parent.parent, false);
             card.Navigation.MoveCardObject(targetFieldBehaviour);
 
-            if (!isOrdered) card.Navigation.HandleNewMovementSkillEffect();
+            if (!isOnOrderStandby) card.Navigation.HandleNewMovementSkillEffect();
             card.StateMachine.UpdateButtons();
         }
 
