@@ -1,6 +1,7 @@
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.UI.Managers;
 using Berty.Utility;
 using System;
 using Unity.Netcode;
@@ -32,13 +33,15 @@ namespace Berty.Network.Managers
 
         public void EndTurn()
         {
-            Debug.Log("Clicked end turn");
             SwitchAlignmentServerRpc();
         }
 
         public void EndTheGame()
         {
-            throw new NotImplementedException("EndTheGame should be implemented for multiplayer.");
+            if (!IsServer) throw new InvalidOperationException("Ending the game should be processed in the server.");
+            AlignmentEnum winner = game.Grid.WinningSide();
+            if (winner == AlignmentEnum.None) winner = CurrentAlignment;
+            EndTheGameClientRpc(winner);
         }
 
         public bool IsItMyTurn()
@@ -58,6 +61,13 @@ namespace Berty.Network.Managers
         private void SwitchAlignmentServerRpc()
         {
             turnAlignment.Value = game.SwitchAlignment();
+        }
+
+        [ClientRpc]
+        private void EndTheGameClientRpc(AlignmentEnum winner)
+        {
+            if (winner == AlignmentEnum.None) throw new InvalidOperationException("Winner should not be None when ending the game");
+            OverlayObjectManager.Instance.DisplayGameOverScreen(winner == PlayerReadManager.Instance.MyAlignment);
         }
     }
 }

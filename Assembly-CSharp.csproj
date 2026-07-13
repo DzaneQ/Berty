@@ -131,6 +131,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KowbojBert.cs" />
+    <Compile Include="Assets\Scripts\Network\Managers\NetworkCheckpointManager.cs" />
     <Compile Include="Assets\Scripts\Enums\GenderEnum.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Entities\Status.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Assets\Scripts\Enums\DirectionEnum.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\BoardCardInput.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\ICheckpointManager.cs" />
     <Compile Include="Assets\Scripts\Utility\ServerManagerSingleton.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveLeft.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardStateMachine.cs" />
@@ -244,7 +246,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Characters\Init\CharacterData.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IBarWidth.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Managers\Server\ServerTurnManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\CardWitnessListener.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\SelectionManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\MisiekBert.cs" />

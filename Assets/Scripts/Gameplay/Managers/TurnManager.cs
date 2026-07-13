@@ -33,7 +33,7 @@ namespace Berty.Gameplay.Managers
         {
             AlignmentEnum winner = game.Grid.WinningSide();
             if (winner == AlignmentEnum.None) winner = CurrentAlignment;
-            OverlayObjectManager.Instance.DisplayGameOverScreen(winner);
+            OverlayObjectManager.Instance.DisplayGameOverScreen(winner == AlignmentEnum.Player);
         }
 
         public bool IsItMyTurn()

@@ -1,19 +1,21 @@
 using Berty.Enums;
 using Berty.Gameplay.Entities;
+using Berty.Gameplay.Managers;
 using Berty.Utility;
 using System;
+using Unity.Netcode;
 
-namespace Berty.Gameplay.Managers
+namespace Berty.Network.Managers
 {
-    public class CheckpointManager : ManagerSingleton<CheckpointManager>, ICheckpointManager
+    public class NetworkCheckpointManager : RpcManagerSingleton<NetworkCheckpointManager>, ICheckpointManager
     {
-        private Game game;
+        private Game game; // should be used from server only
         private bool requestedCheckpoint;
 
         protected override void Awake()
         {
             base.Awake();
-            game = EntityLoadManager.Instance.Game;
+            if (IsServer) game = EntityLoadManager.Instance.Game;
         }
 
         public void RequestCheckpoint()
@@ -31,7 +33,7 @@ namespace Berty.Gameplay.Managers
 
         private void HandleCheckpoint()
         {
-            if (!TryEndingTheGame()) SaveTheGame();
+            TryEndingTheGameServerRpc();
             requestedCheckpoint = false;
         }
 
@@ -40,27 +42,17 @@ namespace Berty.Gameplay.Managers
             return !EventManager.Instance.RaiseOnCheckpointRequest();
         }
 
-        private bool TryEndingTheGame()
+        [ServerRpc(RequireOwnership = false)]
+        private void TryEndingTheGameServerRpc() // BUG: The game is not finished when the requirement is met.
         {
             int alignedCardsToWin = game.GameConfig.AlignedCardsToWin;
             if (game.Grid.AlignedFields(AlignmentEnum.Player, true).Count >= alignedCardsToWin
-                || game.Grid.AlignedFields(AlignmentEnum.Opponent, true).Count >= alignedCardsToWin)
-            {
-                EndTheGame();
-                return true;
-            }
-            return false;
+                || game.Grid.AlignedFields(AlignmentEnum.Opponent, true).Count >= alignedCardsToWin) EndTheGame();
         }
 
         private void EndTheGame()
         {
             ManagerLocator.TurnManagerInstance.EndTheGame();
-            //LoadSaveManager.Instance.DeleteTheSave();
-        }
-
-        private void SaveTheGame()
-        {
-            ProcessGameDataManager.Instance.SaveTheGame();
         }
     }
 }
