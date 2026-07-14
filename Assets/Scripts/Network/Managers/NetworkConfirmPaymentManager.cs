@@ -95,7 +95,7 @@ namespace Berty.Network.Managers
             SelectionManager.Instance.SetAsNotPaymentTime();
             ButtonObjectManager.Instance.DisplayEndTurnButton();
             EventManager.Instance.RaiseOnPaymentConfirm();
-            CheckpointManager.Instance.RequestCheckpoint();
+            ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }
 
         // TODO: It applies only for new card. Other payment related actions should be adjusted.
@@ -121,7 +121,7 @@ namespace Berty.Network.Managers
             if (cardState == CardStateEnum.NewTransform) NavigateCard(behaviour, cardFocus);
 
             EventManager.Instance.RaiseOnPaymentConfirm();
-            CheckpointManager.Instance.RequestCheckpoint();
+            ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }
 
         private CardStateEnum GetStateOnCardFocus(BoardCardNetworkData cardFocus, bool isSentByHost)

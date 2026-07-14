@@ -4,6 +4,7 @@ using Berty.Gameplay.Managers;
 using Berty.Utility;
 using System;
 using Unity.Netcode;
+using UnityEngine;
 
 namespace Berty.Network.Managers
 {
@@ -12,9 +13,8 @@ namespace Berty.Network.Managers
         private Game game; // should be used from server only
         private bool requestedCheckpoint;
 
-        protected override void Awake()
+        public override void OnNetworkSpawn()
         {
-            base.Awake();
             if (IsServer) game = EntityLoadManager.Instance.Game;
         }
 
@@ -43,7 +43,7 @@ namespace Berty.Network.Managers
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void TryEndingTheGameServerRpc() // BUG: The game is not finished when the requirement is met.
+        private void TryEndingTheGameServerRpc()
         {
             int alignedCardsToWin = game.GameConfig.AlignedCardsToWin;
             if (game.Grid.AlignedFields(AlignmentEnum.Player, true).Count >= alignedCardsToWin

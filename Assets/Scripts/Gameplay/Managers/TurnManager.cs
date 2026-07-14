@@ -26,7 +26,7 @@ namespace Berty.Gameplay.Managers
         {
             game.SwitchAlignment();
             EventManager.Instance.RaiseOnNewTurn();
-            CheckpointManager.Instance.RequestCheckpoint();
+            ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }
 
         public void EndTheGame()

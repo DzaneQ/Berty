@@ -6,6 +6,7 @@ using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
 using Berty.UI.Card.Managers;
+using Berty.Utility;
 using System;
 using UnityEngine;
 
@@ -159,14 +160,14 @@ namespace Berty.BoardCards.Behaviours
             EntityHandler.SetPower(BoardCard.CharacterConfig.Power, this);
             ParentField.UpdateField();
             EventManager.Instance.RaiseOnSideChanged(this);
-            CheckpointManager.Instance.HandleIfRequested();
+            ManagerLocator.CheckpointManagerInstance.HandleIfRequested();
         }
 
         private void KillCard()
         {
             TriggerCardDeath();
             Activation.DeactivateCard();
-            CheckpointManager.Instance.HandleIfRequested();
+            ManagerLocator.CheckpointManagerInstance.HandleIfRequested();
         }
 
         private void TriggerCardDeath()

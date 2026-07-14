@@ -52,9 +52,8 @@ namespace Berty.Network.Managers
         private void OnTurnAlignmentChanged(AlignmentEnum prv, AlignmentEnum crr)
         {
             if (prv == crr) throw new Exception($"Turn alignment should not be the same after change: {prv}");
-            Debug.Log($"Turn alignment changed from {prv} to {crr}");
             EventManager.Instance.RaiseOnNewTurn();
-            CheckpointManager.Instance.RequestCheckpoint();
+            ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }
 
         [ServerRpc(RequireOwnership = false)]

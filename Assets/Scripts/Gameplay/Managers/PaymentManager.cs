@@ -29,7 +29,7 @@ namespace Berty.Gameplay.Managers
             SelectionManager.Instance.SetAsNotPaymentTime();
             ButtonObjectManager.Instance.DisplayEndTurnButton();
             EventManager.Instance.RaiseOnPaymentConfirm();
-            CheckpointManager.Instance.RequestCheckpoint();
+            ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }
     }
 }
