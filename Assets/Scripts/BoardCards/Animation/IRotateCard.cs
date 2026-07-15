@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Animation
 {
-    interface IRotateCard
+    internal interface IRotateCard
     {
         int CoroutineCount { get; }
         void ByAngleWithoutAnimation(int angle);

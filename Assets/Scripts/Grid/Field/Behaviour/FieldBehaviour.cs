@@ -8,6 +8,7 @@ using Berty.Grid.Entities;
 using Berty.Grid.Field.Entities;
 using Berty.Grid.Managers;
 using Berty.UI.Card.Managers;
+using Berty.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -53,7 +54,7 @@ namespace Berty.Grid.Field.Behaviour
                 "Field SE" => grid.GetFieldFromCoordsOrThrow(1, -1),
                 _ => throw new Exception("Unknown field name to handle."),
             };
-            if (!LoadTheCard()) UpdateField();
+            if (LoadTheCard() == null) UpdateField();
         }
 
         public void UpdateField()
@@ -75,14 +76,14 @@ namespace Berty.Grid.Field.Behaviour
 
         public void PutTheCard()
         {
-            CharacterConfig selectedCardConfig = HandToFieldManager.Instance.RemoveSelectedCardFromHand();
-            HandToFieldManager.Instance.ActivateCardOnField(this, selectedCardConfig);
+            CharacterConfig selectedCardConfig = ManagerLocator.HandToFieldManagerInstance.RemoveSelectedCardFromHand();
+            ManagerLocator.HandToFieldManagerInstance.ActivateCardOnField(this, selectedCardConfig);
             PaymentManager.Instance.CallPayment(selectedCardConfig.Power, ChildCard);
         }
         
-        private bool LoadTheCard()
+        public BoardCardBehaviour LoadTheCard()
         {
-            if (BoardField.OccupantCard == null) return false;
+            if (BoardField.OccupantCard == null) return null;
             ChildCard = transform.GetChild(0).GetChild(0).GetComponent<BoardCardBehaviour>();
             ChildCard.gameObject.SetActive(true);
             if (BoardField.BackupCard == null) ChildCard.Activation.LoadCard(BoardField.OccupantCard);
@@ -97,7 +98,7 @@ namespace Berty.Grid.Field.Behaviour
                 ChildCard.gameObject.SetActive(true);
                 ChildCard.Activation.LoadCard(BoardField.OccupantCard);
             }
-            return true;
+            return ChildCard;
         }
 
         private void ColorizeField()

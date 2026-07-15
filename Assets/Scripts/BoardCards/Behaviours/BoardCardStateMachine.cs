@@ -4,6 +4,7 @@ using Berty.BoardCards.State;
 using Berty.Characters.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
+using Berty.Utility;
 using System;
 using UnityEngine;
 
@@ -24,6 +25,7 @@ namespace Berty.BoardCards.Behaviours
         private GameObject buttonSet;
 
         public CardButton[] Buttons { get; private set; }
+        public CardStateEnum StateName => currentState.GetNameEnum();
         private Camera cam;
 
         protected override void Awake()
@@ -43,7 +45,7 @@ namespace Berty.BoardCards.Behaviours
             SetIdle();
         }
 
-        public void HandleStateForNewCard()
+        public void SetNewState()
         {
             SetState(new NewCardState(this));
         }
@@ -64,6 +66,13 @@ namespace Berty.BoardCards.Behaviours
             RefreshButtons();
         }
 
+        public void SetPendingStateFromEnum(CardStateEnum stateEnum, NavigationEnum navigation)
+        {
+            CardState pendingState = GetStateFromEnum(stateEnum, navigation);
+            if (!pendingState.IsForPay()) throw new Exception($"State {stateEnum} is not pending");
+            SetState(pendingState); // NOTE: Is it okay to execute OnStateEnter()?
+        }
+
         public void SetMainState()
         {
             if (BoardCard == null || BoardCard.OccupiedField == null)
@@ -71,7 +80,7 @@ namespace Berty.BoardCards.Behaviours
                 SetIdle();
                 return;
             }
-            AlignmentEnum currentAlign = game.CurrentAlignment;
+            AlignmentEnum currentAlign = ManagerLocator.TurnManagerInstance.CurrentAlignment;
             AlignmentEnum cardAlign = BoardCard.Align;
             if (currentAlign == cardAlign && !BoardCard.IsTired) SetActive();
             else if (IsEligibleForTelekineticState()) SetTelekinetic();
@@ -84,7 +93,7 @@ namespace Berty.BoardCards.Behaviours
             if (telekinesisArea == null) return false;
             if (telekinesisArea.Provider.IsTired) return false;
             if (ApplySkillEffectManager.Instance.DoesPreventEffect(BoardCard, telekinesisArea.Provider)) return false;
-            return telekinesisArea.Provider.Align == game.CurrentAlignment;
+            return telekinesisArea.Provider.Align == ManagerLocator.TurnManagerInstance.CurrentAlignment;
         }
 
         public void SetActive()
@@ -127,6 +136,7 @@ namespace Berty.BoardCards.Behaviours
             if (Navigation.IsCardAnimating()) return;
             if (Bars.AreBarsAnimating()) return;
             if (!IsCursorFocused()) return;
+            if (ManagerLocator.TurnManagerInstance.IsItNotMyTurn()) return;
             buttonSet.SetActive(true);
         }
 
@@ -140,7 +150,7 @@ namespace Berty.BoardCards.Behaviours
             currentState.UpdateButtons();
         }
 
-        public CardButton GetButton(NavigationEnum navigation) => Buttons[(int)navigation];
+        public CardButton GetButton(NavigationEnum navigation) => Buttons[(int)navigation - 1];
 
         public bool HasState(CardStateEnum stateEnum)
         {
@@ -171,10 +181,32 @@ namespace Berty.BoardCards.Behaviours
             return hit.transform.parent.parent == transform; // Is cursor on card's button object?
         }
 
+        public NavigationEnum GetNewTransformNavigation()
+        {
+            if (!HasState(CardStateEnum.NewTransform)) throw new Exception("Current state is not NewTransform");
+            return ((NewTransformState)currentState).Navigation;
+        }
+
         private void RefreshButtons()
         {
             HideButtons();
             TryShowingButtons();
+        }
+
+        private CardState GetStateFromEnum(CardStateEnum stateEnum, NavigationEnum navigation)
+        {
+            if (stateEnum == CardStateEnum.NewTransform && navigation == NavigationEnum.None) throw new Exception("Navigation shouldn't be none for NewTransformState");
+            return stateEnum switch
+            {
+                CardStateEnum.Active => new ActiveState(this),
+                CardStateEnum.Idle => new IdleState(this),
+                CardStateEnum.Telekinetic => new TelekineticState(this),
+                CardStateEnum.Attacking => new AttackingState(this),
+                CardStateEnum.NewCard => new NewCardState(this),
+                CardStateEnum.NewTransform => new NewTransformState(this, (NavigationEnum)navigation), // Default navigation, will be updated later
+                CardStateEnum.Effectable => new EffectableState(this),
+                _ => throw new Exception("Unknown state enum"),
+            };
         }
     }
 }

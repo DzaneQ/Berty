@@ -3,6 +3,7 @@ using Berty.BoardCards.Entities;
 using Berty.BoardCards.Managers;
 using Berty.Display.View;
 using Berty.Gameplay.Managers;
+using Berty.Utility;
 using System;
 using UnityEngine;
 
@@ -24,10 +25,10 @@ namespace Berty.BoardCards.Behaviours
         public void HandleNewCardActivated(CharacterConfig characterConfig)
         {
             Sound.PlayNewCardSound();
-            EntityHandler.LoadBoardCardEntity(characterConfig, game.CurrentAlignment);
+            EntityHandler.LoadBoardCardEntity(characterConfig, ManagerLocator.TurnManagerInstance.CurrentAlignment);
             DisableTheOtherCardOnTheField();
             AdjustInitRotation();
-            StateMachine.HandleStateForNewCard();
+            StateMachine.SetNewState();
         }
 
         // The opposite of HandleNewCardActivated + default transform + deactivation

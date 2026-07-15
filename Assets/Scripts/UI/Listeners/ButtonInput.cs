@@ -18,7 +18,7 @@ namespace Berty.UI.Listeners
     {
         private CornerButton core;
 
-        void Awake()
+        private void Awake()
         {
             core = GetComponent<CornerButton>();
         }

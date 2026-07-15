@@ -6,7 +6,7 @@ namespace Berty.BoardCards.ConfigData
 {
     public class BertVentura : CharacterConfig
     {
-        int opponentNeighborCount;
+        private int opponentNeighborCount;
 
         public BertVentura()
         {

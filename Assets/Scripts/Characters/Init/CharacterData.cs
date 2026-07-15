@@ -6,7 +6,7 @@ namespace Berty.Characters.Init
 {
     public class CharacterData
     {
-        CharacterConfig character;
+        private CharacterConfig character;
         private void LoadCharacter(List<CharacterConfig> list, string name)
         {
             switch (name)

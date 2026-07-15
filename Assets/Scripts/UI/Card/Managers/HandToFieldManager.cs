@@ -10,24 +10,22 @@ using System;
 
 namespace Berty.UI.Card.Managers
 {
-    public class HandToFieldManager : ManagerSingleton<HandToFieldManager>
+    public class HandToFieldManager : ManagerSingleton<HandToFieldManager>, IHandToFieldManager
     {
         private Game Game { get; set; }
         private CardPile CardPile => Game.CardPile;
-        private GameObject boardCardPrefab;
 
         protected override void Awake()
         {
             InitializeSingleton();
             Game = EntityLoadManager.Instance.Game;
-            boardCardPrefab = Resources.Load<GameObject>("Prefabs/CardSquare");
         }
 
         public CharacterConfig RemoveSelectedCardFromHand()
         {
             CharacterConfig selectedCard = SelectionManager.Instance.GetSelectedCardOrThrow();
             SelectionManager.Instance.PutSelectedCardAsPending();
-            CardPile.LeaveCard(selectedCard, Game.CurrentAlignment);
+            CardPile.LeaveCard(selectedCard, ManagerLocator.TurnManagerInstance.CurrentAlignment);
             ManagerLocator.HandCardObjectManagerInstance.RemoveCardObjects();
             HandCardSelectManager.Instance.ClearSelection();
             return selectedCard;
@@ -41,7 +39,7 @@ namespace Berty.UI.Card.Managers
             return newCardObject;
         }
 
-        public GameObject GetNewCardObjectOnField(FieldBehaviour field)
+        private GameObject GetNewCardObjectOnField(FieldBehaviour field)
         {
             GameObject cardToActivate = field.transform.GetChild(0).GetChild(0).gameObject;
             if (cardToActivate.activeSelf)  // If there's an active card, get a second card

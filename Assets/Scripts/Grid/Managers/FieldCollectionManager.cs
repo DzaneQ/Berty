@@ -29,9 +29,16 @@ namespace Berty.Grid.Managers
             if (fieldBehaviourCollection.Count != 9) throw new Exception($"Got wrong amount of fields: {fieldBehaviourCollection.Count}");
         }
 
-        public FieldBehaviour GetBehaviourFromEntity(BoardField boardField)
+        public FieldBehaviour GetBehaviourFromEntityOrNull(BoardField boardField)
         {
-            return fieldBehaviourCollection.Find((FieldBehaviour behaviour) => behaviour.BoardField == boardField);
+            return fieldBehaviourCollection.Find((FieldBehaviour behaviour) => behaviour.BoardField.Coordinates == boardField.Coordinates);
+        }
+
+        public FieldBehaviour GetBehaviourFromEntityOrThrow(BoardField boardField)
+        {
+            FieldBehaviour behaviour = GetBehaviourFromEntityOrNull(boardField);
+            if (behaviour == null) throw new Exception($"Could not find field behaviour for board with coords: {boardField.Coordinates}");
+            return behaviour;
         }
     }
 }

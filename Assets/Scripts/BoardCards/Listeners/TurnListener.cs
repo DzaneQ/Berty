@@ -3,6 +3,7 @@ using Berty.Characters.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.Utility;
 using System;
 using UnityEngine;
 
@@ -24,7 +25,7 @@ namespace Berty.BoardCards.Listeners
         private void HandleNewTurn()
         {
             if (StateMachine.IsForPay()) throw new Exception($"Board card {name} detected for pay when switching turns.");
-            if (game.CurrentAlignment == ParentField.BoardField.Align)
+            if (ManagerLocator.TurnManagerInstance.CurrentAlignment == ParentField.BoardField.Align)
             {
                 HandleCharacterEffect();
                 ProgressTemporaryStats();

@@ -12,7 +12,7 @@ namespace Berty.UI.Card.Listeners
         private HandCardBehaviour behaviour;
         private Game game;
 
-        void Awake()
+        private void Awake()
         {
             behaviour = GetComponent<HandCardBehaviour>();
             game = EntityLoadManager.Instance.Game;

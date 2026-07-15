@@ -25,13 +25,12 @@ namespace Berty.UI.Managers
             behaviourCollection = ObjectReadManager.Instance.HandCardObjectCollection.GetComponent<HandCardCollection>();
         }
 
-        public void DisplayGameOverScreen(AlignmentEnum winner)
+        public void DisplayGameOverScreen(bool isTheWinner)
         {
             GameObject prefab = Resources.Load<GameObject>("Prefabs/GameOver");
             Text endingMessage = prefab.transform.GetChild(0).gameObject.GetComponent<Text>();
-            if (winner == AlignmentEnum.Player) endingMessage.text = GameLanguageManager.Instance.GetTextFromKey("win");
-            else if (winner == AlignmentEnum.Opponent) endingMessage.text = GameLanguageManager.Instance.GetTextFromKey("lose");
-            else throw new Exception("Undefined winner.");
+            if (isTheWinner) endingMessage.text = GameLanguageManager.Instance.GetTextFromKey("win");
+            else endingMessage.text = GameLanguageManager.Instance.GetTextFromKey("lose");
             Instantiate(prefab, canvasObject.transform);
         }
 

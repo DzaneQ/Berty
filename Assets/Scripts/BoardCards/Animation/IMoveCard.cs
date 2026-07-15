@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Berty.BoardCards.Animation
 {
-    interface IMoveCard
+    internal interface IMoveCard
     {
         int CoroutineCount { get; }
         void ToField(FieldBehaviour field);

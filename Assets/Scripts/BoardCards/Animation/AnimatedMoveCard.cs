@@ -33,7 +33,7 @@ namespace Berty.BoardCards.Animation
             durationSeconds = EntityLoadManager.Instance.Game.GameConfig.AnimationSeconds;
         }
 
-        void Start()
+        private void Start()
         {
             cardSetTransform = transform.parent;
         }

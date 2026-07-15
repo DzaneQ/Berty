@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Berty.Utility
 {
 
-    public abstract class SharedManagerSingleton<T> : NetworkBehaviour where T : NetworkBehaviour
+    public abstract class RpcManagerSingleton<T> : NetworkBehaviour where T : NetworkBehaviour
     {
         private static T s_instance;
 

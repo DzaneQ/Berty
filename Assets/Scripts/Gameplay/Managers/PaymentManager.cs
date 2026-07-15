@@ -2,11 +2,10 @@ using Berty.UI.Card.Managers;
 using Berty.UI.Managers;
 using Berty.Utility;
 using Berty.BoardCards.Behaviours;
-using UnityEngine;
 
 namespace Berty.Gameplay.Managers
 {
-    public class PaymentManager : ManagerSingleton<PaymentManager>
+    public class PaymentManager : ManagerSingleton<PaymentManager>, IConfirmPaymentManager
     {
         public void CallPayment(int price, BoardCardBehaviour card)
         {
@@ -23,14 +22,14 @@ namespace Berty.Gameplay.Managers
             SelectionManager.Instance.SetAsNotPaymentTime();
         }
 
-        public void ConfirmPayment()
+        public void ConfirmPayment(BoardCardBehaviour card)
         {
             if (!SelectionManager.Instance.CheckOffer()) return;
             HandToPileManager.Instance.DiscardSelectedCardsFromHand();
             SelectionManager.Instance.SetAsNotPaymentTime();
             ButtonObjectManager.Instance.DisplayEndTurnButton();
             EventManager.Instance.RaiseOnPaymentConfirm();
-            CheckpointManager.Instance.RequestCheckpoint();
+            ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }
     }
 }

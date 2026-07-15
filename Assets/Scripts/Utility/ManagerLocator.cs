@@ -14,12 +14,20 @@ namespace Berty.Utility
         public static ITurnManager TurnManagerInstance;
         public static IPileToHandManager PileToHandManagerInstance;
         public static IHandCardObjectManager HandCardObjectManagerInstance;
+        public static IHandToFieldManager HandToFieldManagerInstance;
+        public static IFieldToHandManager FieldToHandManagerInstance;
+        public static IConfirmPaymentManager ConfirmPaymentManagerInstance;
+        public static ICheckpointManager CheckpointManagerInstance;
 
         public static void InitializeSingleplayer()
         {
             TurnManagerInstance = TurnManager.Instance;
             PileToHandManagerInstance = PileToHandManager.Instance;
             HandCardObjectManagerInstance = HandCardObjectManager.Instance;
+            HandToFieldManagerInstance = HandToFieldManager.Instance;
+            FieldToHandManagerInstance = FieldToHandManager.Instance;
+            ConfirmPaymentManagerInstance = PaymentManager.Instance;
+            CheckpointManagerInstance = CheckpointManager.Instance;
         }
 
         public static void InitializeMultiplayer()
@@ -27,6 +35,10 @@ namespace Berty.Utility
             TurnManagerInstance = NetworkTurnManager.Instance;
             PileToHandManagerInstance = ServerPileToHandManager.Instance;
             HandCardObjectManagerInstance = ClientHandCardObjectManager.Instance;
+            HandToFieldManagerInstance = ClientHandToFieldManager.Instance;
+            FieldToHandManagerInstance = ClientFieldToHandManager.Instance;
+            ConfirmPaymentManagerInstance = NetworkConfirmPaymentManager.Instance;
+            CheckpointManagerInstance = NetworkCheckpointManager.Instance;
         }
     }
 }

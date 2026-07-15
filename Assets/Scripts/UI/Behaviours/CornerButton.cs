@@ -20,7 +20,7 @@ namespace Berty.UI.Listeners
         }
         private Text label;
 
-        void Start()
+        private void Start()
         {
             _buttonType = CornerButtonEnum.EndTurn;
             label = transform.GetChild(0).GetComponent<Text>();

@@ -7,7 +7,7 @@ using Berty.BoardCards.ConfigData;
 
 namespace Berty.UI.Card.Managers
 {
-    public class FieldToHandManager : ManagerSingleton<FieldToHandManager>
+    public class FieldToHandManager : ManagerSingleton<FieldToHandManager>, IFieldToHandManager
     {
         private Game game { get; set; }
         private CardPile cardPile => game.CardPile;
@@ -20,7 +20,7 @@ namespace Berty.UI.Card.Managers
 
         public void RetrievePendingCard()
         {
-            AlignmentEnum align = game.CurrentAlignment;
+            AlignmentEnum align = ManagerLocator.TurnManagerInstance.CurrentAlignment;
             CharacterConfig pendingCard = SelectionManager.Instance.GetPendingCardOrThrow();
             cardPile.RetrieveCard(pendingCard, align);
             ManagerLocator.HandCardObjectManagerInstance.AddCardObjectFromConfig(pendingCard);

@@ -41,6 +41,11 @@ namespace Berty.Gameplay.Managers
             File.WriteAllText(savePath, GetGameEntityAsString());
         }
 
+        public void DeleteTheSave()
+        {
+            if (IsSaveFileExisting()) File.Delete(savePath);
+        }
+
         public string GetGameEntityAsString()
         {
             return JsonUtility.ToJson(game.SaveEntity(), true);

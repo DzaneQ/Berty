@@ -50,6 +50,7 @@ namespace Berty.Grid.Entities
             };
         }
 
+        // TODO: Refactor from 2 ints to Vector2Int
         public BoardField GetFieldFromCoordsOrThrow(int x, int y)
         {
             foreach (BoardField field in Fields)
@@ -180,6 +181,20 @@ namespace Berty.Grid.Entities
             if (field.OccupantCard.CharacterConfig.Name == characterName) return field.OccupantCard;
             if (field.BackupCard.CharacterConfig.Name == characterName) return field.BackupCard;
             throw new Exception("The code to find card by name shouldn't reach here.");
+        }
+
+        public BoardCard FindCardByCharacterNameOrNull(CharacterEnum characterName)
+        {
+            BoardField field = Fields.FirstOrDefault(field => field.OccupantCard?.CharacterConfig.CharacterName == characterName || field.BackupCard?.CharacterConfig.CharacterName == characterName);
+            if (field == null) return null;
+            if (field.OccupantCard.CharacterConfig.CharacterName == characterName) return field.OccupantCard;
+            if (field.BackupCard.CharacterConfig.CharacterName == characterName) return field.BackupCard;
+            throw new Exception("The code to find card by character name shouldn't reach here.");
+        }
+
+        public BoardCard FindCardByCharacterNameOrThrow(CharacterEnum characterName)
+        {
+            return FindCardByCharacterNameOrNull(characterName) ?? throw new Exception($"Card {characterName} has not been found.");
         }
 
         private int AlignedCardCount(AlignmentEnum alignment)

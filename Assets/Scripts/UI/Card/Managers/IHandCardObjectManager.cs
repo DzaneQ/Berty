@@ -5,12 +5,12 @@ namespace Berty.UI.Card.Managers
 {
     public interface IHandCardObjectManager
     {
-        public void AddCardObjects();
+        void AddCardObjects();
 
-        public void RemoveCardObjects();
+        void RemoveCardObjects();
 
-        public Sprite GetSpriteFromHandCardObject(CharacterConfig characterConfig);
+        Sprite GetSpriteFromHandCardObject(CharacterConfig characterConfig);
 
-        public void AddCardObjectFromConfig(CharacterConfig characterConfig);
+        void AddCardObjectFromConfig(CharacterConfig characterConfig);
     }
 }

@@ -2,6 +2,7 @@
 using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
+using Berty.Utility;
 using UnityEngine;
 
 namespace Berty.BoardCards.Behaviours
@@ -71,7 +72,7 @@ namespace Berty.BoardCards.Behaviours
             if (Navigation.IsCardAnimating()) return;
             Bars.ShowBars();
             bool isDeactivated = Activation.TryDeactivatingIfFlagged();
-            CheckpointManager.Instance.HandleIfRequested();
+            ManagerLocator.CheckpointManagerInstance.HandleIfRequested();
             if (isDeactivated || Bars.AreBarsAnimating()) return;
             StateMachine.TryShowingButtons();
         }

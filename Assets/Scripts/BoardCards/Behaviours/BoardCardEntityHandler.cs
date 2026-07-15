@@ -6,6 +6,7 @@ using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
 using Berty.UI.Card.Managers;
+using Berty.Utility;
 using System;
 using UnityEngine;
 
@@ -48,6 +49,7 @@ namespace Berty.BoardCards.Behaviours
         public void SetFieldBehaviour(FieldBehaviour fieldBehaviour)
         {
             ParentField = fieldBehaviour;
+            Debug.Log($"Set field behaviour for {BoardCard.CharacterConfig.Name} to {ParentField.BoardField.Coordinates}");
         }
 
         public void AdvanceStrength(int value, BoardCardBehaviour source)
@@ -152,20 +154,20 @@ namespace Berty.BoardCards.Behaviours
             }    
         }
 
-        public void SwitchSides()
+        public void SwitchSides() // BUG: The card that just side when the turn started cannot be controlled for the turn
         {
             BoardCard.OccupiedField.SwitchSides();
             EntityHandler.SetPower(BoardCard.CharacterConfig.Power, this);
             ParentField.UpdateField();
             EventManager.Instance.RaiseOnSideChanged(this);
-            CheckpointManager.Instance.HandleIfRequested();
+            ManagerLocator.CheckpointManagerInstance.HandleIfRequested();
         }
 
         private void KillCard()
         {
             TriggerCardDeath();
             Activation.DeactivateCard();
-            CheckpointManager.Instance.HandleIfRequested();
+            ManagerLocator.CheckpointManagerInstance.HandleIfRequested();
         }
 
         private void TriggerCardDeath()

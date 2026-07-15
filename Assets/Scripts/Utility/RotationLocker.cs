@@ -9,13 +9,13 @@ namespace Berty.Utility
         private Quaternion rotation;
         private Vector3 setRotation = new Vector3(90, 0, 0);
 
-        void Start()
+        private void Start()
         {
             rotation = Quaternion.Euler(setRotation);
         }
 
         // Update is called once per frame
-        void LateUpdate()
+        private void LateUpdate()
         {
             transform.rotation = rotation;
         }
