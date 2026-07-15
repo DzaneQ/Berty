@@ -154,7 +154,7 @@ namespace Berty.BoardCards.Behaviours
             }    
         }
 
-        public void SwitchSides()
+        public void SwitchSides() // BUG: The card that just side when the turn started cannot be controlled for the turn
         {
             BoardCard.OccupiedField.SwitchSides();
             EntityHandler.SetPower(BoardCard.CharacterConfig.Power, this);

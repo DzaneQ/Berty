@@ -2,6 +2,7 @@ using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Utility;
 using System;
+using UnityEngine;
 
 namespace Berty.Gameplay.Managers
 {
@@ -55,7 +56,7 @@ namespace Berty.Gameplay.Managers
         private void EndTheGame()
         {
             ManagerLocator.TurnManagerInstance.EndTheGame();
-            //LoadSaveManager.Instance.DeleteTheSave();
+            ProcessGameDataManager.Instance.DeleteTheSave();
         }
 
         private void SaveTheGame()
