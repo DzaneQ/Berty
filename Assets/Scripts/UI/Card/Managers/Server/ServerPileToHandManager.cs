@@ -36,7 +36,7 @@ namespace Berty.UI.Card.Managers.Server
                 capacity += extraCardStatus.Charges;
                 StatusManager.Instance.RemoveStatus(extraCardStatus);
             }
-            if (CardPile.PullCardsTo(capacity, align)) AddCardObjectsToAlignment(align); // BUG: Second client receives the first client's batch of cards
+            if (CardPile.PullCardsTo(capacity, align)) AddCardObjectsToAlignment(align);
             else ManagerLocator.TurnManagerInstance.EndTheGame();
         }
 
