@@ -44,6 +44,23 @@ namespace Berty.Grid.Field.Entities
             Grid = grid;
         }
 
+        public void OverwriteEntity(BoardFieldSaveData data, List<CharacterConfig> allCharacters)
+        {
+            Align = data.Align;
+            if (data.OccupantCard.CharacterName != "")
+            {
+                if (OccupantCard == null) OccupantCard = new BoardCard(data.OccupantCard, allCharacters, this);
+                else OccupantCard.OverwriteEntity(data.OccupantCard, allCharacters);
+            }
+            else OccupantCard = null;
+            if (data.BackupCard.CharacterName != "")
+            {
+                if (BackupCard == null) BackupCard = new BoardCard(data.BackupCard, allCharacters, this);
+                else BackupCard.OverwriteEntity(data.BackupCard, allCharacters);
+            }
+            else BackupCard = null;
+        }
+
         public BoardFieldSaveData SaveEntity()
         {
             return new()

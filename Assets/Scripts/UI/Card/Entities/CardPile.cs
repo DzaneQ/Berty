@@ -41,6 +41,16 @@ namespace Berty.UI.Card.Entities
             OpponentCards = GetCharactersFromNames(data.OpponentCardNames, allCharacters);
         }
 
+        public void OverwriteEntity(CardPileSaveData data, IReadOnlyList<CharacterConfig> allCharacters)
+        {
+            pileCards = GetCharactersFromNames(data.PileCardNames, allCharacters);
+            discardedCards = GetCharactersFromNames(data.DiscardedCardNames, allCharacters);
+            deadCards = GetCharactersFromNames(data.DeadCardNames, allCharacters);
+            bottomCard = allCharacters.FirstOrDefault(character => character.Name == data.BottomCardName);
+            PlayerCards = GetCharactersFromNames(data.PlayerCardNames, allCharacters);
+            OpponentCards = GetCharactersFromNames(data.OpponentCardNames, allCharacters);
+        }
+
         public CardPileSaveData SaveEntity()
         {
             return new()
@@ -63,13 +73,14 @@ namespace Berty.UI.Card.Entities
             return true;
         }
 
-        public void PullCardIfInPile(CharacterEnum character, AlignmentEnum align)
+        public CharacterEnum PullCardIfInPile(CharacterEnum character, AlignmentEnum align)
         {
             CharacterConfig takenCard = pileCards.Find(x => x.CharacterName == character);
-            if (takenCard == null) return;
+            if (takenCard == null) return CharacterEnum.None;
             List<CharacterConfig> targetTable = GetCardsFromAlign(align);
             pileCards.Remove(takenCard);
             targetTable.Add(takenCard);
+            return takenCard.CharacterName;
         }
 
         private bool PullCard(List<CharacterConfig> targetTable)

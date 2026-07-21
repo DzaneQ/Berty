@@ -82,7 +82,7 @@ namespace Berty.BoardCards.Managers
             ManagerLocator.ConfirmPaymentManagerInstance.ConfirmPayment(card);
         }
 
-        public void ApplySpecialEffect(BoardCardBehaviour card)
+        public void ApplySpecialEffect(BoardCardBehaviour card) // TODO: Sync with other client
         {
             Status status = Grid.Game.GetStatusByNameOrThrow(StatusEnum.ClickToApplyEffect);
             BoardCardBehaviour source = BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(status.Provider);

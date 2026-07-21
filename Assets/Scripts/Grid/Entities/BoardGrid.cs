@@ -42,6 +42,14 @@ namespace Berty.Grid.Entities
             }
         }
 
+        public void OverwriteEntity(BoardGridSaveData data, List<CharacterConfig> allCharacters)
+        {
+            for (int index = 0; index < 9; index++)
+            {
+                Fields[index].OverwriteEntity(data.Fields[index], allCharacters);
+            }
+        }
+
         public BoardGridSaveData SaveEntity()
         {
             return new()
