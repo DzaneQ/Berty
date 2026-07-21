@@ -83,6 +83,13 @@ namespace Berty.BoardCards.Entities
             nextTempStat = GetStatDictionary(data.NextTempStat);
         }
 
+        public void OverwriteEntity(CardStatsSaveData data)
+        {
+            baseStat = GetStatDictionary(data.BaseStat);
+            currentTempStat = GetStatDictionary(data.CurrentTempStat);
+            nextTempStat = GetStatDictionary(data.NextTempStat);
+        }
+
         public CardStatsSaveData SaveEntity()
         {
             return new()

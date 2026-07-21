@@ -24,7 +24,7 @@ namespace Berty.UI.Card.Managers
             AlignmentEnum align = ManagerLocator.TurnManagerInstance.CurrentAlignment;
             int capacity = game.GameConfig.TableCapacity;
             DebugManager instance = DebugManager.Instance;
-            if (instance != null) instance.TakeCardIfInPile(align);
+            if (instance != null) instance.TakeCardIfInPile(align, cardPile);
             Status extraCardStatus = game.GetStatusByNameAndAlignmentOrNull(StatusEnum.ExtraCardNextTurn, align);
             if (extraCardStatus != null)
             {

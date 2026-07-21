@@ -42,6 +42,17 @@ namespace Berty.Gameplay.Entities
             GameConfig = new GameConfig();
         }
 
+        public void OverwriteEntity(GameSaveData data)
+        {
+            CharacterData characterData = new();
+            List<CharacterConfig> allCharacters = characterData.LoadCharacterData();
+            CurrentAlignment = data.CurrentAlignment;
+            Grid.OverwriteEntity(data.Grid, allCharacters);
+            CardPile.OverwriteEntity(data.CardPile, allCharacters);
+            Statuses.Clear();
+            foreach (StatusSaveData statusData in data.Statuses) Statuses.Add(new Status(statusData, Grid));
+        }
+
         public GameSaveData SaveEntity()
         {
             return new()
