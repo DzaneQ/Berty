@@ -301,7 +301,7 @@ namespace Berty.BoardCards.Listeners
             }
         }
 
-        private void DecreasePowerForNeighbor(BoardCardBehaviour skillCard) // BUG: Not working
+        private void DecreasePowerForNeighbor(BoardCardBehaviour skillCard)
         {
             // Get neighbors that do not resist the skill card
             List<BoardCard> neighbors = game.Grid.GetOccupantNeighbors(skillCard.BoardCard)
