@@ -20,7 +20,7 @@ namespace Berty.Debugging.Managers
         public void TakeCardIfInPile(AlignmentEnum align) // NOTE: When debugging, change so CharacterEnum is returned rather than focusing on singleplayer logic
         {
             //Debug.Log("Taking debug card.");
-            if (align == AlignmentEnum.Player) game.CardPile.PullCardIfInPile(CharacterEnum.PapiezBertII, align);
+            //if (align == AlignmentEnum.Player) game.CardPile.PullCardIfInPile(CharacterEnum.GotkaBerta, align);
             //if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(CharacterEnum.RoninBert, align);
             //if (align == AlignmentEnum.Opponent) game.CardPile.PullCardIfInPile(CharacterEnum.KrolPopuBert, align);
         }

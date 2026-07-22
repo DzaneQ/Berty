@@ -2,6 +2,7 @@ using Berty.UI.Card.Managers;
 using Berty.UI.Managers;
 using Berty.Utility;
 using Berty.BoardCards.Behaviours;
+using System;
 
 namespace Berty.Gameplay.Managers
 {
@@ -9,6 +10,7 @@ namespace Berty.Gameplay.Managers
     {
         public void CallPayment(int price, BoardCardBehaviour card)
         {
+            if (card == null) throw new Exception($"Calling to pay {price} cards for a null card");
             SelectionManager.Instance.DemandPayment(price);
             ButtonObjectManager.Instance.DisplayUndoButton();
             EventManager.Instance.RaiseOnPaymentStart(card);

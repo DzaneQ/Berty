@@ -30,6 +30,7 @@ namespace Berty.BoardCards.Listeners
             EventManager.Instance.OnPaymentCancel -= HandlePaymentCancel;
         }
 
+        // BUG: After a card is killed and another card is moved on the field, putting a card on the field the another card was moved from triggers NullReferenceException
         private void HandlePaymentStart(object sender, EventArgs args)
         {
             BoardCardBehaviour card = (BoardCardBehaviour)sender;

@@ -17,9 +17,8 @@ namespace Berty.BoardCards.Behaviours
         public new BoardCard BoardCard { get; private set; }
         public new FieldBehaviour ParentField { get; private set; }
 
-        protected override void Awake()
+        private void OnEnable()
         {
-            base.Awake();
             ParentField = GetComponentInParent<FieldBehaviour>();
         }
 
