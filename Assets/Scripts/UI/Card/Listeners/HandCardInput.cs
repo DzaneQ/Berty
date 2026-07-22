@@ -4,6 +4,7 @@ using UnityEngine;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Utility;
+using Berty.Characters.Managers;
 
 namespace Berty.UI.Card.Listeners
 {
@@ -37,7 +38,7 @@ namespace Berty.UI.Card.Listeners
 
         private void HandleLeftClick()
         {
-            if (transform.parent.name.Contains("Dead")) HandCardActionManager.Instance.ReviveCard(behaviour);
+            if (transform.parent.name.Contains("Dead")) ApplyManualEffectManager.Instance.ReviveCard(behaviour);
             else HandCardSelectManager.Instance.ChangeSelection(behaviour);
         }
     }
