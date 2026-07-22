@@ -98,7 +98,6 @@ namespace Berty.Network.Managers
             ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }
 
-        // TODO: It applies only for new card. Other payment related actions should be adjusted.
         [ClientRpc]
         private void ProcessPaymentForOtherClientRpc(BoardCardNetworkData cardFocus, CardStateEnum cardState, NavigationEnum cardNavigation, ClientRpcParams otherClientRpcParams)
         {

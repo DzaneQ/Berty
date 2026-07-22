@@ -84,11 +84,7 @@ namespace Berty.BoardCards.Managers
 
         public void ApplySpecialEffect(BoardCardBehaviour card) // TODO: Sync with other client
         {
-            Status status = Grid.Game.GetStatusByNameOrThrow(StatusEnum.ClickToApplyEffect);
-            BoardCardBehaviour source = BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(status.Provider);
-            card.EntityHandler.AdvanceStrength(2, source);
-            card.EntityHandler.AdvanceHealth(1, source);
-            StatusManager.Instance.RemoveStatus(status);
+            ApplyManualEffectManager.Instance.EnhanceCard(card);
         }
 
         private int GetPriceForMoving(BoardCardBehaviour card)
