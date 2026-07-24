@@ -38,7 +38,7 @@ namespace Berty.UI.Card.Listeners
 
         private void HandleLeftClick()
         {
-            if (transform.parent.name.Contains("Dead")) ApplyManualEffectManager.Instance.ReviveCard(behaviour);
+            if (transform.parent.name.Contains("Dead")) ManagerLocator.ApplyManualEffectManagerInstance.ReviveCard(behaviour);
             else HandCardSelectManager.Instance.ChangeSelection(behaviour);
         }
     }

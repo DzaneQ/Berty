@@ -127,7 +127,6 @@ namespace Berty.Network.Managers
         {
             if (!IsServer) throw new Exception("Getting state on card focus should be processed from server.");
             BoardCard card = Game.Grid.FindCardByCharacterNameOrNull(cardFocus.CharacterName);
-            if (card == null) Debug.Log($"Card {cardFocus.CharacterName} is null");
             if (card == null) return CardStateEnum.NewCard;
             if (isSentByHost)
             {

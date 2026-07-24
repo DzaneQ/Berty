@@ -82,9 +82,10 @@ namespace Berty.BoardCards.Managers
             ManagerLocator.ConfirmPaymentManagerInstance.ConfirmPayment(card);
         }
 
-        public void ApplySpecialEffect(BoardCardBehaviour card) // TODO: Sync with other client
+        public void ApplySpecialEffect(BoardCardBehaviour card)
         {
-            ApplyManualEffectManager.Instance.EnhanceCard(card);
+            Debug.Log($"Applying special effect for {card.name}");
+            ManagerLocator.ApplyManualEffectManagerInstance.EnhanceCard(card);
         }
 
         private int GetPriceForMoving(BoardCardBehaviour card)

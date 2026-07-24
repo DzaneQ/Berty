@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Enums\AlignmentEnum.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardBarsObjects.cs" />
+    <Compile Include="Assets\Scripts\Network\Managers\NetworkApplyManualEffectManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertPogromca.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\Tankbert.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\EventManager.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertZawodowiec.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\ActiveState.cs" />
     <Compile Include="Assets\Scripts\Menu\Listeners\ButtonFunction.cs" />
+    <Compile Include="Assets\Scripts\Characters\Managers\IApplyManualEffectManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\IHandToFieldManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\StatusListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveRight.cs" />
