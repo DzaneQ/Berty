@@ -8,7 +8,7 @@ using Berty.Utility;
 
 namespace Berty.Characters.Managers
 {
-    public class ApplyManualEffectManager : ManagerSingleton<ApplyManualEffectManager>
+    public class ApplyManualEffectManager : ManagerSingleton<ApplyManualEffectManager>, IApplyManualEffectManager
     {
         private Game Game { get; set; }
 

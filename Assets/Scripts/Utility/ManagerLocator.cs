@@ -1,3 +1,4 @@
+using Berty.Characters.Managers;
 using Berty.Gameplay.Managers;
 using Berty.Network.Managers;
 using Berty.UI.Card.Managers;
@@ -18,6 +19,7 @@ namespace Berty.Utility
         public static IFieldToHandManager FieldToHandManagerInstance;
         public static IConfirmPaymentManager ConfirmPaymentManagerInstance;
         public static ICheckpointManager CheckpointManagerInstance;
+        public static IApplyManualEffectManager ApplyManualEffectManagerInstance;
 
         public static void InitializeSingleplayer()
         {
@@ -28,6 +30,7 @@ namespace Berty.Utility
             FieldToHandManagerInstance = FieldToHandManager.Instance;
             ConfirmPaymentManagerInstance = PaymentManager.Instance;
             CheckpointManagerInstance = CheckpointManager.Instance;
+            ApplyManualEffectManagerInstance = ApplyManualEffectManager.Instance;
         }
 
         public static void InitializeMultiplayer()
@@ -39,6 +42,7 @@ namespace Berty.Utility
             FieldToHandManagerInstance = ClientFieldToHandManager.Instance;
             ConfirmPaymentManagerInstance = NetworkConfirmPaymentManager.Instance;
             CheckpointManagerInstance = NetworkCheckpointManager.Instance;
+            ApplyManualEffectManagerInstance = NetworkApplyManualEffectManager.Instance;
         }
     }
 }
