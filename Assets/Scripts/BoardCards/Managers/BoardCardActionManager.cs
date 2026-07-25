@@ -84,7 +84,6 @@ namespace Berty.BoardCards.Managers
 
         public void ApplySpecialEffect(BoardCardBehaviour card)
         {
-            Debug.Log($"Applying special effect for {card.name}");
             ManagerLocator.ApplyManualEffectManagerInstance.EnhanceCard(card);
         }
 
