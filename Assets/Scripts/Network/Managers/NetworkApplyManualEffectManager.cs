@@ -5,8 +5,10 @@ using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card;
+using Berty.UI.Card.Collection;
 using Berty.Utility;
 using System;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -15,6 +17,7 @@ namespace Berty.Characters.Managers
     public class NetworkApplyManualEffectManager : RpcManagerSingleton<NetworkApplyManualEffectManager>, IApplyManualEffectManager
     {
         private Game Game { get; set; }
+        private HandCardCollection _handCardCollection;
 
         protected override void Awake()
         {
@@ -22,14 +25,27 @@ namespace Berty.Characters.Managers
             Game = EntityLoadManager.Instance.Game;
         }
 
+        private void Start()
+        {
+            _handCardCollection = ObjectReadManager.Instance.HandCardObjectCollection.GetComponent<HandCardCollection>();
+        }
+
         public void ReviveCard(HandCardBehaviour handCardObject)
         {
-            throw new NotImplementedException();
+            ReviveCardServerRpc(handCardObject.Character.CharacterName);
         }
 
         public void EnhanceCard(BoardCardBehaviour boardCardObject)
         {
             EnhanceCardServerRpc(boardCardObject.BoardCard.CharacterConfig.CharacterName);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void ReviveCardServerRpc(CharacterEnum targetCharacter)
+        {
+            if (!Game.CardPile.DeadCards.Select(config => config.CharacterName).Contains(targetCharacter)) throw new Exception("The target card is not in the dead pile to revive.");
+
+            ReviveCardClientRpc(targetCharacter);
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -39,6 +55,17 @@ namespace Berty.Characters.Managers
             if (Game.GetStatusByNameOrNull(StatusEnum.ClickToApplyEffect) == null) throw new Exception("There is not status to enhance a card.");
 
             EnhanceCardClientRpc(targetCharacter);
+        }
+
+        [ClientRpc]
+        public void ReviveCardClientRpc(CharacterEnum targetCharacter)
+        {
+            HandCardBehaviour handCardObject = _handCardCollection.GetBehaviourFromCharacterName(targetCharacter);
+
+            Status revival = Game.GetStatusByNameOrThrow(StatusEnum.RevivalSelect);
+            Game.CardPile.ReviveCard(handCardObject.Character, revival.GetAlign());
+            ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
+            StatusManager.Instance.RemoveStatus(revival);
         }
 
         [ClientRpc]

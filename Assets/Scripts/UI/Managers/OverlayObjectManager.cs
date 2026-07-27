@@ -34,8 +34,10 @@ namespace Berty.UI.Managers
             Instantiate(prefab, canvasObject.transform);
         }
 
+        // BUG: Dead cards not shown
         public void DisplayDeadCardsScreen()
         {
+            if (!ManagerLocator.TurnManagerInstance.IsItMyTurn()) return;
             GameObject screen = ObjectReadManager.Instance.DeadCardsScreen;
             foreach (CharacterConfig deadCard in cardPile.DeadCards)
             {

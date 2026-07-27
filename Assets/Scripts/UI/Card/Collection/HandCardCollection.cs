@@ -1,4 +1,5 @@
 using Berty.BoardCards.ConfigData;
+using Berty.Enums;
 using Berty.UI.Card.Managers;
 using System;
 using System.Collections;
@@ -28,6 +29,11 @@ namespace Berty.UI.Card.Collection
         public HandCardBehaviour GetBehaviourFromCharacterConfig(CharacterConfig characterConfig)
         {
             return handCardBehaviourCollection.Find((HandCardBehaviour behaviour) => behaviour.Character.Name == characterConfig.Name);
+        }
+
+        public HandCardBehaviour GetBehaviourFromCharacterName(CharacterEnum characterName)
+        {
+            return handCardBehaviourCollection.Find((HandCardBehaviour behaviour) => behaviour.Character.CharacterName == characterName);
         }
 
         public List<Transform> GetTransformListFromCharacterConfigs(IReadOnlyList<CharacterConfig> characterConfigs)
