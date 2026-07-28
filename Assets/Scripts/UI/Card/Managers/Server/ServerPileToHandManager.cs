@@ -38,7 +38,6 @@ namespace Berty.UI.Card.Managers.Server
             }
             if (CardPile.PullCardsTo(capacity, align)) AddCardObjectsToAlignment(align);
             else ManagerLocator.TurnManagerInstance.EndTheGame();
-            foreach (CharacterConfig card in CardPile.GetCardsFromAlign(align)) Debug.Log($"Card in {align}'s hand: {card.CharacterName}");
         }
 
         private CharacterEnum[] GetPlayerCardsAsCharacterNames(AlignmentEnum align)

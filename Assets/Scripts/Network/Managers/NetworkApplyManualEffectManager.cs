@@ -4,6 +4,7 @@ using Berty.BoardCards.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.Network.Managers;
 using Berty.UI.Card;
 using Berty.UI.Card.Collection;
 using Berty.Utility;
@@ -63,7 +64,9 @@ namespace Berty.Characters.Managers
             HandCardBehaviour handCardObject = _handCardCollection.GetBehaviourFromCharacterName(targetCharacter);
 
             Status revival = Game.GetStatusByNameOrThrow(StatusEnum.RevivalSelect);
-            Game.CardPile.ReviveCard(handCardObject.Character, revival.GetAlign());
+            AlignmentEnum targetAlign = revival.GetAlign();
+            Game.CardPile.ReviveCard(handCardObject.Character, targetAlign);
+            if (PlayerReadManager.Instance.MyAlignment == targetAlign) NetworkCardManager.Instance.RetrieveCard(handCardObject.Character);
             ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
             StatusManager.Instance.RemoveStatus(revival);
         }
