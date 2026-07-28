@@ -1,4 +1,5 @@
 using Berty.BoardCards.Behaviours;
+using Berty.BoardCards.ConfigData;
 using Berty.BoardCards.Entities;
 using Berty.BoardCards.Managers;
 using Berty.Enums;
@@ -31,8 +32,9 @@ namespace Berty.Characters.Managers
             _handCardCollection = ObjectReadManager.Instance.HandCardObjectCollection.GetComponent<HandCardCollection>();
         }
 
-        public void ReviveCard(HandCardBehaviour handCardObject)
+        public void ReviveCard(HandCardBehaviour handCardObject) // TODO: Handle removed Gotka Berta card
         {
+            foreach (CharacterConfig config in Game.CardPile.DeadCards) Debug.Log("Dead card available: " + config.CharacterName);
             ReviveCardServerRpc(handCardObject.Character.CharacterName);
         }
 
@@ -65,7 +67,9 @@ namespace Berty.Characters.Managers
 
             Status revival = Game.GetStatusByNameOrThrow(StatusEnum.RevivalSelect);
             AlignmentEnum targetAlign = revival.GetAlign();
+            foreach (CharacterConfig config in Game.CardPile.DeadCards) Debug.Log("Dead card before revival: " + config.CharacterName);
             Game.CardPile.ReviveCard(handCardObject.Character, targetAlign);
+            foreach (CharacterConfig config in Game.CardPile.DeadCards) Debug.Log("Dead card after revival: " + config.CharacterName);
             if (PlayerReadManager.Instance.MyAlignment == targetAlign) NetworkCardManager.Instance.RetrieveCard(handCardObject.Character);
             ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
             StatusManager.Instance.RemoveStatus(revival);

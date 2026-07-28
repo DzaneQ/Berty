@@ -34,7 +34,6 @@ namespace Berty.UI.Managers
             Instantiate(prefab, canvasObject.transform);
         }
 
-        // BUG: Dead cards not shown
         public void DisplayDeadCardsScreen()
         {
             if (!ManagerLocator.TurnManagerInstance.IsItMyTurn()) return;
@@ -42,7 +41,7 @@ namespace Berty.UI.Managers
             foreach (CharacterConfig deadCard in cardPile.DeadCards)
             {
                 Transform card = behaviourCollection.GetBehaviourFromCharacterConfig(deadCard).transform;
-                card.SetParent(screen.transform);
+                card.SetParent(screen.transform, false);
             }
             screen.SetActive(true);
         }
@@ -54,7 +53,7 @@ namespace Berty.UI.Managers
             screen.SetActive(false);
             for (int i = screen.transform.childCount - 1; 0 <= i; i--)
             {
-                screen.transform.GetChild(i).SetParent(destination);
+                screen.transform.GetChild(i).SetParent(destination, false);
             }
         }
     }

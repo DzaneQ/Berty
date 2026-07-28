@@ -155,10 +155,11 @@ namespace Berty.UI.Card.Entities
 
         public void ReviveCard(CharacterConfig card, AlignmentEnum align)
         {
-            if (!deadCards.Contains(card)) throw new Exception($"Card {card.Name} is not dead");
+            CharacterConfig cardToRevive = deadCards.FirstOrDefault(deadCard => deadCard.CharacterName == card.CharacterName); // TODO: Refactor so it's not relied on finding a copy of the same character
+            if (cardToRevive == null) throw new Exception($"Card {card.Name} is not dead");
             List<CharacterConfig> table = GetCardsFromAlign(align);
-            deadCards.Remove(card);
-            table.Add(card);
+            deadCards.Remove(cardToRevive);
+            table.Add(cardToRevive);
         }
 
         public void LeaveCard(CharacterConfig card, AlignmentEnum align)
