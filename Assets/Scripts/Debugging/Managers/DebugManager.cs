@@ -14,7 +14,7 @@ namespace Berty.Debugging.Managers
         {
             //Debug.Log("Taking debug card.");
             if (align == AlignmentEnum.Opponent) pile.PullCardIfInPile(CharacterEnum.GotkaBerta, align);
-            //if (align == AlignmentEnum.Opponent) pile.PullCardIfInPile(CharacterEnum.BertaSJW, align);
+            if (align == AlignmentEnum.Player) pile.PullCardIfInPile(CharacterEnum.Tankbert, align);
             //if (align == AlignmentEnum.Opponent) pile.PullCardIfInPile(CharacterEnum.RycerzBerti, align);
         }
     }

@@ -65,14 +65,26 @@ namespace Berty.Characters.Managers
         {
             HandCardBehaviour handCardObject = _handCardCollection.GetBehaviourFromCharacterName(targetCharacter);
 
-            Status revival = Game.GetStatusByNameOrThrow(StatusEnum.RevivalSelect);
-            AlignmentEnum targetAlign = revival.GetAlign();
-            foreach (CharacterConfig config in Game.CardPile.DeadCards) Debug.Log("Dead card before revival: " + config.CharacterName);
-            Game.CardPile.ReviveCard(handCardObject.Character, targetAlign);
-            foreach (CharacterConfig config in Game.CardPile.DeadCards) Debug.Log("Dead card after revival: " + config.CharacterName);
-            if (PlayerReadManager.Instance.MyAlignment == targetAlign) NetworkCardManager.Instance.RetrieveCard(handCardObject.Character);
-            ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
-            StatusManager.Instance.RemoveStatus(revival);
+            Status revival = Game.GetStatusByNameOrNull(StatusEnum.RevivalSelect); // Upon deactivation, the status is null for the other client
+            AlignmentEnum? targetAlign = revival?.GetAlign();
+            AlignmentEnum clientAlign = PlayerReadManager.Instance.MyAlignment;
+            if (clientAlign == targetAlign)
+            {
+                Game.CardPile.ReviveCard(handCardObject.Character, clientAlign);
+                NetworkCardManager.Instance.RetrieveCard(handCardObject.Character);
+                ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
+            }
+            else
+            {
+                Game.CardPile.ReviveCard(handCardObject.Character, AlignmentEnum.None);
+                if (revival == null)
+                {
+                    BoardCardBehaviour gotkaBerta = BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(Game.Grid.FindCardByCharacterNameOrThrow(CharacterEnum.GotkaBerta));
+                    gotkaBerta.Activation.DeactivateCard();
+                }
+            }
+
+            if (revival != null) StatusManager.Instance.RemoveStatus(revival);
         }
 
         [ClientRpc]
