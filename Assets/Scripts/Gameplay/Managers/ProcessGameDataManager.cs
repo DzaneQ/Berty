@@ -26,7 +26,7 @@ namespace Berty.Gameplay.Managers
             savePath = Application.persistentDataPath + "/save.txt"; // Change extension
         }
 
-        public GameSaveData? LoadTheSaveFile() // BUG: Loading the game pulls extra hand cards and fails to load sprites
+        public GameSaveData? LoadTheSaveFile()
         {
             if (IsSaveFileExisting())
             {

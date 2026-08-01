@@ -64,6 +64,16 @@ namespace Berty.BoardCards.Entities
             resistance = GetCharactersFromNames(data.ResistantCharacterNames, allCharacters);
         }
 
+        public void OverwriteEntity(BoardCardSaveData data, List<CharacterConfig> allCharacters)
+        {
+            Direction = data.Direction;
+            Stats.OverwriteEntity(data.CardStats);
+            HasAttacked = data.HasAttacked;
+            IsTired = data.IsTired;
+            resistance.Clear();
+            resistance.AddRange(GetCharactersFromNames(data.ResistantCharacterNames, allCharacters));
+        }
+
         public BoardCardSaveData SaveEntity()
         {
             return new()

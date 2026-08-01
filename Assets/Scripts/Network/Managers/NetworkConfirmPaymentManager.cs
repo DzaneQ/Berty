@@ -98,7 +98,6 @@ namespace Berty.Network.Managers
             ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }
 
-        // TODO: It applies only for new card. Other payment related actions should be adjusted.
         [ClientRpc]
         private void ProcessPaymentForOtherClientRpc(BoardCardNetworkData cardFocus, CardStateEnum cardState, NavigationEnum cardNavigation, ClientRpcParams otherClientRpcParams)
         {
@@ -128,7 +127,6 @@ namespace Berty.Network.Managers
         {
             if (!IsServer) throw new Exception("Getting state on card focus should be processed from server.");
             BoardCard card = Game.Grid.FindCardByCharacterNameOrNull(cardFocus.CharacterName);
-            if (card == null) Debug.Log($"Card {cardFocus.CharacterName} is null");
             if (card == null) return CardStateEnum.NewCard;
             if (isSentByHost)
             {

@@ -87,7 +87,7 @@ namespace Berty.Network.Init
         private void InitializeSceneClientRpc(string gameDataStr)
         {
             GameSaveData gameData = ProcessGameDataManager.Instance.GetDataFromString(gameDataStr);
-            EntityLoadManager.Instance.LoadGameFromData(gameData);
+            EntityLoadManager.Instance.OverwriteGameFromData(gameData);
             InitializeHandCardObjects();
             StartTheGame();
         }

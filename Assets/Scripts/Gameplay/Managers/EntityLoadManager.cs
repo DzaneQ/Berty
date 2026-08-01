@@ -21,9 +21,9 @@ namespace Berty.Gameplay.Managers
             }
         }
 
-        public void LoadGameFromData(GameSaveData data)
+        public void OverwriteGameFromData(GameSaveData data)
         {
-            Game = new Game(data);
+            Game.OverwriteEntity(data);
         }
 
         private Game LoadGame()

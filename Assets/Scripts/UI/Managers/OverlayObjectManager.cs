@@ -34,13 +34,14 @@ namespace Berty.UI.Managers
             Instantiate(prefab, canvasObject.transform);
         }
 
-        public void DisplayDeadCardsScreen()
+        public void DisplayDeadCardsScreen() // BUG: During revival, you can interact with hand cards and put them on field.
         {
+            if (!ManagerLocator.TurnManagerInstance.IsItMyTurn()) return;
             GameObject screen = ObjectReadManager.Instance.DeadCardsScreen;
             foreach (CharacterConfig deadCard in cardPile.DeadCards)
             {
                 Transform card = behaviourCollection.GetBehaviourFromCharacterConfig(deadCard).transform;
-                card.SetParent(screen.transform);
+                card.SetParent(screen.transform, false);
             }
             screen.SetActive(true);
         }
@@ -52,7 +53,7 @@ namespace Berty.UI.Managers
             screen.SetActive(false);
             for (int i = screen.transform.childCount - 1; 0 <= i; i--)
             {
-                screen.transform.GetChild(i).SetParent(destination);
+                screen.transform.GetChild(i).SetParent(destination, false);
             }
         }
     }

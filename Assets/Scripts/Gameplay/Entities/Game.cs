@@ -20,7 +20,7 @@ namespace Berty.Gameplay.Entities
         public GameConfig GameConfig { get; }
 
 
-        public Game(AlignmentEnum startingAlignment) // BUG: When AlignmentEnum.Opponent starts the game, cards are not drawn in multiplayer mode
+        public Game(AlignmentEnum startingAlignment)
         {
             Statuses = new();
             CurrentAlignment = startingAlignment; // TODO: Assign this variable from GameConfig rather than an argument
@@ -40,6 +40,17 @@ namespace Berty.Gameplay.Entities
             Statuses = new();
             foreach (StatusSaveData statusData in data.Statuses) Statuses.Add(new Status(statusData, Grid));
             GameConfig = new GameConfig();
+        }
+
+        public void OverwriteEntity(GameSaveData data)
+        {
+            CharacterData characterData = new();
+            List<CharacterConfig> allCharacters = characterData.LoadCharacterData();
+            CurrentAlignment = data.CurrentAlignment;
+            Grid.OverwriteEntity(data.Grid, allCharacters);
+            CardPile.OverwriteEntity(data.CardPile, allCharacters);
+            Statuses.Clear();
+            foreach (StatusSaveData statusData in data.Statuses) Statuses.Add(new Status(statusData, Grid));
         }
 
         public GameSaveData SaveEntity()

@@ -18,6 +18,7 @@ namespace Berty.Network.Managers
             if (IsServer) game = EntityLoadManager.Instance.Game;
         }
 
+        // BUG: KrolPopuBert after dying will leave an exception on turn end
         public void RequestCheckpoint()
         {
             if (requestedCheckpoint) throw new Exception("Trying to request checkpoint when the previous request has not been handled.");

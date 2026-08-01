@@ -29,7 +29,7 @@ namespace Berty.UI.Card.Managers.Server
             int capacity = game.GameConfig.TableCapacity;
             AlignmentEnum align = ManagerLocator.TurnManagerInstance.CurrentAlignment;
             DebugManager instance = DebugManager.Instance;
-            if (instance != null) instance.TakeCardIfInPile(align);
+            if (instance != null) instance.TakeCardIfInPile(align, CardPile);
             Status extraCardStatus = game.GetStatusByNameAndAlignmentOrNull(StatusEnum.ExtraCardNextTurn, align);
             if (extraCardStatus != null)
             {
