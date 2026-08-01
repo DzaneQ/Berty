@@ -7,6 +7,7 @@ using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
+using Berty.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -268,7 +269,7 @@ namespace Berty.BoardCards.Listeners
                     break;
                 case CharacterEnum.GotkaBerta:
                     if (game.CardPile.AreThereAnyDeadCards())
-                        StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.RevivalSelect, skillCard.BoardCard);
+                        StatusManager.Instance.AddUniqueStatusWithAlignment(StatusEnum.RevivalSelect, ManagerLocator.TurnManagerInstance.CurrentAlignment);
                     break;  
                 case CharacterEnum.RycerzBerti:
                     StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.TelekineticArea, skillCard.BoardCard);
