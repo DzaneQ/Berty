@@ -149,6 +149,11 @@ namespace Berty.Gameplay.Entities
             return Statuses.Find(x => x.Provider == provider);
         }
 
+        public bool AreThereAnyStatuses(StatusEnum[] pickedStatuses)
+        {
+            return Statuses.Find(x => pickedStatuses.Contains(x.Name)) != null;
+        }
+
         public void RemoveStatusByName(StatusEnum name)
         {
             Statuses.Remove(Statuses.Find(x => x.Name == name));

@@ -10,18 +10,25 @@ namespace Berty.Network.Managers
 {
     public class NetworkCheckpointManager : RpcManagerSingleton<NetworkCheckpointManager>, ICheckpointManager
     {
-        private Game game; // should be used from server only
+        private Game game;
         private bool requestedCheckpoint;
+        private StatusEnum[] selectionStatuses;
 
         public override void OnNetworkSpawn()
         {
-            if (IsServer) game = EntityLoadManager.Instance.Game;
+            game = EntityLoadManager.Instance.Game;
+            selectionStatuses = new StatusEnum[] { StatusEnum.ClickToApplyEffect, StatusEnum.RevivalSelect };
         }
 
         // BUG: KrolPopuBert after dying will leave an exception on turn end
         public void RequestCheckpoint()
         {
             if (requestedCheckpoint) throw new Exception("Trying to request checkpoint when the previous request has not been handled.");
+            if (IsStatusPreventingCheckpoint())
+            {
+                requestedCheckpoint = false; // Cancel checkpoint request
+                return;
+            }
             if (CanHandleCheckpoint()) HandleCheckpoint();
             else requestedCheckpoint = true;
         }
@@ -41,6 +48,11 @@ namespace Berty.Network.Managers
         private bool CanHandleCheckpoint()
         {
             return !EventManager.Instance.RaiseOnCheckpointRequest();
+        }
+
+        private bool IsStatusPreventingCheckpoint()
+        {
+            return game.AreThereAnyStatuses(selectionStatuses);
         }
 
         [ServerRpc(RequireOwnership = false)]

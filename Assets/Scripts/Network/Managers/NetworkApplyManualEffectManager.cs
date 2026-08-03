@@ -32,7 +32,7 @@ namespace Berty.Characters.Managers
             _handCardCollection = ObjectReadManager.Instance.HandCardObjectCollection.GetComponent<HandCardCollection>();
         }
 
-        public void ReviveCard(HandCardBehaviour handCardObject) // TODO: Handle removed Gotka Berta card
+        public void ReviveCard(HandCardBehaviour handCardObject)
         {
             foreach (CharacterConfig config in Game.CardPile.DeadCards) Debug.Log("Dead card available: " + config.CharacterName);
             ReviveCardServerRpc(handCardObject.Character.CharacterName);
@@ -85,6 +85,7 @@ namespace Berty.Characters.Managers
             }
 
             if (revival != null) StatusManager.Instance.RemoveStatus(revival);
+            ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }
 
         [ClientRpc]
@@ -98,6 +99,7 @@ namespace Berty.Characters.Managers
             targetBehaviour.EntityHandler.AdvanceStrength(2, source);
             targetBehaviour.EntityHandler.AdvanceHealth(1, source);
             StatusManager.Instance.RemoveStatus(enhancement);
+            ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }
     }
 }

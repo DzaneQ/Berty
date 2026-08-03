@@ -50,7 +50,7 @@ namespace Berty.Gameplay.Entities
 
         public StatusSaveData SaveEntity()
         {
-            return new() // TODO: Fix the exception throw caused by Gotka Berta when her health reaches 0 during revival pick
+            return new()
             {
                 Name = Name,
                 ProviderName = Provider.CharacterConfig.Name,

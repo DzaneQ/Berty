@@ -10,16 +10,23 @@ namespace Berty.Gameplay.Managers
     {
         private Game game;
         private bool requestedCheckpoint;
+        private StatusEnum[] selectionStatuses;
 
         protected override void Awake()
         {
             base.Awake();
             game = EntityLoadManager.Instance.Game;
+            selectionStatuses = new StatusEnum[] { StatusEnum.ClickToApplyEffect, StatusEnum.RevivalSelect };
         }
 
         public void RequestCheckpoint()
         {
             if (requestedCheckpoint) throw new Exception("Trying to request checkpoint when the previous request has not been handled.");
+            if (IsStatusPreventingCheckpoint())
+            {
+                requestedCheckpoint = false; // Cancel checkpoint request
+                return;
+            }
             if (CanHandleCheckpoint()) HandleCheckpoint();
             else requestedCheckpoint = true;
         }
@@ -39,6 +46,11 @@ namespace Berty.Gameplay.Managers
         private bool CanHandleCheckpoint()
         {
             return !EventManager.Instance.RaiseOnCheckpointRequest();
+        }
+
+        private bool IsStatusPreventingCheckpoint()
+        {
+            return game.AreThereAnyStatuses(selectionStatuses);
         }
 
         private bool TryEndingTheGame()

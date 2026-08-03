@@ -24,6 +24,7 @@ namespace Berty.Characters.Managers
             Game.CardPile.ReviveCard(handCardObject.Character, revival.GetAlign());
             ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
             StatusManager.Instance.RemoveStatus(revival);
+            ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }
 
         public void EnhanceCard(BoardCardBehaviour boardCardObject)
@@ -33,6 +34,7 @@ namespace Berty.Characters.Managers
             boardCardObject.EntityHandler.AdvanceStrength(2, source);
             boardCardObject.EntityHandler.AdvanceHealth(1, source);
             StatusManager.Instance.RemoveStatus(enhancement);
+            ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }
     }
 }
