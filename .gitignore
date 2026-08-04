@@ -6,6 +6,7 @@
 /Assets/AssetStoreTools*
 /UserSettings
 /[Ll]ogs
+/Assets/_Recovery
 
 # Visual Studio 2015 cache directory
 /.vs/

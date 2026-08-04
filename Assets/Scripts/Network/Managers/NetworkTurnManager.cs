@@ -56,9 +56,10 @@ namespace Berty.Network.Managers
             ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }
 
-        [ServerRpc(RequireOwnership = false)]
+        [Rpc(SendTo.Server)]
         private void SwitchAlignmentServerRpc()
         {
+            Debug.Log("Switching alignment.");
             turnAlignment.Value = game.SwitchAlignment();
         }
 

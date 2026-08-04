@@ -17,16 +17,16 @@ namespace TMPro.Examples
         private Transform m_floatingText_Transform;
         private Transform m_cameraTransform;
 
-        private Vector3 lastPOS = Vector3.zero;
-        private Quaternion lastRotation = Quaternion.identity;
+        Vector3 lastPOS = Vector3.zero;
+        Quaternion lastRotation = Quaternion.identity;
 
         public int SpawnType;
         public bool IsTextObjectScaleStatic;
 
         //private int m_frame = 0;
 
-        private static WaitForEndOfFrame k_WaitForEndOfFrame = new WaitForEndOfFrame();
-        private static WaitForSeconds[] k_WaitForSecondsRandom = new WaitForSeconds[]
+        static WaitForEndOfFrame k_WaitForEndOfFrame = new WaitForEndOfFrame();
+        static WaitForSeconds[] k_WaitForSecondsRandom = new WaitForSeconds[]
         {
             new WaitForSeconds(0.05f), new WaitForSeconds(0.1f), new WaitForSeconds(0.15f), new WaitForSeconds(0.2f), new WaitForSeconds(0.25f),
             new WaitForSeconds(0.3f), new WaitForSeconds(0.35f), new WaitForSeconds(0.4f), new WaitForSeconds(0.45f), new WaitForSeconds(0.5f),
@@ -34,7 +34,7 @@ namespace TMPro.Examples
             new WaitForSeconds(0.8f), new WaitForSeconds(0.85f), new WaitForSeconds(0.9f), new WaitForSeconds(0.95f), new WaitForSeconds(1.0f),
         };
 
-        private void Awake()
+        void Awake()
         {
             m_transform = transform;
             m_floatingText = new GameObject(this.name + " floating text");
@@ -46,7 +46,7 @@ namespace TMPro.Examples
             m_cameraTransform = Camera.main.transform;
         }
 
-        private void Start()
+        void Start()
         {
             if (SpawnType == 0)
             {
@@ -65,7 +65,7 @@ namespace TMPro.Examples
                 m_textMeshPro.fontSize = 24;
                 //m_textMeshPro.enableExtraPadding = true;
                 //m_textMeshPro.enableShadows = false;
-                m_textMeshPro.enableKerning = false;
+                m_textMeshPro.fontFeatures.Clear();
                 m_textMeshPro.text = string.Empty;
                 m_textMeshPro.isTextObjectScaleStatic = IsTextObjectScaleStatic;
 

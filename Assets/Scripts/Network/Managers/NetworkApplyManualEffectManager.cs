@@ -43,7 +43,7 @@ namespace Berty.Characters.Managers
             EnhanceCardServerRpc(boardCardObject.BoardCard.CharacterConfig.CharacterName);
         }
 
-        [ServerRpc(RequireOwnership = false)]
+        [Rpc(SendTo.Server)]
         public void ReviveCardServerRpc(CharacterEnum targetCharacter)
         {
             if (!Game.CardPile.DeadCards.Select(config => config.CharacterName).Contains(targetCharacter)) throw new Exception("The target card is not in the dead pile to revive.");
@@ -51,7 +51,7 @@ namespace Berty.Characters.Managers
             ReviveCardClientRpc(targetCharacter);
         }
 
-        [ServerRpc(RequireOwnership = false)]
+        [Rpc(SendTo.Server)]
         public void EnhanceCardServerRpc(CharacterEnum targetCharacter)
         {
             if (Game.Grid.FindCardByCharacterNameOrNull(targetCharacter) == null) throw new Exception("The target card is not on the board to enhance.");

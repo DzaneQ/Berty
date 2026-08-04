@@ -23,7 +23,7 @@ namespace Berty.Debugging.Managers
     {
         public static DebugManager Instance => null;
 
-        public void TakeCardIfInPile(AlignmentEnum align) {}
+        public void TakeCardIfInPile(AlignmentEnum align, CardPile pile) {}
     }
 #endif
 }

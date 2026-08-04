@@ -55,7 +55,7 @@ namespace Berty.Network.Managers
             return game.AreThereAnyStatuses(selectionStatuses);
         }
 
-        [ServerRpc(RequireOwnership = false)]
+        [Rpc(SendTo.Server)]
         private void TryEndingTheGameServerRpc()
         {
             int alignedCardsToWin = game.GameConfig.AlignedCardsToWin;

@@ -21,7 +21,7 @@ namespace Berty.Utility
                 }
                 if (s_instance == null)
                 {
-                    s_instance = FindObjectOfType<NetworkObject>().gameObject.GetComponent<T>();
+                    s_instance = FindAnyObjectByType<NetworkObject>().gameObject.GetComponent<T>();
                     if (s_instance == null) throw new Exception($"Shared manager {typeof(T).Name} should be pre-exist in RpcSystem on scene.");
                 }
                 return s_instance;

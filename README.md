@@ -1,4 +1,4 @@
-Berty is a game whose author and card designer is Hubert Gulczyński. The game has been developed in Unity 2020.3-2022.3 by Patryk Szczęśniak.
+Berty is a game whose author and card designer is Hubert Gulczyński. The game has been developed in Unity 2020.3-6000.5 by Patryk Szczęśniak.
 
 The game is still in progress but it's functional and playable. The code is in English but displayed text and some custom names (character names) in the code are in Polish.
 

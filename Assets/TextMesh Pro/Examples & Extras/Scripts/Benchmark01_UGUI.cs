@@ -33,7 +33,7 @@ namespace TMPro.Examples
 
 
 
-        private IEnumerator Start()
+        IEnumerator Start()
         {
 
 

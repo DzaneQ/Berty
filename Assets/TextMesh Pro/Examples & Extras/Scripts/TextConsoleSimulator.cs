@@ -9,33 +9,33 @@ namespace TMPro.Examples
         private TMP_Text m_TextComponent;
         private bool hasTextChanged;
 
-        private void Awake()
+        void Awake()
         {
             m_TextComponent = gameObject.GetComponent<TMP_Text>();
         }
 
 
-        private void Start()
+        void Start()
         {
             StartCoroutine(RevealCharacters(m_TextComponent));
             //StartCoroutine(RevealWords(m_TextComponent));
         }
 
 
-        private void OnEnable()
+        void OnEnable()
         {
             // Subscribe to event fired when text object has been regenerated.
             TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
         }
 
-        private void OnDisable()
+        void OnDisable()
         {
             TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(ON_TEXT_CHANGED);
         }
 
 
         // Event received when the text object has changed.
-        private void ON_TEXT_CHANGED(Object obj)
+        void ON_TEXT_CHANGED(Object obj)
         {
             hasTextChanged = true;
         }
@@ -45,7 +45,7 @@ namespace TMPro.Examples
         /// Method revealing the text one character at a time.
         /// </summary>
         /// <returns></returns>
-        private IEnumerator RevealCharacters(TMP_Text textComponent)
+        IEnumerator RevealCharacters(TMP_Text textComponent)
         {
             textComponent.ForceMeshUpdate();
 
@@ -81,7 +81,7 @@ namespace TMPro.Examples
         /// Method revealing the text one word at a time.
         /// </summary>
         /// <returns></returns>
-        private IEnumerator RevealWords(TMP_Text textComponent)
+        IEnumerator RevealWords(TMP_Text textComponent)
         {
             textComponent.ForceMeshUpdate();
 

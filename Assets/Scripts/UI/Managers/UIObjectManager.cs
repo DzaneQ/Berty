@@ -10,7 +10,7 @@ namespace Berty.UI.Managers
         protected override void Awake()
         {
             base.Awake();
-            canvasObject = FindObjectOfType<Canvas>().gameObject;
+            canvasObject = FindAnyObjectByType<Canvas>().gameObject;
         }
     }
 }

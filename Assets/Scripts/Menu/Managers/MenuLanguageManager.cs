@@ -35,7 +35,7 @@ namespace Berty.Menu.Managers
         private void InstantiateTranslatableLabels()
         {
             // Get all text belonging to objects which are the first child of its parent.
-            _labels = FindObjectsOfType<TMP_Text>(true).Where(text => text.transform.parent.GetChild(0) == text.transform).ToArray();
+            _labels = FindObjectsByType<TMP_Text>(FindObjectsInactive.Include).Where(text => text.transform.parent.GetChild(0) == text.transform).ToArray();
         }
 
         private void LoadLanguageDictionaries()

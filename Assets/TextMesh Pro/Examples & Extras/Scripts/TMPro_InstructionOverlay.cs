@@ -21,7 +21,7 @@ namespace TMPro.Examples
 
         //private FpsCounterAnchorPositions last_AnchorPosition;
 
-        private void Awake()
+        void Awake()
         {
             if (!enabled)
                 return;
@@ -53,7 +53,7 @@ namespace TMPro.Examples
 
 
 
-        private void Set_FrameCounter_Position(FpsCounterAnchorPositions anchor_position)
+        void Set_FrameCounter_Position(FpsCounterAnchorPositions anchor_position)
         {
 
             switch (anchor_position)

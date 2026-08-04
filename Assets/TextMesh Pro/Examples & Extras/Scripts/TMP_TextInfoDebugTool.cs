@@ -32,7 +32,7 @@ namespace TMPro.Examples
         private float m_HandleSize;
 
 
-        private void OnDrawGizmos()
+        void OnDrawGizmos()
         {
             if (m_TextComponent == null)
             {
@@ -97,7 +97,7 @@ namespace TMPro.Examples
         /// Method to draw a rectangle around each character.
         /// </summary>
         /// <param name="text"></param>
-        private void DrawCharactersBounds()
+        void DrawCharactersBounds()
         {
             int characterCount = m_TextInfo.characterCount;
 
@@ -261,7 +261,7 @@ namespace TMPro.Examples
         /// Method to draw rectangles around each word of the text.
         /// </summary>
         /// <param name="text"></param>
-        private void DrawWordBounds()
+        void DrawWordBounds()
         {
             for (int i = 0; i < m_TextInfo.wordCount; i++)
             {
@@ -365,7 +365,7 @@ namespace TMPro.Examples
         /// Draw rectangle around each of the links contained in the text.
         /// </summary>
         /// <param name="text"></param>
-        private void DrawLinkBounds()
+        void DrawLinkBounds()
         {
             TMP_TextInfo textInfo = m_TextComponent.textInfo;
 
@@ -469,7 +469,7 @@ namespace TMPro.Examples
         /// Draw Rectangles around each lines of the text.
         /// </summary>
         /// <param name="text"></param>
-        private void DrawLineBounds()
+        void DrawLineBounds()
         {
             int lineCount = m_TextInfo.lineCount;
 
@@ -549,7 +549,7 @@ namespace TMPro.Examples
         /// <summary>
         /// Draw Rectangle around the bounds of the text object.
         /// </summary>
-        private void DrawBounds()
+        void DrawBounds()
         {
             Bounds meshBounds = m_TextComponent.bounds;
 
@@ -561,7 +561,7 @@ namespace TMPro.Examples
         }
 
 
-        private void DrawTextBounds()
+        void DrawTextBounds()
         {
             Bounds textBounds = m_TextComponent.textBounds;
 
@@ -573,7 +573,7 @@ namespace TMPro.Examples
 
 
         // Draw Rectangles
-        private void DrawRectangle(Vector3 BL, Vector3 TR, Color color)
+        void DrawRectangle(Vector3 BL, Vector3 TR, Color color)
         {
             Gizmos.color = color;
 
@@ -583,7 +583,7 @@ namespace TMPro.Examples
             Gizmos.DrawLine(new Vector3(TR.x, BL.y, 0), new Vector3(BL.x, BL.y, 0));
         }
 
-        private void DrawDottedRectangle(Vector3 bottomLeft, Vector3 topRight, Color color, float size = 5.0f)
+        void DrawDottedRectangle(Vector3 bottomLeft, Vector3 topRight, Color color, float size = 5.0f)
         {
             Handles.color = color;
             Handles.DrawDottedLine(bottomLeft, new Vector3(bottomLeft.x, topRight.y, bottomLeft.z), size);
@@ -592,14 +592,14 @@ namespace TMPro.Examples
             Handles.DrawDottedLine(new Vector3(topRight.x, bottomLeft.y, bottomLeft.z), bottomLeft, size);
         }
 
-        private void DrawSolidRectangle(Vector3 bottomLeft, Vector3 topRight, Color color, float size = 5.0f)
+        void DrawSolidRectangle(Vector3 bottomLeft, Vector3 topRight, Color color, float size = 5.0f)
         {
             Handles.color = color;
             Rect rect = new Rect(bottomLeft, topRight - bottomLeft);
             Handles.DrawSolidRectangleWithOutline(rect, color, Color.black);
         }
 
-        private void DrawSquare(Vector3 position, float size, Color color)
+        void DrawSquare(Vector3 position, float size, Color color)
         {
             Handles.color = color;
             Vector3 bottomLeft = new Vector3(position.x - size, position.y - size, position.z);
@@ -613,7 +613,7 @@ namespace TMPro.Examples
             Handles.DrawLine(bottomRight, bottomLeft);
         }
 
-        private void DrawCrosshair(Vector3 position, float size, Color color)
+        void DrawCrosshair(Vector3 position, float size, Color color)
         {
             Handles.color = color;
 
@@ -623,7 +623,7 @@ namespace TMPro.Examples
 
 
         // Draw Rectangles
-        private void DrawRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color)
+        void DrawRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color)
         {
             Gizmos.color = color;
 
@@ -635,7 +635,7 @@ namespace TMPro.Examples
 
 
         // Draw Rectangles
-        private void DrawDottedRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color)
+        void DrawDottedRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color)
         {
             var cam = Camera.current;
             float dotSpacing = (cam.WorldToScreenPoint(br).x - cam.WorldToScreenPoint(bl).x) / 75f;
