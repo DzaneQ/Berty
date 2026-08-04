@@ -21,7 +21,7 @@ namespace Berty.Utility
                 }
                 if (s_instance == null)
                 {
-                    T[] objects = FindObjectsOfType<T>();
+                    T[] objects = FindObjectsByType<T>();
                     switch (objects.Length)
                     {
                         case 0:

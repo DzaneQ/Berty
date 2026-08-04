@@ -44,8 +44,8 @@ namespace Berty.Network.Managers
             ProcessPaymentServerRpc(selectedCardNames, cardFocus);
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        public void ProcessPaymentServerRpc(CharacterEnum[] selectedCardNames, BoardCardNetworkData cardFocus, ServerRpcParams rpcParams = default)
+        [Rpc(SendTo.Server)]
+        public void ProcessPaymentServerRpc(CharacterEnum[] selectedCardNames, BoardCardNetworkData cardFocus, RpcParams rpcParams = default)
         {
             if (!IsServer) throw new InvalidOperationException("Discarding cards should be processed in server.");
             

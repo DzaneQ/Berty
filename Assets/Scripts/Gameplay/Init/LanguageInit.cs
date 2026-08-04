@@ -42,7 +42,7 @@ namespace Berty.Gameplay.Init
         private TMP_Text[] GetTranslatableLabels()
         {
             // Get all text belonging to objects which are the first child of its parent.
-            return FindObjectsOfType<TMP_Text>(true).Where(text => text.transform.parent.GetChild(0) == text.transform).ToArray();
+            return FindObjectsByType<TMP_Text>(FindObjectsInactive.Include).Where(text => text.transform.parent.GetChild(0) == text.transform).ToArray();
         }
 
         private void TranslateLabels(TMP_Text[] labels, Dictionary<string, string> dict)

@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace TMPro.Examples
 {
-    
+
     public class TeleType : MonoBehaviour
     {
 
@@ -19,12 +19,12 @@ namespace TMPro.Examples
         private TMP_Text m_textMeshPro;
 
 
-        private void Awake()
+        void Awake()
         {
             // Get Reference to TextMeshPro Component
             m_textMeshPro = GetComponent<TMP_Text>();
             m_textMeshPro.text = label01;
-            m_textMeshPro.enableWordWrapping = true;
+            m_textMeshPro.textWrappingMode = TextWrappingModes.Normal;
             m_textMeshPro.alignment = TextAlignmentOptions.Top;
 
 
@@ -44,7 +44,7 @@ namespace TMPro.Examples
         }
 
 
-        private IEnumerator Start()
+        IEnumerator Start()
         {
 
             // Force and update of the mesh to get valid information.

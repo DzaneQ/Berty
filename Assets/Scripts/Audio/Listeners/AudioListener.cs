@@ -7,9 +7,9 @@ using Berty.Settings;
 using System;
 using UnityEngine;
 
-namespace Berty.BoardCards.Listeners
+namespace Berty.Audio.Listeners
 {
-    public class AudioListener : MonoBehaviour
+    public class SoundListener : MonoBehaviour
     {
         private AudioSource soundSource;
 

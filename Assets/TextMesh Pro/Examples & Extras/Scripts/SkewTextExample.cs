@@ -16,13 +16,13 @@ namespace TMPro.Examples
         public float CurveScale = 1.0f;
         public float ShearAmount = 1.0f;
 
-        private void Awake()
+        void Awake()
         {
             m_TextComponent = gameObject.GetComponent<TMP_Text>();
         }
 
 
-        private void Start()
+        void Start()
         {
             StartCoroutine(WarpText());
         }
@@ -43,7 +43,7 @@ namespace TMPro.Examples
         /// </summary>
         /// <param name="textComponent"></param>
         /// <returns></returns>
-        private IEnumerator WarpText()
+        IEnumerator WarpText()
         {
             VertexCurve.preWrapMode = WrapMode.Clamp;
             VertexCurve.postWrapMode = WrapMode.Clamp;

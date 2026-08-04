@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace TMPro.Examples
 {
-    
+
     public class TMP_FrameRateCounter : MonoBehaviour
     {
         public float UpdateInterval = 5.0f;
@@ -24,7 +24,7 @@ namespace TMPro.Examples
 
         private FpsCounterAnchorPositions last_AnchorPosition;
 
-        private void Awake()
+        void Awake()
         {
             if (!enabled)
                 return;
@@ -43,7 +43,7 @@ namespace TMPro.Examples
             m_frameCounter_transform.SetParent(m_camera.transform);
             m_frameCounter_transform.localRotation = Quaternion.identity;
 
-            m_TextMeshPro.enableWordWrapping = false;
+            m_TextMeshPro.textWrappingMode = TextWrappingModes.NoWrap;
             m_TextMeshPro.fontSize = 24;
             //m_TextMeshPro.FontColor = new Color32(255, 255, 255, 128);
             //m_TextMeshPro.edgeWidth = .15f;
@@ -61,13 +61,13 @@ namespace TMPro.Examples
 
         }
 
-        private void Start()
+        void Start()
         {
             m_LastInterval = Time.realtimeSinceStartup;
             m_Frames = 0;
         }
 
-        private void Update()
+        void Update()
         {
             if (AnchorPosition != last_AnchorPosition)
                 Set_FrameCounter_Position(AnchorPosition);
@@ -101,7 +101,7 @@ namespace TMPro.Examples
         }
 
 
-        private void Set_FrameCounter_Position(FpsCounterAnchorPositions anchor_position)
+        void Set_FrameCounter_Position(FpsCounterAnchorPositions anchor_position)
         {
             //Debug.Log("Changing frame counter anchor position.");
             m_TextMeshPro.margin = new Vector4(1f, 1f, 1f, 1f);

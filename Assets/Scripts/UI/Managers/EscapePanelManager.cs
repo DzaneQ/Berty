@@ -32,7 +32,7 @@ namespace Berty.UI.Listeners
 
         private void ToggleAllColliderInputs()
         {
-            Collider[] colliders = escapePanel.activeSelf ? FindObjectsOfType<Collider>(false).ToArray() : disabledColliders;
+            Collider[] colliders = escapePanel.activeSelf ? FindObjectsByType<Collider>(FindObjectsInactive.Exclude).ToArray() : disabledColliders;
             foreach (Collider coll in colliders)
             {
                 if (!interactableLayers.Contains(coll.gameObject.layer)) continue;

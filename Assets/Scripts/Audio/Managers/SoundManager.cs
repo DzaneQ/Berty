@@ -23,7 +23,7 @@ namespace Berty.Audio.Managers
         {
             base.Awake();
             soundSrc = GameObject.Find("SoundSource").GetComponent<AudioSource>();
-            mainTransform = FindObjectOfType<Camera>().GetComponent<Transform>();
+            mainTransform = FindAnyObjectByType<Camera>().GetComponent<Transform>();
             soundSrc.volume = SettingsManager.Instance.Volume;
         }
 
@@ -76,10 +76,7 @@ namespace Berty.Audio.Managers
 
         public void SelectSound(bool selecting)
         {
-            transform.position = mainTransform.position;
-            //soundSrc.clip = selecting ? cardSelect : cardDeselect;
-            soundSrc.time = 0f;
-            //soundSrc.Play();
+            soundSrc.transform.position = mainTransform.position;
             soundSrc.PlayOneShot(selecting ? cardSelectClip : cardDeselectClip);
         }
     }

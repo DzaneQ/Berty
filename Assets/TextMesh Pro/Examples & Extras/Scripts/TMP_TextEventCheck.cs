@@ -10,7 +10,7 @@ namespace TMPro.Examples
 
         private TMP_Text m_TextComponent;
 
-        private void OnEnable()
+        void OnEnable()
         {
             if (TextEventHandler != null)
             {
@@ -26,7 +26,7 @@ namespace TMPro.Examples
         }
 
 
-        private void OnDisable()
+        void OnDisable()
         {
             if (TextEventHandler != null)
             {
@@ -39,27 +39,27 @@ namespace TMPro.Examples
         }
 
 
-        private void OnCharacterSelection(char c, int index)
+        void OnCharacterSelection(char c, int index)
         {
             Debug.Log("Character [" + c + "] at Index: " + index + " has been selected.");
         }
 
-        private void OnSpriteSelection(char c, int index)
+        void OnSpriteSelection(char c, int index)
         {
             Debug.Log("Sprite [" + c + "] at Index: " + index + " has been selected.");
         }
 
-        private void OnWordSelection(string word, int firstCharacterIndex, int length)
+        void OnWordSelection(string word, int firstCharacterIndex, int length)
         {
             Debug.Log("Word [" + word + "] with first character index of " + firstCharacterIndex + " and length of " + length + " has been selected.");
         }
 
-        private void OnLineSelection(string lineText, int firstCharacterIndex, int length)
+        void OnLineSelection(string lineText, int firstCharacterIndex, int length)
         {
             Debug.Log("Line [" + lineText + "] with first character index of " + firstCharacterIndex + " and length of " + length + " has been selected.");
         }
 
-        private void OnLinkSelection(string linkID, string linkText, int linkIndex)
+        void OnLinkSelection(string linkID, string linkText, int linkIndex)
         {
             if (m_TextComponent != null)
             {
