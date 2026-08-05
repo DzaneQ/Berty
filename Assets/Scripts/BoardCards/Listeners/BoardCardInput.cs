@@ -5,7 +5,7 @@ using Berty.Gameplay.Listeners;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Managers;
 using Berty.Utility;
-using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Berty.BoardCards.Listeners
 {
@@ -44,12 +44,12 @@ namespace Berty.BoardCards.Listeners
 
         private bool IsLeftClicked()
         {
-            return Input.GetMouseButtonDown(0);
+            return Mouse.current.leftButton.wasPressedThisFrame;
         }
 
         private bool IsRightClicked()
         {
-            return Input.GetMouseButtonDown(1);
+            return Mouse.current.rightButton.wasPressedThisFrame;
         }
 
         private void HandleLeftClick()

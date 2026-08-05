@@ -3,6 +3,7 @@ using Berty.Grid.Field.Behaviour;
 using Berty.UI.Card.Managers;
 using Berty.Utility;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Berty.Grid.Field.Listeners
 {
@@ -45,7 +46,7 @@ namespace Berty.Grid.Field.Listeners
 
         private bool IsLeftClicked()
         {
-            return Input.GetMouseButtonDown(0);
+            return Mouse.current.leftButton.wasPressedThisFrame;
         }
 
         private bool HasSelectedOneCard()

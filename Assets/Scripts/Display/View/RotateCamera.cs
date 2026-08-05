@@ -1,8 +1,5 @@
-using Berty.BoardCards;
-using Berty.Grid.Field;
-using Berty.Grid;
-using Berty.Gameplay;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Berty.Display.View
 {
@@ -25,8 +22,8 @@ namespace Berty.Display.View
 
         private void HandleCameraTransform()
         {
-            if (Input.mousePosition.x <= edgeWidth) RotateCameraCounterclockwise(rotManSpeed);
-            else if (Input.mousePosition.x >= Screen.width - edgeWidth) RotateCameraClockwise(rotManSpeed);
+            if (Mouse.current.position.ReadValue().x <= edgeWidth) RotateCameraCounterclockwise(rotManSpeed);
+            else if (Mouse.current.position.ReadValue().x >= Screen.width - edgeWidth) RotateCameraClockwise(rotManSpeed);
             else RotateAutomatically();
         }
 

@@ -1,8 +1,5 @@
-using Berty.Gameplay.Listeners;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Berty.UI.Listeners
 {
@@ -10,7 +7,7 @@ namespace Berty.UI.Listeners
     {
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
             {
                 EscapePanelManager.Instance.ToggleEscapePanel();
             }

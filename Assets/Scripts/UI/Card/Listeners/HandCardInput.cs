@@ -1,10 +1,10 @@
 using Berty.UI.Card.Managers;
 using Berty.Display.Managers;
-using UnityEngine;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Utility;
-using Berty.Characters.Managers;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Berty.UI.Card.Listeners
 {
@@ -23,7 +23,7 @@ namespace Berty.UI.Card.Listeners
         {
             if (ManagerLocator.TurnManagerInstance.IsItNotMyTurn()) return;
             if (behaviour.IsAnimating()) return;
-            if (Input.GetMouseButtonDown(0)) HandleLeftClick();
+            if (Mouse.current.leftButton.wasPressedThisFrame) HandleLeftClick();
         }
 
         public void CardFocusOn()

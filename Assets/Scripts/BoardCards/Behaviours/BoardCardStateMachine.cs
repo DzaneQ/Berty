@@ -7,6 +7,7 @@ using Berty.Gameplay.Entities;
 using Berty.Utility;
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Berty.BoardCards.Behaviours
 {
@@ -174,7 +175,7 @@ namespace Berty.BoardCards.Behaviours
 
         public bool IsCursorFocused()
         {
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
             if (!Physics.Raycast(ray, out RaycastHit hit)) return false;
             if (hit.transform == transform) return true; // Is cursor on card square object?
             if (hit.transform.parent == null) return false;

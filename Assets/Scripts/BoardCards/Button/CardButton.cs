@@ -1,11 +1,9 @@
 using Berty.BoardCards.Behaviours;
 using Berty.Display.Managers;
 using Berty.Enums;
-using Berty.Gameplay.Listeners;
 using Berty.Gameplay.Managers;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Berty.BoardCards.Button
 {
@@ -37,7 +35,7 @@ namespace Berty.BoardCards.Button
 
         private bool IsCursorFocusedOnCard()
         {
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
             if (!Physics.Raycast(ray, out RaycastHit hit)) return false;
             return hit.transform == transform.parent.parent;
         }
