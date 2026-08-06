@@ -164,7 +164,7 @@ namespace Berty.Network.Managers
             Vector2Int originFieldCoords = card.OccupiedField.Coordinates;
             Vector2Int destinationFieldCoords = cardFocus.FieldCoords;
             Vector2Int fieldDistance = destinationFieldCoords - originFieldCoords;
-            Vector2Int relativeDistance = card.OccupiedField.Grid.GetToRelativeCoordinates(fieldDistance.x, fieldDistance.y, card.GetAngle());
+            Vector2Int relativeDistance = card.OccupiedField.Grid.GetToRelativeCoordinates(fieldDistance, card.GetAngle());
             return relativeDistance switch
             {
                 { x: 0, y: 1 } => NavigationEnum.MoveUp,
@@ -177,7 +177,7 @@ namespace Berty.Network.Managers
 
         private BoardCard InstantiateBoardCardEntity(BoardCardNetworkData cardFocus)
         {
-            BoardField targetField = Game.Grid.GetFieldFromCoordsOrThrow(cardFocus.FieldCoords.x, cardFocus.FieldCoords.y);
+            BoardField targetField = Game.Grid.GetFieldFromCoordsOrThrow(cardFocus.FieldCoords);
             CharacterConfig character = NetworkCardManager.Instance.GetConfigFromCharacterName(cardFocus.CharacterName);
             BoardCard newCard = targetField.AddNewCard(character, cardFocus.Alignment);
             if (targetField.BackupCard == null) newCard.SetDirection(cardFocus.Direction);
@@ -203,7 +203,7 @@ namespace Berty.Network.Managers
                 case NavigationEnum.MoveRight:
                 case NavigationEnum.MoveDown:
                 case NavigationEnum.MoveLeft:
-                    BoardField targetField = Game.Grid.GetFieldFromCoordsOrThrow(destination.FieldCoords.x, destination.FieldCoords.y);
+                    BoardField targetField = Game.Grid.GetFieldFromCoordsOrThrow(destination.FieldCoords);
                     CardNavigationManager.Instance.MoveCard(origin, targetField);
                     break;
                 default:

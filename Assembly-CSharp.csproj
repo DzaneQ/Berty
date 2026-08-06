@@ -229,9 +229,9 @@
     <Compile Include="Assets\Scripts\Grid\Field\Entities\BoardField.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Behaviours\HandCardBehaviour.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
-    <Compile Include="Assets\Scripts\Menu\Managers\MenuLanguageManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaGejsza.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandCardSelectManager.cs" />
+    <Compile Include="Assets\Scripts\Menu\Managers\MenuLanguageManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\RotateLeft.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardRigidbody.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\OverlayObjectManager.cs" />
@@ -1673,12 +1673,12 @@
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.Initialization.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.Multiplayer.Tools.NetStatsMonitor.Component">
-      <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.NetStatsMonitor.Component.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.InputSystem">
       <HintPath>Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Multiplayer.Tools.NetStatsMonitor.Component">
+      <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.NetStatsMonitor.Component.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Multiplayer.Tools.NetworkSimulator.Editor">

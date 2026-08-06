@@ -17,7 +17,7 @@ namespace Berty.BoardCards.Button
 
         protected override bool CanNavigate()
         {
-            BoardField targetField = EntityLoadManager.Instance.Game.Grid.GetFieldDistancedFromCardOrNull(0, 1, card.BoardCard);
+            BoardField targetField = EntityLoadManager.Instance.Game.Grid.GetFieldDistancedFromCardOrNull(new Vector2Int(0, 1), card.BoardCard);
             if (targetField == null) return false;
             if (targetField.IsOccupied()) return false;
             return true;

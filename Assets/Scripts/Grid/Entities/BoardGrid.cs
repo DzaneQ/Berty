@@ -58,52 +58,45 @@ namespace Berty.Grid.Entities
             };
         }
 
-        // TODO: Refactor from 2 ints to Vector2Int
-        public BoardField GetFieldFromCoordsOrThrow(int x, int y)
+        public BoardField GetFieldFromCoordsOrThrow(Vector2Int coords)
         {
-            foreach (BoardField field in Fields)
-            {
-                if (field.Coordinates.x != x) continue;
-                if (field.Coordinates.y != y) continue;
-                return field;
-            }
-            throw new ArgumentException($"Invalid coordination field: ({x}, {y})");
+            return Fields.FirstOrDefault(field => field.Coordinates == coords) ?? throw new ArgumentException($"Invalid coordination field: ({coords.x}, {coords.y})");
         }
 
-        public Vector2Int GetToRelativeCoordinates(int x, int y, float angle = 0)
+        public Vector2Int GetToRelativeCoordinates(Vector2Int coords, float angle = 0)
         {
             int sinus = (int)Math.Round(Math.Sin(angle / 180 * Math.PI));
             int cosinus = (int)Math.Round(Math.Cos(angle / 180 * Math.PI));
-            return new Vector2Int(cosinus * x - sinus * y, cosinus * y + sinus * x);
+            return new Vector2Int(cosinus * coords.x - sinus * coords.y, cosinus * coords.y + sinus * coords.x);
         }
 
-        public Vector2Int GetFromRelativeCoordinates(int x, int y, float angle = 0)
+        public Vector2Int GetFromRelativeCoordinates(Vector2Int coords, float angle = 0)
         {
-            return GetToRelativeCoordinates(x, y, -angle);
+            return GetToRelativeCoordinates(coords, -angle);
         }
 
-        public BoardField GetRelativeFieldOrThrow(int x, int y, float angle = 0)
+        public BoardField GetRelativeFieldOrThrow(Vector2Int fixedCoords, float angle = 0)
         {
-            Vector2Int relCoord = GetToRelativeCoordinates(x, y, angle);
-            return GetFieldFromCoordsOrThrow(relCoord.x, relCoord.y);
+            Vector2Int relCoords = GetToRelativeCoordinates(fixedCoords, angle);
+            return GetFieldFromCoordsOrThrow(relCoords);
         }
 
-        public BoardField GetFieldFromRelativeCoordinatesOrNull(int x, int y, float angle = 0)
+        public BoardField GetFieldFromRelativeCoordinatesOrNull(Vector2Int relCoords, float angle = 0)
         {
-            if (Math.Abs(x) > 1 || Math.Abs(y) > 1) return null;
-            Vector2Int coord = GetFromRelativeCoordinates(x, y, angle);
-            return GetFieldFromCoordsOrThrow(coord.x, coord.y);
+            if (Math.Abs(relCoords.x) > 1 || Math.Abs(relCoords.y) > 1) return null;
+            Vector2Int fixedCoords = GetFromRelativeCoordinates(relCoords, angle);
+            return GetFieldFromCoordsOrThrow(fixedCoords);
         }
 
-        public BoardField GetFieldDistancedFromCardOrNull(int x, int y, BoardCard card)
+        public BoardField GetFieldDistancedFromCardOrNull(Vector2Int distance, BoardCard card)
         {
-            Vector2Int relCoord = card.RelativeCoordinates;
-            return GetFieldFromRelativeCoordinatesOrNull(relCoord.x + x, relCoord.y + y, card.GetAngle());
+            Vector2Int relCoords = card.RelativeCoordinates;
+            return GetFieldFromRelativeCoordinatesOrNull(relCoords + distance, card.GetAngle());
         }
 
-        public BoardField GetFieldDistancedFromCardOrThrow(int x, int y, BoardCard card)
+        public BoardField GetFieldDistancedFromCardOrThrow(Vector2Int distance, BoardCard card)
         {
-            return GetFieldDistancedFromCardOrNull(x, y, card) ?? throw new Exception($"There is not field at distance ({x},{y}) away from {card.CharacterConfig.Name}");
+            return GetFieldDistancedFromCardOrNull(distance, card) ?? throw new Exception($"There is not field at distance ({distance.x},{distance.y}) away from {card.CharacterConfig.Name}");
         }
 
         public List<BoardCard> GetAllNeighbors(BoardCard card)
@@ -111,7 +104,7 @@ namespace Berty.Grid.Entities
             List<BoardCard> neighbors = new();
             for (int i = 0; i < 4; i++)
             {
-                BoardField neighboringField = GetFieldDistancedFromCardOrNull(Mathf.RoundToInt(Mathf.Sin(i / 2f * Mathf.PI)), Mathf.RoundToInt(Mathf.Cos(i / 2f * Mathf.PI)), card);
+                BoardField neighboringField = GetFieldDistancedFromCardOrNull(new Vector2Int(Mathf.RoundToInt(Mathf.Sin(i / 2f * Mathf.PI)), Mathf.RoundToInt(Mathf.Cos(i / 2f * Mathf.PI))), card);
                 if (neighboringField == null || !neighboringField.IsOccupied()) continue;
                 neighbors.Add(neighboringField.OccupantCard);
                 if (neighboringField.BackupCard != null) neighbors.Add(neighboringField.BackupCard);
@@ -124,7 +117,7 @@ namespace Berty.Grid.Entities
             List<BoardCard> neighbors = new();
             for (int i = 0; i < 4; i++)
             {
-                BoardField neighboringField = GetFieldDistancedFromCardOrNull(Mathf.RoundToInt(Mathf.Sin(i / 2f * Mathf.PI)), Mathf.RoundToInt(Mathf.Cos(i / 2f * Mathf.PI)), card);
+                BoardField neighboringField = GetFieldDistancedFromCardOrNull(new Vector2Int(Mathf.RoundToInt(Mathf.Sin(i / 2f * Mathf.PI)), Mathf.RoundToInt(Mathf.Cos(i / 2f * Mathf.PI))), card);
                 if (neighboringField == null || !neighboringField.IsOccupied()) continue;
                 neighbors.Add(neighboringField.OccupantCard);
             }
@@ -133,7 +126,7 @@ namespace Berty.Grid.Entities
 
         public int GetEnemyNeighborCount(BoardCard card)
         {
-            return GetAllNeighbors(card).Where(neighbor => neighbor.Align != card.Align).Count();
+            return GetAllNeighbors(card).Count(neighbor => neighbor.Align != card.Align);
         }
 
         public List<BoardField> GetFieldsInRange(BoardCard card, List<Vector2Int> range)
@@ -141,7 +134,7 @@ namespace Berty.Grid.Entities
             List<BoardField> fields = new List<BoardField>();
             foreach (Vector2Int distance in range)
             {
-                BoardField target = GetFieldDistancedFromCardOrNull(distance.x, distance.y, card);
+                BoardField target = GetFieldDistancedFromCardOrNull(distance, card);
                 if (target != null) fields.Add(target);
             }
             return fields;

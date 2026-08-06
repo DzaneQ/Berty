@@ -115,7 +115,7 @@ namespace Berty.BoardCards.Listeners
             if (bertonator.BoardCard.GetSkill() != CharacterEnum.Bertonator) 
                 throw new Exception($"Bertonator effect is casted by {bertonator.BoardCard.CharacterConfig.Name}");
             Vector2Int distance = bertonator.BoardCard.GetDistanceTo(target.BoardCard);
-            BoardField targetField = game.Grid.GetFieldDistancedFromCardOrNull(distance.x * 2, distance.y * 2, bertonator.BoardCard);
+            BoardField targetField = game.Grid.GetFieldDistancedFromCardOrNull(distance * 2, bertonator.BoardCard);
             if (targetField == null || targetField.IsOccupied()) target.EntityHandler.AdvanceHealth(-1, bertonator);
             else CardNavigationManager.Instance.MoveCard(target, targetField);
         }

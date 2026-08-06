@@ -43,15 +43,15 @@ namespace Berty.Grid.Field.Behaviour
             BoardGrid grid = EntityLoadManager.Instance.Game.Grid;
             BoardField = name switch
             {
-                "Field NW" => grid.GetFieldFromCoordsOrThrow(-1, 1),
-                "Field W" => grid.GetFieldFromCoordsOrThrow(-1, 0),
-                "Field SW" => grid.GetFieldFromCoordsOrThrow(-1, -1),
-                "Field N" => grid.GetFieldFromCoordsOrThrow(0, 1),
-                "Field CT" => grid.GetFieldFromCoordsOrThrow(0, 0),
-                "Field S" => grid.GetFieldFromCoordsOrThrow(0, -1),
-                "Field NE" => grid.GetFieldFromCoordsOrThrow(1, 1),
-                "Field E" => grid.GetFieldFromCoordsOrThrow(1, 0),
-                "Field SE" => grid.GetFieldFromCoordsOrThrow(1, -1),
+                "Field NW" => grid.GetFieldFromCoordsOrThrow(new Vector2Int(-1, 1)),
+                "Field W" => grid.GetFieldFromCoordsOrThrow(new Vector2Int(-1, 0)),
+                "Field SW" => grid.GetFieldFromCoordsOrThrow(new Vector2Int(-1, -1)),
+                "Field N" => grid.GetFieldFromCoordsOrThrow(new Vector2Int(0, 1)),
+                "Field CT" => grid.GetFieldFromCoordsOrThrow(new Vector2Int(0, 0)),
+                "Field S" => grid.GetFieldFromCoordsOrThrow(new Vector2Int(0, -1)),
+                "Field NE" => grid.GetFieldFromCoordsOrThrow(new Vector2Int(1, 1)),
+                "Field E" => grid.GetFieldFromCoordsOrThrow(new Vector2Int(1, 0)),
+                "Field SE" => grid.GetFieldFromCoordsOrThrow(new Vector2Int(1, -1)),
                 _ => throw new Exception("Unknown field name to handle."),
             };
             if (LoadTheCard() == null) UpdateField();

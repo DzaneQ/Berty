@@ -57,7 +57,7 @@ namespace Berty.BoardCards.Managers
                 NavigationEnum.MoveLeft => new Vector2Int(-1, 0),
                 _ => throw new ArgumentException("Invalid NavigationEnum for MoveCard")
             };
-            BoardField targetField = Grid.GetFieldDistancedFromCardOrThrow(distance.x, distance.y, card.BoardCard);
+            BoardField targetField = Grid.GetFieldDistancedFromCardOrThrow(distance, card.BoardCard);
             CardNavigationManager.Instance.MoveCard(card, targetField, true);
             if (card.StateMachine.HasState(CardStateEnum.NewTransform))
             {

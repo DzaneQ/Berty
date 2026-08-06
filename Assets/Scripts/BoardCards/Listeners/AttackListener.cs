@@ -98,19 +98,19 @@ namespace Berty.BoardCards.Listeners
             Vector2Int distance = target.BoardCard.GetDistanceTo(bertaAmazonka.BoardCard); // According to the target's direction, not BertaAmazonka's
             if (distance.x == 0 && distance.y != 0)
             {
-                BoardField neighbor = game.Grid.GetFieldDistancedFromCardOrNull(-1, 0, target.BoardCard);
+                BoardField neighbor = game.Grid.GetFieldDistancedFromCardOrNull(new Vector2Int(-1, 0), target.BoardCard);
                 if (neighbor != null && neighbor.IsOccupied()) 
                     BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(neighbor.OccupantCard).EntityHandler.AdvanceHealth(-1, bertaAmazonka);
-                neighbor = game.Grid.GetFieldDistancedFromCardOrNull(1, 0, target.BoardCard);
+                neighbor = game.Grid.GetFieldDistancedFromCardOrNull(new Vector2Int(1, 0), target.BoardCard);
                 if (neighbor != null && neighbor.IsOccupied())
                     BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(neighbor.OccupantCard).EntityHandler.AdvanceHealth(-1, bertaAmazonka);
             }
             else if (distance.x != 0 && distance.y == 0)
             {
-                BoardField neighbor = game.Grid.GetFieldDistancedFromCardOrNull(0, -1, target.BoardCard);
+                BoardField neighbor = game.Grid.GetFieldDistancedFromCardOrNull(new Vector2Int(0, -1), target.BoardCard);
                 if (neighbor != null && neighbor.IsOccupied())
                     BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(neighbor.OccupantCard).EntityHandler.AdvanceHealth(-1, bertaAmazonka);
-                neighbor = game.Grid.GetFieldDistancedFromCardOrNull(0, 1, target.BoardCard);
+                neighbor = game.Grid.GetFieldDistancedFromCardOrNull(new Vector2Int(0, 1), target.BoardCard);
                 if (neighbor != null && neighbor.IsOccupied())
                     BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(neighbor.OccupantCard).EntityHandler.AdvanceHealth(-1, bertaAmazonka);
             }
