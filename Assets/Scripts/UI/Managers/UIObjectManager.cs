@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Berty.UI.Managers
 {
-    public abstract class UIObjectManager<T> : ManagerSingleton<T> where T : MonoBehaviour
+    public abstract class UIObjectManager<T> : ManagerSingleton<T> where T : ManagerSingleton<T>
     {
         protected GameObject canvasObject;
 

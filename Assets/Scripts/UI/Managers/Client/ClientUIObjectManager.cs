@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Berty.UI.Managers
 {
-    public abstract class ClientUIObjectManager<T> : ClientManagerSingleton<T> where T : NetworkBehaviour
+    public abstract class ClientUIObjectManager<T> : ClientManagerSingleton<T> where T : ClientManagerSingleton<T>
     {
         protected GameObject canvasObject;
 

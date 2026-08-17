@@ -160,6 +160,7 @@
     <Compile Include="Assets\Scripts\Grid\Managers\ColorizeObjectManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Listeners\TurnListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\IdleState.cs" />
+    <Compile Include="Assets\Scripts\Utility\NetworkSingleton.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\ObjectReadManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\TrenerPokebertow.cs" />
     <Compile Include="Assets\Scripts\Enums\AlignmentEnum.cs" />

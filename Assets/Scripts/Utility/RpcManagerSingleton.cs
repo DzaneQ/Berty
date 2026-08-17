@@ -7,39 +7,16 @@ using UnityEngine;
 namespace Berty.Utility
 {
 
-    public abstract class RpcManagerSingleton<T> : NetworkBehaviour where T : NetworkBehaviour
+    public abstract class RpcManagerSingleton<T> : NetworkSingleton<T> where T : NetworkSingleton<T>
     {
-        private static T s_instance;
-
-        public static T Instance
+        protected override bool IsNetworkConnected()
         {
-            get
-            {
-                if (NetworkManager.Singleton == null)
-                {
-                    return null;
-                }
-                if (s_instance == null)
-                {
-                    s_instance = FindAnyObjectByType<NetworkObject>().gameObject.GetComponent<T>();
-                    if (s_instance == null) throw new Exception($"Shared manager {typeof(T).Name} should be pre-exist in RpcSystem on scene.");
-                }
-                return s_instance;
-            }
-            private set
-            {
-                s_instance = value;
-            }
+            return NetworkManager.Singleton.IsServer || NetworkManager.Singleton.IsClient;
         }
 
-        protected virtual void Awake()
+        protected override bool HasRequiredComponents()
         {
-            InitializeSingleton();
-        }
-
-        protected void InitializeSingleton()
-        {
-            Instance = this as T;
+            return GetComponent<NetworkObject>() != null;
         }
     }
 }

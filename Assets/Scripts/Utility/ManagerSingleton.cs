@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Berty.Utility
 {
 
-    public abstract class ManagerSingleton<T> : MonoBehaviour where T : MonoBehaviour
+    public abstract class ManagerSingleton<T> : MonoBehaviour where T : ManagerSingleton<T>
     {
         private static T s_instance;
 
@@ -28,7 +28,15 @@ namespace Berty.Utility
                             s_instance = objects[0].GetComponent<T>();
                             break;
                         default:
-                            throw new Exception($"There are {objects.Length} singletons of type {typeof(T).Name}");
+                            s_instance = objects[0].GetComponent<T>();
+
+                            Debug.LogWarning($"There are {objects.Length} manager singletons of type {typeof(T).Name}. Destroying extras.");
+
+                            foreach (T obj in objects)
+                            {
+                                if (obj != s_instance) Destroy(obj);
+                            }
+                            break;
                     }
                 }
                 return s_instance;

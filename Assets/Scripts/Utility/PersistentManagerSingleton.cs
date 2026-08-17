@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Berty.Utility
 {
 
-    public abstract class PersistentManagerSingleton<T> : ManagerSingleton<T> where T : MonoBehaviour
+    public abstract class PersistentManagerSingleton<T> : ManagerSingleton<T> where T : ManagerSingleton<T>
     {
         protected override void Awake()
         {
