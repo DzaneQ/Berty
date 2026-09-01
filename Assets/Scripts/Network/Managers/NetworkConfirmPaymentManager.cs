@@ -93,7 +93,6 @@ namespace Berty.Network.Managers
             ManagerLocator.HandCardObjectManagerInstance.RemoveCardObjects();
             HandCardSelectManager.Instance.ClearSelection();
             SelectionManager.Instance.SetAsNotPaymentTime();
-            ButtonObjectManager.Instance.DisplayEndTurnButton();
             EventManager.Instance.RaiseOnPaymentConfirm();
             ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }

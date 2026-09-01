@@ -8,6 +8,7 @@ using Berty.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,9 +29,10 @@ namespace Berty.UI.Managers
         public void DisplayGameOverScreen(bool isTheWinner)
         {
             GameObject prefab = Resources.Load<GameObject>("Prefabs/GameOver");
-            Text endingMessage = prefab.transform.GetChild(0).gameObject.GetComponent<Text>();
-            if (isTheWinner) endingMessage.text = GameLanguageManager.Instance.GetTextFromKey("win");
-            else endingMessage.text = GameLanguageManager.Instance.GetTextFromKey("lose");
+            TMP_Text endingMessage = prefab.transform.GetChild(0).gameObject.GetComponent<TMP_Text>();
+            endingMessage.text = isTheWinner
+                ? GameLanguageManager.Instance.GetTextFromKey("win")
+                : GameLanguageManager.Instance.GetTextFromKey("lose");
             Instantiate(prefab, canvasObject.transform);
         }
 

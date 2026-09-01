@@ -42,7 +42,6 @@ namespace Berty.BoardCards.Managers
             if (!card.StateMachine.IsDexterityBased()) return;
             card.StateMachine.SetNewTransformStateFromNavigation(navigation);
             PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity, card);
-            ButtonObjectManager.Instance.HideCornerButton();
         }
 
         public void OrderMoveCard(BoardCardBehaviour card, NavigationEnum navigation)
@@ -67,7 +66,6 @@ namespace Berty.BoardCards.Managers
             if (!card.StateMachine.IsDexterityBased()) return;
             card.StateMachine.SetNewTransformStateFromNavigation(navigation);
             PaymentManager.Instance.CallPayment(GetPriceForMoving(card), card);
-            ButtonObjectManager.Instance.HideCornerButton();
         }
 
         public void PrepareToAttack(BoardCardBehaviour card)

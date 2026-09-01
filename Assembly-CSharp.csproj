@@ -75,7 +75,6 @@
     <Compile Include="Assets\Scripts\Utility\ManagerLocator.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\NewTransformState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
-    <Compile Include="Assets\Scripts\UI\Listeners\Client\ClientButtonDisplayListener.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\ITurnManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\AstronautaBert.cs" />
     <Compile Include="Assets\Scripts\Enums\RoleEnum.cs" />
@@ -83,7 +82,6 @@
     <Compile Include="Assets\Scripts\Gameplay\Managers\GameLanguageManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardSound.cs" />
-    <Compile Include="Assets\Scripts\UI\Listeners\StatusListener.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\Client\ClientUIObjectManager.cs" />
@@ -224,7 +222,6 @@
     <Compile Include="Assets\Scripts\UI\Card\Collection\HandCardCollection.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Scripts\Utility\RotationLocker.cs" />
-    <Compile Include="Assets\Scripts\UI\Behaviours\CornerButton.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Listeners\FieldInput.cs" />
     <Compile Include="Assets\Scripts\Enums\CornerButtonEnum.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Entities\BoardField.cs" />
@@ -275,6 +272,7 @@
     <Compile Include="Assets\Scripts\BoardCards\Entities\BoardCard.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\RoninBert.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertVentura.cs" />
+    <Compile Include="Assets\Scripts\UI\Listeners\ButtonDisplay.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\UIObjectManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Managers\CardNavigationManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveDown.cs" />
@@ -282,7 +280,6 @@
     <Compile Include="Assets\Scripts\UI\Listeners\ButtonInput.cs" />
     <Compile Include="Assets\Scripts\Enums\HighlightEnum.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Init\HandCardInitialization.cs" />
-    <Compile Include="Assets\Scripts\UI\Managers\ButtonObjectManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\NewCardState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardBehaviour.cs" />

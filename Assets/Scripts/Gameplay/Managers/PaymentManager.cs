@@ -12,14 +12,12 @@ namespace Berty.Gameplay.Managers
         {
             if (card == null) throw new Exception($"Calling to pay {price} cards for a null card");
             SelectionManager.Instance.DemandPayment(price);
-            ButtonObjectManager.Instance.DisplayUndoButton();
             EventManager.Instance.RaiseOnPaymentStart(card);
         }
 
         public void CancelPayment()
         {
             HandCardSelectManager.Instance.ClearSelection();
-            ButtonObjectManager.Instance.DisplayEndTurnButton();
             EventManager.Instance.RaiseOnPaymentCancel();
             SelectionManager.Instance.SetAsNotPaymentTime();
         }
@@ -29,7 +27,6 @@ namespace Berty.Gameplay.Managers
             if (!SelectionManager.Instance.CheckOffer()) return;
             HandToPileManager.Instance.DiscardSelectedCardsFromHand();
             SelectionManager.Instance.SetAsNotPaymentTime();
-            ButtonObjectManager.Instance.DisplayEndTurnButton();
             EventManager.Instance.RaiseOnPaymentConfirm();
             ManagerLocator.CheckpointManagerInstance.RequestCheckpoint();
         }
