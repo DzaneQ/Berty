@@ -197,6 +197,7 @@ namespace Berty.BoardCards.Behaviours
             BoardCard.SetDirection(direction);
             Bars.UpdateBars();
             EventManager.Instance.RaiseOnNewCharacter(this);
+            ManagerLocator.CheckpointManagerInstance.HandleIfRequested();
         }
 
         private void HandleZeroPower()
