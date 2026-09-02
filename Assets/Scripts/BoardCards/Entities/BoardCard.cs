@@ -163,7 +163,7 @@ namespace Berty.BoardCards.Entities
         public CharacterEnum GetSkill()
         {
             if (CharacterConfig.CharacterName == CharacterEnum.BertPogromca || CharacterConfig.CharacterName == CharacterEnum.CheBert) return CharacterConfig.CharacterName;
-            if (OccupiedField.Grid.Game.HasStatusByNameOpposedToAlignment(StatusEnum.DisableEnemySpecialSkill, Align)) return CharacterEnum.None;
+            if (OccupiedField.Grid.Game.HasStatusByNameOpposedToAlignment(StatusEnum.DisableEnemySpecialSkill, Align) && GetRole() == RoleEnum.Special) return CharacterEnum.None;
             return CharacterConfig.CharacterName;
         }
 
