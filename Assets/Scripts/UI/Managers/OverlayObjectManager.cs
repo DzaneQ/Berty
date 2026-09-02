@@ -36,7 +36,7 @@ namespace Berty.UI.Managers
             Instantiate(prefab, canvasObject.transform);
         }
 
-        public void DisplayDeadCardsScreen() // BUG: During revival, you can interact with hand cards and put them on field.
+        public void DisplayDeadCardsScreen()
         {
             if (!ManagerLocator.TurnManagerInstance.IsItMyTurn()) return;
             GameObject screen = ObjectReadManager.Instance.DeadCardsScreen;
