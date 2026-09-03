@@ -8,13 +8,6 @@ namespace Berty.UI.Card.Listeners
 {
     public class TurnListener : MonoBehaviour
     {
-        private Game game;
-
-        private void Awake()
-        {
-            game = EntityLoadManager.Instance.Game;
-        }
-
         private void OnEnable()
         {
             EventManager.Instance.OnNewTurn += HandleNewTurn;

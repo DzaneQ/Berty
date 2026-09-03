@@ -39,10 +39,10 @@ namespace Berty.BoardCards.Behaviours
                 isDeactivating = true;
                 return;
             }
-            bool backupCardActivated = EnableTheOtherCardOnTheFieldAndFreeSpace();
+            EnableTheOtherCardOnTheFieldAndFreeSpace();
             EntityHandler.DeactivateBoardCardEntity();
+            UpdateHighlightOfDeactivatedCard();
             SetToDefaultLocalTransform();
-            //if (backupCardActivated) ParentField.ChildCard.StateMachine.SetMainState();
             gameObject.SetActive(false);
         }
 
@@ -75,6 +75,7 @@ namespace Berty.BoardCards.Behaviours
             {
                 SetDefaultRotationForCardSet();
                 EventManager.Instance.RaiseOnFieldFreed(ParentField);
+                if (StateMachine.IsCursorFocused()) EventManager.Instance.RaiseOnHighlightEnd();
                 return false;
             }
             else // Otherwise, enable the other card
@@ -85,6 +86,14 @@ namespace Berty.BoardCards.Behaviours
             }
         }
 
+        private void UpdateHighlightOfDeactivatedCard()
+        {
+            if (ParentField == null) throw new Exception("Parent field should not be null when updating highlight of deactivated card.");
+            BoardCardBehaviour otherCard = ParentField.ChildCard;
+            if (otherCard == null && StateMachine.IsCursorFocused()) EventManager.Instance.RaiseOnHighlightEnd();
+            else if (otherCard != null && (StateMachine.IsCursorFocused() || otherCard.StateMachine.IsCursorFocused())) EventManager.Instance.RaiseOnHighlightStart(otherCard);
+            else ParentField.RefreshHighlight(); // TODO: Adjust backup card highlight to the attacker
+        }    
 
         private void AdjustInitRotation()
         {

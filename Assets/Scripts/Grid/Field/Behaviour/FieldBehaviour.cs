@@ -7,35 +7,30 @@ using Berty.Gameplay.Managers;
 using Berty.Grid.Entities;
 using Berty.Grid.Field.Entities;
 using Berty.Grid.Managers;
-using Berty.UI.Card.Managers;
 using Berty.Utility;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Berty.Grid.Field.Behaviour
 {
     public class FieldBehaviour : MonoBehaviour
     {
-        private MeshRenderer render;
-        private HighlightEnum highlight;
+        private MeshRenderer _render;
+        private HighlightEnum _highlight;
 
         public BoardField BoardField { get; private set; }
         public BoardCardBehaviour ChildCard { get; private set; }
-        public HighlightEnum Highlight { get => highlight;
+        public HighlightEnum Highlight { get => _highlight;
             private set
             {
-                highlight = value;
-                ColorizeField();
-                HighlightCard();
+                _highlight = value;
+                RefreshHighlight();
             }
         }
 
         private void Awake()
         {
-            render = GetComponent<MeshRenderer>();
+            _render = GetComponent<MeshRenderer>();
         }
 
         private void Start()
@@ -105,7 +100,7 @@ namespace Berty.Grid.Field.Behaviour
 
         private void ColorizeField()
         {
-            render.material = ColorizeObjectManager.Instance.GetMaterialFromAlignment(BoardField.Align, Highlight);
+            _render.material = ColorizeObjectManager.Instance.GetMaterialFromAlignment(BoardField.Align, Highlight);
         }
 
         public void HighlightAsUnderAttack()
@@ -116,6 +111,12 @@ namespace Berty.Grid.Field.Behaviour
         public void HighlightAsUnderBlock()
         {
             Highlight = HighlightEnum.UnderBlock;
+        }
+
+        public void RefreshHighlight()
+        {
+            ColorizeField();
+            HighlightCard();
         }
 
         public void Unhighlight()
