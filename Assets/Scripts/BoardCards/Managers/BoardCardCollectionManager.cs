@@ -31,6 +31,15 @@ namespace Berty.BoardCards.Managers
             return card;
         }
 
+        public BoardCardBehaviour GetFocusedCardBehaviourOrThrow()
+        {
+            foreach (BoardCardBehaviour card in boardCardCoreCollection)
+            {
+                if (card.StateMachine.IsCursorFocused()) return card;
+            }
+            throw new Exception("No card is currently focused.");
+        }
+
         public void AddCardToCollection(BoardCardBehaviour card)
         {
             if (boardCardCoreCollection.Contains(card)) throw new Exception($"Card {card.name} already exists in the collection");

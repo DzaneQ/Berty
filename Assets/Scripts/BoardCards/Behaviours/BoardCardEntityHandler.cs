@@ -179,6 +179,7 @@ namespace Berty.BoardCards.Behaviours
         }
 
         // TODO: Refactor done. Check if color is persisted.
+        // TODO: Deactivate the card and activate when there's a kid
         private void UpdateCardWithRandomKid()
         {
             if (BoardCard.GetSkill() != CharacterEnum.KrolPopuBert)

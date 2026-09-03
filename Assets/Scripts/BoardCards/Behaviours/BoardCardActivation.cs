@@ -92,7 +92,7 @@ namespace Berty.BoardCards.Behaviours
             BoardCardBehaviour otherCard = ParentField.ChildCard;
             if (otherCard == null && StateMachine.IsCursorFocused()) EventManager.Instance.RaiseOnHighlightEnd();
             else if (otherCard != null && (StateMachine.IsCursorFocused() || otherCard.StateMachine.IsCursorFocused())) EventManager.Instance.RaiseOnHighlightStart(otherCard);
-            else ParentField.RefreshHighlight(); // TODO: Adjust backup card highlight to the attacker
+            else ParentField.UpdateHighlight();
         }    
 
         private void AdjustInitRotation()

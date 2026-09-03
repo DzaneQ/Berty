@@ -20,11 +20,12 @@ namespace Berty.Grid.Field.Behaviour
 
         public BoardField BoardField { get; private set; }
         public BoardCardBehaviour ChildCard { get; private set; }
-        public HighlightEnum Highlight { get => _highlight;
-            private set
+        private HighlightEnum Highlight { get => _highlight;
+            set
             {
                 _highlight = value;
-                RefreshHighlight();
+                ColorizeField();
+                HighlightCard();
             }
         }
 
@@ -113,10 +114,22 @@ namespace Berty.Grid.Field.Behaviour
             Highlight = HighlightEnum.UnderBlock;
         }
 
-        public void RefreshHighlight()
+        public void UpdateHighlight()
         {
-            ColorizeField();
-            HighlightCard();
+            if (Highlight == HighlightEnum.None) Unhighlight();
+            else if (ChildCard == null) HighlightAsUnderAttack();
+            else // TODO: test this case (use TrenerPokebertow when someone on him dies)
+            {
+                BoardCardBehaviour attacker = BoardCardCollectionManager.Instance.GetFocusedCardBehaviourOrThrow();
+                Vector2Int distanceToAttacker = ChildCard.BoardCard.GetDistanceTo(attacker.BoardCard); //
+                if (ChildCard.BoardCard.CharacterConfig.CanBlock(distanceToAttacker))
+                {
+                    HighlightAsUnderBlock();
+                    return;
+                }
+                HighlightAsUnderAttack();
+                if (ChildCard.BoardCard.CharacterConfig.CanRiposte(distanceToAttacker)) attacker.ParentField.HighlightAsUnderAttack();
+            }
         }
 
         public void Unhighlight()
