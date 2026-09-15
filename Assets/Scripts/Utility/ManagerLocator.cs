@@ -20,6 +20,7 @@ namespace Berty.Utility
         public static IConfirmPaymentManager ConfirmPaymentManagerInstance;
         public static ICheckpointManager CheckpointManagerInstance;
         public static IApplyManualEffectManager ApplyManualEffectManagerInstance;
+        public static IDrawFromPileManager DrawFromPileManagerInstance;
 
         public static void InitializeSingleplayer()
         {
@@ -31,6 +32,7 @@ namespace Berty.Utility
             ConfirmPaymentManagerInstance = PaymentManager.Instance;
             CheckpointManagerInstance = CheckpointManager.Instance;
             ApplyManualEffectManagerInstance = ApplyManualEffectManager.Instance;
+            DrawFromPileManagerInstance = DrawFromPileManager.Instance;
         }
 
         public static void InitializeMultiplayer()
@@ -43,6 +45,7 @@ namespace Berty.Utility
             ConfirmPaymentManagerInstance = NetworkConfirmPaymentManager.Instance;
             CheckpointManagerInstance = NetworkCheckpointManager.Instance;
             ApplyManualEffectManagerInstance = NetworkApplyManualEffectManager.Instance;
+            DrawFromPileManagerInstance = NetworkDrawFromPileManager.Instance;
         }
     }
 }

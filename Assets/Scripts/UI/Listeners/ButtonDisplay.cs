@@ -7,7 +7,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-namespace Assets.Scripts.UI.Listeners
+namespace Berty.UI.Listeners
 {
     public class ButtonDisplay : MonoBehaviour
     {

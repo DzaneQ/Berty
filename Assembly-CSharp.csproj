@@ -134,6 +134,7 @@
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandCardObjectManager.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\EscapePanelManager.cs" />
     <Compile Include="Assets\Scripts\Display\View\RotateCamera.cs" />
+    <Compile Include="Assets\Scripts\Characters\Managers\DrawFromPileManager.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Listeners\HighlightListener.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Init\LanguageInit.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\RotateRight.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Assets\Scripts\Utility\ClientManagerSingleton.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Managers\BoardCardCollectionManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Animation\AnimatingCardImage.cs" />
+    <Compile Include="Assets\Scripts\Network\Managers\NetworkDrawFromPileManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\IPileToHandManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\UnselectedCard.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertWho.cs" />
@@ -227,6 +229,7 @@
     <Compile Include="Assets\Scripts\Grid\Field\Entities\BoardField.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Behaviours\HandCardBehaviour.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
+    <Compile Include="Assets\Scripts\Characters\Managers\IDrawFromPileManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaGejsza.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandCardSelectManager.cs" />
     <Compile Include="Assets\Scripts\Menu\Managers\MenuLanguageManager.cs" />
