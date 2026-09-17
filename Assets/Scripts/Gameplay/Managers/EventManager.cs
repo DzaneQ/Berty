@@ -1,4 +1,5 @@
 using Berty.BoardCards.Behaviours;
+using Berty.BoardCards.Entities;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Grid.Field.Behaviour;
@@ -12,8 +13,6 @@ namespace Berty.Gameplay.Managers
 {
     public class EventManager : ManagerSingleton<EventManager>
     {
-        private Game game;
-
         public event Action OnNewTurn;
         public event EventHandler OnPaymentStart;
         public event Action OnPaymentConfirm;
@@ -34,11 +33,6 @@ namespace Berty.Gameplay.Managers
         public event EventHandler<ValidateOutputEventArgs> OnCheckpointRequest;
         public event Action OnVolumeChanged;
 
-        protected override void Awake()
-        {
-            base.Awake();
-            game = EntityLoadManager.Instance.Game;
-        }
 
         public void RaiseOnNewTurn()
         {
@@ -62,9 +56,11 @@ namespace Berty.Gameplay.Managers
 
         public List<BoardCardBehaviour> RaiseOnDirectlyAttacked(BoardCardBehaviour attacker)
         {
+            BoardCard card = attacker.BoardCard;
+            List<BoardField> attackedFields = card.OccupiedField.Grid.GetFieldsInRange(card, card.CharacterConfig.AttackRange);
             DirectAttackEventArgs args = new()
             {
-                AttackedFields = game.Grid.GetFieldsInRange(attacker.BoardCard, attacker.BoardCard.CharacterConfig.AttackRange),
+                AttackedFields = attackedFields,
                 SuccessfullyAttackedCards = new()
             };
             OnDirectlyAttacked?.Invoke(attacker, args);
@@ -134,9 +130,11 @@ namespace Berty.Gameplay.Managers
 
         public void RaiseOnHighlightStart(BoardCardBehaviour focusedCard)
         {
+            BoardCard card = focusedCard.BoardCard;
+            List<BoardField> attackedFields = card.OccupiedField.Grid.GetFieldsInRange(card, card.CharacterConfig.AttackRange);
             DirectAttackEventArgs args = new()
             {
-                AttackedFields = game.Grid.GetFieldsInRange(focusedCard.BoardCard, focusedCard.BoardCard.CharacterConfig.AttackRange)
+                AttackedFields = attackedFields
             };
             OnHighlightStart?.Invoke(focusedCard, args);
         }

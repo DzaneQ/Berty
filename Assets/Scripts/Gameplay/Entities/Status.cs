@@ -43,17 +43,19 @@ namespace Berty.Gameplay.Entities
         public Status(StatusSaveData data, BoardGrid grid)
         {
             Name = data.Name;
-            Provider = grid.FindCardByNameOrThrow(data.ProviderName);
+            Provider = grid.FindCardByName(data.ProviderName);
             TargetAlign = data.TargetAlign;
             Charges = data.Charges;
         }
 
         public StatusSaveData SaveEntity()
         {
+            string providerName = Provider == null ? "" : Provider.CharacterConfig.Name;
+
             return new()
             {
                 Name = Name,
-                ProviderName = Provider.CharacterConfig.Name,
+                ProviderName = providerName,
                 TargetAlign = TargetAlign,
                 Charges = Charges
             };

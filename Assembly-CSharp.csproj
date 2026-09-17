@@ -169,6 +169,7 @@
     <Compile Include="Assets\Scripts\Gameplay\Managers\EventManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaTrojanska.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\CharacterConfig.cs" />
+    <Compile Include="Assets\Scripts\Grid\Field\Behaviour\Network\NetworkUnlocker.cs" />
     <Compile Include="Assets\Scripts\Menu\Behaviours\NavigationMenu.cs" />
     <Compile Include="Assets\Scripts\Enums\StatusEnum.cs" />
     <Compile Include="Assets\Scripts\Enums\CardStateEnum.cs" />

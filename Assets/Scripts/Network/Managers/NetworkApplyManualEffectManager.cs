@@ -21,15 +21,15 @@ namespace Berty.Characters.Managers
         private Game Game { get; set; }
         private HandCardCollection _handCardCollection;
 
-        protected override void Awake()
-        {
-            InitializeSingleton();
-            Game = EntityLoadManager.Instance.Game;
-        }
 
         private void Start()
         {
             _handCardCollection = ObjectReadManager.Instance.HandCardObjectCollection.GetComponent<HandCardCollection>();
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            Game = EntityLoadManager.Instance.Game;
         }
 
         public void ReviveCard(HandCardBehaviour handCardObject)

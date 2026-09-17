@@ -176,8 +176,9 @@ namespace Berty.Grid.Entities
             return Fields.SelectMany(field => new CharacterConfig[]{ field.OccupantCard?.CharacterConfig, field.BackupCard?.CharacterConfig }).OfType<CharacterConfig>().ToList();
         }
 
-        public BoardCard FindCardByNameOrThrow(string characterName)
+        public BoardCard FindCardByName(string characterName)
         {
+            if (characterName == "") return null;
             BoardField field = Fields.First(field => field.OccupantCard?.CharacterConfig.Name == characterName || field.BackupCard?.CharacterConfig.Name == characterName);
             if (field.OccupantCard.CharacterConfig.Name == characterName) return field.OccupantCard;
             if (field.BackupCard.CharacterConfig.Name == characterName) return field.BackupCard;

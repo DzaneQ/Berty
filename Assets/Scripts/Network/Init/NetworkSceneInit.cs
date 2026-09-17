@@ -2,6 +2,7 @@ using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Init;
 using Berty.Gameplay.Managers;
+using Berty.Grid.Field.Behaviour;
 using Berty.Network.Managers;
 using Berty.UI.Card;
 using Berty.UI.Card.Collection;
@@ -17,6 +18,12 @@ namespace Berty.Network.Init
 {
     public class NetworkSceneInit : NetworkBehaviour
     {
+        [SerializeField] private GameObject rpcSystem;
+        [SerializeField] private GameObject fieldBoard;
+
+        private List<BoxCollider> _fieldCollidersToUnlock = new();
+        private List<MonoBehaviour> _fieldBehavioursToUnlock = new();
+
         private void Start()
         {
             NetworkManager.Singleton.OnConnectionEvent += HandleClientConnected;
@@ -26,6 +33,7 @@ namespace Berty.Network.Init
             NetworkManager.Singleton.StartClient();
 #endif
             InitializeLocalScene();
+            CacheComponentsToUnlock();
         }
 
         private void HandleClientConnected(NetworkManager manager, ConnectionEventData data)
@@ -44,12 +52,21 @@ namespace Berty.Network.Init
 
         private void InitializeLocalScene()
         {
-            InitializeManagers();
             InitializeLanguage();
+        }
+
+        private void CacheComponentsToUnlock()
+        {
+            foreach (Transform field in fieldBoard.transform)
+            {
+                _fieldCollidersToUnlock.Add(field.gameObject.GetComponent<BoxCollider>());
+                _fieldBehavioursToUnlock.Add(field.gameObject.GetComponent<FieldBehaviour>());
+            }
         }
 
         private void InitializeManagers()
         {
+            rpcSystem.SetActive(true);
             ManagerLocator.InitializeMultiplayer();
         }
 
@@ -63,7 +80,7 @@ namespace Berty.Network.Init
 
         private void InitializeGameEntity()
         {
-            Game _ = EntityLoadManager.Instance.Game; // TODO: Stop storing whole entities in client, especially card pile.
+            EntityLoadManager.Instance.InitializeGame(); // TODO: Stop storing whole entities in client, especially card pile.
         }
 
         private void InitializeHandCardObjects()
@@ -77,6 +94,12 @@ namespace Berty.Network.Init
             Destroy(init);
         }
 
+        private void UnlockFields()
+        {
+            foreach (Collider coll in _fieldCollidersToUnlock) coll.enabled = true;
+            foreach (MonoBehaviour bhvr in _fieldBehavioursToUnlock) bhvr.enabled = true;
+        }
+
         private void StartTheGame()
         {
             EventManager.Instance.RaiseOnNewTurn();
@@ -88,6 +111,8 @@ namespace Berty.Network.Init
         {
             GameSaveData gameData = ProcessGameDataManager.Instance.GetDataFromString(gameDataStr);
             EntityLoadManager.Instance.OverwriteGameFromData(gameData);
+            UnlockFields();
+            InitializeManagers();
             InitializeHandCardObjects();
             StartTheGame();
         }

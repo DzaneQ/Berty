@@ -13,9 +13,13 @@ namespace Berty.Gameplay.Init
 {
     public class SceneInit : MonoBehaviour
     {
-        private void Start()
+        private void Awake()
         {
             InitializeGameEntity();
+        }
+
+        private void Start()
+        {
             InitializeManagers();
             InitializeHandCardObjects();
             InitializeLanguage();
@@ -30,7 +34,7 @@ namespace Berty.Gameplay.Init
 
         private void InitializeGameEntity()
         {
-            Game _ = EntityLoadManager.Instance.Game;
+            EntityLoadManager.Instance.InitializeGame();
         }
 
         private void InitializeHandCardObjects()

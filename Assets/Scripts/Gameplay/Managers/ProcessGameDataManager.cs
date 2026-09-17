@@ -16,13 +16,12 @@ namespace Berty.Gameplay.Managers
 {
     public class ProcessGameDataManager : ManagerSingleton<ProcessGameDataManager>
     {
-        private Game game;
+        private Game _game;
         private string savePath;
 
         protected override void Awake()
         {
             base.Awake();
-            game = EntityLoadManager.Instance.Game;
             savePath = Application.persistentDataPath + "/save.txt"; // Change extension
         }
 
@@ -48,7 +47,8 @@ namespace Berty.Gameplay.Managers
 
         public string GetGameEntityAsString()
         {
-            return JsonUtility.ToJson(game.SaveEntity(), true);
+            if (_game == null) _game = EntityLoadManager.Instance.Game;
+            return JsonUtility.ToJson(_game.SaveEntity(), true);
         }
 
         public GameSaveData GetDataFromString(string dataStr)

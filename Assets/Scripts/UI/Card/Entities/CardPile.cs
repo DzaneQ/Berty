@@ -4,6 +4,8 @@ using Berty.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Berty.UI.Card.Entities
@@ -29,6 +31,15 @@ namespace Berty.UI.Card.Entities
             deadCards = new List<CharacterConfig>();
             PlayerCards = new List<CharacterConfig>();
             OpponentCards = new List<CharacterConfig>();
+
+            foreach (CharacterConfig pileCard in pileCards)
+            {
+                if (pileCard.CharacterName == CharacterEnum.AstronautaBert)
+                {
+                    Debug.Log("AstronautaBert ID in pile: " + RuntimeHelpers.GetHashCode(pileCard));
+                    break;
+                }
+            }
         }
 
         public CardPile(CardPileSaveData data, IReadOnlyList<CharacterConfig> allCharacters)
@@ -155,7 +166,7 @@ namespace Berty.UI.Card.Entities
 
         public void ReviveCard(CharacterConfig card, AlignmentEnum align)
         {
-            CharacterConfig cardToRevive = deadCards.FirstOrDefault(deadCard => deadCard.CharacterName == card.CharacterName); // TODO: Refactor so it's not relied on finding a copy of the same character
+            CharacterConfig cardToRevive = deadCards.FirstOrDefault(deadCard => deadCard == card); // TODO: Refactor so it's not relied on finding a copy of the same character
             if (cardToRevive == null) throw new Exception($"Card {card.Name} is not dead");
             if (align != AlignmentEnum.None)
             {
