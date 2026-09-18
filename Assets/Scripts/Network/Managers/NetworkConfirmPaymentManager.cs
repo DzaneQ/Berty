@@ -41,7 +41,7 @@ namespace Berty.Network.Managers
         public void ProcessPaymentServerRpc(CharacterEnum[] selectedCardNames, BoardCardNetworkData cardFocus, RpcParams rpcParams = default)
         {
             if (!IsServer) throw new InvalidOperationException("Discarding cards should be processed in server.");
-            
+
             ulong sourceClientId = rpcParams.Receive.SenderClientId;
             AlignmentEnum align = cardFocus.Alignment;
             if (PlayerReadManager.Instance.GetClientIdFromAlignment(align) != sourceClientId) throw new InvalidOperationException($"Align {align} does not belong to the client.");
@@ -106,7 +106,7 @@ namespace Berty.Network.Managers
                 card = GetBoardCardEntity(cardFocus);
                 behaviour = BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(card);
             }
-            
+
             behaviour.StateMachine.SetPendingStateFromEnum(cardState, cardNavigation);
 
             if (cardState == CardStateEnum.NewTransform) NavigateCard(behaviour, cardFocus);
@@ -162,7 +162,7 @@ namespace Berty.Network.Managers
                 { x: 0, y: 1 } => NavigationEnum.MoveUp,
                 { x: 1, y: 0 } => NavigationEnum.MoveRight,
                 { x: 0, y: -1 } => NavigationEnum.MoveDown,
-                { x: -1, y: 0 } => NavigationEnum.MoveLeft, 
+                { x: -1, y: 0 } => NavigationEnum.MoveLeft,
                 _ => throw new Exception("The relative distance for moved card should not be " + relativeDistance),
             };
         }
@@ -184,7 +184,8 @@ namespace Berty.Network.Managers
         private void NavigateCard(BoardCardBehaviour origin, BoardCardNetworkData destination)
         {
             NavigationEnum navigation = origin.StateMachine.GetNewTransformNavigation();
-            switch (navigation)             {
+            switch (navigation)
+            {
                 case NavigationEnum.RotateLeft:
                     CardNavigationManager.Instance.RotateCard(origin, -90);
                     break;

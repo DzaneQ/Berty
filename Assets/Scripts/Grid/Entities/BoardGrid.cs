@@ -170,7 +170,7 @@ namespace Berty.Grid.Entities
 
         public List<CharacterConfig> GetAllCharactersOnFields()
         {
-            return Fields.SelectMany(field => new CharacterConfig[]{ field.OccupantCard?.CharacterConfig, field.BackupCard?.CharacterConfig }).OfType<CharacterConfig>().ToList();
+            return Fields.SelectMany(field => new CharacterConfig[] { field.OccupantCard?.CharacterConfig, field.BackupCard?.CharacterConfig }).OfType<CharacterConfig>().ToList();
         }
 
         public BoardCard FindCardByName(string characterName)

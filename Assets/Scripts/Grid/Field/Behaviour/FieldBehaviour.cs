@@ -20,7 +20,9 @@ namespace Berty.Grid.Field.Behaviour
 
         public BoardField BoardField { get; private set; }
         public BoardCardBehaviour ChildCard { get; private set; }
-        private HighlightEnum Highlight { get => _highlight;
+        private HighlightEnum Highlight
+        {
+            get => _highlight;
             set
             {
                 _highlight = value;
@@ -78,7 +80,7 @@ namespace Berty.Grid.Field.Behaviour
             ManagerLocator.HandToFieldManagerInstance.ActivateCardOnField(this, selectedCardConfig);
             PaymentManager.Instance.CallPayment(selectedCardConfig.Power, ChildCard);
         }
-        
+
         public BoardCardBehaviour LoadTheCard()
         {
             if (BoardField.OccupantCard == null) return null;

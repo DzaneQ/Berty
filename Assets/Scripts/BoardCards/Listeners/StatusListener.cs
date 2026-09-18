@@ -44,7 +44,7 @@ namespace Berty.BoardCards.Listeners
                     if (status.Provider == BoardCard)
                         Bars.UpdateBar(StatEnum.Strength);
                     break;
-                }
+            }
         }
 
         private void HandleStatusRemoved(object sender, StatusEventArgs args)

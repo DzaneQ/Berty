@@ -13,10 +13,10 @@ namespace Berty.BoardCards.Entities
         private Dictionary<StatEnum, int> currentTempStat;
         private Dictionary<StatEnum, int> nextTempStat;
 
-        public int Strength 
-        { 
-            get => GetStat(baseStat[StatEnum.Strength] + TempStrength + StrengthBonus()); 
-            set { baseStat[StatEnum.Strength] = GetStat(value); } 
+        public int Strength
+        {
+            get => GetStat(baseStat[StatEnum.Strength] + TempStrength + StrengthBonus());
+            set { baseStat[StatEnum.Strength] = GetStat(value); }
         }
         public int Power
         {

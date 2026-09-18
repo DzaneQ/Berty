@@ -50,7 +50,7 @@ namespace Berty.Menu.Managers
                 foreach (KeyValuePair<string, string> kvp in dict)
                 {
                     languageDictionaries[(kvp.Key, language)] = kvp.Value;
-                }    
+                }
             }
         }
 

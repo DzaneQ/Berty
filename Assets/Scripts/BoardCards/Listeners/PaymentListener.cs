@@ -110,7 +110,7 @@ namespace Berty.BoardCards.Listeners
 
         private void PushCardAway(BoardCardBehaviour target, BoardCardBehaviour bertonator)
         {
-            if (bertonator.BoardCard.GetSkill() != CharacterEnum.Bertonator) 
+            if (bertonator.BoardCard.GetSkill() != CharacterEnum.Bertonator)
                 throw new Exception($"Bertonator effect is casted by {bertonator.BoardCard.CharacterConfig.Name}");
             Vector2Int distance = bertonator.BoardCard.GetDistanceTo(target.BoardCard);
             BoardField targetField = game.Grid.GetFieldDistancedFromCardOrNull(distance * 2, bertonator.BoardCard);

@@ -1,5 +1,5 @@
 namespace Berty.Enums
-{ 
+{
     public enum StatEnum
     {
         Strength = 0,

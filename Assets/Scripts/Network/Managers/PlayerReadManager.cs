@@ -12,7 +12,7 @@ namespace Berty.Network.Managers
     {
         private Dictionary<AlignmentEnum, ulong> alignments = new(); // Read from server only
 
-        public AlignmentEnum MyAlignment {get; private set; } = AlignmentEnum.None;
+        public AlignmentEnum MyAlignment { get; private set; } = AlignmentEnum.None;
 
         public override void OnInitializeScene() { }
 

@@ -16,7 +16,7 @@ namespace Berty.UI.Card.Managers
     {
         private GameObject playerTable;
         private GameObject opponentTable;
-        
+
         private HandCardCollection behaviourCollection;
         private Game game;
         private CardPile CardPile => game.CardPile;

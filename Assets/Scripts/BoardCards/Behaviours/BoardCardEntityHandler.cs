@@ -137,7 +137,7 @@ namespace Berty.BoardCards.Behaviours
             if (BoardCard == null) return;
             if (BoardCard.Stats.Dexterity <= 0)
             {
-                HandleZeroDexterity(); 
+                HandleZeroDexterity();
             }
             if (BoardCard == null) return;
             if (BoardCard.Stats.Dexterity >= BoardCard.CharacterConfig.Dexterity)
@@ -148,7 +148,7 @@ namespace Berty.BoardCards.Behaviours
             if (BoardCard.Stats.Power <= 0)
             {
                 HandleZeroPower();
-            }    
+            }
         }
 
         public void SwitchSides()

@@ -57,6 +57,6 @@ namespace Berty.Grid.Field.Listeners
         private bool HasACard()
         {
             return behaviour.ChildCard != null;
-        }    
+        }
     }
 }

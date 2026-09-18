@@ -1,4 +1,4 @@
-using Berty.BoardCards.ConfigData;  
+using Berty.BoardCards.ConfigData;
 using Berty.Gameplay.Managers;
 using Berty.Network.Managers;
 using Berty.UI.Card.Collection;

@@ -43,7 +43,7 @@ namespace Berty.Menu.Behaviours
 
         public void UpdateVolume()
         {
-            SettingsManager.Instance.SetVolume(volumeSlider.value); 
+            SettingsManager.Instance.SetVolume(volumeSlider.value);
         }
     }
 }

@@ -62,7 +62,7 @@ namespace Berty.Gameplay.Entities
                 Grid = this.Grid.SaveEntity(),
                 CardPile = this.CardPile.SaveEntity(),
             };
-            
+
         }
 
         public AlignmentEnum SwitchAlignment()

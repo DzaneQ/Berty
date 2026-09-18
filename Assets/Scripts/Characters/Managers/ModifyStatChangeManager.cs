@@ -95,7 +95,7 @@ namespace Berty.Characters.Managers
                     target.EntityHandler.SetTempStrength(target.BoardCard.Stats.TempPower, target);
                     break;
                 case CharacterEnum.Bertolaj:
-                    if (target.BoardCard.Stats.Power <= 0) 
+                    if (target.BoardCard.Stats.Power <= 0)
                         StatusManager.Instance.IncrementChargedStatusWithAlignment(StatusEnum.ExtraCardNextTurn, source.BoardCard.Align, 1);
                     break;
                 case CharacterEnum.KsiezniczkaBerta:
@@ -160,7 +160,7 @@ namespace Berty.Characters.Managers
                 case CharacterEnum.BigMadB:
                     if (source.BoardCard.GetRole() == RoleEnum.Support) return strength;
                     break;
-            }    
+            }
 
             switch (source.BoardCard.GetSkill())
             {
@@ -199,6 +199,6 @@ namespace Berty.Characters.Managers
                 default:
                     throw new Exception($"Undefined BertkaSerferka's distance to target: {distance.x}, {distance.y}");
             }
-        }    
+        }
     }
 }

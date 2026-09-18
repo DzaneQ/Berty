@@ -23,7 +23,7 @@ namespace Berty.Characters.Managers
         public void HandleNeighborCharacterSkill(BoardCardBehaviour target, BoardCardBehaviour skillOwner, int delta = 0)
         {
             if (!game.Grid.AreNeighboring(target.ParentField.BoardField, skillOwner.ParentField.BoardField)) return;
-            HandleCharacterSkill(target, skillOwner, delta);         
+            HandleCharacterSkill(target, skillOwner, delta);
         }
 
         public void HandleCharacterSkill(BoardCardBehaviour target, BoardCardBehaviour skillOwner, int delta = 0)
@@ -126,7 +126,7 @@ namespace Berty.Characters.Managers
                     break;
                 default:
                     throw new Exception($"Applying unknown effect for {target.name} from {skillOwner.name}");
-                }
+            }
             return true;
         }
 
@@ -134,10 +134,10 @@ namespace Berty.Characters.Managers
         {
             if (eBerta.BoardCard.GetSkill() != CharacterEnum.EBerta)
                 throw new Exception($"eBerta effect is casted by {eBerta.BoardCard.CharacterConfig.Name}");
-            int[] stats = { 
-                target.BoardCard.Stats.Strength, 
-                target.BoardCard.Stats.Power, 
-                target.BoardCard.Stats.Dexterity, 
+            int[] stats = {
+                target.BoardCard.Stats.Strength,
+                target.BoardCard.Stats.Power,
+                target.BoardCard.Stats.Dexterity,
                 target.BoardCard.Stats.Health
             };
             int minStat = stats.Min();

@@ -267,7 +267,7 @@ namespace Berty.BoardCards.Listeners
                 case CharacterEnum.GotkaBerta:
                     if (game.CardPile.AreThereAnyDeadCards())
                         StatusManager.Instance.AddUniqueStatusWithAlignment(StatusEnum.RevivalSelect, ManagerLocator.TurnManagerInstance.CurrentAlignment);
-                    break;  
+                    break;
                 case CharacterEnum.RycerzBerti:
                     StatusManager.Instance.AddUniqueStatusWithProvider(StatusEnum.TelekineticArea, skillCard.BoardCard);
                     DecreasePowerForNeighbor(skillCard);

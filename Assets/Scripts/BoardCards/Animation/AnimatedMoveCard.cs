@@ -56,7 +56,7 @@ namespace Berty.BoardCards.Animation
         {
             SetTargetField(target);
             yield return StartCoroutine(AnimateMove(target, duration));
-        } 
+        }
 
         private void SetTargetField(FieldBehaviour target)
         {

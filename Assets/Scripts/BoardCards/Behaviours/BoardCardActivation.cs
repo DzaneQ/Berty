@@ -93,7 +93,7 @@ namespace Berty.BoardCards.Behaviours
             if (otherCard == null && StateMachine.IsCursorFocused()) EventManager.Instance.RaiseOnHighlightEnd();
             else if (otherCard != null && (StateMachine.IsCursorFocused() || otherCard.StateMachine.IsCursorFocused())) EventManager.Instance.RaiseOnHighlightStart(otherCard);
             else ParentField.UpdateHighlight();
-        }    
+        }
 
         private void AdjustInitRotation()
         {

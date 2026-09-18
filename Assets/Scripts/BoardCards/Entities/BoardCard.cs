@@ -15,15 +15,17 @@ namespace Berty.BoardCards.Entities
         private DirectionEnum _direction;
         private readonly List<CharacterConfig> resistance;
         public CharacterConfig CharacterConfig { get; }
-        public BoardField OccupiedField {
+        public BoardField OccupiedField
+        {
             get => _occupiedField;
             private set
-            {  
+            {
                 _occupiedField = value;
                 _cached_relativeCoordinates = null;
             }
         }
-        public DirectionEnum Direction {
+        public DirectionEnum Direction
+        {
             get => _direction;
             private set
             {
@@ -34,8 +36,9 @@ namespace Berty.BoardCards.Entities
         public CardStats Stats { get; }
         public bool HasAttacked { get; private set; }
         public bool IsTired { get; private set; }
-        public AlignmentEnum Align { get => OccupiedField.Align;  }
-        public Vector2Int RelativeCoordinates { 
+        public AlignmentEnum Align { get => OccupiedField.Align; }
+        public Vector2Int RelativeCoordinates
+        {
             get
             {
                 if (!_cached_relativeCoordinates.HasValue) _cached_relativeCoordinates = CalculateCoordinates();
@@ -159,7 +162,7 @@ namespace Berty.BoardCards.Entities
             if (OccupiedField.Grid.Game.HasStatusByName(StatusEnum.ForceSpecialRole)) return RoleEnum.Special;
             return CharacterConfig.Role;
         }
-        
+
         public CharacterEnum GetSkill()
         {
             if (CharacterConfig.CharacterName == CharacterEnum.BertPogromca || CharacterConfig.CharacterName == CharacterEnum.CheBert) return CharacterConfig.CharacterName;

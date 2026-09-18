@@ -9,7 +9,7 @@ namespace Berty.Gameplay.Managers
     {
         private Game game;
         public AlignmentEnum CurrentAlignment => game.CurrentAlignment;
-        
+
 
         protected override void Awake()
         {
