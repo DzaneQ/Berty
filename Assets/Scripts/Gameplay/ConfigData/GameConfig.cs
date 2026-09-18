@@ -13,6 +13,7 @@ namespace Berty.Gameplay.ConfigData
         public LanguageEnum Language { get; }
         public float AnimationSeconds { get; }
         public int AlignedCardsToWin { get; }
+        public AlignmentEnum StartingAlignment { get; }
 
         public GameConfig()
         {
@@ -20,6 +21,7 @@ namespace Berty.Gameplay.ConfigData
             Language = LanguageEnum.Polish;
             AnimationSeconds = 0.15f;
             AlignedCardsToWin = 6;
+            StartingAlignment = AlignmentEnum.Opponent;
         }
     }
 }

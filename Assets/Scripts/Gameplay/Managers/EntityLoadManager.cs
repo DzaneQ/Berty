@@ -22,8 +22,7 @@ namespace Berty.Gameplay.Managers
         {
             if (_game != null) throw new InvalidOperationException("Trying to initialize already initialized game entity.");
             GameSaveData? data = StartGameBufferManager.Instance.Data;
-            if (data == null) Game = new Game(AlignmentEnum.Player);
-            else Game = new Game((GameSaveData)data);
+            Game = data == null ? new Game() : new Game((GameSaveData)data);
         }
 
         public void LoadData(GameSaveData data)
