@@ -18,7 +18,6 @@ namespace Berty.Settings
         public void SetLanguage(LanguageEnum language)
         {
             Language = language;
-            // TODO: Change language in menu
         }
     }
 }
