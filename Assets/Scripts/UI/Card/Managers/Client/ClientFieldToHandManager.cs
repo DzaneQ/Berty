@@ -1,6 +1,6 @@
-using Berty.Utility;
 using Berty.BoardCards.ConfigData;
 using Berty.Network.Managers;
+using Berty.Utility;
 
 namespace Berty.UI.Card.Managers
 {

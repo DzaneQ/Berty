@@ -4,7 +4,6 @@ using Berty.BoardCards.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Entities;
-using Berty.UI.Card.Managers;
 using Berty.Utility;
 using System;
 using System.Collections.Generic;

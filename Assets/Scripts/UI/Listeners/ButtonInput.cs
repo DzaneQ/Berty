@@ -1,6 +1,5 @@
 using Berty.Audio.Managers;
 using Berty.Enums;
-using Berty.UI.Listeners;
 using Berty.UI.Managers;
 using System;
 using UnityEngine;

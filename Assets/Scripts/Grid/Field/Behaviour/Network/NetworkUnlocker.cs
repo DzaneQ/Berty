@@ -1,6 +1,5 @@
 using Berty.Grid.Field.Behaviour;
 using Unity.Netcode;
-using UnityEngine;
 
 public class NetworkUnlocker : NetworkBehaviour
 {

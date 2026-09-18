@@ -4,7 +4,6 @@ using Berty.Gameplay.Managers;
 using Berty.Utility;
 using System;
 using Unity.Netcode;
-using UnityEngine;
 
 namespace Berty.Network.Managers
 {

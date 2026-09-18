@@ -3,7 +3,6 @@ using Berty.BoardCards.Entities;
 using Berty.Utility;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Berty.BoardCards.Managers
 {

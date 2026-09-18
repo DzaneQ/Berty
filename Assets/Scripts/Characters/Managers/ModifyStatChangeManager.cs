@@ -1,7 +1,5 @@
 using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.ConfigData;
 using Berty.Enums;
-using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Entities;
 using Berty.Utility;

@@ -6,7 +6,6 @@ using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Entities;
 using Berty.Grid.Field.Entities;
-using Berty.UI.Managers;
 using Berty.Utility;
 using System;
 using UnityEngine;

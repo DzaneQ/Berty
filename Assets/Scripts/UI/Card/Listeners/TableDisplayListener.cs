@@ -1,10 +1,8 @@
-using Berty.UI.Card.Managers;
-using Berty.Display.Managers;
-using UnityEngine;
+using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.Enums;
 using Berty.Utility;
+using UnityEngine;
 
 namespace Berty.UI.Card.Listeners
 {

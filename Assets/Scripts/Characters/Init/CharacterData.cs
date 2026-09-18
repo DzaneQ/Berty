@@ -1,5 +1,4 @@
 using Berty.BoardCards.ConfigData;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Berty.Characters.Init

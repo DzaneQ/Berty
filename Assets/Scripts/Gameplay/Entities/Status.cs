@@ -1,13 +1,7 @@
-using Berty.BoardCards.ConfigData;
-using Berty.UI.Card.Entities;
-using Berty.Grid.Entities;
-using Berty.Enums;
-using Berty.Gameplay.ConfigData;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Berty.BoardCards.Entities;
+using Berty.Enums;
+using Berty.Grid.Entities;
+using System;
 
 namespace Berty.Gameplay.Entities
 {

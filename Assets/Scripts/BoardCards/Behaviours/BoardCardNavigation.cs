@@ -3,7 +3,6 @@ using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
 using Berty.Utility;
-using UnityEngine;
 
 namespace Berty.BoardCards.Behaviours
 {

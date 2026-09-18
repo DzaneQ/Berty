@@ -1,10 +1,6 @@
 using Berty.BoardCards.ConfigData;
-using Berty.BoardCards.Managers;
 using Berty.Enums;
-using Berty.Grid.Field.Behaviour;
 using Berty.Grid.Managers;
-using Berty.Settings;
-using Berty.UI.Card.Managers;
 using Berty.Utility;
 using UnityEngine;
 

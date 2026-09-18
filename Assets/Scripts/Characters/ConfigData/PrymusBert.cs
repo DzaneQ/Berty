@@ -1,5 +1,4 @@
-﻿using Berty.BoardCards;
-using Berty.Enums;
+﻿using Berty.Enums;
 
 namespace Berty.BoardCards.ConfigData
 {

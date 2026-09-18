@@ -1,15 +1,8 @@
 using Berty.BoardCards.ConfigData;
-using Berty.Characters.Init;
-using Berty.Display;
-using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.UI.Card;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 namespace Berty.UI.Card.Init
 {

@@ -1,14 +1,9 @@
 ﻿using Berty.BoardCards.Behaviours;
 using Berty.BoardCards.ConfigData;
-using Berty.BoardCards.Entities;
 using Berty.Enums;
-using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Entities;
 using Berty.Utility;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Berty.Characters.Managers
 {

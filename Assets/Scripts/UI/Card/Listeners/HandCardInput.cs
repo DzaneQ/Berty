@@ -1,7 +1,7 @@
-using Berty.UI.Card.Managers;
 using Berty.Display.Managers;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.UI.Card.Managers;
 using Berty.Utility;
 using UnityEngine;
 using UnityEngine.InputSystem;

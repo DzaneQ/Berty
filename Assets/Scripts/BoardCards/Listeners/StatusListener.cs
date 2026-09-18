@@ -5,9 +5,6 @@ using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.UI.Managers;
 using System;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 namespace Berty.BoardCards.Listeners
 {

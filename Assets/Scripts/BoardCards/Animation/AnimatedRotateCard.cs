@@ -1,9 +1,7 @@
 using Berty.BoardCards.Behaviours;
-using Berty.Gameplay;
 using Berty.Gameplay.Managers;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.BoardCards.Animation

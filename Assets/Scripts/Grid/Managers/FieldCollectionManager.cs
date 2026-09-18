@@ -1,14 +1,10 @@
-using Berty.BoardCards.ConfigData;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
 using Berty.Grid.Field.Entities;
-using Berty.UI.Card.Managers;
 using Berty.Utility;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace Berty.Grid.Managers
 {

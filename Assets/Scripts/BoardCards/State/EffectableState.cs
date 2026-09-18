@@ -1,9 +1,6 @@
 using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.Button;
 using Berty.BoardCards.Managers;
 using Berty.Enums;
-using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 namespace Berty.BoardCards.State
 {

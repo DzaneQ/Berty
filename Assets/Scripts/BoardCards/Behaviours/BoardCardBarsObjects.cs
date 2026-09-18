@@ -1,6 +1,5 @@
 using Berty.BoardCards.Bar;
 using Berty.Enums;
-using UnityEngine;
 
 namespace Berty.BoardCards.Behaviours
 {

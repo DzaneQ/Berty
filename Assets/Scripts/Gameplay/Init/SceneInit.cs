@@ -1,4 +1,3 @@
-using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Settings;
 using Berty.UI.Card;

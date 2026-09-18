@@ -1,10 +1,10 @@
 using Berty.BoardCards.ConfigData;  
 using Berty.Gameplay.Managers;
+using Berty.Network.Managers;
 using Berty.UI.Card.Collection;
+using Berty.UI.Managers;
 using System.Collections.Generic;
 using UnityEngine;
-using Berty.UI.Managers;
-using Berty.Network.Managers;
 
 namespace Berty.UI.Card.Managers.Client
 {

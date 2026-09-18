@@ -1,7 +1,5 @@
 using Berty.BoardCards.Behaviours;
-using Berty.BoardCards.Button;
 using Berty.Enums;
-using UnityEngine;
 
 namespace Berty.BoardCards.State
 {

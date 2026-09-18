@@ -1,7 +1,6 @@
 using Berty.BoardCards.Behaviours;
 using Berty.BoardCards.Managers;
 using Berty.Enums;
-using UnityEngine;
 
 namespace Berty.BoardCards.State
 {

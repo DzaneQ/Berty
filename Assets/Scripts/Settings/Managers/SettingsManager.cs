@@ -1,9 +1,6 @@
 using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.Utility;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Berty.Settings
 {

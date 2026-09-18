@@ -1,6 +1,4 @@
-using Berty.BoardCards;
 using Berty.Enums;
-using Berty.Grid.Field;
 
 namespace Berty.BoardCards.ConfigData
 {

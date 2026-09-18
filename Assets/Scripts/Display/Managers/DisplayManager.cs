@@ -1,11 +1,5 @@
-using Berty.Grid.Entities;
-using Berty.Enums;
-using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Utility;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace Berty.Display.Managers

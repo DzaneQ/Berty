@@ -9,7 +9,6 @@ using Berty.Grid.Field.Entities;
 using Berty.Grid.Managers;
 using Berty.UI.Card.Entities;
 using Berty.UI.Card.Managers;
-using Berty.UI.Managers;
 using Berty.Utility;
 using System;
 using System.Collections.Generic;

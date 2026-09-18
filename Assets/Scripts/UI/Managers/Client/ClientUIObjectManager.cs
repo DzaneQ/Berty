@@ -1,5 +1,4 @@
 using Berty.Utility;
-using Unity.Netcode;
 using UnityEngine;
 
 namespace Berty.UI.Managers

@@ -1,8 +1,6 @@
 using Berty.Enums;
 using Berty.Menu.Managers;
 using Berty.Settings;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LanguagePickMenu : MonoBehaviour

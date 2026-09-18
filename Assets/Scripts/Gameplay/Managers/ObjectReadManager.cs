@@ -1,6 +1,4 @@
 using Berty.Utility;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.Gameplay.Managers

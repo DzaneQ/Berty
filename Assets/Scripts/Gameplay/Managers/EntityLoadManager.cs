@@ -1,4 +1,3 @@
-using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Settings;
 using Berty.Utility;

@@ -1,9 +1,9 @@
-using Berty.UI.Card.Entities;
+using Berty.BoardCards.ConfigData;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
+using Berty.UI.Card.Entities;
 using Berty.Utility;
-using Berty.BoardCards.ConfigData;
 
 namespace Berty.UI.Card.Managers
 {

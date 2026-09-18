@@ -1,7 +1,6 @@
 using Berty.BoardCards.Behaviours;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
-using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
 {

@@ -1,13 +1,11 @@
-using Berty.Gameplay.Entities;
-using Berty.Gameplay.Managers;
-using Berty.UI.Card.Entities;
-using Berty.Utility;
-using UnityEngine;
-using Berty.BoardCards.ConfigData;
-using Berty.Grid.Field.Behaviour;
 using Berty.BoardCards.Behaviours;
-using System;
+using Berty.BoardCards.ConfigData;
+using Berty.Gameplay.Managers;
+using Berty.Grid.Field.Behaviour;
 using Berty.Network.Managers;
+using Berty.Utility;
+using System;
+using UnityEngine;
 
 namespace Berty.UI.Card.Managers
 {

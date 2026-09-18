@@ -1,11 +1,8 @@
-using Berty.BoardCards.ConfigData;
-using Berty.Grid.Entities;
 using Berty.Enums;
+using Berty.Gameplay.Entities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Berty.Gameplay.Entities;
 
 namespace Berty.BoardCards.Entities
 {

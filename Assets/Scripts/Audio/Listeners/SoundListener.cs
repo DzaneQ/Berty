@@ -1,7 +1,3 @@
-using Berty.BoardCards.Behaviours;
-using Berty.Characters.Managers;
-using Berty.Enums;
-using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Settings;
 using System;

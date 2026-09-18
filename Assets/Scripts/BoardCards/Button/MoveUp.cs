@@ -2,8 +2,6 @@ using Berty.BoardCards.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Entities;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Berty.BoardCards.Button

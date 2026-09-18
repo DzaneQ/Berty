@@ -1,11 +1,8 @@
 using Berty.BoardCards.ConfigData;
 using Berty.Enums;
-using Berty.UI.Card.Managers;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace Berty.UI.Card.Collection
