@@ -9,8 +9,11 @@ using Berty.Network.Managers;
 using Berty.UI.Card;
 using Berty.UI.Card.Collection;
 using Berty.Utility;
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -18,18 +21,12 @@ namespace Berty.Characters.Managers
 {
     public class NetworkApplyManualEffectManager : RpcManagerSingleton<NetworkApplyManualEffectManager>, IApplyManualEffectManager
     {
-        private Game Game { get; set; }
         private HandCardCollection _handCardCollection;
 
 
         private void Start()
         {
             _handCardCollection = ObjectReadManager.Instance.HandCardObjectCollection.GetComponent<HandCardCollection>();
-        }
-
-        public override void OnNetworkSpawn()
-        {
-            Game = EntityLoadManager.Instance.Game;
         }
 
         public void ReviveCard(HandCardBehaviour handCardObject)
@@ -44,11 +41,16 @@ namespace Berty.Characters.Managers
         }
 
         [Rpc(SendTo.Server)]
-        public void ReviveCardServerRpc(CharacterEnum targetCharacter)
+        public void ReviveCardServerRpc(CharacterEnum targetCharacterName)
         {
-            if (!Game.CardPile.DeadCards.Select(config => config.CharacterName).Contains(targetCharacter)) throw new Exception("The target card is not in the dead pile to revive.");
+            CharacterConfig targetCharacter = Game.CardPile.DeadCards.FirstOrDefault(card => card.CharacterName == targetCharacterName);
+            if (targetCharacter == null) throw new Exception("The target card is not in the dead pile to revive.");
 
-            ReviveCardClientRpc(targetCharacter);
+            Status revival = Game.GetStatusByNameOrNull(StatusEnum.RevivalSelect);
+            AlignmentEnum revivalAlign = revival != null ? revival.GetAlign() : Game.Grid.FindCardByCharacterNameOrThrow(CharacterEnum.GotkaBerta).Align;
+
+            Game.CardPile.ReviveCard(targetCharacter, revivalAlign);
+            ReviveCardClientRpc(targetCharacterName);
         }
 
         [Rpc(SendTo.Server)]
@@ -70,13 +72,13 @@ namespace Berty.Characters.Managers
             AlignmentEnum clientAlign = PlayerReadManager.Instance.MyAlignment;
             if (clientAlign == targetAlign)
             {
-                Game.CardPile.ReviveCard(handCardObject.Character, clientAlign);
+                if (!IsServer) Game.CardPile.ReviveCard(handCardObject.Character, clientAlign);
                 NetworkCardManager.Instance.RetrieveCard(handCardObject.Character);
                 ManagerLocator.HandCardObjectManagerInstance.AddCardObjects();
             }
             else
             {
-                Game.CardPile.ReviveCard(handCardObject.Character, AlignmentEnum.None);
+                if (!IsServer) Game.CardPile.ReviveCard(handCardObject.Character, AlignmentEnum.None);
                 if (revival == null)
                 {
                     BoardCardBehaviour gotkaBerta = BoardCardCollectionManager.Instance.GetActiveBehaviourFromEntityOrThrow(Game.Grid.FindCardByCharacterNameOrThrow(CharacterEnum.GotkaBerta));

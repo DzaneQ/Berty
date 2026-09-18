@@ -11,17 +11,17 @@ namespace Berty.Network.Managers
 {
     public class NetworkTurnManager : RpcManagerSingleton<NetworkTurnManager>, ITurnManager
     {
-        private Game game; // should be used from server only
         private readonly NetworkVariable<AlignmentEnum> turnAlignment = new();
 
         public AlignmentEnum CurrentAlignment => turnAlignment.Value;
 
-        public override void OnNetworkSpawn()
+
+        public override void OnInitializeScene()
         {
             if (IsServer)
             {
-                game = EntityLoadManager.Instance.Game;
-                turnAlignment.Value = game.CurrentAlignment;
+                base.OnInitializeScene();
+                turnAlignment.Value = Game.CurrentAlignment;
             }
             turnAlignment.OnValueChanged += OnTurnAlignmentChanged;
         }
@@ -39,7 +39,7 @@ namespace Berty.Network.Managers
         public void EndTheGame()
         {
             if (!IsServer) throw new InvalidOperationException("Ending the game should be processed in the server.");
-            AlignmentEnum winner = game.Grid.WinningSide();
+            AlignmentEnum winner = Game.Grid.WinningSide();
             if (winner == AlignmentEnum.None) winner = CurrentAlignment;
             EndTheGameClientRpc(winner);
         }
@@ -60,7 +60,7 @@ namespace Berty.Network.Managers
         private void SwitchAlignmentServerRpc()
         {
             Debug.Log("Switching alignment.");
-            turnAlignment.Value = game.SwitchAlignment();
+            turnAlignment.Value = Game.SwitchAlignment();
         }
 
         [ClientRpc]

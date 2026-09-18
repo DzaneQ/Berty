@@ -33,7 +33,7 @@ namespace Berty.Network.Init
             NetworkManager.Singleton.StartClient();
 #endif
             InitializeLocalScene();
-            CacheComponentsToUnlock();
+            CacheVariables();
         }
 
         private void HandleClientConnected(NetworkManager manager, ConnectionEventData data)
@@ -44,8 +44,9 @@ namespace Berty.Network.Init
             int clientCount = connectedClients.Count;
             if (clientCount > 2) throw new Exception($"Too many connected clients: {clientCount}");
             if (clientCount < 2) return;
-            PlayerReadManager.Instance.InitializeAlignmentsForClients(connectedClients);
             InitializeGameEntity();
+            InitializeManagers();
+            PlayerReadManager.Instance.InitializeAlignmentsForClients(connectedClients);
             string dataStr = ProcessGameDataManager.Instance.GetGameEntityAsString();
             InitializeSceneClientRpc(dataStr);
         }
@@ -55,7 +56,7 @@ namespace Berty.Network.Init
             InitializeLanguage();
         }
 
-        private void CacheComponentsToUnlock()
+        private void CacheVariables()
         {
             foreach (Transform field in fieldBoard.transform)
             {
@@ -66,7 +67,6 @@ namespace Berty.Network.Init
 
         private void InitializeManagers()
         {
-            rpcSystem.SetActive(true);
             ManagerLocator.InitializeMultiplayer();
         }
 
@@ -109,10 +109,14 @@ namespace Berty.Network.Init
         [ClientRpc]
         private void InitializeSceneClientRpc(string gameDataStr)
         {
-            GameSaveData gameData = ProcessGameDataManager.Instance.GetDataFromString(gameDataStr);
-            EntityLoadManager.Instance.OverwriteGameFromData(gameData);
+            if (!IsServer)
+            {
+                GameSaveData gameData = ProcessGameDataManager.Instance.GetDataFromString(gameDataStr);
+                EntityLoadManager.Instance.LoadData(gameData);
+                InitializeManagers();
+            }
             UnlockFields();
-            InitializeManagers();
+            rpcSystem.SendMessage("OnInitializeScene");
             InitializeHandCardObjects();
             StartTheGame();
         }

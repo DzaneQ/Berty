@@ -2553,7 +2553,6 @@ GameObject:
   - component: {fileID: 761882541}
   - component: {fileID: 761882540}
   - component: {fileID: 761882539}
-  - component: {fileID: 761882538}
   - component: {fileID: 761882543}
   m_Layer: 5
   m_Name: EndTurnButton
@@ -2582,18 +2581,6 @@ RectTransform:
   m_AnchoredPosition: {x: -57.200012, y: -24.200012}
   m_SizeDelta: {x: 100, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &761882538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 761882536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecf8436a8e9186043bde275d20aa493b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &761882539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4462,7 +4449,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1414117062}
   - component: {fileID: 1414117061}
-  - component: {fileID: 1414117070}
   - component: {fileID: 1414117071}
   - component: {fileID: 1414117072}
   m_Layer: 0
@@ -4502,18 +4488,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1414117070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1414117059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1956061ed7cfc4a418f8ecc54e7e2a16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1414117071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5031,7 +5005,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1547027171
 MonoBehaviour:
   m_ObjectHideFlags: 0

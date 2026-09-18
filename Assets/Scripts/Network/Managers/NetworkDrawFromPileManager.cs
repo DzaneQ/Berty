@@ -24,7 +24,7 @@ namespace Berty.Network.Managers
         private BoardGrid grid;
 
 
-        public override void OnNetworkSpawn()
+        public override void OnInitializeScene()
         {
             Game game = EntityLoadManager.Instance.Game;
             if (IsServer)

@@ -31,15 +31,6 @@ namespace Berty.UI.Card.Entities
             deadCards = new List<CharacterConfig>();
             PlayerCards = new List<CharacterConfig>();
             OpponentCards = new List<CharacterConfig>();
-
-            foreach (CharacterConfig pileCard in pileCards)
-            {
-                if (pileCard.CharacterName == CharacterEnum.AstronautaBert)
-                {
-                    Debug.Log("AstronautaBert ID in pile: " + RuntimeHelpers.GetHashCode(pileCard));
-                    break;
-                }
-            }
         }
 
         public CardPile(CardPileSaveData data, IReadOnlyList<CharacterConfig> allCharacters)

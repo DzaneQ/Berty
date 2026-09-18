@@ -26,9 +26,9 @@ namespace Berty.Gameplay.Managers
             else Game = new Game((GameSaveData)data);
         }
 
-        public void OverwriteGameFromData(GameSaveData data)
+        public void LoadData(GameSaveData data)
         {
-            Game.OverwriteEntity(data);
+            Game = new Game(data);
         }
     }
 }

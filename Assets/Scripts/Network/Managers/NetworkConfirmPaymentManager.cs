@@ -21,14 +21,8 @@ namespace Berty.Network.Managers
 {
     public class NetworkConfirmPaymentManager : RpcManagerSingleton<NetworkConfirmPaymentManager>, IConfirmPaymentManager
     {
-        private Game Game { get; set; } // NOTE: Beware with clients accessing this variable as it has potential to be a different entity from other scripts
         private CardPile CardPile => Game.CardPile;
 
-        protected override void Awake()
-        {
-            InitializeSingleton();
-            Game = EntityLoadManager.Instance.Game;
-        }
 
         public void ConfirmPayment(BoardCardBehaviour card)
         {

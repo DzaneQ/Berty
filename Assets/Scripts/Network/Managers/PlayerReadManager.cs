@@ -3,6 +3,7 @@ using Berty.Grid.Managers;
 using Berty.Utility;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 
 namespace Berty.Network.Managers
@@ -12,6 +13,8 @@ namespace Berty.Network.Managers
         private Dictionary<AlignmentEnum, ulong> alignments = new(); // Read from server only
 
         public AlignmentEnum MyAlignment {get; private set; } = AlignmentEnum.None;
+
+        public override void OnInitializeScene() { }
 
         public void InitializeAlignmentsForClients(IReadOnlyList<ulong> clients)
         {
@@ -37,6 +40,11 @@ namespace Berty.Network.Managers
             if (!IsServer) throw new InvalidOperationException("Only server can get client ID for alignment");
             if (!alignments.ContainsKey(alignment)) throw new KeyNotFoundException($"No client found for alignment {alignment}");
             return alignments[alignment];
+        }
+
+        public AlignmentEnum GetAlignmentFromClientId(ulong clientId)
+        {
+            return alignments.First(align => align.Value == clientId).Key;
         }
 
         [ClientRpc]

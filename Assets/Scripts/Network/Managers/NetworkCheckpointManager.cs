@@ -10,13 +10,11 @@ namespace Berty.Network.Managers
 {
     public class NetworkCheckpointManager : RpcManagerSingleton<NetworkCheckpointManager>, ICheckpointManager
     {
-        private Game game;
         private bool requestedCheckpoint;
         private StatusEnum[] selectionStatuses;
 
-        public override void OnNetworkSpawn()
+        public void Awake()
         {
-            game = EntityLoadManager.Instance.Game;
             selectionStatuses = new StatusEnum[] { StatusEnum.ClickToApplyEffect, StatusEnum.RevivalSelect };
         }
 
@@ -51,15 +49,15 @@ namespace Berty.Network.Managers
 
         private bool IsStatusPreventingCheckpoint()
         {
-            return game.AreThereAnyStatuses(selectionStatuses);
+            return Game.AreThereAnyStatuses(selectionStatuses);
         }
 
         [Rpc(SendTo.Server)]
         private void TryEndingTheGameServerRpc()
         {
-            int alignedCardsToWin = game.GameConfig.AlignedCardsToWin;
-            if (game.Grid.AlignedFields(AlignmentEnum.Player, true).Count >= alignedCardsToWin
-                || game.Grid.AlignedFields(AlignmentEnum.Opponent, true).Count >= alignedCardsToWin) EndTheGame();
+            int alignedCardsToWin = Game.GameConfig.AlignedCardsToWin;
+            if (Game.Grid.AlignedFields(AlignmentEnum.Player, true).Count >= alignedCardsToWin
+                || Game.Grid.AlignedFields(AlignmentEnum.Opponent, true).Count >= alignedCardsToWin) EndTheGame();
         }
 
         private void EndTheGame()

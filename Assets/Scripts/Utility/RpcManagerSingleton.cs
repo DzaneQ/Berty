@@ -1,3 +1,5 @@
+using Berty.Gameplay.Entities;
+using Berty.Gameplay.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +11,8 @@ namespace Berty.Utility
 
     public abstract class RpcManagerSingleton<T> : NetworkSingleton<T> where T : NetworkSingleton<T>
     {
+        protected Game Game { get; private set; }
+
         protected override bool IsNetworkConnected()
         {
             return NetworkManager.Singleton.IsServer || NetworkManager.Singleton.IsClient;
@@ -17,6 +21,11 @@ namespace Berty.Utility
         protected override bool HasRequiredComponents()
         {
             return GetComponent<NetworkObject>() != null;
+        }
+
+        public virtual void OnInitializeScene()
+        {
+            Game = EntityLoadManager.Instance.Game;
         }
     }
 }

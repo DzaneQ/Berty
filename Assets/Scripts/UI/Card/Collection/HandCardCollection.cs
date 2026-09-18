@@ -18,14 +18,6 @@ namespace Berty.UI.Card.Collection
         {
             if (handCardBehaviourCollection != null) throw new Exception("Hand card collection is already initialized");
             handCardBehaviourCollection = collection;
-            foreach (HandCardBehaviour bhvr in handCardBehaviourCollection)
-            {
-                if (bhvr.Character.CharacterName == CharacterEnum.AstronautaBert)
-                {
-                    Debug.Log("AstronautaBert ID in collection: " + RuntimeHelpers.GetHashCode(bhvr.Character));
-                    break;
-                }
-            }
         }
 
         // NOTE: Characters are compared by names so they are not supposed to have identical names otherwise wrong comparisons can happen.

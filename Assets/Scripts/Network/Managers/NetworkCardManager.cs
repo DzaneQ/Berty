@@ -6,7 +6,9 @@ using Berty.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Unity.Netcode;
+using UnityEngine;
 
 namespace Berty.Network.Managers
 {
@@ -16,10 +18,10 @@ namespace Berty.Network.Managers
         private IReadOnlyList<CharacterConfig> allCards;
         public IReadOnlyList<CharacterConfig> MyHandCards => myHandCards;
 
-        private void Start()
+        public override void OnInitializeScene()
         {
-            CardPile pile = EntityLoadManager.Instance.Game.CardPile;
-            allCards = pile.GetAllCharactersOutsideField(); // NOTE: Expected behavior that no cards are on the field, otherwise there might be missing cards
+            base.OnInitializeScene();
+            allCards = Game.CardPile.GetAllCharactersOutsideField(); // NOTE: Expected behavior that no cards are on the field, otherwise there might be missing cards
         }
 
         public CharacterConfig GetConfigFromCharacterName(CharacterEnum name)
@@ -35,7 +37,7 @@ namespace Berty.Network.Managers
 
         public void RemoveCardFromMyHandOrThrow(CharacterConfig cardToRemove)
         {
-            cardToRemove = myHandCards.First(card => card.CharacterName == cardToRemove.CharacterName); // NOTE: These are not the same config, it needs overwritten
+            cardToRemove = myHandCards.First(card => card == cardToRemove);
             if (!myHandCards.Remove(cardToRemove)) throw new InvalidOperationException("Cannot remove card from hand: " + cardToRemove.Name);
         }
 
