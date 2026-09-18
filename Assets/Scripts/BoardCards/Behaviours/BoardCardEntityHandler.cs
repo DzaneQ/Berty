@@ -176,34 +176,18 @@ namespace Berty.BoardCards.Behaviours
             else game.CardPile.MarkCardAsDead(BoardCard.CharacterConfig);
         }
 
-        // TODO: Refactor done. Check if color is persisted.
         private void UpdateCardWithRandomKid()
         {
             if (BoardCard.GetSkill() != CharacterEnum.KrolPopuBert)
                 throw new Exception($"KrolPopuBert effect is casted by {BoardCard.CharacterConfig.Name}");
 
             // Get new kid
-            CharacterConfig newCard = game.CardPile.GetRandomKidFromPile(); // TODO: Adjust to multiplayer
             DirectionEnum direction = (DirectionEnum)BoardCard.GetAngle();
             AlignmentEnum align = BoardCard.Align;
 
             // Kill card
             TriggerCardDeath();
             ManagerLocator.DrawFromPileManagerInstance.PutRandomKidOrDeactivate(this, direction, align);
-            /*
-            if (newCard == null) // If no kid in the deck, deactivate the card.
-            {
-                Activation.DeactivateCard();
-                return;
-            }
-            BoardCard.DeactivateCard();
-
-            // Activate new kid card
-            LoadBoardCardEntity(newCard, align);
-            BoardCard.SetDirection(direction);
-            Bars.UpdateBars();
-            EventManager.Instance.RaiseOnNewCharacter(this);
-            ManagerLocator.CheckpointManagerInstance.HandleIfRequested();*/
         }
 
         private void HandleZeroPower()
