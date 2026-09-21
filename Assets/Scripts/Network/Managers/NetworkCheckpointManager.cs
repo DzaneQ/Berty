@@ -12,8 +12,9 @@ namespace Berty.Network.Managers
         private bool requestedCheckpoint;
         private StatusEnum[] selectionStatuses;
 
-        public void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             selectionStatuses = new StatusEnum[] { StatusEnum.ClickToApplyEffect, StatusEnum.RevivalSelect };
         }
 

@@ -1,5 +1,6 @@
 ﻿using Berty.BoardCards.Behaviours;
 using Berty.BoardCards.ConfigData;
+using Berty.BoardCards.Entities;
 using Berty.Characters.Managers;
 using Berty.Enums;
 using Berty.Gameplay.Entities;
@@ -12,14 +13,15 @@ using Berty.Utility;
 using System;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Berty.Network.Managers
 {
-    // BUG: Race condition prevents one of clients from marking KrolPopuBert as dead and updating the kid's health
     public class NetworkDrawFromPileManager : RpcManagerSingleton<NetworkDrawFromPileManager>, IDrawFromPileManager
     {
         private CardPile cardPile;
         private BoardGrid grid;
+        private BoardCardNetworkData? _kidDataBuffer;
 
 
         public override void OnInitializeScene()
@@ -28,43 +30,77 @@ namespace Berty.Network.Managers
             if (IsServer)
             {
                 cardPile = game.CardPile;
+                _kidDataBuffer = null;
             }
-            if (IsClient)
-            {
-                grid = game.Grid;
-            }
+            grid = game.Grid;
         }
 
         public void PutRandomKidOrDeactivate(BoardCardBehaviour card, DirectionEnum direction, AlignmentEnum align)
         {
-            if (ManagerLocator.TurnManagerInstance.IsItNotMyTurn()) return;
-            Vector2Int fieldCoordinates = card.BoardCard.OccupiedField.Coordinates;
-            BoardCardNetworkData data = new()
-            {
-                CharacterName = CharacterEnum.None,
-                FieldCoords = card.BoardCard.OccupiedField.Coordinates,
-                Direction = direction,
-                Alignment = align
-            };
-            DrawRandomKidServerRpc(data);
+            PutRandomKidOrDeactivateServerRpc();
         }
 
         [Rpc(SendTo.Server)]
-        public void DrawRandomKidServerRpc(BoardCardNetworkData oldCardData)
+        public void PutRandomKidOrDeactivateServerRpc(RpcParams rpcParams = default)
         {
-            Debug.Log("Server called to draw random kid.");
-            CharacterConfig kid = cardPile.GetRandomKidFromPile();
-            Debug.Log("Random kid has been drawn.");
-            if (kid != null)
+            ulong sourceClientId = rpcParams.Receive.SenderClientId;
+            ClientRpcParams sendToSourceRpcParam = new()
             {
-                oldCardData.CharacterName = kid.CharacterName;
-                PutKidClientRpc(oldCardData);
+                Send = new ClientRpcSendParams
+                {
+                    TargetClientIds = new ulong[] { sourceClientId }
+                }
+            };
+
+            if (_kidDataBuffer == null)
+            {
+                SetRandomizedKidToBuffer();
+                SendRandomKidToClient(sendToSourceRpcParam);
             }
-            else DeactivateCardClientRpc(oldCardData.FieldCoords);
+            else
+            {
+                SendRandomKidToClient(sendToSourceRpcParam);
+                _kidDataBuffer = null;
+            }
+        }
+
+        private void SetRandomizedKidToBuffer()
+        {
+            if (!IsServer)
+            {
+                Debug.LogWarning("Trying to randomize kid outside server.");
+                return;
+            }
+
+            BoardCard krolPopuBert = grid.FindCardByCharacterNameOrThrow(CharacterEnum.KrolPopuBert);
+            CharacterConfig randomKid = cardPile.GetRandomKidFromPile();
+            CharacterEnum randomKidName = randomKid != null ? randomKid.CharacterName : CharacterEnum.None;
+
+            _kidDataBuffer = new()
+            {
+                CharacterName = randomKidName,
+                FieldCoords = krolPopuBert.OccupiedField.Coordinates,
+                Direction = krolPopuBert.Direction,
+                Alignment = krolPopuBert.Align
+            };
+        }
+
+        private void SendRandomKidToClient(ClientRpcParams rpcParams)
+        {
+            if (!IsServer)
+            {
+                Debug.LogWarning("Trying send a random kid from outside server.");
+                return;
+            }
+
+            if (_kidDataBuffer == null) throw new InvalidOperationException("Trying to send response with a kid that is null");
+            BoardCardNetworkData kidData = (BoardCardNetworkData)_kidDataBuffer;
+            if (kidData.CharacterName != CharacterEnum.None) PutKidClientRpc(kidData, rpcParams);
+            else DeactivateCardClientRpc(kidData.FieldCoords, rpcParams);
         }
 
         [ClientRpc]
-        public void PutKidClientRpc(BoardCardNetworkData kidData)
+        public void PutKidClientRpc(BoardCardNetworkData kidData, ClientRpcParams rpcParams)
         {
             BoardField field = grid.GetFieldFromCoordsOrThrow(kidData.FieldCoords);
             BoardCardBehaviour card = FieldCollectionManager.Instance.GetBehaviourFromEntityOrThrow(field).ChildCard;
@@ -83,7 +119,7 @@ namespace Berty.Network.Managers
         }
 
         [ClientRpc]
-        public void DeactivateCardClientRpc(Vector2Int fieldCoords)
+        public void DeactivateCardClientRpc(Vector2Int fieldCoords, ClientRpcParams rpcParams)
         {
             BoardField field = grid.GetFieldFromCoordsOrThrow(fieldCoords);
             BoardCardBehaviour card = FieldCollectionManager.Instance.GetBehaviourFromEntityOrThrow(field).ChildCard;
