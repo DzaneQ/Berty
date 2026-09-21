@@ -237,10 +237,5 @@ namespace Berty.BoardCards.Behaviours
                     break;
             }
         }
-
-        private void EnableBackupCard()
-        {
-            transform.parent.GetChild(0).gameObject.SetActive(true);
-        }
     }
 }

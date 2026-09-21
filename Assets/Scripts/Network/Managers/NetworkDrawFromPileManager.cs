@@ -15,6 +15,7 @@ using UnityEngine;
 
 namespace Berty.Network.Managers
 {
+    // BUG: Race condition prevents one of clients from marking KrolPopuBert as dead and updating the kid's health
     public class NetworkDrawFromPileManager : RpcManagerSingleton<NetworkDrawFromPileManager>, IDrawFromPileManager
     {
         private CardPile cardPile;
