@@ -17,16 +17,14 @@ namespace Berty.UI.Card.Collection
             handCardBehaviourCollection = collection;
         }
 
-        // NOTE: Characters are compared by names so they are not supposed to have identical names otherwise wrong comparisons can happen.
         public List<HandCardBehaviour> GetBehavioursFromCharacterConfigs(IReadOnlyList<CharacterConfig> characterConfigs)
         {
-            List<string> configNames = characterConfigs.Select(x => x.Name).ToList();
-            return handCardBehaviourCollection.FindAll((HandCardBehaviour behaviour) => configNames.Contains(behaviour.Character.Name));
+            return handCardBehaviourCollection.FindAll((HandCardBehaviour behaviour) => characterConfigs.Contains(behaviour.Character));
         }
 
         public HandCardBehaviour GetBehaviourFromCharacterConfig(CharacterConfig characterConfig)
         {
-            return handCardBehaviourCollection.Find((HandCardBehaviour behaviour) => behaviour.Character.Name == characterConfig.Name);
+            return handCardBehaviourCollection.Find((HandCardBehaviour behaviour) => behaviour.Character == characterConfig);
         }
 
         public HandCardBehaviour GetBehaviourFromCharacterName(CharacterEnum characterName)
@@ -36,8 +34,7 @@ namespace Berty.UI.Card.Collection
 
         public List<Transform> GetTransformListFromCharacterConfigs(IReadOnlyList<CharacterConfig> characterConfigs)
         {
-            List<string> configNames = characterConfigs.Select(x => x.Name).ToList();
-            return handCardBehaviourCollection.FindAll((HandCardBehaviour behaviour) => configNames.Contains(behaviour.Character.Name)).ConvertAll(x => x.transform);
+            return handCardBehaviourCollection.FindAll((HandCardBehaviour behaviour) => characterConfigs.Contains(behaviour.Character)).ConvertAll(x => x.transform);
         }
     }
 }
