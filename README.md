@@ -31,7 +31,7 @@ Each card has the following information:
   - the missing value determines how many hand cards the player has to discard in order to attack, move or rotate using the card;
   - hitting 0 makes the card unable to play with until it reaches the initial dexterity, regenerating by 1 every turn.
 - **Health** (red bar) - hitting 0 kills the card.
-- **Attack range** (left square grid) - determines which fields will be attacked when the attack is ordered, relatively to the card facing up. Friendly fire on!
+- **Attack range** (left square grid) - determines which fields will be attacked when the attack is ordered, relatively to the card facing forward. Friendly fire on!
 - **Defense range** (right square grid) - determines how the card reacts to the neighbor's attack:
   - X on orange - no reaction, taking the hit (same for non-neighboring cards);
   - white (not diagonal) - riposte, will attack the attacker for the strength's value;
