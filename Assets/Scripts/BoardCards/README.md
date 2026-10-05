@@ -22,3 +22,7 @@ When the player commits paid action and payment with hand cards is requested, al
 Some character abilities cause board cards to enter a special state:
 - **Effectable State** - caused by KsiezniczkaBerta's ability on the player's owned cards. One of those needs to be clicked to grant extra stat points.
 - **Telekinesis State** - caused by RycerzBerti's ability on the opponent's cards, allowing them to be moved by the player.
+
+## Highlight
+
+Hovering over a board card will highlight some fields so the player will see which cards will be attacked and which ones will block the attack when the attack from the hovered card is launched.
