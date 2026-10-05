@@ -1,6 +1,6 @@
 # Gameplay
 
-The generals and anything that doesn't fit other sections and provides a single aspect too small to make a section is put here.
+The generals, core mechanics and anything that doesn't fit other sections and provides a single aspect too small to make a section is put here.
 
 ## Events
 
