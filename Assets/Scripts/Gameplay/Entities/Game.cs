@@ -4,7 +4,6 @@ using Berty.Characters.Init;
 using Berty.Enums;
 using Berty.Gameplay.ConfigData;
 using Berty.Grid.Entities;
-using Berty.UI.Card.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

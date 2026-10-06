@@ -62,6 +62,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\ActiveState.cs" />
     <Compile Include="Assets\Scripts\Menu\Listeners\ButtonFunction.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Entities\CardPile.cs" />
     <Compile Include="Assets\Scripts\Characters\Managers\IApplyManualEffectManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveRight.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Entities\CardStats.cs" />
@@ -99,7 +100,6 @@
     <Compile Include="Assets\Scripts\BoardCards\Listeners\BoardCardInput.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\ICheckpointManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardStateMachine.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Entities\CardPile.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KoszmarZBertwood.cs" />
     <Compile Include="Assets\Scripts\Menu\Listeners\SliderSoundListener.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />

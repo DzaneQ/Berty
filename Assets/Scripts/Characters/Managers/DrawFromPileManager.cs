@@ -1,8 +1,8 @@
 ﻿using Berty.BoardCards.Behaviours;
 using Berty.BoardCards.ConfigData;
 using Berty.Enums;
+using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.UI.Card.Entities;
 using Berty.Utility;
 
 namespace Berty.Characters.Managers

@@ -8,12 +8,10 @@ using Berty.Gameplay.Managers;
 using Berty.Grid.Entities;
 using Berty.Grid.Field.Entities;
 using Berty.Grid.Managers;
-using Berty.UI.Card.Entities;
 using Berty.Utility;
 using System;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Berty.Network.Managers
 {

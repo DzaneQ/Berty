@@ -1,14 +1,12 @@
 using Berty.BoardCards.ConfigData;
+using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Collection;
-using Berty.UI.Card.Entities;
 using Berty.Utility;
 using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Device;
-using UnityEngine.UIElements;
 
 namespace Berty.UI.Managers
 {

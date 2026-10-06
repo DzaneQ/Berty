@@ -7,7 +7,6 @@ using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Entities;
 using Berty.Grid.Managers;
-using Berty.UI.Card.Entities;
 using Berty.UI.Card.Managers;
 using Berty.Utility;
 using System;

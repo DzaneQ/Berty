@@ -1,7 +1,6 @@
 using Berty.BoardCards.ConfigData;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
-using Berty.UI.Card.Entities;
 using Berty.Utility;
 using System.Collections.Generic;
 

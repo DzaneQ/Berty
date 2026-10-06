@@ -3,7 +3,6 @@ using Berty.BoardCards.ConfigData;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.Grid.Field.Behaviour;
-using Berty.UI.Card.Entities;
 using Berty.Utility;
 using System;
 using UnityEngine;

@@ -3,7 +3,6 @@ using Berty.Enums;
 using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.UI.Card.Collection;
-using Berty.UI.Card.Entities;
 using Berty.UI.Managers;
 using Berty.Utility;
 using System;
