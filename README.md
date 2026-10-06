@@ -9,6 +9,18 @@ The game is for players who:
 - are into 1v1 matches, PvE or PvP;
 - have Windows as the platform.
 
+## Gameplay loop
+
+2 players take turn alternately. On turn start, the player draws cards from the pile until they have 6. When the pile is empty, discarded cards become the pile cards. The player makes decisions in the loop until the turn is finished:
+1. End the turn or play with a card:
+    - put a hand card on a free field for a new board card;
+    - attack using a board card (each card can do it once per turn);
+    - rotate a board card by the right angle;
+    - move a board card to a neighboring field.
+2. Choose hand cards to discard paying for the decision with the card.
+    - If it's a new board card, rotate the card freely to adjust the direction.
+3. Confirm payment or undo the decision.
+
 ## Interactable objects
 
 During the game, the player can interact with the following gameplay features:
@@ -31,7 +43,7 @@ Each card has the following information:
   - the missing value determines how many hand cards the player has to discard in order to attack, move or rotate using the card;
   - hitting 0 makes the card unable to play with until it reaches the initial dexterity, regenerating by 1 every turn.
 - **Health** (red bar) - hitting 0 kills the card.
-- **Attack range** (left square grid) - determines which fields will be attacked when the attack is ordered, relatively to the card facing up. Friendly fire on!
+- **Attack range** (left square grid) - determines which fields will be attacked when the attack is ordered, relatively to the card facing forward. Friendly fire on!
 - **Defense range** (right square grid) - determines how the card reacts to the neighbor's attack:
   - X on orange - no reaction, taking the hit (same for non-neighboring cards);
   - white (not diagonal) - riposte, will attack the attacker for the strength's value;
@@ -39,17 +51,14 @@ Each card has the following information:
 - **Ability** - unique for each character, may affect other cards, override or modify some stats and mechanics.
 - **Role** (the colored square next to the name) - reacts to some abilities of other cards.
 
-## Gameplay loop
+## Card collection
 
-2 players take turn alternately. On turn start, the player draws cards from the pile until they have 6. When the pile is empty, discarded cards become the pile cards. The player makes decisions in the loop until the turn is finished:
-1. End the turn or play with a card:
-    - put a hand card on a free field for a new board card;
-    - attack using a board card (each card can do it once per turn);
-    - rotate a board card by the right angle;
-    - move a board card to a neighboring field.
-2. Choose hand cards to discard paying for the decision with the card.
-    - If it's a new board card, rotate the card freely to adjust the direction.
-3. Confirm payment or undo the decision.
+The game is played with a collection of 40 cards that both players have a chance to own. Each card is located in either of the following:
+- **Card pile** - the starting pile of all cards. They are transferred to a player table in the beginning of a turn.
+- **2 player tables** - each player has their own table. The cards there can be played or paid with. When played, a card lands on the board. when paid with, selected cards are discarded.
+- **Discard pile** - a pile where cards stay until the main card pile is empty, then the discard pile becomes the card pile.
+- **Board grid** - cards visible to both players are on the board and they're the main gameplay focus. They have stats that can change as they interact and when the health reaches 0, the card goes to the dead pile.
+- **Dead pile** - cards that can no longer be accessible to players by usual means.
 
 ## End condition
 
