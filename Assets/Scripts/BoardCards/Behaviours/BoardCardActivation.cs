@@ -24,7 +24,7 @@ namespace Berty.BoardCards.Behaviours
 
         public void HandleNewCardActivated(CharacterConfig characterConfig)
         {
-            Sound.PlayNewCardSound();
+            if (Sound != null) Sound.PlayNewCardSound();
             EntityHandler.LoadBoardCardEntity(characterConfig, ManagerLocator.TurnManagerInstance.CurrentAlignment);
             DisableTheOtherCardOnTheField();
             AdjustInitRotation();

@@ -13,6 +13,10 @@ namespace Berty.BoardCards.Behaviours
 {
     public class BoardCardStateMachine : BoardCardBehaviour
     {
+        private const int BUTTON_COUNT = 6;
+        private const int BUTTON_START_INDEX = 2;
+        private const int BUTTON_SET_CHILD_INDEX = 2;
+
         private CardState currentState;
         /* CardButton index:
             0 - RotateLeft
@@ -53,10 +57,10 @@ namespace Berty.BoardCards.Behaviours
 
         private void InitializeButtons()
         {
-            Transform buttonsParentObject = transform.GetChild(2);
+            Transform buttonsParentObject = transform.GetChild(BUTTON_SET_CHILD_INDEX);
             buttonSet = buttonsParentObject.gameObject;
-            Buttons = new CardButton[6];
-            for (int index = 0; index < 6; index++) Buttons[index] = buttonsParentObject.GetChild(index + 2).GetComponent<CardButton>();
+            Buttons = new CardButton[BUTTON_COUNT];
+            for (int index = 0; index < BUTTON_COUNT; index++) Buttons[index] = buttonsParentObject.GetChild(index + BUTTON_START_INDEX).GetComponent<CardButton>();
         }
 
         private void SetState(CardState state)

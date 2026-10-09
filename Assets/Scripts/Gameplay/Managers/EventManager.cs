@@ -80,7 +80,6 @@ namespace Berty.Gameplay.Managers
 
         public void RaiseOnMovedCharacter(BoardCardBehaviour movedCard)
         {
-            Debug.Log("Raising on moved character for " + movedCard.BoardCard.CharacterConfig.Name);
             OnMovedCharacter?.Invoke(movedCard, EventArgs.Empty);
         }
 

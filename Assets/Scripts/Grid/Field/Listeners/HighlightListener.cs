@@ -29,7 +29,12 @@ namespace Berty.Grid.Field.Listeners
 
         private void HandleHighlightStart(object sender, DirectAttackEventArgs args)
         {
-            BoardCardBehaviour attacker = (BoardCardBehaviour)sender;
+            if (sender is not BoardCardBehaviour attacker)
+            {
+                Debug.LogWarning("Calling HandleHighlightStart for Field's HighlightListener when sender is not BoardCardBehaviour");
+                return;
+            }
+
             if (attacker.ParentField == field) attacker.StateMachine.TryShowingButtons();
             if (!args.AttackedFields.Contains(field.BoardField))
             {

@@ -40,6 +40,7 @@ namespace Berty.BoardCards.Animation
 
         public void ToField(FieldBehaviour field)
         {
+            if (field == null) throw new ArgumentNullException(nameof(field));
             StartCoroutine(MoveCardCoroutine(field));
         }
 

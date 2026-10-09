@@ -9,6 +9,7 @@ using Berty.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
 {
@@ -39,39 +40,63 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleNewCharacter(object sender, EventArgs args)
         {
-            BoardCardBehaviour newCharacter = (BoardCardBehaviour)sender;
+            if (sender is not BoardCardBehaviour newCharacter)
+            {
+                Debug.LogWarning("Calling HandleNewCharacter for BoardCard's CardWitnessListener when sender is not BoardCardBehaviour");
+                return;
+            }
             HandleNewCardWitness(this, newCharacter);
         }
 
         private void HandleMovedCharacter(object sender, EventArgs args)
         {
-            BoardCardBehaviour movedCharacter = (BoardCardBehaviour)sender;
+            if (sender is not BoardCardBehaviour movedCharacter)
+            {
+                Debug.LogWarning("Calling HandleMovedCharacter for BoardCard's CardWitnessListener when sender is not BoardCardBehaviour");
+                return;
+            }
             if (movedCharacter.BoardCard == null) return;
             HandleMovedCardWitness(this, movedCharacter);
         }
 
         private void HandleCharacterDeath(object sender, EventArgs args)
         {
-            BoardCardBehaviour dyingCharacter = (BoardCardBehaviour)sender;
+            if (sender is not BoardCardBehaviour dyingCharacter)
+            {
+                Debug.LogWarning("Calling HandleCharacterDeath for BoardCard's CardWitnessListener when sender is not BoardCardBehaviour");
+                return;
+            }
             BoardCard.RemoveResistanceToCharacter(dyingCharacter.BoardCard.CharacterConfig);
             HandleDeathWitness(this, dyingCharacter);
         }
 
         private void HandleCharacterSpecialEffect(object sender, EventArgs args)
         {
-            BoardCardBehaviour specialCharacter = (BoardCardBehaviour)sender;
+            if (sender is not BoardCardBehaviour specialCharacter)
+            {
+                Debug.LogWarning("Calling HandleCharacterSpecialEffect for BoardCard's CardWitnessListener when sender is not BoardCardBehaviour");
+                return;
+            }
             HandleCustomEffect(this, specialCharacter);
         }
 
         private void HandleSideChanged(object sender, EventArgs args)
         {
-            BoardCardBehaviour convertedCharacter = (BoardCardBehaviour)sender;
+            if (sender is not BoardCardBehaviour convertedCharacter)
+            {
+                Debug.LogWarning("Calling HandleSideChanged for BoardCard's CardWitnessListener when sender is not BoardCardBehaviour");
+                return;
+            }
             HandleSideChangeWitness(this, convertedCharacter);
         }
 
         private void HandleValueChange(object sender, ValueChangeEventArgs args)
         {
-            BoardCardBehaviour sourceCharacter = (BoardCardBehaviour)sender;
+            if (sender is not BoardCardBehaviour sourceCharacter)
+            {
+                Debug.LogWarning("Calling HandleValueChange for BoardCard's CardWitnessListener when sender is not BoardCardBehaviour");
+                return;
+            }
             HandleCustomEffect(this, sourceCharacter, args.Delta);
         }
 

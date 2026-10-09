@@ -24,8 +24,9 @@ namespace Berty.BoardCards.Managers
 
         public void OrderRotateCard(BoardCardBehaviour card, NavigationEnum navigation)
         {
+            if (card == null) throw new ArgumentNullException(nameof(card));
             if (card.StateMachine.IsDexterityBased() && card.BoardCard.IsTired) return;
-            SoundManager.Instance.MoveSound(card.Sound.Source);
+            if (card.Sound != null) SoundManager.Instance.MoveSound(card.Sound.Source);
             int angle = navigation switch
             {
                 NavigationEnum.RotateLeft => -90,
@@ -45,6 +46,7 @@ namespace Berty.BoardCards.Managers
 
         public void OrderMoveCard(BoardCardBehaviour card, NavigationEnum navigation)
         {
+            if (card == null) throw new ArgumentNullException(nameof(card));
             if (card.StateMachine.IsDexterityBased() && card.BoardCard.IsTired) return;
             SoundManager.Instance.MoveSound(card.Sound.Source);
             Vector2Int distance = navigation switch
@@ -69,6 +71,7 @@ namespace Berty.BoardCards.Managers
 
         public void PrepareToAttack(BoardCardBehaviour card)
         {
+            if (card == null) throw new ArgumentNullException(nameof(card));
             if (!CanOrderAttack(card)) return;
             card.StateMachine.SetAttacking();
             PaymentManager.Instance.CallPayment(6 - card.BoardCard.Stats.Dexterity, card);
@@ -76,11 +79,13 @@ namespace Berty.BoardCards.Managers
 
         public void ConfirmPayment(BoardCardBehaviour card)
         {
+            if (card == null) throw new ArgumentNullException(nameof(card));
             ManagerLocator.ConfirmPaymentManagerInstance.ConfirmPayment(card);
         }
 
         public void ApplySpecialEffect(BoardCardBehaviour card)
         {
+            if (card == null) throw new ArgumentNullException(nameof(card));
             ManagerLocator.ApplyManualEffectManagerInstance.EnhanceCard(card);
         }
 

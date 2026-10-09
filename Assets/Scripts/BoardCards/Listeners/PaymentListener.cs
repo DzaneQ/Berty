@@ -40,14 +40,14 @@ namespace Berty.BoardCards.Listeners
         {
             if (StateMachine.HasState(CardStateEnum.Attacking))
             {
-                SoundManager.Instance.AttackSound(Sound.Source, BoardCard.CharacterConfig.AttackSound);
+                if (Sound != null) SoundManager.Instance.AttackSound(Sound.Source, BoardCard.CharacterConfig.AttackSound);
                 List<BoardCardBehaviour> attackedCards = EventManager.Instance.RaiseOnDirectlyAttacked(this);
                 HandleAfterAttackOrder(attackedCards);
                 BoardCard.MarkAsHasAttacked();
             }
             else if (StateMachine.HasState(CardStateEnum.NewCard))
             {
-                SoundManager.Instance.ConfirmSound(Sound.Source);
+                if (Sound != null) SoundManager.Instance.ConfirmSound(Sound.Source);
                 EventManager.Instance.RaiseOnAttackNewStand(this);
                 EventManager.Instance.RaiseOnNewCharacter(this);
             }

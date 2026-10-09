@@ -5,6 +5,7 @@ using Berty.Gameplay.Entities;
 using Berty.Gameplay.Managers;
 using Berty.UI.Managers;
 using System;
+using UnityEngine;
 
 namespace Berty.BoardCards.Listeners
 {
@@ -25,7 +26,12 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleStatusUpdated(object sender, EventArgs args)
         {
-            Status status = (Status)sender;
+            if (sender is not Status status)
+            {
+                Debug.LogWarning("Calling HandleStatusUpdated for BoardCard's StatusListener when sender is not Status");
+                return;
+            }
+
             switch (status.Name)
             {
                 case StatusEnum.ClickToApplyEffect:

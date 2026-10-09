@@ -28,7 +28,12 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleDirectlyAttacked(object sender, DirectAttackEventArgs args)
         {
-            BoardCardBehaviour attacker = (BoardCardBehaviour)sender;
+            if (sender is not BoardCardBehaviour attacker)
+            {
+                Debug.LogWarning("Calling HandleDirectlyAttacked for BoardCard's AttackListener when sender is not BoardCardBehaviour");
+                return;
+            }
+
             if (!args.AttackedFields.Contains(BoardCard.OccupiedField)) return;
             Vector2Int distanceToAttacker = BoardCard.GetDistanceTo(attacker.BoardCard);
 
@@ -48,7 +53,12 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleAttackNewStand(object sender, EventArgs args)
         {
-            BoardCardBehaviour defender = (BoardCardBehaviour)sender;
+            if (sender is not BoardCardBehaviour defender)
+            {
+                Debug.LogWarning("Calling HandleAttackNewStand for BoardCard's AttackListener when sender is not BoardCardBehaviour");
+                return;
+            }
+
             if (defender.BoardCard.Align == BoardCard.Align) return; // Don't attack allies
             if (defender.BoardCard.Stats.Power >= BoardCard.Stats.Power) return; // Attack lower power only
             Vector2Int distanceToDefender = BoardCard.GetDistanceTo(defender.BoardCard);
@@ -59,7 +69,11 @@ namespace Berty.BoardCards.Listeners
 
         private void HandleDirectAttackWitness(object sender, EventArgs args)
         {
-            BoardCardBehaviour attacker = (BoardCardBehaviour)sender;
+            if (sender is not BoardCardBehaviour attacker)
+            {
+                Debug.LogWarning("Calling HandleDirectAttackWitness for BoardCard's AttackListener when sender is not BoardCardBehaviour");
+                return;
+            }
             BoardCardBehaviour witness = this;
 
             if (witness.IsEqualTo(attacker)) HandleDirectAttackSelf();
