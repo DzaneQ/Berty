@@ -10,6 +10,8 @@ namespace Berty.BoardCards.Managers
 {
     public class CardNavigationManager : ManagerSingleton<CardNavigationManager>
     {
+        private const int UPSIDE_DOWN_ROTATION = 180;
+
         public void RotateCard(BoardCardBehaviour card, int angle)
         {
             card.BoardCard.AdvanceCardSetAngleBy(angle);
@@ -30,7 +32,7 @@ namespace Berty.BoardCards.Managers
             targetField.SetBackupCard(backupCard);
 
             // Update object
-            targetFieldBehaviour.transform.GetChild(0).SetParent(card.transform.parent.parent, false);
+            targetFieldBehaviour.transform.GetChild(Constants.CARD_SET_CHILD_INDEX).SetParent(card.transform.parent.parent, false);
             card.Navigation.MoveCardObject(targetFieldBehaviour);
 
             if (!isOnOrderStandby) card.Navigation.HandleNewMovementSkillEffect();
@@ -51,8 +53,8 @@ namespace Berty.BoardCards.Managers
             FieldBehaviour firstFieldObject = firstCardObject.ParentField;
             FieldBehaviour secondFieldObject = secondCardObject.ParentField;
             // Rotate cards
-            RotateCard(firstCardObject, 180);
-            RotateCard(secondCardObject, 180);
+            RotateCard(firstCardObject, UPSIDE_DOWN_ROTATION);
+            RotateCard(secondCardObject, UPSIDE_DOWN_ROTATION);
             // Update entities
             firstField.PlaceExistingCard(secondOccupantCard, secondFieldAlign);
             firstField.SetBackupCard(secondBackupCard);

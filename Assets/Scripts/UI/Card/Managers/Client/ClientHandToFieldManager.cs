@@ -36,12 +36,12 @@ namespace Berty.UI.Card.Managers
 
         private GameObject GetNewCardObjectOnField(FieldBehaviour field)
         {
-            GameObject cardToActivate = field.transform.GetChild(0).GetChild(0).gameObject;
+            GameObject cardToActivate = field.transform.GetChild(Constants.CARD_SET_CHILD_INDEX).GetChild(Constants.FIRST_CARD_INDEX).gameObject;
             if (cardToActivate.activeSelf)  // If there's an active card, get a second card
             {
                 cardToActivate = ObjectReadManager.Instance.BackupCard;
                 if (cardToActivate.activeSelf) throw new Exception($"Backup card named {cardToActivate.name} is already active.");
-                cardToActivate.transform.SetParent(field.transform.GetChild(0), false);
+                cardToActivate.transform.SetParent(field.transform.GetChild(Constants.CARD_SET_CHILD_INDEX), false);
             }
             return cardToActivate;
         }

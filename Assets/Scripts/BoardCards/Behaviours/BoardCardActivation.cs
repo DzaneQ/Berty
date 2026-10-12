@@ -63,14 +63,14 @@ namespace Berty.BoardCards.Behaviours
 
         private void DisableTheOtherCardOnTheField()
         {
-            GameObject firstCard = transform.parent.GetChild(0).gameObject;
+            GameObject firstCard = transform.parent.GetChild(Constants.FIRST_CARD_INDEX).gameObject;
             if (firstCard == gameObject) return;
             firstCard.SetActive(false);
         }
 
         private bool EnableTheOtherCardOnTheFieldAndFreeSpace()
         {
-            GameObject firstCard = transform.parent.GetChild(0).gameObject;
+            GameObject firstCard = transform.parent.GetChild(Constants.FIRST_CARD_INDEX).gameObject;
             if (firstCard == gameObject) // If this is the only card, handle empty field
             {
                 SetDefaultRotationForCardSet();

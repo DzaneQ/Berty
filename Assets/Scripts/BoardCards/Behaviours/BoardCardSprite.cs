@@ -8,6 +8,8 @@ namespace Berty.BoardCards.Behaviours
 {
     public class BoardCardSprite : BoardCardBehaviour
     {
+        private const int CHARACTER_SPRITE_INDEX = 0;
+
         private SpriteRenderer characterSprite;
         private Color defaultColor;
         public Sprite LookupSprite => characterSprite.sprite;
@@ -15,7 +17,7 @@ namespace Berty.BoardCards.Behaviours
         protected override void Awake()
         {
             base.Awake();
-            characterSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
+            characterSprite = transform.GetChild(CHARACTER_SPRITE_INDEX).GetComponent<SpriteRenderer>();
             defaultColor = characterSprite.color;
         }
 

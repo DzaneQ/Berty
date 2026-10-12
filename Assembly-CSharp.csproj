@@ -57,6 +57,7 @@
     <Compile Include="Assets\Scripts\Characters\ConfigData\KrolPopuBert.cs" />
     <Compile Include="Assets\Scripts\Audio\Listeners\AudioListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\CardButton.cs" />
+    <Compile Include="Assets\Scripts\Utility\Constants.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\IConfirmPaymentManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />

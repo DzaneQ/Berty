@@ -12,6 +12,12 @@ namespace Berty.Grid.Entities
 {
     public class BoardGrid
     {
+        private const int FIELD_COUNT = 9;
+        private const int LEFT_EDGE = -1;
+        private const int RIGHT_EDGE = 1;
+        private const int BOTTOM_EDGE = -1;
+        private const int TOP_EDGE = 1;
+
         public BoardField[] Fields { get; }
 
         public Game Game { get; }
@@ -19,10 +25,10 @@ namespace Berty.Grid.Entities
         public BoardGrid(Game game)
         {
             Game = game;
-            Fields = new BoardField[9];
+            Fields = new BoardField[FIELD_COUNT];
             int index = 0;
-            for (int x = -1; x <= 1; x++)
-                for (int y = -1; y <= 1; y++)
+            for (int x = LEFT_EDGE; x <= RIGHT_EDGE; x++)
+                for (int y = BOTTOM_EDGE; y <= TOP_EDGE; y++)
                 {
                     Fields[index] = new BoardField(x, y, this);
                     index++;
@@ -32,8 +38,8 @@ namespace Berty.Grid.Entities
         public BoardGrid(BoardGridSaveData data, List<CharacterConfig> allCharacters, Game game)
         {
             Game = game;
-            Fields = new BoardField[9];
-            for (int index = 0; index < 9; index++)
+            Fields = new BoardField[FIELD_COUNT];
+            for (int index = 0; index < FIELD_COUNT; index++)
             {
                 Fields[index] = new BoardField(data.Fields[index], allCharacters, this);
             }
@@ -41,7 +47,7 @@ namespace Berty.Grid.Entities
 
         public void OverwriteEntity(BoardGridSaveData data, List<CharacterConfig> allCharacters)
         {
-            for (int index = 0; index < 9; index++)
+            for (int index = 0; index < FIELD_COUNT; index++)
             {
                 Fields[index].OverwriteEntity(data.Fields[index], allCharacters);
             }
@@ -51,7 +57,7 @@ namespace Berty.Grid.Entities
         {
             return new()
             {
-                Fields = this.Fields.Select(field => field.SaveEntity()).ToArray()
+                Fields = Fields.Select(field => field.SaveEntity()).ToArray()
             };
         }
 

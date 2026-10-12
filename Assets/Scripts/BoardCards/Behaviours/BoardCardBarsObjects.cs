@@ -5,6 +5,8 @@ namespace Berty.BoardCards.Behaviours
 {
     public class BoardCardBarsObjects : BoardCardBehaviour
     {
+        private const int BAR_SET_CHILD_INDEX = 1;
+
         /* CardBars index:
             0 - Strength
             1 - Power
@@ -17,7 +19,7 @@ namespace Berty.BoardCards.Behaviours
         protected override void Awake()
         {
             base.Awake();
-            CardBars = transform.GetChild(1).GetComponentsInChildren<CardBar>();
+            CardBars = transform.GetChild(BAR_SET_CHILD_INDEX).GetComponentsInChildren<CardBar>();
         }
 
         public void SetBars()

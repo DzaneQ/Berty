@@ -84,7 +84,7 @@ namespace Berty.Grid.Field.Behaviour
         public BoardCardBehaviour LoadTheCard()
         {
             if (BoardField.OccupantCard == null) return null;
-            ChildCard = transform.GetChild(0).GetChild(0).GetComponent<BoardCardBehaviour>();
+            ChildCard = transform.GetChild(Constants.CARD_SET_CHILD_INDEX).GetChild(Constants.FIRST_CARD_INDEX).GetComponent<BoardCardBehaviour>();
             ChildCard.gameObject.SetActive(true);
             if (BoardField.BackupCard == null) ChildCard.Activation.LoadCard(BoardField.OccupantCard);
             else
@@ -94,7 +94,7 @@ namespace Berty.Grid.Field.Behaviour
                 ChildCard.gameObject.SetActive(false);
                 // Then load the occupant card
                 ChildCard = ObjectReadManager.Instance.BackupCard.GetComponent<BoardCardBehaviour>();
-                ChildCard.transform.SetParent(transform.GetChild(0), false);
+                ChildCard.transform.SetParent(transform.GetChild(Constants.CARD_SET_CHILD_INDEX), false);
                 ChildCard.gameObject.SetActive(true);
                 ChildCard.Activation.LoadCard(BoardField.OccupantCard);
             }

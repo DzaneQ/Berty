@@ -9,6 +9,9 @@ namespace Berty.Menu.Behaviours
 {
     public class NavigationMenu : MonoBehaviour
     {
+        private const int PLAY_BUTTON_INDEX = 0;
+        private const int GUIDE_BUTTON_INDEX = 2;
+
         [SerializeField] private Image GuideSheet;
         [SerializeField] private GameObject SettingsPanel;
         [SerializeField] private GameObject MenuList;
@@ -24,8 +27,8 @@ namespace Berty.Menu.Behaviours
         {
             src = GetComponent<AudioSource>();
             src.volume = SettingsManager.Instance.Volume;
-            playButton = MenuList.transform.GetChild(0).GetComponent<ButtonFunction>();
-            guideButton = MenuList.transform.GetChild(2).GetComponent<ButtonFunction>();
+            playButton = MenuList.transform.GetChild(PLAY_BUTTON_INDEX).GetComponent<ButtonFunction>();
+            guideButton = MenuList.transform.GetChild(GUIDE_BUTTON_INDEX).GetComponent<ButtonFunction>();
             exitButton = ExitButton.GetComponent<ButtonFunction>();
 
             if (ProcessGameDataManager.Instance.IsSaveFileExisting())
