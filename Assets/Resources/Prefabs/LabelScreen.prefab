@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5319102901867801113}
   - component: {fileID: 4908300051852664394}
   m_Layer: 5
-  m_Name: GameOver
+  m_Name: LabelScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -180,8 +180,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00002467313, y: 0.000012336565}
-  m_SizeDelta: {x: 240, y: 60}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 600, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2725062917320411073
 CanvasRenderer:
@@ -211,7 +211,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Koniec gry!!!
+  m_text: 'Koniec gry!!!
+
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a49121996a1461d4a9edda97df01c7cf, type: 2}
   m_sharedMaterial: {fileID: -7942994621234362931, guid: a49121996a1461d4a9edda97df01c7cf, type: 2}

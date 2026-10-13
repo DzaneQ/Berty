@@ -12,6 +12,8 @@ namespace Berty.UI.Managers
 {
     public class OverlayObjectManager : UIObjectManager<OverlayObjectManager>
     {
+        private const int RESULT_MESSAGE_INDEX = 0;
+
         private CardPile cardPile;
         private HandCardCollection behaviourCollection;
         private Collider[] disabledColliders;
@@ -27,8 +29,8 @@ namespace Berty.UI.Managers
 
         public void DisplayGameOverScreen(bool isTheWinner)
         {
-            GameObject prefab = Resources.Load<GameObject>("Prefabs/GameOver");
-            TMP_Text endingMessage = prefab.transform.GetChild(0).gameObject.GetComponent<TMP_Text>();
+            GameObject prefab = Resources.Load<GameObject>("Prefabs/LabelScreen");
+            TMP_Text endingMessage = prefab.transform.GetChild(RESULT_MESSAGE_INDEX).GetComponent<TMP_Text>();
             endingMessage.text = isTheWinner
                 ? GameLanguageManager.Instance.GetTextFromKey("win")
                 : GameLanguageManager.Instance.GetTextFromKey("lose");

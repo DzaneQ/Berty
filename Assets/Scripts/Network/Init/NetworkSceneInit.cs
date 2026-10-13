@@ -9,6 +9,7 @@ using Berty.UI.Card.Init;
 using Berty.Utility;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -16,11 +17,14 @@ namespace Berty.Network.Init
 {
     public class NetworkSceneInit : NetworkBehaviour
     {
+        private const int SCREEN_LABEL_INDEX = 0;
+
         [SerializeField] private GameObject rpcSystem;
         [SerializeField] private GameObject fieldBoard;
 
         private List<BoxCollider> _fieldCollidersToUnlock = new();
         private List<MonoBehaviour> _fieldBehavioursToUnlock = new();
+        private GameObject _preLabelScreen;
 
         private void Start()
         {
@@ -52,6 +56,7 @@ namespace Berty.Network.Init
         private void InitializeLocalScene()
         {
             InitializeLanguage();
+            InitializeLabelScreen();
         }
 
         private void CacheVariables()
@@ -74,6 +79,14 @@ namespace Berty.Network.Init
             if (init == null) return;
             init.InitializeLanguageDictionary();
             Destroy(init);
+        }
+
+        private void InitializeLabelScreen()
+        {
+            GameObject prefab = Resources.Load<GameObject>("Prefabs/LabelScreen");
+            TMP_Text endingMessage = prefab.transform.GetChild(SCREEN_LABEL_INDEX).GetComponent<TMP_Text>();
+            endingMessage.text = GameLanguageManager.Instance.GetTextFromKey("pre_multi");
+            _preLabelScreen = Instantiate(prefab, GameObject.FindGameObjectWithTag("MainScreen").transform);
         }
 
         private void InitializeGameEntity()
@@ -100,6 +113,7 @@ namespace Berty.Network.Init
 
         private void StartTheGame()
         {
+            Destroy(_preLabelScreen.gameObject);
             EventManager.Instance.RaiseOnNewTurn();
             Destroy(gameObject);
         }

@@ -2,5 +2,6 @@
   "win": "Victory!",
   "lose": "Defeat!",
   "end_turn": "End turn",
-  "undo": "Undo"
+  "undo": "Undo",
+  "pre_multi": "Waiting for the other player..."
 }
