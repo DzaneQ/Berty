@@ -1,10 +1,12 @@
 {
-  "Play": "Graj",
+  "PlaySingle": "Graj sam",
   "Load": "Wczytaj",
+  "PlayMulti": "Graj z kimś",
   "Guide": "Zasady gry",
   "Settings": "Ustawienia",
   "Exit": "Zamknij",
   "ResolutionDropdown": "Rozdzielczość",
   "VolumeSlider": "Głośność",
-  "Return": "Powrót"
+  "Return": "Powrót",
+  "MultiplayerLabel": "Oczekiwanie na gracza..."
 }

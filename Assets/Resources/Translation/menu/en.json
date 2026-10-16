@@ -1,10 +1,12 @@
 {
-  "Play": "Play",
+  "PlaySingle": "Play single",
   "Load": "Load",
+  "PlayMulti": "Play multi",
   "Guide": "Game rules",
   "Settings": "Settings",
   "Exit": "Exit",
   "ResolutionDropdown": "Resolution",
   "VolumeSlider": "Volume",
-  "Return": "Return"
+  "Return": "Return",
+  "MultiplayerLabel": "Waiting for another player..."
 }

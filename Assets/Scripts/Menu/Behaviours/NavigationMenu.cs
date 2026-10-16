@@ -1,5 +1,6 @@
 using Berty.Gameplay.Managers;
 using Berty.Menu.Listeners;
+using Berty.Menu.Managers;
 using Berty.Settings;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,10 +11,11 @@ namespace Berty.Menu.Behaviours
     public class NavigationMenu : MonoBehaviour
     {
         private const int PLAY_BUTTON_INDEX = 0;
-        private const int GUIDE_BUTTON_INDEX = 2;
+        private const int GUIDE_BUTTON_INDEX = 3;
 
         [SerializeField] private Image GuideSheet;
         [SerializeField] private GameObject SettingsPanel;
+        [SerializeField] private GameObject MultiplayerPanel;
         [SerializeField] private GameObject MenuList;
         [SerializeField] private GameObject LoadButton;
         [SerializeField] private GameObject ExitButton;
@@ -42,11 +44,18 @@ namespace Berty.Menu.Behaviours
             }
         }
 
-        public void Play()
+        public void PlaySingle()
         {
             PlaySound(playButton.ClickSound);
             StartGameBufferManager.Instance.SetLoading(false);
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
+        }
+
+        public void PlayMulti()
+        {
+            PlaySound(playButton.ClickSound);
+            MultiplayerPanel.SetActive(true);
+            MenuList.SetActive(false);
         }
 
         public void Load()

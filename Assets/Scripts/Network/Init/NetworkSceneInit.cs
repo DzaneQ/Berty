@@ -28,21 +28,15 @@ namespace Berty.Network.Init
 
         private void Start()
         {
-            NetworkManager.Singleton.OnConnectionEvent += HandleClientConnected;
-#if UNITY_EDITOR
-            NetworkManager.Singleton.StartHost();
-#else
-            NetworkManager.Singleton.StartClient();
-#endif
             InitializeLocalScene();
             CacheVariables();
+            InitializeServer();
         }
 
-        private void HandleClientConnected(NetworkManager manager, ConnectionEventData data)
+        private void InitializeServer() // NOTE: Works when there's a host
         {
-            if (!manager.IsServer) return; // run from server only
-            if (data.EventType != ConnectionEvent.ClientConnected) return;
-            IReadOnlyList<ulong> connectedClients = manager.ConnectedClientsIds;
+            if (!NetworkManager.Singleton.IsServer) return; // run from server only
+            IReadOnlyList<ulong> connectedClients = NetworkManager.Singleton.ConnectedClientsIds;
             int clientCount = connectedClients.Count;
             if (clientCount > 2) throw new Exception($"Too many connected clients: {clientCount}");
             if (clientCount < 2) return;

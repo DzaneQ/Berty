@@ -20,6 +20,7 @@ namespace Berty.Menu.Managers
             base.Awake();
             InstantiateTranslatableLabels();
             LoadLanguageDictionaries();
+            RefreshLabels();
         }
 
         public void RefreshLabels()

@@ -58,26 +58,128 @@
     <Compile Include="Assets\Scripts\Audio\Listeners\AudioListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\CardButton.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Managers\IConfirmPaymentManager.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\State\ActiveState.cs" />
     <Compile Include="Assets\Scripts\Menu\Listeners\ButtonFunction.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Entities\CardPile.cs" />
-    <Compile Include="Assets\Scripts\Characters\Managers\IApplyManualEffectManager.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Button\MoveRight.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Entities\CardStats.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\Zombert.cs" />
     <Compile Include="Assets\Scripts\Display\Managers\DisplayManager.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\PapiezBertII.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Animation\AnimatedMoveCard.cs" />
-    <Compile Include="Assets\Scripts\Display\LookupCard.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaSJW.cs" />
     <Compile Include="Assets\Scripts\Utility\ManagerLocator.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\NewTransformState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Managers\ITurnManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\AstronautaBert.cs" />
+    <Compile Include="Assets\Scripts\UI\Managers\Client\ClientUIObjectManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\Client\ClientHandToFieldManager.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Entities\Status.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\Server\ServerPileToHandManager.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Animation\IMoveCard.cs" />
+    <Compile Include="Assets\Scripts\Grid\Managers\Client\ClientColorizeObjectManager.cs" />
+    <Compile Include="Assets\Scripts\Menu\Behaviours\LanguagePickMenu.cs" />
+    <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Listeners\CheckpointValidatorListener.cs" />
+    <Compile Include="Assets\Scripts\Enums\LanguageEnum.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Animation\AnimatedRotateCard.cs" />
+    <Compile Include="Assets\Scripts\Audio\Listeners\SoundListener.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Listeners\HandCardInput.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
+    <Compile Include="Assets\Scripts\Characters\Managers\ModifyStatChangeManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\PileToHandManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Listeners\Client\ClientTurnListener.cs" />
+    <Compile Include="Assets\Scripts\Network\Init\NetworkSceneInit.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\HandCardObjectManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Managers\EscapePanelManager.cs" />
+    <Compile Include="Assets\Scripts\Characters\Managers\DrawFromPileManager.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Init\LanguageInit.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Button\RotateRight.cs" />
+    <Compile Include="Assets\Scripts\Menu\Behaviours\JoinMultiplayer.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\SelectionManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\Client\ClientHandCardObjectManager.cs" />
+    <Compile Include="Assets\Scripts\Debugging\Listeners\NetworkButton.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\KonstablBert.cs" />
+    <Compile Include="Assets\Scripts\Debugging\Init\NetworkSceneInit.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Init\SceneInit.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Listeners\IColliderInput.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\Client\ClientFieldToHandManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Listeners\ToggleEscapePanelInput.cs" />
+    <Compile Include="Assets\Scripts\Characters\Managers\ApplySkillEffectManager.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\PaymentManager.cs" />
+    <Compile Include="Assets\Scripts\Utility\NetworkSingleton.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\TrenerPokebertow.cs" />
+    <Compile Include="Assets\Scripts\Network\Managers\NetworkApplyManualEffectManager.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\EventManager.cs" />
+    <Compile Include="Assets\Scripts\Utility\Constants.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\BertaTrojanska.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\CharacterConfig.cs" />
+    <Compile Include="Assets\Scripts\Menu\Behaviours\NavigationMenu.cs" />
+    <Compile Include="Assets\Scripts\Grid\Field\Behaviour\Network\NetworkUnlocker.cs" />
+    <Compile Include="Assets\Scripts\Enums\CardStateEnum.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
+    <Compile Include="Assets\Scripts\Network\Managers\PlayerReadManager.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\StaryBert.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Managers\BoardCardCollectionManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Animation\AnimatingCardImage.cs" />
+    <Compile Include="Assets\Scripts\Network\Managers\NetworkDrawFromPileManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\IPileToHandManager.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\BertWho.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\HandToFieldManager.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Listeners\PaymentListener.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
+    <Compile Include="Assets\Scripts\Utility\ServerManagerSingleton.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Button\MoveLeft.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\BertkaIdolka.cs" />
+    <Compile Include="Assets\Scripts\Menu\Behaviours\SettingsMenu.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\SedziaBertt.cs" />
+    <Compile Include="Assets\Scripts\Grid\Managers\FieldCollectionManager.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardSprite.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\GotkaBerta.cs" />
+    <Compile Include="Assets\Scripts\Enums\CharacterEnum.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Collection\HandCardCollection.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
+    <Compile Include="Assets\Scripts\Utility\RotationLocker.cs" />
+    <Compile Include="Assets\Scripts\Grid\Field\Listeners\FieldInput.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Behaviours\HandCardBehaviour.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
+    <Compile Include="Assets\Scripts\UI\Managers\OverlayObjectManager.cs" />
+    <Compile Include="Assets\Scripts\Debugging\Managers\DebugManager.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Selection\SelectedCard.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Managers\BoardCardActionManager.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
+    <Compile Include="Assets\Scripts\Enums\StatEnum.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\ShaolinBert.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\State\AttackingState.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Listeners\AttackListener.cs" />
+    <Compile Include="Assets\Scripts\UI\Listeners\DeactivateEscapePanelInput.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\Bertonator.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Managers\IHandCardObjectManager.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
+    <Compile Include="Assets\Scripts\Grid\Entities\BoardGrid.cs" />
+    <Compile Include="Assets\Scripts\Characters\Init\CharacterData.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Animation\IBarWidth.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Listeners\CardWitnessListener.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\EBerta.cs" />
+    <Compile Include="Assets\Scripts\UI\Managers\ButtonActionManager.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Entities\BoardCard.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\BertVentura.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Managers\CardNavigationManager.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\KuglarzBert.cs" />
+    <Compile Include="Assets\Scripts\Enums\HighlightEnum.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\State\NewCardState.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\IConfirmPaymentManager.cs" />
+    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\State\ActiveState.cs" />
+    <Compile Include="Assets\Scripts\Characters\Managers\IApplyManualEffectManager.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Button\MoveRight.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Entities\CardStats.cs" />
+    <Compile Include="Assets\Scripts\Characters\ConfigData\PapiezBertII.cs" />
+    <Compile Include="Assets\Scripts\BoardCards\Animation\AnimatedMoveCard.cs" />
+    <Compile Include="Assets\Scripts\Display\LookupCard.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Managers\ITurnManager.cs" />
     <Compile Include="Assets\Scripts\Enums\RoleEnum.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\EntityLoadManager.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\GameLanguageManager.cs" />
@@ -85,17 +187,12 @@
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardSound.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
-    <Compile Include="Assets\Scripts\UI\Managers\Client\ClientUIObjectManager.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Managers\Client\ClientHandToFieldManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardNavigation.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KowbojBert.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Entities\Status.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Selection\SelectStatus.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\FieldToHandManager.cs" />
+    <Compile Include="Assets\Scripts\UI\Card\Selection\SelectStatus.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\IFieldToHandManager.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Managers\Server\ServerPileToHandManager.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Animation\IMoveCard.cs" />
     <Compile Include="Assets\Scripts\Enums\DirectionEnum.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\BoardCardInput.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\ICheckpointManager.cs" />
@@ -104,190 +201,96 @@
     <Compile Include="Assets\Scripts\Menu\Listeners\SliderSoundListener.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
-    <Compile Include="Assets\Scripts\Grid\Managers\Client\ClientColorizeObjectManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Listeners\TableDisplayListener.cs" />
-    <Compile Include="Assets\Scripts\Menu\Behaviours\LanguagePickMenu.cs" />
-    <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Listeners\CheckpointValidatorListener.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandToPileManager.cs" />
-    <Compile Include="Assets\Scripts\Enums\LanguageEnum.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Animation\AnimatedRotateCard.cs" />
-    <Compile Include="Assets\Scripts\Audio\Listeners\SoundListener.cs" />
     <Compile Include="Assets\Scripts\Gameplay\ConfigData\GameConfig.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertkaSerferka.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Listeners\HandCardInput.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Scripts\Utility\PersistentManagerSingleton.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\IRotateCard.cs" />
     <Compile Include="Assets\Scripts\Network\Managers\NetworkConfirmPaymentManager.cs" />
-    <Compile Include="Assets\Scripts\Characters\Managers\ModifyStatChangeManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\EffectableState.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\PrymusBert.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KrzyzowiecBert.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Managers\PileToHandManager.cs" />
     <Compile Include="Assets\Scripts\Characters\Managers\ApplyManualEffectManager.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Listeners\Client\ClientTurnListener.cs" />
-    <Compile Include="Assets\Scripts\Network\Init\NetworkSceneInit.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardActivation.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Managers\HandCardObjectManager.cs" />
-    <Compile Include="Assets\Scripts\UI\Managers\EscapePanelManager.cs" />
     <Compile Include="Assets\Scripts\Display\View\RotateCamera.cs" />
-    <Compile Include="Assets\Scripts\Characters\Managers\DrawFromPileManager.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Listeners\HighlightListener.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Init\LanguageInit.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Button\RotateRight.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\CardState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Managers\SelectionManager.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Managers\Client\ClientHandCardObjectManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Bar\CardBar.cs" />
-    <Compile Include="Assets\Scripts\Debugging\Listeners\NetworkButton.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\TurnManager.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\KonstablBert.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Init\SceneInit.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Listeners\IColliderInput.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Managers\Client\ClientFieldToHandManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\KsiezniczkaBerta.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\SuperfanBert.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Animation\AnimatedBarWidth.cs" />
-    <Compile Include="Assets\Scripts\UI\Listeners\ToggleEscapePanelInput.cs" />
-    <Compile Include="Assets\Scripts\Characters\Managers\ApplySkillEffectManager.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Managers\PaymentManager.cs" />
     <Compile Include="Assets\Scripts\Grid\Managers\ColorizeObjectManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Listeners\TurnListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\IdleState.cs" />
-    <Compile Include="Assets\Scripts\Utility\NetworkSingleton.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\ObjectReadManager.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\TrenerPokebertow.cs" />
     <Compile Include="Assets\Scripts\Enums\AlignmentEnum.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardBarsObjects.cs" />
-    <Compile Include="Assets\Scripts\Network\Managers\NetworkApplyManualEffectManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertPogromca.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Managers\EventManager.cs" />
-    <Compile Include="Assets\Scripts\Utility\Constants.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\BertaTrojanska.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\CharacterConfig.cs" />
-    <Compile Include="Assets\Scripts\Grid\Field\Behaviour\Network\NetworkUnlocker.cs" />
-    <Compile Include="Assets\Scripts\Menu\Behaviours\NavigationMenu.cs" />
     <Compile Include="Assets\Scripts\Enums\StatusEnum.cs" />
-    <Compile Include="Assets\Scripts\Enums\CardStateEnum.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertZawodowiec.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\IHandToFieldManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\StatusListener.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\SamurajBert.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
-    <Compile Include="Assets\Scripts\Network\Managers\PlayerReadManager.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\CloseGameInput.cs" />
     <Compile Include="Assets\Scripts\Enums\NavigationEnum.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveUp.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BigMadB.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\StaryBert.cs" />
     <Compile Include="Assets\Scripts\Utility\ClientManagerSingleton.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Managers\BoardCardCollectionManager.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Animation\AnimatingCardImage.cs" />
-    <Compile Include="Assets\Scripts\Network\Managers\NetworkDrawFromPileManager.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Managers\IPileToHandManager.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Selection\UnselectedCard.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\BertWho.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Managers\HandToFieldManager.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Listeners\PaymentListener.cs" />
     <Compile Include="Assets\Scripts\Network\Managers\NetworkCardManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\Scripts\Network\Managers\NetworkCheckpointManager.cs" />
     <Compile Include="Assets\Scripts\Enums\GenderEnum.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
+    <Compile Include="Assets\Scripts\Utility\PersistentObject.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\ZalobnyBert.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Listeners\TurnListener.cs" />
     <Compile Include="Assets\Scripts\BoardCards\State\TelekineticState.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
-    <Compile Include="Assets\Scripts\Utility\ServerManagerSingleton.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Button\MoveLeft.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\BertkaIdolka.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\CheckpointManager.cs" />
-    <Compile Include="Assets\Scripts\Menu\Behaviours\SettingsMenu.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\SedziaBertt.cs" />
-    <Compile Include="Assets\Scripts\Grid\Managers\FieldCollectionManager.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardSprite.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Behaviour\FieldBehaviour.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\Scripts\Network\Managers\NetworkTurnManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\GotkaBerta.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
-    <Compile Include="Assets\Scripts\Enums\CharacterEnum.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\CheBert.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Collection\HandCardCollection.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
-    <Compile Include="Assets\Scripts\Utility\RotationLocker.cs" />
-    <Compile Include="Assets\Scripts\Grid\Field\Listeners\FieldInput.cs" />
     <Compile Include="Assets\Scripts\Enums\CornerButtonEnum.cs" />
     <Compile Include="Assets\Scripts\Grid\Field\Entities\BoardField.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Behaviours\HandCardBehaviour.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Scripts\Characters\Managers\IDrawFromPileManager.cs" />
+    <Compile Include="Assets\Scripts\Menu\Managers\MenuLanguageManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaGejsza.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Managers\HandCardSelectManager.cs" />
-    <Compile Include="Assets\Scripts\Menu\Managers\MenuLanguageManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\RotateLeft.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardRigidbody.cs" />
-    <Compile Include="Assets\Scripts\UI\Managers\OverlayObjectManager.cs" />
     <Compile Include="Assets\Scripts\Audio\Managers\SoundManager.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Entities\Game.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\ProcessGameDataManager.cs" />
-    <Compile Include="Assets\Scripts\Debugging\Managers\DebugManager.cs" />
     <Compile Include="Assets\Scripts\Settings\Managers\SettingsManager.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Selection\SelectedCard.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Managers\BoardCardActionManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertaAmazonka.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardEntityHandler.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
-    <Compile Include="Assets\Scripts\Enums\StatEnum.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\ShaolinBert.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\State\AttackingState.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Listeners\AttackListener.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\PrezydentBert.cs" />
-    <Compile Include="Assets\Scripts\UI\Listeners\DeactivateEscapePanelInput.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\Bertonator.cs" />
     <Compile Include="Assets\Scripts\Utility\ManagerSingleton.cs" />
-    <Compile Include="Assets\Scripts\UI\Card\Managers\IHandCardObjectManager.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\RycerzBerti.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\BertWick.cs" />
-    <Compile Include="Assets\Scripts\Grid\Entities\BoardGrid.cs" />
-    <Compile Include="Assets\Scripts\Characters\Init\CharacterData.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Animation\IBarWidth.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Listeners\CardWitnessListener.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\MisiekBert.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\Bertolaj.cs" />
     <Compile Include="Assets\Scripts\Utility\RpcManagerSingleton.cs" />
     <Compile Include="Assets\Scripts\Settings\Managers\StartGameBufferManager.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\EBerta.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Managers\StatusManager.cs" />
-    <Compile Include="Assets\Scripts\UI\Managers\ButtonActionManager.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Entities\BoardCard.cs" />
     <Compile Include="Assets\Scripts\Characters\ConfigData\RoninBert.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\BertVentura.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\ButtonDisplay.cs" />
     <Compile Include="Assets\Scripts\UI\Managers\UIObjectManager.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Managers\CardNavigationManager.cs" />
     <Compile Include="Assets\Scripts\BoardCards\Button\MoveDown.cs" />
-    <Compile Include="Assets\Scripts\Characters\ConfigData\KuglarzBert.cs" />
     <Compile Include="Assets\Scripts\UI\Listeners\ButtonInput.cs" />
-    <Compile Include="Assets\Scripts\Enums\HighlightEnum.cs" />
     <Compile Include="Assets\Scripts\UI\Card\Init\HandCardInitialization.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\State\NewCardState.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
-    <Compile Include="Assets\Scripts\BoardCards\Behaviours\BoardCardBehaviour.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -924,6 +927,10 @@
       <HintPath>Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff\Mono.Cecil.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="websocket-sharp">
+      <HintPath>Library\PackageCache\com.unity.services.wire@aba8a6fb1fe2\Plugins\websocket-sharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\6000.5.6f1\Editor\Data\NetStandard\ref\2.1.0\netstandard.dll</HintPath>
       <Private>False</Private>
@@ -1476,12 +1483,24 @@
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.MetricTestData.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Services.QoS">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.QoS.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Multiplayer.Editor.Shared">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.Multiplayer.Editor.Shared.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Multiplayer.Tools.NetworkSolutionInterface">
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.NetworkSolutionInterface.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Multiplayer.Tools.NetStats">
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.NetStats.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Core">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.AI.Navigation">
@@ -1552,6 +1571,10 @@
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.Adapters.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Services.Core.Components">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.Core.Components.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Multiplayer.Tools.NetStatsMonitor.Configuration">
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.NetStatsMonitor.Configuration.dll</HintPath>
       <Private>False</Private>
@@ -1576,8 +1599,24 @@
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Tools.DependencyInjection.UIElements.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Services.Multiplayer.Editor.Matchmaker.Authoring">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.Multiplayer.Editor.Matchmaker.Authoring.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Core.Analytics">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.Core.Analytics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Authentication">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.Authentication.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Authentication.PlayerAccounts">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.Authentication.PlayerAccounts.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.PlasticSCM.Editor.Assistant">
@@ -1636,8 +1675,16 @@
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Center.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Services.Core.Environments">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.Core.Environments.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Burst">
       <HintPath>Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Services.Multiplayer">
+      <HintPath>Library\ScriptAssemblies\Unity.Services.Multiplayer.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.InternalAPIEngineBridge.004">
