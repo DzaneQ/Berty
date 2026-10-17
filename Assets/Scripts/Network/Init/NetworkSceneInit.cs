@@ -26,11 +26,13 @@ namespace Berty.Network.Init
         private List<MonoBehaviour> _fieldBehavioursToUnlock = new();
         private GameObject _preLabelScreen;
 
+        private ulong? _readyClient = null; // Read by server
+
         private void Start()
         {
             InitializeLocalScene();
             CacheVariables();
-            InitializeServer();
+            MarkAsClientReadyServerRpc();
         }
 
         private void InitializeServer() // NOTE: Works when there's a host
@@ -110,6 +112,14 @@ namespace Berty.Network.Init
             Destroy(_preLabelScreen.gameObject);
             EventManager.Instance.RaiseOnNewTurn();
             Destroy(gameObject);
+        }
+
+        [Rpc(SendTo.Server)]
+        private void MarkAsClientReadyServerRpc(RpcParams rpcParams = default)
+        {
+            if (!IsServer) return;
+            if (_readyClient == null) _readyClient = rpcParams.Receive.SenderClientId;
+            else if (_readyClient != rpcParams.Receive.SenderClientId) InitializeServer();
         }
 
         [ClientRpc]
